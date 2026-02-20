@@ -1,17 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>School Progress</title>
-  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#f4f4f4;
+      margin:0;
+      padding:24px;
+      color:#222;
+    }
+
+    .wrap{ max-width:980px; margin:0 auto; }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 10px;
+    }
+
+    h1{
+      margin:0;
+      text-align:center;
+      flex:1;
+    }
+
+    .btn{
+      border:none;
+      padding:10px 12px;
+      border-radius:10px;
+      background:#111;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .debug{
+      margin: 8px 0 14px;
+      font-weight: 800;
+      color:#0a7a1f;
+      text-align:center;
+    }
+
+    .block{
+      background:#fff;
+      padding:16px 16px 12px;
+      border-radius:12px;
+      margin:12px 0;
+      box-shadow:0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    h2{ margin:0 0 10px 0; font-size:18px; }
+
+    .two-col{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    @media (max-width:820px){
+      .two-col{ grid-template-columns: 1fr; }
+      .topbar{ flex-wrap:wrap; }
+    }
+
+    .col-title{
+      font-size:13px;
+      font-weight:900;
+      color:#666;
+      margin: 0 0 6px 0;
+    }
+
+    .line{
+      position:relative;
+      width:100%;
+      height:3px;
+      background:#e0e0e0;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .fill{
+      position:absolute;
+      left:0; top:0;
+      height:100%;
+      width:0%;
+      background:#3bb54a;
+      border-radius:999px;
+      transition: width 0.35s ease;
+    }
+
+    .fill.weekend{ background:#ff9800; }
+
+    .label{
+      margin:10px 0 0;
+      font-weight:800;
+    }
+
+    .hint{
+      margin:10px 0 0;
+      color:#666;
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    .hidden{ display:none; }
+
+    .toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:8px 0;
+      font-weight:800;
+    }
+
+    /* Daily */
+    .dailyRow{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      background:#eee;
+      font-weight:900;
+      font-size:13px;
+    }
+    .badge.live{ background:#e8f5e9; }
+    .badge.free{ background:#fff3cd; } /* žlutá */
+    .badge.err{ background:#fdecea; }
+
+    .dailyText{ font-weight:800; }
+
+    .iframe{
+      width:100%;
+      height:520px;
+      border:1px solid #eee;
+      border-radius:10px;
+    }
+  </style>
 </head>
+
 <body>
   <div class="wrap">
     <header class="topbar">
       <h1>School Progress</h1>
-      <button id="settingsBtn" class="btn">Nastavení ⚙️</button>
+      <button id="settingsBtn" class="btn" type="button">Nastavení ⚙️</button>
     </header>
+
+    <div id="debug" class="debug">JS běží ✅</div>
 
     <div id="settingsPanel" class="block hidden">
       <h2>Nastavení</h2>
@@ -26,95 +171,309 @@
         <span>Zobrazit denní progres</span>
       </label>
 
-      <p class="hint" id="debugHint"></p>
+      <p class="hint" id="statusHint">Status: inicializace…</p>
     </div>
 
+    <!-- TÝDEN -->
     <div class="block">
       <h2>Týden</h2>
       <div class="two-col">
         <div>
-          <div class="line"><div class="fill" id="week-progress"></div></div>
-          <p class="label" id="week-label"></p>
+          <div class="col-title">Realtime</div>
+          <div class="line"><div class="fill" id="week-realtime"></div></div>
+          <p class="label" id="week-realtime-label"></p>
         </div>
         <div>
+          <div class="col-title">Raw time</div>
           <div class="line"><div class="fill" id="week-raw"></div></div>
           <p class="label" id="week-raw-label"></p>
         </div>
       </div>
     </div>
 
+    <!-- MĚSÍC -->
     <div class="block">
       <h2>Měsíc</h2>
       <div class="two-col">
         <div>
-          <div class="line"><div class="fill" id="month-progress"></div></div>
-          <p class="label" id="month-label"></p>
+          <div class="col-title">Realtime</div>
+          <div class="line"><div class="fill" id="month-realtime"></div></div>
+          <p class="label" id="month-realtime-label"></p>
         </div>
         <div>
+          <div class="col-title">Raw time</div>
           <div class="line"><div class="fill" id="month-raw"></div></div>
           <p class="label" id="month-raw-label"></p>
         </div>
       </div>
     </div>
 
+    <!-- ŠKOLNÍ ROK -->
     <div class="block">
       <h2>Školní rok</h2>
       <div class="two-col">
         <div>
-          <div class="line"><div class="fill" id="year-progress"></div></div>
-          <p class="label" id="year-label"></p>
+          <div class="col-title">Realtime</div>
+          <div class="line"><div class="fill" id="year-realtime"></div></div>
+          <p class="label" id="year-realtime-label"></p>
         </div>
         <div>
+          <div class="col-title">Raw time</div>
           <div class="line"><div class="fill" id="year-raw"></div></div>
           <p class="label" id="year-raw-label"></p>
         </div>
       </div>
     </div>
 
+    <!-- CELKEM -->
     <div class="block">
       <h2>Celkem</h2>
       <div class="two-col">
         <div>
-          <div class="line"><div class="fill" id="total-progress"></div></div>
-          <p class="label" id="total-label"></p>
+          <div class="col-title">Realtime</div>
+          <div class="line"><div class="fill" id="total-realtime"></div></div>
+          <p class="label" id="total-realtime-label"></p>
         </div>
         <div>
+          <div class="col-title">Raw time</div>
           <div class="line"><div class="fill" id="total-raw"></div></div>
           <p class="label" id="total-raw-label"></p>
         </div>
       </div>
     </div>
 
+    <!-- MATURITA -->
     <div class="block">
       <h2>Maturita</h2>
       <p class="label" id="maturita-label"></p>
+      <p class="hint">Pozn.: pouze orientačně „květen 2027“ (měsíc, jak jsi chtěl).</p>
     </div>
 
+    <!-- DENNÍ -->
     <div id="dailyBlock" class="block">
       <h2>Denní progres</h2>
       <div class="dailyRow">
-        <div class="badge" id="dailyStatusBadge">Rozvrh…</div>
+        <div class="badge" id="dailyBadge">Rozvrh</div>
         <div class="dailyText" id="dailyText">Načítám rozvrh…</div>
       </div>
       <div class="line" style="margin-top:10px;">
-        <div class="fill" id="day-progress"></div>
+        <div class="fill" id="daybar"></div>
       </div>
-      <p class="label" id="day-label"></p>
+      <p class="label" id="daylabel"></p>
     </div>
 
+    <!-- ROZVRH -->
     <div id="timetableBlock" class="block">
       <h2>Rozvrh</h2>
       <div class="hint">Zdroj: veřejný Bakaláři</div>
-      <iframe
-        id="timetableFrame"
-        class="iframe"
-        src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A"
-        loading="lazy"
-        referrerpolicy="no-referrer"
-      ></iframe>
+      <iframe class="iframe"
+              src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A"
+              loading="lazy"
+              referrerpolicy="no-referrer"></iframe>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // ========= Helpers =========
+    const $ = (id) => document.getElementById(id);
+    const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+    const toISO = (d) => {
+      const y=d.getFullYear();
+      const m=String(d.getMonth()+1).padStart(2,'0');
+      const da=String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${da}`;
+    };
+    const localDate = (y,m,d) => { const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; };
+    const localDateEnd = (y,m,d) => { const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; };
+
+    // ========= Config =========
+    // 4 ročníky dohromady
+    const HS_START = localDate(2023,9,4);
+    const HS_END   = localDateEnd(2027,6,30);
+
+    // maturita orientačně: květen 2027 (stačí měsíc)
+    const MATURITA_APPROX = localDateEnd(2027,5,1);
+
+    // RAW: víkendy pryč, prázdniny sem můžeš doplňovat
+    const BREAKS = [
+      {s:"2023-10-26", e:"2023-10-27"},
+      {s:"2023-12-23", e:"2024-01-02"},
+      {s:"2024-02-02", e:"2024-02-02"},
+      {s:"2024-02-26", e:"2024-03-03"}, // jarní Kladno 23/24
+
+      {s:"2024-10-29", e:"2024-10-30"},
+      {s:"2024-12-23", e:"2025-01-03"},
+      {s:"2025-01-31", e:"2025-01-31"},
+      {s:"2025-03-03", e:"2025-03-09"}, // jarní Kladno 24/25
+
+      {s:"2025-10-27", e:"2025-10-29"},
+      {s:"2025-12-22", e:"2026-01-02"},
+      {s:"2026-01-30", e:"2026-01-30"},
+      {s:"2026-03-09", e:"2026-03-15"}, // jarní Kladno 25/26
+
+      {s:"2026-10-29", e:"2026-10-30"},
+      {s:"2026-12-23", e:"2027-01-03"},
+      {s:"2027-01-29", e:"2027-01-29"},
+      {s:"2027-02-01", e:"2027-02-07"}, // jarní Kladno 26/27
+    ];
+
+    function isInBreak(iso){
+      return BREAKS.some(r => iso >= r.s && iso <= r.e);
+    }
+
+    function isSchoolDay(d){
+      const dow = d.getDay();
+      if (dow === 0 || dow === 6) return false;
+      const iso = toISO(d);
+      if (isInBreak(iso)) return false;
+      return true;
+    }
+
+    function countSchoolDays(start, end){
+      const s = new Date(start); s.setHours(0,0,0,0);
+      const e = new Date(end);   e.setHours(23,59,59,999);
+      let c=0;
+      const cur = new Date(s);
+      while (cur <= e){
+        if (isSchoolDay(cur)) c++;
+        cur.setDate(cur.getDate()+1);
+      }
+      return c;
+    }
+
+    function rawPctBetween(start, end, now){
+      const total = countSchoolDays(start,end);
+      const clipped = now < start ? start : (now > end ? end : now);
+      const passed = countSchoolDays(start, clipped);
+      return total ? (passed/total)*100 : 0;
+    }
+
+    function calPctBetween(start, end, now){
+      const total = end - start;
+      if (total <= 0) return 0;
+      const passed = Math.min(Math.max(now - start, 0), total);
+      return (passed/total)*100;
+    }
+
+    function setBar(id, pct, weekend=false){
+      const n = $(id);
+      if (!n) return;
+      n.style.width = clamp(pct).toFixed(2) + "%";
+      if (weekend) n.classList.add("weekend"); else n.classList.remove("weekend");
+    }
+
+    // ========= Init settings UI =========
+    function initSettings(){
+      const btn = $("settingsBtn");
+      const panel = $("settingsPanel");
+      const tt = $("toggleTimetable");
+      const dd = $("toggleDaily");
+      const timetableBlock = $("timetableBlock");
+      const dailyBlock = $("dailyBlock");
+
+      btn.addEventListener("click", () => panel.classList.toggle("hidden"));
+
+      tt.addEventListener("change", () => {
+        timetableBlock.classList.toggle("hidden", !tt.checked);
+      });
+
+      dd.addEventListener("change", () => {
+        dailyBlock.classList.toggle("hidden", !dd.checked);
+      });
+    }
+
+    // ========= Update bars =========
+    function update(){
+      const now = new Date();
+      const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
+
+      // Week (Po–Pá only). Weekend -> orange + Weekend 😎
+      const dow = now.getDay(); // Ne=0
+      const isWeekend = (dow===0 || dow===6);
+      const workdayIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
+      const weekPct = isWeekend ? 100 : ((workdayIndex + timeInDay)/5)*100;
+
+      setBar("week-realtime", weekPct, isWeekend);
+      setBar("week-raw", weekPct, false);
+
+      $("week-realtime-label").textContent = isWeekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`;
+      $("week-raw-label").textContent = `RAW: ${weekPct.toFixed(1)}%`;
+
+      // Month (calendar)
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+      const monthPct = ((now.getDate()-1 + timeInDay)/daysInMonth)*100;
+      setBar("month-realtime", monthPct);
+      $("month-realtime-label").textContent = `Měsíc: ${monthPct.toFixed(1)}%`;
+
+      // Month raw (school days only)
+      const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
+      const mEnd = localDateEnd(now.getFullYear(), now.getMonth()+1, daysInMonth);
+      const monthRaw = rawPctBetween(mStart, mEnd, now);
+      setBar("month-raw", monthRaw);
+      $("month-raw-label").textContent = `RAW: ${monthRaw.toFixed(1)}%`;
+
+      // School year (simple range: from Sep 1 or first Monday? -> Realtime use Sep 1, Raw removes breaks)
+      const schoolStartYear = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
+      const yearStart = localDate(schoolStartYear, 9, 1);
+      const yearEnd   = localDateEnd(schoolStartYear+1, 6, 30);
+
+      const yearPct = calPctBetween(yearStart, yearEnd, now);
+      setBar("year-realtime", yearPct);
+      $("year-realtime-label").textContent = `Školní rok: ${yearPct.toFixed(1)}%`;
+
+      const yearRaw = rawPctBetween(yearStart, yearEnd, now);
+      setBar("year-raw", yearRaw);
+      $("year-raw-label").textContent = `RAW: ${yearRaw.toFixed(1)}%`;
+
+      // Total
+      const totalPct = calPctBetween(HS_START, HS_END, now);
+      setBar("total-realtime", totalPct);
+      $("total-realtime-label").textContent = `Celkem: ${totalPct.toFixed(1)}%`;
+
+      const totalRaw = rawPctBetween(HS_START, HS_END, now);
+      setBar("total-raw", totalRaw);
+      $("total-raw-label").textContent = `RAW: ${totalRaw.toFixed(1)}%`;
+
+      // Maturita (month only)
+      const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
+      $("maturita-label").textContent = (daysUntil >= 0)
+        ? `Zbývá ~${daysUntil} dní do maturity (orientačně květen 2027).`
+        : `Maturita už je za tebou (${Math.abs(daysUntil)} dní zpět).`;
+
+      // Daily (zatím fallback: pokud víkend = volno; během týdne jen “Škola” – rozvrh doplníme až bude parsování stabilní)
+      const badge = $("dailyBadge");
+      const dailyText = $("dailyText");
+      const daybar = $("daybar");
+      const daylabel = $("daylabel");
+
+      if (isWeekend){
+        badge.className = "badge free";
+        badge.textContent = "Volno";
+        dailyText.textContent = "Volno 😎";
+        daybar.style.width = "100%";
+        daylabel.textContent = "";
+      } else {
+        badge.className = "badge live";
+        badge.textContent = "Dnes";
+        dailyText.textContent = "Škola běží (rozvrh bude doplněn).";
+        daybar.style.width = "0%";
+        daylabel.textContent = "";
+      }
+
+      $("statusHint").textContent = "Status: OK (render proběhl)";
+    }
+
+    // ========= Boot =========
+    (function boot(){
+      try{
+        initSettings();
+        update();
+        setInterval(update, 30_000);
+      } catch (e){
+        $("debug").textContent = "JS chyba ❌: " + e.message;
+        $("debug").style.color = "#b00020";
+      }
+    })();
+  </script>
 </body>
 </html>
