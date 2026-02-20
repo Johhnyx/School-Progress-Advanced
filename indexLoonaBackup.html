@@ -1,0 +1,752 @@
+
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>School Progress</title>
+
+  <style>
+    /* =========================
+       THEMES via CSS variables
+       ========================= */
+    body{
+      --bg:#f4f4f4;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --shadow: rgba(0,0,0,0.06);
+      --linebg:#e0e0e0;
+      --green:#3bb54a;
+      --orange:#ff9800;
+
+      --btn:#111;
+      --btnText:#fff;
+
+      --badge:#eee;
+      --badgeLive:#e8f5e9;
+      --badgeFree:#fff3cd;
+      --badgeErr:#fdecea;
+
+      --border:#eee;
+
+      /* extra pro theme */
+      --accent:#ff2ea6;
+      --accent2:#ff5fd1;
+      --glow: rgba(255,46,166,0.45);
+
+      --bgImage: none; /* Loona: url('loona.png') */
+      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
+    }
+
+    /* Dark theme */
+    body.theme-dark{
+      --bg:#0f1115;
+      --card:#171a21;
+      --text:#e7e9ee;
+      --muted:#a6acb8;
+      --shadow: rgba(0,0,0,0.35);
+      --linebg:#2a2f3a;
+
+      --btn:#e7e9ee;
+      --btnText:#111;
+
+      --badge:#232836;
+      --badgeLive:#1f3a2a;
+      --badgeFree:#3a311f;
+      --badgeErr:#3a1f23;
+
+      --border:#2a2f3a;
+    }
+
+    /* Loona theme (neon magenta city vibe) */
+    body.theme-loona{
+      --bg:#08060b;
+      --card: rgba(18, 12, 22, 0.78);
+      --text:#ffe9f6;
+      --muted:#d7a6c4;
+      --shadow: rgba(0,0,0,0.55);
+      --linebg: rgba(255, 70, 190, 0.18);
+
+      --btn:#ff2ea6;
+      --btnText:#120812;
+
+      --badge: rgba(255, 46, 166, 0.18);
+      --badgeLive: rgba(0, 255, 170, 0.12);
+      --badgeFree: rgba(255, 190, 60, 0.16);
+      --badgeErr: rgba(255, 80, 80, 0.16);
+
+      --border: rgba(255, 70, 190, 0.20);
+
+      --accent:#ff2ea6;
+      --accent2:#ff6bd8;
+      --glow: rgba(255,46,166,0.55);
+
+      /* Když dáš do složky loona.jpg, odkomentuj řádek níž */
+      --bgImage: url("loona.png");
+      --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
+    }
+
+    /* =========================
+       BASE STYLES
+       ========================= */
+    *{ box-sizing:border-box; }
+    body{
+      font-family: Arial, sans-serif;
+      margin:0;
+      padding:24px;
+      color:var(--text);
+      background:
+        var(--bgOverlay),
+        var(--bgImage),
+        radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.14), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.12), transparent 60%),
+        var(--bg);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .wrap{ max-width:1080px; margin:0 auto; }
+    h1{
+      margin:0 0 14px 0;
+      text-align:center;
+      font-weight:900;
+      letter-spacing:0.2px;
+      text-shadow: 0 0 0 transparent;
+    }
+    body.theme-loona h1{
+      text-shadow: 0 0 18px var(--glow);
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      margin-bottom:12px;
+      gap:10px;
+    }
+    .btn{
+      border:none;
+      padding:10px 12px;
+      border-radius:10px;
+      background:var(--btn);
+      color:var(--btnText);
+      font-weight:900;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 0 0 transparent;
+    }
+    body.theme-loona .btn{
+      box-shadow: 0 0 18px var(--glow);
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width:900px){
+      .grid2{ grid-template-columns: 1fr; }
+      body{ padding:16px; }
+    }
+
+    .colHead{
+      text-align:center;
+      font-weight:900;
+      color:var(--muted);
+      margin:0 0 8px 0;
+      font-size:13px;
+      letter-spacing:0.3px;
+    }
+
+    .block{
+      background:var(--card);
+      padding:16px 16px 12px;
+      border-radius:12px;
+      margin:12px 0;
+      border: 1px solid var(--border);
+      box-shadow:0 2px 10px var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    body.theme-loona .block{
+      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,46,166,0.35);
+    }
+
+    .rowTitle{
+      margin:0 0 10px 0;
+      font-size:18px;
+      font-weight:900;
+    }
+    body.theme-loona .rowTitle{
+      color: var(--accent2);
+      text-shadow: 0 0 12px rgba(255,46,166,0.22);
+    }
+
+    .line{
+      position:relative;
+      width:100%;
+      height:3px;
+      background:var(--linebg);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .fill{
+      position:absolute;
+      left:0; top:0;
+      height:100%;
+      width:0%;
+      background:var(--green);
+      border-radius:999px;
+      transition: width 0.35s ease;
+    }
+    body.theme-loona .fill{
+      box-shadow: 0 0 10px rgba(0,255,170,0.25);
+    }
+    .fill.weekend{ background:var(--orange); }
+
+    .label{ margin:10px 0 0 0; font-weight:800; }
+    .hint{ margin:10px 0 0 0; color:var(--muted); font-size:13px; line-height:1.35; }
+
+    .hidden{ display:none; }
+    .toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:8px 0;
+      font-weight:800;
+    }
+
+    .field{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:10px 0 6px;
+      font-weight:900;
+    }
+    select{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-weight:900;
+      outline:none;
+    }
+    body.theme-loona select{
+      box-shadow: 0 0 14px rgba(255,46,166,0.20);
+    }
+
+    .dailyRow{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:900;
+      font-size:13px;
+    }
+    .badge.live{ background:var(--badgeLive); }
+    .badge.free{ background:var(--badgeFree); }
+    .badge.err{ background:var(--badgeErr); }
+
+    .dailyText{ font-weight:900; }
+
+    .iframe{
+      width:100%;
+      height:520px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:transparent;
+    }
+
+    .statusOk{ color:#0a7a1f; font-weight:900; }
+  </style>
+</head>
+
+<body class="theme-dark">
+  <div class="wrap">
+    <h1>School Progress</h1>
+
+    <div class="topbar">
+      <button id="settingsBtn" class="btn" type="button">Nastavení ⚙️</button>
+    </div>
+
+    <div id="settingsPanel" class="block hidden">
+      <div class="rowTitle">Nastavení</div>
+
+      <div class="field">
+        <span>Theme</span>
+        <select id="themeSelect" aria-label="Theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="loona">Loona</option>
+        </select>
+      </div>
+
+      <label class="toggle">
+        <input type="checkbox" id="toggleTimetable" checked />
+        <span>Zobrazit rozvrh</span>
+      </label>
+
+      <label class="toggle">
+        <input type="checkbox" id="toggleDaily" checked />
+        <span>Zobrazit denní progres</span>
+      </label>
+
+      <p class="hint" id="statusHint"><span class="statusOk">Status: OK</span> • Denní progres běží z lokálního rozvrhu</p>
+      <p class="hint">Tip: pro Loona background dej do složky obrázek jako <b>loona.jpg</b> a v CSS v <b>body.theme-loona</b> odkomentuj <code>--bgImage</code>.</p>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <div class="colHead">Real-Time</div>
+
+        <div class="block">
+          <div class="rowTitle">Týden</div>
+          <div class="line"><div class="fill" id="rt-week"></div></div>
+          <p class="label" id="rt-week-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Měsíc</div>
+          <div class="line"><div class="fill" id="rt-month"></div></div>
+          <p class="label" id="rt-month-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Školní rok</div>
+          <div class="line"><div class="fill" id="rt-year"></div></div>
+          <p class="label" id="rt-year-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Celkem</div>
+          <div class="line"><div class="fill" id="rt-total"></div></div>
+          <p class="label" id="rt-total-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Maturita</div>
+          <p class="label" id="rt-maturita-label"></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="colHead">Raw-Time</div>
+
+        <div class="block">
+          <div class="rowTitle">Týden</div>
+          <div class="line"><div class="fill" id="raw-week"></div></div>
+          <p class="label" id="raw-week-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Měsíc</div>
+          <div class="line"><div class="fill" id="raw-month"></div></div>
+          <p class="label" id="raw-month-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Školní rok</div>
+          <div class="line"><div class="fill" id="raw-year"></div></div>
+          <p class="label" id="raw-year-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Celkem</div>
+          <div class="line"><div class="fill" id="raw-total"></div></div>
+          <p class="label" id="raw-total-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Maturita</div>
+          <p class="label" id="raw-maturita-label"></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="dailyBlock" class="block">
+      <div class="rowTitle">Denní progres</div>
+      <div class="dailyRow">
+        <div class="badge" id="dailyBadge">Rozvrh</div>
+        <div class="dailyText" id="dailyText">—</div>
+      </div>
+      <div class="line" style="margin-top:10px;">
+        <div class="fill" id="daybar"></div>
+      </div>
+      <p class="label" id="daylabel"></p>
+      <p class="hint" id="dailyDebug"></p>
+    </div>
+
+    <div id="timetableBlock" class="block">
+      <div class="rowTitle">Rozvrh</div>
+      <div class="hint">Zdroj: veřejný Bakaláři (Actual) – jen pro zobrazení</div>
+      <iframe class="iframe"
+              src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Actual/Class/5A"
+              loading="lazy"
+              referrerpolicy="no-referrer"></iframe>
+    </div>
+  </div>
+
+<script>
+  /* =========================
+     LOCAL TIMETABLE DATA
+     ========================= */
+  const TIMES = [
+    {start:"07:55", end:"08:40"},
+    {start:"08:50", end:"09:35"},
+    {start:"09:50", end:"10:35"},
+    {start:"10:45", end:"11:30"},
+    {start:"11:35", end:"12:20"},
+    {start:"12:50", end:"13:35"},
+    {start:"13:40", end:"14:25"},
+  ];
+
+  const SCHEDULE = {
+    Mon: [
+      {subj:"MAT", room:"UČ10"},
+      {subj:"NEJ", room:"UČ11"},
+      {subj:"OBN", room:"UČ10"},
+      {subj:"EKO", room:"UČ11"},
+      {subj:"VYT", room:"UČ10"},
+      {subj:"NEJ", room:"UČ21"},
+      {subj:"MAT", room:"UČ9"},
+    ],
+    Tue: [
+      {subj:"KAJ", room:"UČ10"},
+      {subj:"PSK", room:"UČ10"},
+      {subj:"ZPG", room:"UČ10"},
+      {subj:"ZPG", room:"UČ10"},
+      {subj:"ČJL", room:"UČ10"},
+      {subj:"ČJL", room:"UČ10"},
+      {subj:"ELT", room:"UČ9"},
+    ],
+    Wed: [
+      {subj:"NEJ", room:"UČ10"},
+      {subj:"MAT", room:"UČ10"},
+      {subj:"VYA", room:"UČ10"},
+      {subj:"ELT", room:"UČ10"},
+      {subj:"SWA", room:"UČ10"},
+      {subj:"ANJ", room:"UČ14"},
+      {subj:"ANJ", room:"UČ14"},
+    ],
+    Thu: [
+      {subj:"VYT", room:"UČ10"},
+      {subj:"VYA", room:"UČ10"},
+      {subj:"ANJ", room:"UČ2"},
+      {subj:"VYA", room:"UČ13"},
+      null,
+      {subj:"TVY", room:"TV3"},
+      {subj:"TVY", room:"TV3"},
+    ],
+    Fri: [
+      {subj:"SWA", room:"UČ10"},
+      {subj:"SWA", room:"UČ10"},
+      {subj:"ČJL", room:"UČ10"},
+      {subj:"PSK", room:"UČ10"},
+      {subj:"ČJL", room:"UČ20"},
+      null,
+      null,
+    ],
+  };
+
+  /* =========================
+     PROGRESS DATA
+     ========================= */
+  const HS_START = localDate(2023, 9, 4);
+  const HS_END   = localDateEnd(2027, 6, 30);
+  const MATURITA_APPROX = localDateEnd(2027, 5, 1);
+
+  const BREAKS = [
+    r("2023-10-26","2023-10-27"),
+    r("2023-12-23","2024-01-02"),
+    r("2024-02-02","2024-02-02"),
+    r("2024-02-26","2024-03-03"),
+    r("2024-07-01","2024-08-31"),
+    r("2024-10-29","2024-10-30"),
+    r("2024-12-23","2025-01-03"),
+    r("2025-01-31","2025-01-31"),
+    r("2025-03-03","2025-03-09"),
+    r("2025-07-01","2025-08-31"),
+    r("2025-10-27","2025-10-29"),
+    r("2025-12-22","2026-01-02"),
+    r("2026-01-30","2026-01-30"),
+    r("2026-03-09","2026-03-15"),
+    r("2026-07-01","2026-08-31"),
+    r("2026-10-29","2026-10-30"),
+    r("2026-12-23","2027-01-03"),
+    r("2027-01-29","2027-01-29"),
+    r("2027-02-01","2027-02-07"),
+  ];
+  const DIRECTOR_DAYS = [];
+
+  /* =========================
+     Helpers
+     ========================= */
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+  const setBar = (id, pct, weekend=false) => {
+    const n = $(id); if (!n) return;
+    n.style.width = clamp(pct).toFixed(2) + "%";
+    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
+  };
+  const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
+
+  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+  function r(s,e){ return {s,e}; }
+
+  function toISO(d){
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,'0');
+    const da=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${da}`;
+  }
+  function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
+  function isSchoolDay(d){
+    const dow = d.getDay();
+    if (dow===0 || dow===6) return false;
+    const iso = toISO(d);
+    if (DIRECTOR_DAYS.includes(iso)) return false;
+    if (inBreak(iso)) return false;
+    return true;
+  }
+  function countSchoolDays(start, end){
+    const s = new Date(start); s.setHours(0,0,0,0);
+    const e = new Date(end);   e.setHours(23,59,59,999);
+    let c=0;
+    const cur = new Date(s);
+    while (cur <= e){
+      if (isSchoolDay(cur)) c++;
+      cur.setDate(cur.getDate()+1);
+    }
+    return c;
+  }
+  function calendarPctBetween(start, end, now){
+    const total = end - start; if (total<=0) return 0;
+    const passed = Math.min(Math.max(now-start, 0), total);
+    return (passed/total)*100;
+  }
+  function rawPctBetween(start, end, now){
+    const total = countSchoolDays(start, end);
+    const clipped = now < start ? start : (now > end ? end : now);
+    const passed = countSchoolDays(start, clipped);
+    return total ? (passed/total)*100 : 0;
+  }
+  function rawDaysUntil(target, now){
+    const start = new Date(now); start.setHours(0,0,0,0);
+    const end = new Date(target); end.setHours(23,59,59,999);
+    if (end < start) return -countSchoolDays(end, start);
+    return countSchoolDays(start, end);
+  }
+  function getSchoolYearRange(now){
+    const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
+    return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
+  }
+
+  /* =========================
+     Theme switching
+     ========================= */
+  function applyTheme(theme){
+    const body = document.body;
+    body.classList.remove("theme-light","theme-dark","theme-loona");
+    body.classList.add("theme-" + theme);
+    localStorage.setItem("sp_theme", theme);
+    const sel = $("themeSelect");
+    if (sel) sel.value = theme;
+  }
+
+  function initSettings(){
+    const btn = $("settingsBtn");
+    const panel = $("settingsPanel");
+    const toggleTT = $("toggleTimetable");
+    const toggleDaily = $("toggleDaily");
+    const timetableBlock = $("timetableBlock");
+    const dailyBlock = $("dailyBlock");
+    const themeSelect = $("themeSelect");
+
+    btn.addEventListener("click", () => panel.classList.toggle("hidden"));
+    toggleTT.addEventListener("change", () => timetableBlock.classList.toggle("hidden", !toggleTT.checked));
+    toggleDaily.addEventListener("change", () => dailyBlock.classList.toggle("hidden", !toggleDaily.checked));
+    themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+
+    const saved = localStorage.getItem("sp_theme") || "dark";
+    applyTheme(saved);
+  }
+
+  /* =========================
+     Daily progress (local)
+     ========================= */
+  function timeToMin(hhmm){
+    const [h,m] = hhmm.split(":").map(Number);
+    return h*60 + m;
+  }
+  const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
+
+  function fmtLesson(x){
+    if (!x) return null;
+    return x.room ? `${x.subj} (${x.room})` : x.subj;
+  }
+  function countTodayLessons(arr){
+    let last = -1;
+    for (let i=0;i<arr.length;i++){
+      if (arr[i] && arr[i].subj) last = i;
+    }
+    return Math.max(last+1, 0);
+  }
+  function setDailyBadge(kind, text){
+    const b=$("dailyBadge");
+    b.className = "badge" + (kind ? (" "+kind) : "");
+    b.textContent = text;
+  }
+
+  function updateDaily(now){
+    const dow = now.getDay();
+    if (dow===0 || dow===6){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug","(víkend)");
+      return;
+    }
+
+    const key = (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":"Fri";
+    const lessons = (SCHEDULE[key] || []).slice(0, TIMES_MIN.length);
+    const totalToday = countTodayLessons(lessons) || TIMES_MIN.length;
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const first = TIMES_MIN[0];
+    const last = TIMES_MIN[totalToday-1] || TIMES_MIN[TIMES_MIN.length-1];
+
+    if (nowMin > last.endMin){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug",`${key} • konec dne`);
+      return;
+    }
+
+    if (nowMin < first.startMin){
+      setDailyBadge("live","Dnes");
+      const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
+      setText("dailyText",`Za chvíli začne: ${next}`);
+      setBar("daybar",0);
+      setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
+      setText("dailyDebug",`${key} • lokální rozvrh`);
+      return;
+    }
+
+    for (let i=0;i<totalToday;i++){
+      const t = TIMES_MIN[i];
+      const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
+      const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
+
+      if (nowMin >= t.startMin && nowMin <= t.endMin){
+        const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
+        setDailyBadge("live","Právě");
+        setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
+        setBar("daybar", pct);
+        setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
+        setText("dailyDebug",`${key} • lokální rozvrh`);
+        return;
+      }
+
+      const nt = TIMES_MIN[i+1];
+      if (nt && nowMin > t.endMin && nowMin < nt.startMin){
+        setDailyBadge("live","Pauza");
+        setText("dailyText", `Následuje: ${next}`);
+        setBar("daybar", 0);
+        setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
+        setText("dailyDebug",`${key} • lokální rozvrh`);
+        return;
+      }
+    }
+
+    setDailyBadge("free","Volno");
+    setText("dailyText","Volno 😎");
+    setBar("daybar",100);
+    setText("daylabel","");
+    setText("dailyDebug",`${key} • fallback`);
+  }
+
+  /* =========================
+     Main update
+     ========================= */
+  function updateAll(){
+    const now = new Date();
+    const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
+
+    const dow = now.getDay();
+    const weekend = (dow===0 || dow===6);
+    const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
+    const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
+
+    setBar("rt-week", weekPct, weekend);
+    setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
+    setBar("raw-week", weekPct, false);
+    setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
+
+    const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
+    setBar("rt-month", monthPct);
+    setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
+
+    const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
+    const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
+    const monthRaw = rawPctBetween(mStart, mEnd, now);
+    setBar("raw-month", monthRaw);
+    setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
+
+    const yr = getSchoolYearRange(now);
+    const yearPct = calendarPctBetween(yr.start, yr.end, now);
+    setBar("rt-year", yearPct);
+    setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
+    const yearRaw = rawPctBetween(yr.start, yr.end, now);
+    setBar("raw-year", yearRaw);
+    setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
+
+    const totalPct = calendarPctBetween(HS_START, HS_END, now);
+    setBar("rt-total", totalPct);
+    setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
+    const totalRaw = rawPctBetween(HS_START, HS_END, now);
+    setBar("raw-total", totalRaw);
+    setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
+
+    const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
+    setText("rt-maturita-label",
+      (daysUntil>=0)
+        ? `Real-Time: ~${daysUntil} dní (květen 2027)`
+        : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
+    );
+
+    const rawDays = rawDaysUntil(MATURITA_APPROX, now);
+    setText("raw-maturita-label",
+      (rawDays>=0)
+        ? `Raw-Time: ~${rawDays} školních dní (bez víkendů/prázdnin)`
+        : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
+    );
+
+    const toggleDaily = $("toggleDaily");
+    if (!toggleDaily || toggleDaily.checked){
+      updateDaily(now);
+    }
+  }
+
+  function boot(){
+    initSettings();
+    updateAll();
+    setInterval(updateAll, 30_000);
+  }
+  document.addEventListener("DOMContentLoaded", boot);
+</script>
+</body>
+</html>
+
