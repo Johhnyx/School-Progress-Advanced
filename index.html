@@ -6,13 +6,50 @@
   <title>School Progress</title>
 
   <style>
+    :root{
+      --bg:#f4f4f4;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --shadow: rgba(0,0,0,0.06);
+      --linebg:#e0e0e0;
+      --green:#3bb54a;
+      --orange:#ff9800;
+      --btn:#111;
+      --btnText:#fff;
+      --badge:#eee;
+      --badgeLive:#e8f5e9;
+      --badgeFree:#fff3cd;
+      --badgeErr:#fdecea;
+      --border:#eee;
+    }
+
+    body.dark{
+      --bg:#0f1115;
+      --card:#171a21;
+      --text:#e7e9ee;
+      --muted:#a6acb8;
+      --shadow: rgba(0,0,0,0.35);
+      --linebg:#2a2f3a;
+      --green:#3bb54a;
+      --orange:#ff9800;
+      --btn:#e7e9ee;
+      --btnText:#111;
+      --badge:#232836;
+      --badgeLive:#1f3a2a;
+      --badgeFree:#3a311f;
+      --badgeErr:#3a1f23;
+      --border:#2a2f3a;
+    }
+
     *{ box-sizing:border-box; }
     body{
       font-family: Arial, sans-serif;
-      background:#f4f4f4;
+      background:var(--bg);
       margin:0;
       padding:24px;
-      color:#222;
+      color:var(--text);
+      transition: background 0.2s ease, color 0.2s ease;
     }
     .wrap{ max-width:1080px; margin:0 auto; }
     h1{
@@ -27,13 +64,14 @@
       align-items:center;
       justify-content:flex-end;
       margin-bottom:12px;
+      gap:10px;
     }
     .btn{
       border:none;
       padding:10px 12px;
       border-radius:10px;
-      background:#111;
-      color:#fff;
+      background:var(--btn);
+      color:var(--btnText);
       font-weight:800;
       cursor:pointer;
       white-space:nowrap;
@@ -52,18 +90,19 @@
     .colHead{
       text-align:center;
       font-weight:900;
-      color:#666;
+      color:var(--muted);
       margin:0 0 8px 0;
       font-size:13px;
       letter-spacing:0.3px;
     }
 
     .block{
-      background:#fff;
+      background:var(--card);
       padding:16px 16px 12px;
       border-radius:12px;
       margin:12px 0;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
+      box-shadow:0 2px 10px var(--shadow);
+      transition: background 0.2s ease;
     }
     .rowTitle{
       margin:0 0 10px 0;
@@ -75,7 +114,7 @@
       position:relative;
       width:100%;
       height:3px;
-      background:#e0e0e0;
+      background:var(--linebg);
       border-radius:999px;
       overflow:hidden;
     }
@@ -84,11 +123,11 @@
       left:0; top:0;
       height:100%;
       width:0%;
-      background:#3bb54a;
+      background:var(--green);
       border-radius:999px;
       transition: width 0.35s ease;
     }
-    .fill.weekend{ background:#ff9800; }
+    .fill.weekend{ background:var(--orange); }
 
     .label{
       margin:10px 0 0 0;
@@ -97,7 +136,7 @@
 
     .hint{
       margin:10px 0 0 0;
-      color:#666;
+      color:var(--muted);
       font-size:13px;
       line-height:1.35;
     }
@@ -111,7 +150,6 @@
       font-weight:800;
     }
 
-    /* Daily */
     .dailyRow{
       display:flex;
       align-items:center;
@@ -121,20 +159,21 @@
     .badge{
       padding:6px 10px;
       border-radius:999px;
-      background:#eee;
+      background:var(--badge);
       font-weight:900;
       font-size:13px;
     }
-    .badge.live{ background:#e8f5e9; }
-    .badge.free{ background:#fff3cd; } /* žlutá */
-    .badge.err{ background:#fdecea; }
+    .badge.live{ background:var(--badgeLive); }
+    .badge.free{ background:var(--badgeFree); }
+    .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:800; }
 
     .iframe{
       width:100%;
       height:520px;
-      border:1px solid #eee;
+      border:1px solid var(--border);
       border-radius:10px;
+      background:var(--card);
     }
 
     .statusOk{ color:#0a7a1f; font-weight:900; }
@@ -154,6 +193,11 @@
       <div class="rowTitle">Nastavení</div>
 
       <label class="toggle">
+        <input type="checkbox" id="toggleDark" />
+        <span>Dark mode</span>
+      </label>
+
+      <label class="toggle">
         <input type="checkbox" id="toggleTimetable" checked />
         <span>Zobrazit rozvrh</span>
       </label>
@@ -166,9 +210,7 @@
       <p class="hint" id="statusHint">Status: inicializace…</p>
     </div>
 
-    <!-- 2 sloupce: Real-Time vs Raw-Time -->
     <div class="grid2">
-      <!-- LEFT = Real-Time -->
       <div>
         <div class="colHead">Real-Time</div>
 
@@ -202,7 +244,6 @@
         </div>
       </div>
 
-      <!-- RIGHT = Raw-Time -->
       <div>
         <div class="colHead">Raw-Time</div>
 
@@ -237,7 +278,6 @@
       </div>
     </div>
 
-    <!-- Daily -->
     <div id="dailyBlock" class="block">
       <div class="rowTitle">Denní progres</div>
       <div class="dailyRow">
@@ -251,7 +291,6 @@
       <p class="hint" id="dailyDebug"></p>
     </div>
 
-    <!-- Timetable -->
     <div id="timetableBlock" class="block">
       <div class="rowTitle">Rozvrh</div>
       <div class="hint">Zdroj: veřejný Bakaláři (Actual)</div>
@@ -263,63 +302,39 @@
   </div>
 
   <script>
-    // ==============================
-    // CONFIG
-    // ==============================
     const TIMETABLE_URL = "https://1kspa-kladno.bakalari.cz/Timetable/Public/Actual/Class/5A";
     const CORS_PROXY = "https://api.allorigins.win/raw?url=";
 
-    // 4 roky dohromady
     const HS_START = localDate(2023, 9, 4);
     const HS_END   = localDateEnd(2027, 6, 30);
-
-    // Maturita: chceš "obvykle" a stačí měsíc → orientačně květen 2027 (1.5.)
     const MATURITA_APPROX = localDateEnd(2027, 5, 1);
 
-    // RAW: prázdniny/volna (bez víkendů + bez prázdnin, vč letních)
     const BREAKS = [
-      // 2023/24
       r("2023-10-26","2023-10-27"),
       r("2023-12-23","2024-01-02"),
       r("2024-02-02","2024-02-02"),
       r("2024-02-26","2024-03-03"),
       r("2024-07-01","2024-08-31"),
-
-      // 2024/25
       r("2024-10-29","2024-10-30"),
       r("2024-12-23","2025-01-03"),
       r("2025-01-31","2025-01-31"),
       r("2025-03-03","2025-03-09"),
       r("2025-07-01","2025-08-31"),
-
-      // 2025/26
       r("2025-10-27","2025-10-29"),
       r("2025-12-22","2026-01-02"),
       r("2026-01-30","2026-01-30"),
       r("2026-03-09","2026-03-15"),
       r("2026-07-01","2026-08-31"),
-
-      // 2026/27
       r("2026-10-29","2026-10-30"),
       r("2026-12-23","2027-01-03"),
       r("2027-01-29","2027-01-29"),
       r("2027-02-01","2027-02-07"),
     ];
+    const DIRECTOR_DAYS = [];
 
-    // ředitelské volno doplň sem (ISO datumy)
-    const DIRECTOR_DAYS = [
-      // "2026-11-20",
-    ];
-
-    // ==============================
-    // STATE
-    // ==============================
-    let timetable = null; // { times:[{startMin,endMin}], days:{Mon:[{subj,room}...],...} }
+    let timetable = null;
     let timetableStatus = "Načítám rozvrh…";
 
-    // ==============================
-    // DOM helpers
-    // ==============================
     const $ = (id) => document.getElementById(id);
     const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
     const setBar = (id, pct, weekend=false) => {
@@ -330,11 +345,9 @@
     };
     const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
 
-    // ==============================
-    // Date helpers
-    // ==============================
     function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
     function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+    function r(s,e){ return {s,e}; }
 
     function toISO(d){
       const y=d.getFullYear();
@@ -342,9 +355,7 @@
       const da=String(d.getDate()).padStart(2,'0');
       return `${y}-${m}-${da}`;
     }
-    function r(s,e){ return {s,e}; }
     function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
-
     function isSchoolDay(d){
       const dow = d.getDay();
       if (dow===0 || dow===6) return false;
@@ -353,7 +364,6 @@
       if (inBreak(iso)) return false;
       return true;
     }
-
     function countSchoolDays(start, end){
       const s = new Date(start); s.setHours(0,0,0,0);
       const e = new Date(end);   e.setHours(23,59,59,999);
@@ -365,37 +375,36 @@
       }
       return c;
     }
-
     function calendarPctBetween(start, end, now){
       const total = end - start;
       if (total<=0) return 0;
       const passed = Math.min(Math.max(now-start, 0), total);
       return (passed/total)*100;
     }
-
     function rawPctBetween(start, end, now){
       const total = countSchoolDays(start, end);
       const clipped = now < start ? start : (now > end ? end : now);
       const passed = countSchoolDays(start, clipped);
       return total ? (passed/total)*100 : 0;
     }
-
     function rawDaysUntil(target, now){
       const start = new Date(now); start.setHours(0,0,0,0);
       const end = new Date(target); end.setHours(23,59,59,999);
       if (end < start) return -countSchoolDays(end, start);
       return countSchoolDays(start, end);
     }
-
-    // Školní rok (1.9 – 30.6)
     function getSchoolYearRange(now){
       const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
       return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
     }
 
-    // ==============================
-    // Settings UI
-    // ==============================
+    function applyDarkMode(isDark){
+      document.body.classList.toggle("dark", !!isDark);
+      localStorage.setItem("sp_dark", isDark ? "1" : "0");
+      const t = $("toggleDark");
+      if (t) t.checked = !!isDark;
+    }
+
     function initSettings(){
       const btn = $("settingsBtn");
       const panel = $("settingsPanel");
@@ -403,16 +412,17 @@
       const toggleDaily = $("toggleDaily");
       const timetableBlock = $("timetableBlock");
       const dailyBlock = $("dailyBlock");
+      const toggleDark = $("toggleDark");
 
       btn.addEventListener("click", () => panel.classList.toggle("hidden"));
       toggleTT.addEventListener("change", () => timetableBlock.classList.toggle("hidden", !toggleTT.checked));
       toggleDaily.addEventListener("change", () => dailyBlock.classList.toggle("hidden", !toggleDaily.checked));
+      toggleDark.addEventListener("change", () => applyDarkMode(toggleDark.checked));
+
+      const saved = localStorage.getItem("sp_dark");
+      applyDarkMode(saved === "1");
     }
 
-    // ==============================
-    // Timetable fetch + parse
-    // (robustní: parsuje až od "Mon dd/mm", takže DN3 nikdy nevezme)
-    // ==============================
     async function loadTimetable(){
       try{
         timetableStatus = "Načítám rozvrh…";
@@ -425,10 +435,10 @@
         const doc = new DOMParser().parseFromString(html, "text/html");
         const text = (doc.body ? doc.body.innerText : "") || "";
 
-        timetable = parseFromScheduleText(text);
+        timetable = parseActualText(text);
         timetableStatus = "Rozvrh načten ✔";
 
-        const monCount = timetable.days.Mon.filter(x=>x).length;
+        const monCount = timetable.days.Mon.filter(x=>x && x.subj).length;
         setText("dailyDebug", `Parser OK: hodin=${timetable.times.length}, Po=${monCount}`);
       } catch(e){
         timetable = null;
@@ -440,8 +450,7 @@
       }
     }
 
-    function parseFromScheduleText(text){
-      // 1) časy hodin
+    function parseActualText(text){
       const timeRe = /(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/g;
       const times = [];
       let m;
@@ -455,25 +464,33 @@
       times.sort((a,b)=>a.startMin-b.startMin);
       if (!times.length) throw new Error("Nenalezeny časy hodin.");
 
-      // 2) vezmeme jen část od prvního dne (Mon ..)
-      const lines = text.split("\n").map(x=>x.trim()).filter(Boolean);
+      const lines = text.split("\n").map(x => x.trim()).filter(Boolean);
 
-      const dayMarkers = ["Mon","Tue","Wed","Thu","Fri"];
-      const dayIdx = {};
-      for (const d of dayMarkers){
-        const i = lines.findIndex(x => new RegExp("^" + d + "\\s+\\d{1,2}\\/\\d{1,2}$").test(x));
-        if (i >= 0) dayIdx[d] = i;
+      const dayKeys = [
+        {k:"Mon", pat:/^(MON|Mon)\b/},
+        {k:"Tue", pat:/^(TUE|Tue)\b/},
+        {k:"Wed", pat:/^(WED|Wed)\b/},
+        {k:"Thu", pat:/^(THU|Thu)\b/},
+        {k:"Fri", pat:/^(FRI|Fri)\b/},
+      ];
+
+      const idx = {};
+      for (const d of dayKeys){
+        const i = lines.findIndex(x => d.pat.test(x));
+        if (i >= 0) idx[d.k] = i;
       }
 
-      if (!("Mon" in dayIdx)) throw new Error("Nenalezen blok 'Mon dd/mm'.");
+      const days = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
 
-      // získat segmenty pro dny
-      function sliceDay(d){
-        const start = dayIdx[d];
-        if (start === undefined) return [];
-        const nextDay = dayMarkers.find(dd => (dayIdx[dd] !== undefined) && dayIdx[dd] > start);
-        const end = nextDay ? dayIdx[nextDay] : lines.length;
-        return lines.slice(start+1, end);
+      function sliceDay(key){
+        const start = idx[key];
+        if (start === undefined) return null;
+        const starts = Object.entries(idx)
+          .map(([k,v]) => ({k,v}))
+          .filter(x => x.v > start)
+          .sort((a,b)=>a.v-b.v);
+        const end = starts.length ? starts[0].v : lines.length;
+        return lines.slice(start, end);
       }
 
       const segments = {
@@ -484,84 +501,88 @@
         Fri: sliceDay("Fri"),
       };
 
-      const days = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
-      for (const d of dayMarkers){
-        days[d] = parseDaySegment(segments[d], times.length);
+      if (!segments.Mon && !segments.Tue && !segments.Wed && !segments.Thu && !segments.Fri){
+        const packed = parseLessonBlocks(lines, times.length * 5);
+        days.Mon = packed.slice(0, times.length);
+        days.Tue = packed.slice(times.length, times.length*2);
+        days.Wed = packed.slice(times.length*2, times.length*3);
+        days.Thu = packed.slice(times.length*3, times.length*4);
+        days.Fri = packed.slice(times.length*4, times.length*5);
+        return { times, days };
+      }
+
+      for (const k of ["Mon","Tue","Wed","Thu","Fri"]){
+        const seg = segments[k] || [];
+        days[k] = parseLessonBlocks(seg, times.length);
       }
 
       return { times, days };
     }
 
-    function parseDaySegment(segLines, maxLessons){
-      // Formát v Actual view typicky:
-      // uč10, MAT, RYB, uč10, RUJ, ZYJ, uč11, NEJ, PRH, ...
-      // Někdy navíc "ANJ1 / ANJ2" (skupiny) -> chceme ignorovat a vzít ANJ + učebnu.
-      const roomRe = /^(uč|uc|TV|VT|KLB)\s*\d*$/i;
-      const teacherRe = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{3}$/;     // RYB, KLE...
-      const subjRe = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,6}\d?$/;    // MAT, SWA, ANJ1...
+    function parseLessonBlocks(segLines, maxLessons){
+      const classMarkRe = /^DE3A$/i;
+      const roomRe = /^(uč|uc|TV|VT)\s*\d{1,3}$/i;
+      const teacherRe = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{3}$/;
+      const subjRe = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,6}\d?$/;
+      const skipRe = /^(DN\d+|PERMANENT|TIMETABLE)$/i;
 
       const out = [];
-      let lastRoom = null;
+      let i = 0;
 
       function normRoom(x){
-        if (!x) return null;
-        // sjednotíme "uč10" -> "uč10"
-        const m = x.match(/(uč|uc|TV|VT|KLB)\s*(\d*)/i);
-        if (!m) return x;
-        const prefix = m[1].toLowerCase() === "uc" ? "uč" : m[1];
-        const num = m[2] || "";
-        return (prefix + num).toLowerCase();
+        const m = x.match(/^(uč|uc|TV|VT)\s*(\d{1,3})$/i);
+        if (!m) return x.toUpperCase();
+        const kind = m[1].toLowerCase();
+        const num = m[2];
+        if (kind === "uc" || kind === "uč") return "UČ" + num;
+        return m[1].toUpperCase() + num;
       }
 
-      for (let i=0; i<segLines.length; i++){
-        const token = segLines[i];
+      const tokens = [];
+      for (const line of segLines){
+        if (skipRe.test(line)) continue;
+        const parts = line.split(/\s+/).filter(Boolean);
+        for (const p of parts) tokens.push(p);
+      }
 
-        // ignoruj šum
-        if (/^DN\d+$/i.test(token)) continue;
+      while (i < tokens.length && out.length < maxLessons){
+        if (!classMarkRe.test(tokens[i])) { i++; continue; }
+        i++;
 
-        // room
-        if (roomRe.test(token)){
-          lastRoom = normRoom(token);
-          continue;
+        let room = null;
+        let subj = null;
+
+        while (i < tokens.length && !classMarkRe.test(tokens[i])){
+          const t = tokens[i];
+
+          if (!room && roomRe.test(t)){
+            room = normRoom(t);
+            i++;
+            continue;
+          }
+
+          if (!subj && subjRe.test(t)){
+            if (/^ANJ\d$/i.test(t)) { i++; continue; }
+            if (/^DE\d+[A-Z]?$/i.test(t)) { i++; continue; }
+            if (/^DN\d+$/i.test(t)) { i++; continue; }
+            subj = t.toUpperCase();
+            i++;
+            continue;
+          }
+
+          if (teacherRe.test(t)) { i++; continue; }
+          i++;
         }
 
-        // teacher
-        if (teacherRe.test(token)) continue;
-
-        // subject-ish
-        if (subjRe.test(token)){
-          // ignoruj group label ANJ1/ANJ2 (chceme ANJ až přijde)
-          if (/^ANJ\d$/i.test(token)) continue;
-
-          const subj = token.toUpperCase();
-          if (!lastRoom) {
-            // někdy se room objeví až předchozí/příští – zatím nech room null
-            out.push({ subj, room: null });
-          } else {
-            out.push({ subj, room: lastRoom });
-          }
-
-          // collapse duplicit typu "ANJ uč2" opakovaně
-          const n = out.length;
-          if (n >= 2){
-            const a = out[n-1], b = out[n-2];
-            if (a.subj === b.subj && a.room === b.room){
-              out.pop();
-            }
-          }
-
-          if (out.length >= maxLessons) break;
+        if (subj){
+          out.push({subj, room});
         }
       }
 
-      // doplň na maxLessons null
       while (out.length < maxLessons) out.push(null);
-      return out;
+      return out.slice(0, maxLessons);
     }
 
-    // ==============================
-    // Daily UI
-    // ==============================
     function setDailyLoading(){
       const b=$("dailyBadge"); b.className="badge"; b.textContent="Rozvrh";
       setText("dailyText","Načítám rozvrh…");
@@ -593,6 +614,17 @@
       return `${x.subj}`;
     }
 
+    function countTodayLessons(lessons){
+      // počet hodin dnes podle rozvrhu = počet nenull položek od začátku až do prvního "dlouhého prázdna"
+      // (Bakaláři někdy vrací kratší den a zbytek null)
+      let c = 0;
+      for (const it of lessons){
+        if (it && it.subj) c++;
+        else break;
+      }
+      return Math.max(c, 0);
+    }
+
     function updateDaily(now){
       const dow = now.getDay();
       if (dow===0 || dow===6){ setDailyFree(); return; }
@@ -606,9 +638,11 @@
       const times = timetable.times;
       const lessons = (timetable.days[key] || []).slice(0, times.length);
 
+      const totalToday = countTodayLessons(lessons) || times.length;
+
       const nowMin = now.getHours()*60 + now.getMinutes();
       const first = times[0];
-      const last  = times[times.length-1];
+      const last  = times[totalToday-1] || times[times.length-1];
 
       if (nowMin > last.endMin){
         setDailyFree();
@@ -617,24 +651,24 @@
 
       if (nowMin < first.startMin){
         const b=$("dailyBadge"); b.className="badge live"; b.textContent="Dnes";
-        const next = fmtLesson(lessons[0]) || "Hodina 1";
+        const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
         setText("dailyText",`Za chvíli začne: ${next}`);
         setBar("daybar",0);
-        setText("daylabel",`Start v ${minutesToHHMM(first.startMin)}`);
+        setText("daylabel",`Hodina 1/${totalToday} • start v ${minutesToHHMM(first.startMin)}`);
         return;
       }
 
-      for (let i=0;i<times.length;i++){
+      for (let i=0;i<totalToday;i++){
         const t=times[i];
-        const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}`;
-        const next = (i+1<times.length) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}`) : null;
+        const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
+        const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
 
         if (nowMin >= t.startMin && nowMin <= t.endMin){
           const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
           const b=$("dailyBadge"); b.className="badge live"; b.textContent="Právě";
           setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
           setBar("daybar", pct);
-          setText("daylabel", `Hodina ${i+1} • ${minutesToHHMM(t.startMin)}–${minutesToHHMM(t.endMin)} • ${pct.toFixed(0)}%`);
+          setText("daylabel", `Hodina ${i+1}/${totalToday} • ${minutesToHHMM(t.startMin)}–${minutesToHHMM(t.endMin)} • ${pct.toFixed(0)}%`);
           return;
         }
 
@@ -643,7 +677,7 @@
           const b=$("dailyBadge"); b.className="badge live"; b.textContent="Pauza";
           setText("dailyText", `Následuje: ${next}`);
           setBar("daybar", 0);
-          setText("daylabel", `Další hodina v ${minutesToHHMM(nt.startMin)}`);
+          setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${minutesToHHMM(nt.startMin)}`);
           return;
         }
       }
@@ -651,9 +685,6 @@
       setDailyFree();
     }
 
-    // ==============================
-    // MAIN update
-    // ==============================
     function updateAll(){
       const now = new Date();
       const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
@@ -663,26 +694,22 @@
       const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
       const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
 
-      // Week
       setBar("rt-week", weekPct, weekend);
       setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
       setBar("raw-week", weekPct, false);
       setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
 
-      // Month realtime
       const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
       const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
       setBar("rt-month", monthPct);
       setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
 
-      // Month raw
       const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
       const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
       const monthRaw = rawPctBetween(mStart, mEnd, now);
       setBar("raw-month", monthRaw);
       setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
 
-      // School year
       const yr = getSchoolYearRange(now);
       const yearPct = calendarPctBetween(yr.start, yr.end, now);
       setBar("rt-year", yearPct);
@@ -691,7 +718,6 @@
       setBar("raw-year", yearRaw);
       setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
 
-      // Total
       const totalPct = calendarPctBetween(HS_START, HS_END, now);
       setBar("rt-total", totalPct);
       setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
@@ -699,7 +725,6 @@
       setBar("raw-total", totalRaw);
       setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
 
-      // Maturita
       const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
       setText("rt-maturita-label",
         (daysUntil>=0)
@@ -714,7 +739,6 @@
           : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
       );
 
-      // Daily
       const toggleDaily = $("toggleDaily");
       if (!toggleDaily || toggleDaily.checked){
         updateDaily(now);
@@ -732,9 +756,6 @@
         : `<span class="statusBad">Status: CHYBA</span> • ${base}`;
     }
 
-    // ==============================
-    // BOOT
-    // ==============================
     function boot(){
       initSettings();
 
