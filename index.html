@@ -29,7 +29,7 @@
 
       --border:#eee;
 
-      /* accents */
+      /* theme extras */
       --accent:#ff2ea6;
       --accent2:#ff5fd1;
       --glow: rgba(255,46,166,0.45);
@@ -38,7 +38,7 @@
       --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
     }
 
-    /* Dark theme */
+    /* Dark theme (vráceno na původní “dokonalé”) */
     body.theme-dark{
       --bg:#0f1115;
       --card:#171a21;
@@ -57,9 +57,13 @@
 
       --border:#2a2f3a;
 
-      --accent:#7aa2ff;
-      --accent2:#9bbcff;
-      --glow: rgba(122,162,255,0.35);
+      /* žádné modré akcenty */
+      --accent:#e7e9ee;
+      --accent2:#e7e9ee;
+      --glow: rgba(0,0,0,0.0);
+
+      --bgImage:none;
+      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
     }
 
     /* Loona theme */
@@ -85,48 +89,21 @@
       --accent2:#ff6bd8;
       --glow: rgba(255,46,166,0.55);
 
-      --bgImage: url("loona.png");
+      /* uloz do slozky: loona.jpg */
+      /* --bgImage: url("loona.jpg"); */
       --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
     }
 
-    /* Comeback Serial (CZ) – retro TV vibe */
-    body.theme-comeback{
-      --bg:#f2efe6;
-      --card: rgba(255,255,255,0.92);
-      --text:#1b1b1b;
-      --muted:#5e5a53;
-      --shadow: rgba(0,0,0,0.08);
-      --linebg: rgba(20, 40, 90, 0.14);
-
-      --btn:#14325a;         /* “ČT/TV” modrá */
-      --btnText:#ffffff;
-
-      --badge: rgba(20,50,90,0.10);
-      --badgeLive: rgba(0,150,90,0.12);
-      --badgeFree: rgba(255,190,60,0.20);
-      --badgeErr: rgba(255,80,80,0.14);
-
-      --border: rgba(20, 40, 90, 0.14);
-
-      --accent:#14325a;
-      --accent2:#f0c24b;     /* retro žlutá */
-      --glow: rgba(240,194,75,0.35);
-
-      /* jemné “papírové” pozadí bez obrázku */
-      --bgImage: url("comeback.jpg");
-      --bgOverlay: linear-gradient(180deg, rgba(242,239,230,0.0), rgba(242,239,230,0.0));
-    }
-
-    /* SOBOKILL (Egypt) – dark sand + gold */
+    /* SOBOKILL (Egypt) */
     body.theme-sobokill{
-      --bg:#0b0a07;
-      --card: rgba(22, 18, 10, 0.82);
+      --bg:#070604;
+      --card: rgba(18, 14, 8, 0.82);
       --text:#fff3dc;
       --muted:#d2b98b;
       --shadow: rgba(0,0,0,0.60);
-      --linebg: rgba(212, 175, 55, 0.18); /* gold */
+      --linebg: rgba(212, 175, 55, 0.18);
 
-      --btn:#d4af37;         /* zlatá */
+      --btn:#d4af37;
       --btnText:#1a1206;
 
       --badge: rgba(212,175,55,0.16);
@@ -140,13 +117,13 @@
       --accent2:#f1d07a;
       --glow: rgba(212,175,55,0.40);
 
-      /* Pokud chceš egyptské pozadí, dej sem třeba sobokill.jpg */
+      /* uloz do slozky: sobokill.jpg */
       /* --bgImage: url("sobokill.jpg"); */
-      --bgOverlay: linear-gradient(180deg, rgba(11,10,7,0.72), rgba(11,10,7,0.92));
+      --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
     }
 
     /* =========================
-       BASE STYLES
+       BASE
        ========================= */
     *{ box-sizing:border-box; }
     body{
@@ -179,9 +156,6 @@
     body.theme-sobokill h1{
       text-shadow: 0 0 18px var(--glow);
     }
-    body.theme-comeback h1{
-      text-shadow: 0 0 12px rgba(20,50,90,0.18);
-    }
 
     .topbar{
       display:flex;
@@ -204,9 +178,6 @@
     body.theme-loona .btn,
     body.theme-sobokill .btn{
       box-shadow: 0 0 18px var(--glow);
-    }
-    body.theme-comeback .btn{
-      box-shadow: 0 0 14px rgba(20,50,90,0.16);
     }
 
     .grid2{
@@ -237,14 +208,19 @@
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
     }
+    body.theme-loona .block,
+    body.theme-sobokill .block{
+      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
+    }
 
     .rowTitle{
       margin:0 0 10px 0;
       font-size:18px;
       font-weight:900;
-      color: var(--accent2);
-      text-shadow: 0 0 10px rgba(0,0,0,0.0);
+      color: var(--text);
     }
+    body.theme-loona .rowTitle{ color: var(--accent2); }
+    body.theme-sobokill .rowTitle{ color: var(--accent2); }
 
     .line{
       position:relative;
@@ -342,8 +318,7 @@
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="loona">Loona</option>
-          <option value="comeback">Comeback Serial (CZ)</option>
-          <option value="sobokill">SOBOKILL (Egypt)</option>
+          <option value="sobokill">SOBOKILL</option>
         </select>
       </div>
 
@@ -357,7 +332,7 @@
         <span>Zobrazit denní progres</span>
       </label>
 
-      <p class="hint" id="statusHint"><span class="statusOk">Status: OK</span> • Denní progres běží z lokálního rozvrhu</p>
+      <p class="hint" id="statusHint"><span class="statusOk">Status: OK</span></p>
     </div>
 
     <div class="grid2">
@@ -443,7 +418,6 @@
 
     <div id="timetableBlock" class="block">
       <div class="rowTitle">Rozvrh</div>
-      <div class="hint">Zdroj: veřejný Bakaláři (Actual) – jen pro zobrazení</div>
       <iframe class="iframe"
               src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Actual/Class/5A"
               loading="lazy"
@@ -452,6 +426,9 @@
   </div>
 
 <script>
+  /* =========================
+     LOCAL TIMETABLE DATA
+     ========================= */
   const TIMES = [
     {start:"07:55", end:"08:40"},
     {start:"08:50", end:"09:35"},
@@ -510,6 +487,9 @@
     ],
   };
 
+  /* =========================
+     PROGRESS DATA
+     ========================= */
   const HS_START = localDate(2023, 9, 4);
   const HS_END   = localDateEnd(2027, 6, 30);
   const MATURITA_APPROX = localDateEnd(2027, 5, 1);
@@ -537,6 +517,9 @@
   ];
   const DIRECTOR_DAYS = [];
 
+  /* =========================
+     Helpers
+     ========================= */
   const $ = (id) => document.getElementById(id);
   const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
   const setBar = (id, pct, weekend=false) => {
@@ -556,6 +539,13 @@
     const da=String(d.getDate()).padStart(2,'0');
     return `${y}-${m}-${da}`;
   }
+  function formatDateCZ(d){
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const yy = d.getFullYear();
+    return `${dd}.${mm}.${yy}`;
+  }
+
   function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
   function isSchoolDay(d){
     const dow = d.getDay();
@@ -598,9 +588,12 @@
     return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
   }
 
+  /* =========================
+     Theme switching
+     ========================= */
   function applyTheme(theme){
     const body = document.body;
-    body.classList.remove("theme-light","theme-dark","theme-loona","theme-comeback","theme-sobokill");
+    body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
     body.classList.add("theme-" + theme);
     localStorage.setItem("sp_theme", theme);
     const sel = $("themeSelect");
@@ -625,6 +618,9 @@
     applyTheme(saved);
   }
 
+  /* =========================
+     Daily progress (local)
+     ========================= */
   function timeToMin(hhmm){
     const [h,m] = hhmm.split(":").map(Number);
     return h*60 + m;
@@ -650,17 +646,18 @@
 
   function updateDaily(now){
     const dow = now.getDay();
-    if (dow===0 || dow===6){
+    const dayKey = (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":(dow===5)?"Fri":null;
+
+    if (!dayKey){
       setDailyBadge("free","Volno");
       setText("dailyText","Volno 😎");
       setBar("daybar",100);
       setText("daylabel","");
-      setText("dailyDebug","(víkend)");
+      setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
       return;
     }
 
-    const key = (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":"Fri";
-    const lessons = (SCHEDULE[key] || []).slice(0, TIMES_MIN.length);
+    const lessons = (SCHEDULE[dayKey] || []).slice(0, TIMES_MIN.length);
     const totalToday = countTodayLessons(lessons) || TIMES_MIN.length;
 
     const nowMin = now.getHours()*60 + now.getMinutes();
@@ -672,7 +669,7 @@
       setText("dailyText","Volno 😎");
       setBar("daybar",100);
       setText("daylabel","");
-      setText("dailyDebug",`${key} • konec dne`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
       return;
     }
 
@@ -682,7 +679,7 @@
       setText("dailyText",`Za chvíli začne: ${next}`);
       setBar("daybar",0);
       setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
-      setText("dailyDebug",`${key} • lokální rozvrh`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
       return;
     }
 
@@ -697,7 +694,7 @@
         setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
         setBar("daybar", pct);
         setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
-        setText("dailyDebug",`${key} • lokální rozvrh`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
         return;
       }
 
@@ -707,7 +704,7 @@
         setText("dailyText", `Následuje: ${next}`);
         setBar("daybar", 0);
         setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
-        setText("dailyDebug",`${key} • lokální rozvrh`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
         return;
       }
     }
@@ -716,9 +713,12 @@
     setText("dailyText","Volno 😎");
     setBar("daybar",100);
     setText("daylabel","");
-    setText("dailyDebug",`${key} • fallback`);
+    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
   }
 
+  /* =========================
+     Main update
+     ========================= */
   function updateAll(){
     const now = new Date();
     const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
@@ -760,23 +760,23 @@
     setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
 
     const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
-    setText("rt-maturita-label",
-      (daysUntil>=0)
-        ? `Real-Time: ~${daysUntil} dní (květen 2027)`
-        : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
+    setText("rt-maturita-label", (daysUntil>=0)
+      ? `Real-Time: ~${daysUntil} dní`
+      : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
     );
 
     const rawDays = rawDaysUntil(MATURITA_APPROX, now);
-    setText("raw-maturita-label",
-      (rawDays>=0)
-        ? `Raw-Time: ~${rawDays} školních dní (bez víkendů/prázdnin)`
-        : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
+    setText("raw-maturita-label", (rawDays>=0)
+      ? `Raw-Time: ~${rawDays} školních dní`
+      : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
     );
 
     const toggleDaily = $("toggleDaily");
     if (!toggleDaily || toggleDaily.checked){
       updateDaily(now);
     }
+
+    setText("statusHint", "Status: OK");
   }
 
   function boot(){
