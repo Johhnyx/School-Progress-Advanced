@@ -6,8 +6,7 @@
   <title>School Progress</title>
 
   <style>
-    * { box-sizing: border-box; }
-
+    *{ box-sizing:border-box; }
     body{
       font-family: Arial, sans-serif;
       background:#f4f4f4;
@@ -15,39 +14,48 @@
       padding:24px;
       color:#222;
     }
-
-    .wrap{ max-width:980px; margin:0 auto; }
+    .wrap{ max-width:1080px; margin:0 auto; }
+    h1{
+      margin:0 0 14px 0;
+      text-align:center;
+      font-weight:900;
+      letter-spacing:0.2px;
+    }
 
     .topbar{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom: 10px;
+      justify-content:flex-end;
+      margin-bottom:12px;
     }
-
-    h1{
-      margin:0;
-      text-align:center;
-      flex:1;
-    }
-
     .btn{
       border:none;
       padding:10px 12px;
       border-radius:10px;
       background:#111;
       color:#fff;
-      font-weight:700;
+      font-weight:800;
       cursor:pointer;
       white-space:nowrap;
     }
 
-    .debug{
-      margin: 8px 0 14px;
-      font-weight: 800;
-      color:#0a7a1f;
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width:900px){
+      .grid2{ grid-template-columns: 1fr; }
+      body{ padding:16px; }
+    }
+
+    .colHead{
       text-align:center;
+      font-weight:900;
+      color:#666;
+      margin:0 0 8px 0;
+      font-size:13px;
+      letter-spacing:0.3px;
     }
 
     .block{
@@ -57,25 +65,10 @@
       margin:12px 0;
       box-shadow:0 2px 10px rgba(0,0,0,0.06);
     }
-
-    h2{ margin:0 0 10px 0; font-size:18px; }
-
-    .two-col{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    @media (max-width:820px){
-      .two-col{ grid-template-columns: 1fr; }
-      .topbar{ flex-wrap:wrap; }
-    }
-
-    .col-title{
-      font-size:13px;
+    .rowTitle{
+      margin:0 0 10px 0;
+      font-size:18px;
       font-weight:900;
-      color:#666;
-      margin: 0 0 6px 0;
     }
 
     .line{
@@ -86,7 +79,6 @@
       border-radius:999px;
       overflow:hidden;
     }
-
     .fill{
       position:absolute;
       left:0; top:0;
@@ -96,23 +88,21 @@
       border-radius:999px;
       transition: width 0.35s ease;
     }
-
     .fill.weekend{ background:#ff9800; }
 
     .label{
-      margin:10px 0 0;
+      margin:10px 0 0 0;
       font-weight:800;
     }
 
     .hint{
-      margin:10px 0 0;
+      margin:10px 0 0 0;
       color:#666;
       font-size:13px;
       line-height:1.35;
     }
 
     .hidden{ display:none; }
-
     .toggle{
       display:flex;
       align-items:center;
@@ -126,6 +116,7 @@
       display:flex;
       align-items:center;
       gap:12px;
+      flex-wrap:wrap;
     }
     .badge{
       padding:6px 10px;
@@ -137,7 +128,6 @@
     .badge.live{ background:#e8f5e9; }
     .badge.free{ background:#fff3cd; } /* žlutá */
     .badge.err{ background:#fdecea; }
-
     .dailyText{ font-weight:800; }
 
     .iframe{
@@ -146,20 +136,22 @@
       border:1px solid #eee;
       border-radius:10px;
     }
+
+    .statusOk{ color:#0a7a1f; font-weight:900; }
+    .statusBad{ color:#b00020; font-weight:900; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header class="topbar">
-      <h1>School Progress</h1>
-      <button id="settingsBtn" class="btn" type="button">Nastavení ⚙️</button>
-    </header>
+    <h1>School Progress</h1>
 
-    <div id="debug" class="debug">JS běží ✅</div>
+    <div class="topbar">
+      <button id="settingsBtn" class="btn" type="button">Nastavení ⚙️</button>
+    </div>
 
     <div id="settingsPanel" class="block hidden">
-      <h2>Nastavení</h2>
+      <div class="rowTitle">Nastavení</div>
 
       <label class="toggle">
         <input type="checkbox" id="toggleTimetable" checked />
@@ -174,84 +166,80 @@
       <p class="hint" id="statusHint">Status: inicializace…</p>
     </div>
 
-    <!-- TÝDEN -->
-    <div class="block">
-      <h2>Týden</h2>
-      <div class="two-col">
-        <div>
-          <div class="col-title">Realtime</div>
-          <div class="line"><div class="fill" id="week-realtime"></div></div>
-          <p class="label" id="week-realtime-label"></p>
+    <!-- 2 sloupce: Real-Time vs Raw-Time -->
+    <div class="grid2">
+      <!-- LEFT = Real-Time -->
+      <div>
+        <div class="colHead">Real-Time</div>
+
+        <div class="block">
+          <div class="rowTitle">Týden</div>
+          <div class="line"><div class="fill" id="rt-week"></div></div>
+          <p class="label" id="rt-week-label"></p>
         </div>
-        <div>
-          <div class="col-title">Raw time</div>
-          <div class="line"><div class="fill" id="week-raw"></div></div>
-          <p class="label" id="week-raw-label"></p>
+
+        <div class="block">
+          <div class="rowTitle">Měsíc</div>
+          <div class="line"><div class="fill" id="rt-month"></div></div>
+          <p class="label" id="rt-month-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Školní rok</div>
+          <div class="line"><div class="fill" id="rt-year"></div></div>
+          <p class="label" id="rt-year-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Celkem</div>
+          <div class="line"><div class="fill" id="rt-total"></div></div>
+          <p class="label" id="rt-total-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Maturita</div>
+          <p class="label" id="rt-maturita-label"></p>
+        </div>
+      </div>
+
+      <!-- RIGHT = Raw-Time -->
+      <div>
+        <div class="colHead">Raw-Time</div>
+
+        <div class="block">
+          <div class="rowTitle">Týden</div>
+          <div class="line"><div class="fill" id="raw-week"></div></div>
+          <p class="label" id="raw-week-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Měsíc</div>
+          <div class="line"><div class="fill" id="raw-month"></div></div>
+          <p class="label" id="raw-month-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Školní rok</div>
+          <div class="line"><div class="fill" id="raw-year"></div></div>
+          <p class="label" id="raw-year-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Celkem</div>
+          <div class="line"><div class="fill" id="raw-total"></div></div>
+          <p class="label" id="raw-total-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Maturita</div>
+          <p class="label" id="raw-maturita-label"></p>
         </div>
       </div>
     </div>
 
-    <!-- MĚSÍC -->
-    <div class="block">
-      <h2>Měsíc</h2>
-      <div class="two-col">
-        <div>
-          <div class="col-title">Realtime</div>
-          <div class="line"><div class="fill" id="month-realtime"></div></div>
-          <p class="label" id="month-realtime-label"></p>
-        </div>
-        <div>
-          <div class="col-title">Raw time</div>
-          <div class="line"><div class="fill" id="month-raw"></div></div>
-          <p class="label" id="month-raw-label"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- ŠKOLNÍ ROK -->
-    <div class="block">
-      <h2>Školní rok</h2>
-      <div class="two-col">
-        <div>
-          <div class="col-title">Realtime</div>
-          <div class="line"><div class="fill" id="year-realtime"></div></div>
-          <p class="label" id="year-realtime-label"></p>
-        </div>
-        <div>
-          <div class="col-title">Raw time</div>
-          <div class="line"><div class="fill" id="year-raw"></div></div>
-          <p class="label" id="year-raw-label"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- CELKEM -->
-    <div class="block">
-      <h2>Celkem</h2>
-      <div class="two-col">
-        <div>
-          <div class="col-title">Realtime</div>
-          <div class="line"><div class="fill" id="total-realtime"></div></div>
-          <p class="label" id="total-realtime-label"></p>
-        </div>
-        <div>
-          <div class="col-title">Raw time</div>
-          <div class="line"><div class="fill" id="total-raw"></div></div>
-          <p class="label" id="total-raw-label"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- MATURITA -->
-    <div class="block">
-      <h2>Maturita</h2>
-      <p class="label" id="maturita-label"></p>
-      <p class="hint">Pozn.: pouze orientačně „květen 2027“ (měsíc, jak jsi chtěl).</p>
-    </div>
-
-    <!-- DENNÍ -->
+    <!-- Daily -->
     <div id="dailyBlock" class="block">
-      <h2>Denní progres</h2>
+      <div class="rowTitle">Denní progres</div>
       <div class="dailyRow">
         <div class="badge" id="dailyBadge">Rozvrh</div>
         <div class="dailyText" id="dailyText">Načítám rozvrh…</div>
@@ -260,11 +248,12 @@
         <div class="fill" id="daybar"></div>
       </div>
       <p class="label" id="daylabel"></p>
+      <p class="hint" id="dailyDebug"></p>
     </div>
 
-    <!-- ROZVRH -->
+    <!-- Timetable -->
     <div id="timetableBlock" class="block">
-      <h2>Rozvrh</h2>
+      <div class="rowTitle">Rozvrh</div>
       <div class="hint">Zdroj: veřejný Bakaláři</div>
       <iframe class="iframe"
               src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A"
@@ -274,58 +263,95 @@
   </div>
 
   <script>
-    // ========= Helpers =========
+    // ==============================
+    // CONFIG
+    // ==============================
+    const TIMETABLE_URL = "https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A";
+    const CORS_PROXY = "https://api.allorigins.win/raw?url=";
+
+    // 4 roky dohromady
+    const HS_START = localDate(2023, 9, 4);
+    const HS_END   = localDateEnd(2027, 6, 30);
+
+    // Maturita: chceš "obvykle" a stačí měsíc → dáme orientačně květen 2027 (1.5.)
+    const MATURITA_APPROX = localDateEnd(2027, 5, 1);
+
+    // Prázdniny/volna pro RAW (bez víkendů a bez prázdnin)
+    // Přidal jsem i LETNÍ prázdniny, aby RAW nepočítal červenec/srpen jako školu.
+    const BREAKS = [
+      // 2023/24
+      r("2023-10-26","2023-10-27"),
+      r("2023-12-23","2024-01-02"),
+      r("2024-02-02","2024-02-02"),
+      r("2024-02-26","2024-03-03"), // jarní Kladno
+      r("2024-07-01","2024-08-31"), // letní
+
+      // 2024/25
+      r("2024-10-29","2024-10-30"),
+      r("2024-12-23","2025-01-03"),
+      r("2025-01-31","2025-01-31"),
+      r("2025-03-03","2025-03-09"), // jarní Kladno
+      r("2025-07-01","2025-08-31"), // letní
+
+      // 2025/26
+      r("2025-10-27","2025-10-29"),
+      r("2025-12-22","2026-01-02"),
+      r("2026-01-30","2026-01-30"),
+      r("2026-03-09","2026-03-15"), // jarní Kladno
+      r("2026-07-01","2026-08-31"), // letní
+
+      // 2026/27
+      r("2026-10-29","2026-10-30"),
+      r("2026-12-23","2027-01-03"),
+      r("2027-01-29","2027-01-29"),
+      r("2027-02-01","2027-02-07"), // jarní Kladno
+    ];
+
+    // Pokud budeš mít ředitelské volno, přidej sem ISO datumy:
+    const DIRECTOR_DAYS = [
+      // "2026-11-20",
+    ];
+
+    // ==============================
+    // STATE
+    // ==============================
+    let timetable = null; // { times:[{startMin,endMin}], days:{Mon:[{subj,room}...],...} }
+    let timetableStatus = "Načítám rozvrh…";
+
+    // ==============================
+    // DOM helpers
+    // ==============================
     const $ = (id) => document.getElementById(id);
     const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
-    const toISO = (d) => {
+    const setBar = (id, pct, weekend=false) => {
+      const n = $(id);
+      if (!n) return;
+      n.style.width = clamp(pct).toFixed(2) + "%";
+      if (weekend) n.classList.add("weekend"); else n.classList.remove("weekend");
+    };
+    const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
+
+    // ==============================
+    // Date helpers
+    // ==============================
+    function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+    function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+
+    function toISO(d){
       const y=d.getFullYear();
       const m=String(d.getMonth()+1).padStart(2,'0');
       const da=String(d.getDate()).padStart(2,'0');
       return `${y}-${m}-${da}`;
-    };
-    const localDate = (y,m,d) => { const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; };
-    const localDateEnd = (y,m,d) => { const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; };
-
-    // ========= Config =========
-    // 4 ročníky dohromady
-    const HS_START = localDate(2023,9,4);
-    const HS_END   = localDateEnd(2027,6,30);
-
-    // maturita orientačně: květen 2027 (stačí měsíc)
-    const MATURITA_APPROX = localDateEnd(2027,5,1);
-
-    // RAW: víkendy pryč, prázdniny sem můžeš doplňovat
-    const BREAKS = [
-      {s:"2023-10-26", e:"2023-10-27"},
-      {s:"2023-12-23", e:"2024-01-02"},
-      {s:"2024-02-02", e:"2024-02-02"},
-      {s:"2024-02-26", e:"2024-03-03"}, // jarní Kladno 23/24
-
-      {s:"2024-10-29", e:"2024-10-30"},
-      {s:"2024-12-23", e:"2025-01-03"},
-      {s:"2025-01-31", e:"2025-01-31"},
-      {s:"2025-03-03", e:"2025-03-09"}, // jarní Kladno 24/25
-
-      {s:"2025-10-27", e:"2025-10-29"},
-      {s:"2025-12-22", e:"2026-01-02"},
-      {s:"2026-01-30", e:"2026-01-30"},
-      {s:"2026-03-09", e:"2026-03-15"}, // jarní Kladno 25/26
-
-      {s:"2026-10-29", e:"2026-10-30"},
-      {s:"2026-12-23", e:"2027-01-03"},
-      {s:"2027-01-29", e:"2027-01-29"},
-      {s:"2027-02-01", e:"2027-02-07"}, // jarní Kladno 26/27
-    ];
-
-    function isInBreak(iso){
-      return BREAKS.some(r => iso >= r.s && iso <= r.e);
     }
+    function r(s,e){ return {s,e}; }
+    function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
 
     function isSchoolDay(d){
       const dow = d.getDay();
-      if (dow === 0 || dow === 6) return false;
+      if (dow===0 || dow===6) return false;
       const iso = toISO(d);
-      if (isInBreak(iso)) return false;
+      if (DIRECTOR_DAYS.includes(iso)) return false;
+      if (inBreak(iso)) return false;
       return true;
     }
 
@@ -341,139 +367,484 @@
       return c;
     }
 
+    function calendarPctBetween(start, end, now){
+      const total = end - start;
+      if (total<=0) return 0;
+      const passed = Math.min(Math.max(now-start, 0), total);
+      return (passed/total)*100;
+    }
+
     function rawPctBetween(start, end, now){
-      const total = countSchoolDays(start,end);
+      const total = countSchoolDays(start, end);
       const clipped = now < start ? start : (now > end ? end : now);
       const passed = countSchoolDays(start, clipped);
       return total ? (passed/total)*100 : 0;
     }
 
-    function calPctBetween(start, end, now){
-      const total = end - start;
-      if (total <= 0) return 0;
-      const passed = Math.min(Math.max(now - start, 0), total);
-      return (passed/total)*100;
+    function rawDaysUntil(target, now){
+      // jen školní dny mezi "teď" a target (exkluzivně dnes? — prakticky to bereme od zítřka)
+      // jednoduše: počet školních dní v (now..target)
+      const start = new Date(now); start.setHours(0,0,0,0);
+      const end = new Date(target); end.setHours(23,59,59,999);
+      if (end < start) return -countSchoolDays(end, start);
+      // vezmeme od dneška do cíle, ale pokud dnes není školní den, stejně se to chová OK
+      return countSchoolDays(start, end);
     }
 
-    function setBar(id, pct, weekend=false){
-      const n = $(id);
-      if (!n) return;
-      n.style.width = clamp(pct).toFixed(2) + "%";
-      if (weekend) n.classList.add("weekend"); else n.classList.remove("weekend");
+    // Školní rok rozsah (jednoduše: 1.9 – 30.6)
+    function getSchoolYearRange(now){
+      const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1; // září=8
+      return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
     }
 
-    // ========= Init settings UI =========
+    // ==============================
+    // Settings UI
+    // ==============================
     function initSettings(){
       const btn = $("settingsBtn");
       const panel = $("settingsPanel");
-      const tt = $("toggleTimetable");
-      const dd = $("toggleDaily");
+      const toggleTT = $("toggleTimetable");
+      const toggleDaily = $("toggleDaily");
       const timetableBlock = $("timetableBlock");
       const dailyBlock = $("dailyBlock");
 
       btn.addEventListener("click", () => panel.classList.toggle("hidden"));
-
-      tt.addEventListener("change", () => {
-        timetableBlock.classList.toggle("hidden", !tt.checked);
-      });
-
-      dd.addEventListener("change", () => {
-        dailyBlock.classList.toggle("hidden", !dd.checked);
-      });
+      toggleTT.addEventListener("change", () => timetableBlock.classList.toggle("hidden", !toggleTT.checked));
+      toggleDaily.addEventListener("change", () => dailyBlock.classList.toggle("hidden", !toggleDaily.checked));
     }
 
-    // ========= Update bars =========
-    function update(){
+    // ==============================
+    // Timetable fetch + parse (subject + room)
+    // ==============================
+    async function loadTimetable(){
+      try{
+        timetableStatus = "Načítám rozvrh…";
+        setDailyLoading();
+
+        const res = await fetch(CORS_PROXY + encodeURIComponent(TIMETABLE_URL), { cache:"no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const html = await res.text();
+
+        timetable = parseBakalari(html);
+        timetableStatus = "Rozvrh načten ✔";
+        setText("dailyDebug", `Parser: times=${timetable.times.length}, Mon=${timetable.days.Mon.length}`);
+      } catch(e){
+        timetable = null;
+        timetableStatus = "Rozvrh se nepodařilo načíst (proxy/CORS) nebo parser nenašel strukturu.";
+        setDailyError(timetableStatus);
+        setText("dailyDebug", String(e && e.message ? e.message : e));
+      } finally {
+        setStatus();
+      }
+    }
+
+    function parseBakalari(html){
+      // Parse DOM
+      const doc = new DOMParser().parseFromString(html, "text/html");
+
+      // 1) najít všechny time ranges jako "7:55 - 8:40"
+      const bodyText = (doc.body ? doc.body.innerText : "") || "";
+      const timeRe = /(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/g;
+      const times = [];
+      let m;
+      while ((m = timeRe.exec(bodyText)) !== null){
+        const sMin = parseInt(m[1],10)*60 + parseInt(m[2],10);
+        const eMin = parseInt(m[3],10)*60 + parseInt(m[4],10);
+        if (!times.some(t => t.startMin===sMin && t.endMin===eMin)){
+          times.push({startMin:sMin, endMin:eMin});
+        }
+      }
+      times.sort((a,b)=>a.startMin-b.startMin);
+      if (!times.length) throw new Error("Nenalezeny časy hodin v HTML.");
+
+      // 2) pokus: z tabulek vytáhnout buňky pro Mon..Fri v pořadí hodin
+      // Najdeme table, která má nejvíc buněk a obsahuje Mon Tue Wed Thu Fri
+      const tables = Array.from(doc.querySelectorAll("table"));
+      let bestTable = null;
+      let bestScore = -1;
+
+      for (const t of tables){
+        const txt = (t.innerText || "").toUpperCase();
+        const hasDays = txt.includes("MON") && txt.includes("TUE") && txt.includes("WED") && txt.includes("THU") && txt.includes("FRI");
+        if (!hasDays) continue;
+        const cells = t.querySelectorAll("td,th").length;
+        if (cells > bestScore){
+          bestScore = cells;
+          bestTable = t;
+        }
+      }
+
+      // fallback: když tabulka není, jedeme text segmenty (méně přesné)
+      const days = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
+      if (!bestTable){
+        return parseByTextSegments(bodyText, times);
+      }
+
+      // Z headeru se pokusíme najít indexy sloupců Mon..Fri
+      const rows = Array.from(bestTable.querySelectorAll("tr"));
+      if (!rows.length) return parseByTextSegments(bodyText, times);
+
+      // najdi header row s Mon Tue...
+      let headerCells = null;
+      for (const r of rows){
+        const ths = Array.from(r.querySelectorAll("th"));
+        const line = ths.map(x => (x.innerText||"").trim().toUpperCase());
+        if (line.join(" ").includes("MON") && line.join(" ").includes("TUE") && line.join(" ").includes("FRI")){
+          headerCells = ths;
+          break;
+        }
+      }
+
+      // pokud headerCells nenajdeme, fallback
+      if (!headerCells){
+        return parseByTextSegments(bodyText, times);
+      }
+
+      const header = headerCells.map(x => (x.innerText||"").trim().toUpperCase());
+      const idxMon = header.findIndex(x => x==="MON");
+      const idxTue = header.findIndex(x => x==="TUE");
+      const idxWed = header.findIndex(x => x==="WED");
+      const idxThu = header.findIndex(x => x==="THU");
+      const idxFri = header.findIndex(x => x==="FRI");
+
+      const idxs = { Mon: idxMon, Tue: idxTue, Wed: idxWed, Thu: idxThu, Fri: idxFri };
+      if (Object.values(idxs).some(i => i<0)){
+        return parseByTextSegments(bodyText, times);
+      }
+
+      // Teď projdeme řádky a bereme buňky v těch sloupcích.
+      // Chceme v pořadí hodin: times.length položek pro každý den.
+      const collected = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
+
+      for (const r of rows){
+        const tds = Array.from(r.querySelectorAll("td"));
+        if (!tds.length) continue;
+
+        for (const dayKey of ["Mon","Tue","Wed","Thu","Fri"]){
+          const i = idxs[dayKey];
+          const cell = tds[i] || null;
+          if (!cell) continue;
+
+          const parsed = parseLessonCell(cell.innerText || "");
+          // parsed může být null (prázdno / okno)
+          collected[dayKey].push(parsed);
+        }
+      }
+
+      // vyčistit: některé řádky nejsou hodiny, takže to přeplníme.
+      // vezmeme první times.length neprázdných “slotů” pro každý den.
+      for (const k of ["Mon","Tue","Wed","Thu","Fri"]){
+        const arr = collected[k]
+          .map(x => x && (x.subj || x.room) ? x : null)
+          .filter(x => x !== undefined); // zachovej i null sloty
+        // ořízni na times.length, ale zachovej pořadí — když je moc, ber první
+        days[k] = arr.slice(0, times.length).map(x => x || null);
+      }
+
+      return { times, days };
+    }
+
+    function parseLessonCell(txt){
+      const raw = (txt || "").replace(/\s+/g," ").trim();
+      if (!raw) return null;
+
+      // Nechceme šum typu "DN3" nebo "kšpa"
+      // Předmět typicky: velké písmena (vč diakritiky) + případně číslo
+      const subjMatch = raw.match(/\b([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,6}\d?)\b/);
+      const subj = subjMatch ? subjMatch[1] : null;
+
+      // Učebna typicky "UČ10" / "UC10" / "uč10"
+      const roomMatch = raw.match(/\b(UČ|UC|uč|uc)\s*?(\d{1,3})\b/);
+      const room = roomMatch ? `UČ${roomMatch[2]}` : null;
+
+      // Pokud "subj" vypadá jako učitel (3 písmena) nebo šum, zahodíme
+      const badTeacherLike = subj && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{3}$/.test(subj);
+      if (badTeacherLike) return null;
+
+      // Pokud máme jen něco jako DN3 (to projde regexem?), tak filtr:
+      if (subj && /^DN\d+$/i.test(subj)) return null;
+
+      // "kšpa" je malé, to regex ani nevezme jako subj. Good.
+
+      if (!subj && !room) return null;
+      return { subj, room };
+    }
+
+    function parseByTextSegments(text, times){
+      // poslední záchrana: segmenty podle Mon/Tue... a vyzobat předmět+učebnu
+      const days = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
+
+      const upper = text.toUpperCase();
+      const seg = (a,b) => {
+        const i = upper.indexOf(a);
+        if (i<0) return "";
+        const j = b ? upper.indexOf(b, i+a.length) : -1;
+        return j>=0 ? text.slice(i,j) : text.slice(i);
+      };
+
+      const segMon = seg("MON","TUE");
+      const segTue = seg("TUE","WED");
+      const segWed = seg("WED","THU");
+      const segThu = seg("THU","FRI");
+      const segFri = seg("FRI",null);
+
+      const pack = (s) => {
+        const items = [];
+        // předmět
+        const subjRe = /\b([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,6}\d?)\b/g;
+        // učebna
+        const roomRe = /\b(UČ|UC|uč|uc)\s*?(\d{1,3})\b/g;
+
+        const subs = [];
+        let m;
+        while((m=subjRe.exec(s))!==null){
+          const tok=m[1];
+          if (["MON","TUE","WED","THU","FRI"].includes(tok)) continue;
+          if (/^DN\d+$/i.test(tok)) continue;
+          if (/^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{3}$/.test(tok)) continue; // učitel
+          subs.push(tok);
+        }
+
+        const rooms = [];
+        while((m=roomRe.exec(s))!==null){
+          rooms.push(`UČ${m[2]}`);
+        }
+
+        // spáruj hrubě 1:1 podle indexu
+        const n = times.length;
+        for (let i=0;i<n;i++){
+          items.push({ subj: subs[i] || null, room: rooms[i] || null });
+        }
+        return items;
+      };
+
+      days.Mon = pack(segMon);
+      days.Tue = pack(segTue);
+      days.Wed = pack(segWed);
+      days.Thu = pack(segThu);
+      days.Fri = pack(segFri);
+
+      return { times, days };
+    }
+
+    // ==============================
+    // Daily UI
+    // ==============================
+    function setDailyLoading(){
+      const b=$("dailyBadge"); b.className="badge"; b.textContent="Rozvrh";
+      setText("dailyText","Načítám rozvrh…");
+      setBar("daybar",0);
+      setText("daylabel","");
+    }
+    function setDailyError(msg){
+      const b=$("dailyBadge"); b.className="badge err"; b.textContent="Chyba";
+      setText("dailyText",msg);
+      setBar("daybar",0);
+      setText("daylabel","");
+    }
+    function setDailyFree(){
+      const b=$("dailyBadge"); b.className="badge free"; b.textContent="Volno";
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+    }
+
+    function minutesToHHMM(min){
+      const h=String(Math.floor(min/60)).padStart(2,"0");
+      const m=String(min%60).padStart(2,"0");
+      return `${h}:${m}`;
+    }
+
+    function fmtLesson(x){
+      if (!x) return null;
+      if (!x.subj) return null;
+      if (x.room) return `${x.subj} (${x.room})`;
+      return `${x.subj}`;
+    }
+
+    function updateDaily(now){
+      // víkend
+      const dow = now.getDay();
+      if (dow===0 || dow===6){ setDailyFree(); return; }
+
+      if (!timetable){
+        setDailyError(timetableStatus);
+        return;
+      }
+
+      const key = (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":"Fri";
+      const times = timetable.times;
+      const lessons = (timetable.days[key] || []).slice(0, times.length);
+
+      const nowMin = now.getHours()*60 + now.getMinutes();
+      const first = times[0];
+      const last  = times[times.length-1];
+
+      // po škole
+      if (nowMin > last.endMin){
+        setDailyFree();
+        return;
+      }
+
+      // před začátkem
+      if (nowMin < first.startMin){
+        const b=$("dailyBadge"); b.className="badge live"; b.textContent="Dnes";
+        const next = fmtLesson(lessons[0]) || "Hodina 1";
+        setText("dailyText",`Za chvíli začne: ${next}`);
+        setBar("daybar",0);
+        setText("daylabel",`Start v ${minutesToHHMM(first.startMin)}`);
+        return;
+      }
+
+      // během dne: hodina / pauza
+      for (let i=0;i<times.length;i++){
+        const t=times[i];
+        const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}`;
+        const next = (i+1<times.length) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}`) : null;
+
+        // hodina běží
+        if (nowMin >= t.startMin && nowMin <= t.endMin){
+          const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
+          const b=$("dailyBadge"); b.className="badge live"; b.textContent="Právě";
+          setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
+          setBar("daybar", pct);
+          setText("daylabel", `Hodina ${i+1} • ${minutesToHHMM(t.startMin)}–${minutesToHHMM(t.endMin)} • ${pct.toFixed(0)}%`);
+          return;
+        }
+
+        // pauza
+        const nt = times[i+1];
+        if (nt && nowMin > t.endMin && nowMin < nt.startMin){
+          const b=$("dailyBadge"); b.className="badge live"; b.textContent="Pauza";
+          setText("dailyText", `Následuje: ${next}`);
+          setBar("daybar", 0);
+          setText("daylabel", `Další hodina v ${minutesToHHMM(nt.startMin)}`);
+          return;
+        }
+      }
+
+      // fallback
+      setDailyFree();
+    }
+
+    // ==============================
+    // MAIN update
+    // ==============================
+    function updateAll(){
       const now = new Date();
       const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
 
-      // Week (Po–Pá only). Weekend -> orange + Weekend 😎
+      // WEEK: Po–Pá (5 dní), víkend = orange + Weekend 😎
       const dow = now.getDay(); // Ne=0
-      const isWeekend = (dow===0 || dow===6);
-      const workdayIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
-      const weekPct = isWeekend ? 100 : ((workdayIndex + timeInDay)/5)*100;
+      const weekend = (dow===0 || dow===6);
+      const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
+      const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
 
-      setBar("week-realtime", weekPct, isWeekend);
-      setBar("week-raw", weekPct, false);
+      // Real-time week
+      setBar("rt-week", weekPct, weekend);
+      setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
 
-      $("week-realtime-label").textContent = isWeekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`;
-      $("week-raw-label").textContent = `RAW: ${weekPct.toFixed(1)}%`;
+      // Raw-time week = stejná logika (už je bez víkendů)
+      setBar("raw-week", weekPct, false);
+      setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
 
-      // Month (calendar)
-      const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-      const monthPct = ((now.getDate()-1 + timeInDay)/daysInMonth)*100;
-      setBar("month-realtime", monthPct);
-      $("month-realtime-label").textContent = `Měsíc: ${monthPct.toFixed(1)}%`;
+      // MONTH: calendar
+      const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+      const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
+      setBar("rt-month", monthPct);
+      setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
 
-      // Month raw (school days only)
+      // MONTH raw: school days only in this month
       const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
-      const mEnd = localDateEnd(now.getFullYear(), now.getMonth()+1, daysInMonth);
+      const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
       const monthRaw = rawPctBetween(mStart, mEnd, now);
-      setBar("month-raw", monthRaw);
-      $("month-raw-label").textContent = `RAW: ${monthRaw.toFixed(1)}%`;
+      setBar("raw-month", monthRaw);
+      setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
 
-      // School year (simple range: from Sep 1 or first Monday? -> Realtime use Sep 1, Raw removes breaks)
-      const schoolStartYear = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
-      const yearStart = localDate(schoolStartYear, 9, 1);
-      const yearEnd   = localDateEnd(schoolStartYear+1, 6, 30);
+      // SCHOOL YEAR realtime
+      const yr = getSchoolYearRange(now);
+      const yearPct = calendarPctBetween(yr.start, yr.end, now);
+      setBar("rt-year", yearPct);
+      setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
 
-      const yearPct = calPctBetween(yearStart, yearEnd, now);
-      setBar("year-realtime", yearPct);
-      $("year-realtime-label").textContent = `Školní rok: ${yearPct.toFixed(1)}%`;
+      // SCHOOL YEAR raw
+      const yearRaw = rawPctBetween(yr.start, yr.end, now);
+      setBar("raw-year", yearRaw);
+      setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
 
-      const yearRaw = rawPctBetween(yearStart, yearEnd, now);
-      setBar("year-raw", yearRaw);
-      $("year-raw-label").textContent = `RAW: ${yearRaw.toFixed(1)}%`;
+      // TOTAL realtime
+      const totalPct = calendarPctBetween(HS_START, HS_END, now);
+      setBar("rt-total", totalPct);
+      setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
 
-      // Total
-      const totalPct = calPctBetween(HS_START, HS_END, now);
-      setBar("total-realtime", totalPct);
-      $("total-realtime-label").textContent = `Celkem: ${totalPct.toFixed(1)}%`;
-
+      // TOTAL raw
       const totalRaw = rawPctBetween(HS_START, HS_END, now);
-      setBar("total-raw", totalRaw);
-      $("total-raw-label").textContent = `RAW: ${totalRaw.toFixed(1)}%`;
+      setBar("raw-total", totalRaw);
+      setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
 
-      // Maturita (month only)
+      // MATURITA realtime: kalendářní dny do (orientačně květen 2027)
       const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
-      $("maturita-label").textContent = (daysUntil >= 0)
-        ? `Zbývá ~${daysUntil} dní do maturity (orientačně květen 2027).`
-        : `Maturita už je za tebou (${Math.abs(daysUntil)} dní zpět).`;
+      setText("rt-maturita-label",
+        (daysUntil>=0)
+          ? `Real-Time: ~${daysUntil} dní (květen 2027)`
+          : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
+      );
 
-      // Daily (zatím fallback: pokud víkend = volno; během týdne jen “Škola” – rozvrh doplníme až bude parsování stabilní)
-      const badge = $("dailyBadge");
-      const dailyText = $("dailyText");
-      const daybar = $("daybar");
-      const daylabel = $("daylabel");
+      // MATURITA raw: školní dny do cíle
+      const rawDays = rawDaysUntil(MATURITA_APPROX, now);
+      setText("raw-maturita-label",
+        (rawDays>=0)
+          ? `Raw-Time: ~${rawDays} školních dní (bez víkendů/prázdnin)`
+          : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
+      );
 
-      if (isWeekend){
-        badge.className = "badge free";
-        badge.textContent = "Volno";
-        dailyText.textContent = "Volno 😎";
-        daybar.style.width = "100%";
-        daylabel.textContent = "";
-      } else {
-        badge.className = "badge live";
-        badge.textContent = "Dnes";
-        dailyText.textContent = "Škola běží (rozvrh bude doplněn).";
-        daybar.style.width = "0%";
-        daylabel.textContent = "";
+      // Daily (pokud zapnuto)
+      const toggleDaily = $("toggleDaily");
+      if (!toggleDaily || toggleDaily.checked){
+        updateDaily(now);
       }
 
-      $("statusHint").textContent = "Status: OK (render proběhl)";
+      setStatus(true);
     }
 
-    // ========= Boot =========
-    (function boot(){
-      try{
-        initSettings();
-        update();
-        setInterval(update, 30_000);
-      } catch (e){
-        $("debug").textContent = "JS chyba ❌: " + e.message;
-        $("debug").style.color = "#b00020";
+    function setStatus(ok=true){
+      const el = $("statusHint");
+      if (!el) return;
+      const base = timetable ? "Rozvrh: OK" : ("Rozvrh: " + timetableStatus);
+      el.innerHTML = ok
+        ? `<span class="statusOk">Status: OK</span> • ${base}`
+        : `<span class="statusBad">Status: CHYBA</span> • ${base}`;
+    }
+
+    // ==============================
+    // BOOT
+    // ==============================
+    function boot(){
+      initSettings();
+
+      // first render
+      try{ updateAll(); } catch(e){
+        timetableStatus = "JS chyba: " + e.message;
+        setStatus(false);
       }
-    })();
+
+      // load timetable async
+      loadTimetable().finally(() => {
+        try{ updateAll(); } catch(e){
+          timetableStatus = "JS chyba po rozvrhu: " + e.message;
+          setStatus(false);
+        }
+      });
+
+      setInterval(() => {
+        try{ updateAll(); } catch(e){
+          timetableStatus = "JS chyba v interval: " + e.message;
+          setStatus(false);
+        }
+      }, 30_000);
+    }
+
+    document.addEventListener("DOMContentLoaded", boot);
   </script>
 </body>
 </html>
