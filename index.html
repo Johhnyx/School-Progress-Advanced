@@ -254,9 +254,9 @@
     <!-- Timetable -->
     <div id="timetableBlock" class="block">
       <div class="rowTitle">Rozvrh</div>
-      <div class="hint">Zdroj: veřejný Bakaláři</div>
+      <div class="hint">Zdroj: veřejný Bakaláři (Actual)</div>
       <iframe class="iframe"
-              src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A"
+              src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Actual/Class/5A"
               loading="lazy"
               referrerpolicy="no-referrer"></iframe>
     </div>
@@ -266,48 +266,47 @@
     // ==============================
     // CONFIG
     // ==============================
-    const TIMETABLE_URL = "https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A";
+    const TIMETABLE_URL = "https://1kspa-kladno.bakalari.cz/Timetable/Public/Actual/Class/5A";
     const CORS_PROXY = "https://api.allorigins.win/raw?url=";
 
     // 4 roky dohromady
     const HS_START = localDate(2023, 9, 4);
     const HS_END   = localDateEnd(2027, 6, 30);
 
-    // Maturita: chceš "obvykle" a stačí měsíc → dáme orientačně květen 2027 (1.5.)
+    // Maturita: chceš "obvykle" a stačí měsíc → orientačně květen 2027 (1.5.)
     const MATURITA_APPROX = localDateEnd(2027, 5, 1);
 
-    // Prázdniny/volna pro RAW (bez víkendů a bez prázdnin)
-    // Přidal jsem i LETNÍ prázdniny, aby RAW nepočítal červenec/srpen jako školu.
+    // RAW: prázdniny/volna (bez víkendů + bez prázdnin, vč letních)
     const BREAKS = [
       // 2023/24
       r("2023-10-26","2023-10-27"),
       r("2023-12-23","2024-01-02"),
       r("2024-02-02","2024-02-02"),
-      r("2024-02-26","2024-03-03"), // jarní Kladno
-      r("2024-07-01","2024-08-31"), // letní
+      r("2024-02-26","2024-03-03"),
+      r("2024-07-01","2024-08-31"),
 
       // 2024/25
       r("2024-10-29","2024-10-30"),
       r("2024-12-23","2025-01-03"),
       r("2025-01-31","2025-01-31"),
-      r("2025-03-03","2025-03-09"), // jarní Kladno
-      r("2025-07-01","2025-08-31"), // letní
+      r("2025-03-03","2025-03-09"),
+      r("2025-07-01","2025-08-31"),
 
       // 2025/26
       r("2025-10-27","2025-10-29"),
       r("2025-12-22","2026-01-02"),
       r("2026-01-30","2026-01-30"),
-      r("2026-03-09","2026-03-15"), // jarní Kladno
-      r("2026-07-01","2026-08-31"), // letní
+      r("2026-03-09","2026-03-15"),
+      r("2026-07-01","2026-08-31"),
 
       // 2026/27
       r("2026-10-29","2026-10-30"),
       r("2026-12-23","2027-01-03"),
       r("2027-01-29","2027-01-29"),
-      r("2027-02-01","2027-02-07"), // jarní Kladno
+      r("2027-02-01","2027-02-07"),
     ];
 
-    // Pokud budeš mít ředitelské volno, přidej sem ISO datumy:
+    // ředitelské volno doplň sem (ISO datumy)
     const DIRECTOR_DAYS = [
       // "2026-11-20",
     ];
@@ -382,18 +381,15 @@
     }
 
     function rawDaysUntil(target, now){
-      // jen školní dny mezi "teď" a target (exkluzivně dnes? — prakticky to bereme od zítřka)
-      // jednoduše: počet školních dní v (now..target)
       const start = new Date(now); start.setHours(0,0,0,0);
       const end = new Date(target); end.setHours(23,59,59,999);
       if (end < start) return -countSchoolDays(end, start);
-      // vezmeme od dneška do cíle, ale pokud dnes není školní den, stejně se to chová OK
       return countSchoolDays(start, end);
     }
 
-    // Školní rok rozsah (jednoduše: 1.9 – 30.6)
+    // Školní rok (1.9 – 30.6)
     function getSchoolYearRange(now){
-      const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1; // září=8
+      const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
       return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
     }
 
@@ -414,7 +410,8 @@
     }
 
     // ==============================
-    // Timetable fetch + parse (subject + room)
+    // Timetable fetch + parse
+    // (robustní: parsuje až od "Mon dd/mm", takže DN3 nikdy nevezme)
     // ==============================
     async function loadTimetable(){
       try{
@@ -425,12 +422,17 @@
         if (!res.ok) throw new Error("HTTP " + res.status);
         const html = await res.text();
 
-        timetable = parseBakalari(html);
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const text = (doc.body ? doc.body.innerText : "") || "";
+
+        timetable = parseFromScheduleText(text);
         timetableStatus = "Rozvrh načten ✔";
-        setText("dailyDebug", `Parser: times=${timetable.times.length}, Mon=${timetable.days.Mon.length}`);
+
+        const monCount = timetable.days.Mon.filter(x=>x).length;
+        setText("dailyDebug", `Parser OK: hodin=${timetable.times.length}, Po=${monCount}`);
       } catch(e){
         timetable = null;
-        timetableStatus = "Rozvrh se nepodařilo načíst (proxy/CORS) nebo parser nenašel strukturu.";
+        timetableStatus = "Rozvrh se nepodařilo načíst / parsovat (proxy/CORS).";
         setDailyError(timetableStatus);
         setText("dailyDebug", String(e && e.message ? e.message : e));
       } finally {
@@ -438,16 +440,12 @@
       }
     }
 
-    function parseBakalari(html){
-      // Parse DOM
-      const doc = new DOMParser().parseFromString(html, "text/html");
-
-      // 1) najít všechny time ranges jako "7:55 - 8:40"
-      const bodyText = (doc.body ? doc.body.innerText : "") || "";
+    function parseFromScheduleText(text){
+      // 1) časy hodin
       const timeRe = /(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/g;
       const times = [];
       let m;
-      while ((m = timeRe.exec(bodyText)) !== null){
+      while ((m = timeRe.exec(text)) !== null){
         const sMin = parseInt(m[1],10)*60 + parseInt(m[2],10);
         const eMin = parseInt(m[3],10)*60 + parseInt(m[4],10);
         if (!times.some(t => t.startMin===sMin && t.endMin===eMin)){
@@ -455,176 +453,110 @@
         }
       }
       times.sort((a,b)=>a.startMin-b.startMin);
-      if (!times.length) throw new Error("Nenalezeny časy hodin v HTML.");
+      if (!times.length) throw new Error("Nenalezeny časy hodin.");
 
-      // 2) pokus: z tabulek vytáhnout buňky pro Mon..Fri v pořadí hodin
-      // Najdeme table, která má nejvíc buněk a obsahuje Mon Tue Wed Thu Fri
-      const tables = Array.from(doc.querySelectorAll("table"));
-      let bestTable = null;
-      let bestScore = -1;
+      // 2) vezmeme jen část od prvního dne (Mon ..)
+      const lines = text.split("\n").map(x=>x.trim()).filter(Boolean);
 
-      for (const t of tables){
-        const txt = (t.innerText || "").toUpperCase();
-        const hasDays = txt.includes("MON") && txt.includes("TUE") && txt.includes("WED") && txt.includes("THU") && txt.includes("FRI");
-        if (!hasDays) continue;
-        const cells = t.querySelectorAll("td,th").length;
-        if (cells > bestScore){
-          bestScore = cells;
-          bestTable = t;
-        }
+      const dayMarkers = ["Mon","Tue","Wed","Thu","Fri"];
+      const dayIdx = {};
+      for (const d of dayMarkers){
+        const i = lines.findIndex(x => new RegExp("^" + d + "\\s+\\d{1,2}\\/\\d{1,2}$").test(x));
+        if (i >= 0) dayIdx[d] = i;
       }
 
-      // fallback: když tabulka není, jedeme text segmenty (méně přesné)
+      if (!("Mon" in dayIdx)) throw new Error("Nenalezen blok 'Mon dd/mm'.");
+
+      // získat segmenty pro dny
+      function sliceDay(d){
+        const start = dayIdx[d];
+        if (start === undefined) return [];
+        const nextDay = dayMarkers.find(dd => (dayIdx[dd] !== undefined) && dayIdx[dd] > start);
+        const end = nextDay ? dayIdx[nextDay] : lines.length;
+        return lines.slice(start+1, end);
+      }
+
+      const segments = {
+        Mon: sliceDay("Mon"),
+        Tue: sliceDay("Tue"),
+        Wed: sliceDay("Wed"),
+        Thu: sliceDay("Thu"),
+        Fri: sliceDay("Fri"),
+      };
+
       const days = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
-      if (!bestTable){
-        return parseByTextSegments(bodyText, times);
-      }
-
-      // Z headeru se pokusíme najít indexy sloupců Mon..Fri
-      const rows = Array.from(bestTable.querySelectorAll("tr"));
-      if (!rows.length) return parseByTextSegments(bodyText, times);
-
-      // najdi header row s Mon Tue...
-      let headerCells = null;
-      for (const r of rows){
-        const ths = Array.from(r.querySelectorAll("th"));
-        const line = ths.map(x => (x.innerText||"").trim().toUpperCase());
-        if (line.join(" ").includes("MON") && line.join(" ").includes("TUE") && line.join(" ").includes("FRI")){
-          headerCells = ths;
-          break;
-        }
-      }
-
-      // pokud headerCells nenajdeme, fallback
-      if (!headerCells){
-        return parseByTextSegments(bodyText, times);
-      }
-
-      const header = headerCells.map(x => (x.innerText||"").trim().toUpperCase());
-      const idxMon = header.findIndex(x => x==="MON");
-      const idxTue = header.findIndex(x => x==="TUE");
-      const idxWed = header.findIndex(x => x==="WED");
-      const idxThu = header.findIndex(x => x==="THU");
-      const idxFri = header.findIndex(x => x==="FRI");
-
-      const idxs = { Mon: idxMon, Tue: idxTue, Wed: idxWed, Thu: idxThu, Fri: idxFri };
-      if (Object.values(idxs).some(i => i<0)){
-        return parseByTextSegments(bodyText, times);
-      }
-
-      // Teď projdeme řádky a bereme buňky v těch sloupcích.
-      // Chceme v pořadí hodin: times.length položek pro každý den.
-      const collected = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
-
-      for (const r of rows){
-        const tds = Array.from(r.querySelectorAll("td"));
-        if (!tds.length) continue;
-
-        for (const dayKey of ["Mon","Tue","Wed","Thu","Fri"]){
-          const i = idxs[dayKey];
-          const cell = tds[i] || null;
-          if (!cell) continue;
-
-          const parsed = parseLessonCell(cell.innerText || "");
-          // parsed může být null (prázdno / okno)
-          collected[dayKey].push(parsed);
-        }
-      }
-
-      // vyčistit: některé řádky nejsou hodiny, takže to přeplníme.
-      // vezmeme první times.length neprázdných “slotů” pro každý den.
-      for (const k of ["Mon","Tue","Wed","Thu","Fri"]){
-        const arr = collected[k]
-          .map(x => x && (x.subj || x.room) ? x : null)
-          .filter(x => x !== undefined); // zachovej i null sloty
-        // ořízni na times.length, ale zachovej pořadí — když je moc, ber první
-        days[k] = arr.slice(0, times.length).map(x => x || null);
+      for (const d of dayMarkers){
+        days[d] = parseDaySegment(segments[d], times.length);
       }
 
       return { times, days };
     }
 
-    function parseLessonCell(txt){
-      const raw = (txt || "").replace(/\s+/g," ").trim();
-      if (!raw) return null;
+    function parseDaySegment(segLines, maxLessons){
+      // Formát v Actual view typicky:
+      // uč10, MAT, RYB, uč10, RUJ, ZYJ, uč11, NEJ, PRH, ...
+      // Někdy navíc "ANJ1 / ANJ2" (skupiny) -> chceme ignorovat a vzít ANJ + učebnu.
+      const roomRe = /^(uč|uc|TV|VT|KLB)\s*\d*$/i;
+      const teacherRe = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{3}$/;     // RYB, KLE...
+      const subjRe = /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,6}\d?$/;    // MAT, SWA, ANJ1...
 
-      // Nechceme šum typu "DN3" nebo "kšpa"
-      // Předmět typicky: velké písmena (vč diakritiky) + případně číslo
-      const subjMatch = raw.match(/\b([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,6}\d?)\b/);
-      const subj = subjMatch ? subjMatch[1] : null;
+      const out = [];
+      let lastRoom = null;
 
-      // Učebna typicky "UČ10" / "UC10" / "uč10"
-      const roomMatch = raw.match(/\b(UČ|UC|uč|uc)\s*?(\d{1,3})\b/);
-      const room = roomMatch ? `UČ${roomMatch[2]}` : null;
+      function normRoom(x){
+        if (!x) return null;
+        // sjednotíme "uč10" -> "uč10"
+        const m = x.match(/(uč|uc|TV|VT|KLB)\s*(\d*)/i);
+        if (!m) return x;
+        const prefix = m[1].toLowerCase() === "uc" ? "uč" : m[1];
+        const num = m[2] || "";
+        return (prefix + num).toLowerCase();
+      }
 
-      // Pokud "subj" vypadá jako učitel (3 písmena) nebo šum, zahodíme
-      const badTeacherLike = subj && /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{3}$/.test(subj);
-      if (badTeacherLike) return null;
+      for (let i=0; i<segLines.length; i++){
+        const token = segLines[i];
 
-      // Pokud máme jen něco jako DN3 (to projde regexem?), tak filtr:
-      if (subj && /^DN\d+$/i.test(subj)) return null;
+        // ignoruj šum
+        if (/^DN\d+$/i.test(token)) continue;
 
-      // "kšpa" je malé, to regex ani nevezme jako subj. Good.
-
-      if (!subj && !room) return null;
-      return { subj, room };
-    }
-
-    function parseByTextSegments(text, times){
-      // poslední záchrana: segmenty podle Mon/Tue... a vyzobat předmět+učebnu
-      const days = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
-
-      const upper = text.toUpperCase();
-      const seg = (a,b) => {
-        const i = upper.indexOf(a);
-        if (i<0) return "";
-        const j = b ? upper.indexOf(b, i+a.length) : -1;
-        return j>=0 ? text.slice(i,j) : text.slice(i);
-      };
-
-      const segMon = seg("MON","TUE");
-      const segTue = seg("TUE","WED");
-      const segWed = seg("WED","THU");
-      const segThu = seg("THU","FRI");
-      const segFri = seg("FRI",null);
-
-      const pack = (s) => {
-        const items = [];
-        // předmět
-        const subjRe = /\b([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,6}\d?)\b/g;
-        // učebna
-        const roomRe = /\b(UČ|UC|uč|uc)\s*?(\d{1,3})\b/g;
-
-        const subs = [];
-        let m;
-        while((m=subjRe.exec(s))!==null){
-          const tok=m[1];
-          if (["MON","TUE","WED","THU","FRI"].includes(tok)) continue;
-          if (/^DN\d+$/i.test(tok)) continue;
-          if (/^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{3}$/.test(tok)) continue; // učitel
-          subs.push(tok);
+        // room
+        if (roomRe.test(token)){
+          lastRoom = normRoom(token);
+          continue;
         }
 
-        const rooms = [];
-        while((m=roomRe.exec(s))!==null){
-          rooms.push(`UČ${m[2]}`);
+        // teacher
+        if (teacherRe.test(token)) continue;
+
+        // subject-ish
+        if (subjRe.test(token)){
+          // ignoruj group label ANJ1/ANJ2 (chceme ANJ až přijde)
+          if (/^ANJ\d$/i.test(token)) continue;
+
+          const subj = token.toUpperCase();
+          if (!lastRoom) {
+            // někdy se room objeví až předchozí/příští – zatím nech room null
+            out.push({ subj, room: null });
+          } else {
+            out.push({ subj, room: lastRoom });
+          }
+
+          // collapse duplicit typu "ANJ uč2" opakovaně
+          const n = out.length;
+          if (n >= 2){
+            const a = out[n-1], b = out[n-2];
+            if (a.subj === b.subj && a.room === b.room){
+              out.pop();
+            }
+          }
+
+          if (out.length >= maxLessons) break;
         }
+      }
 
-        // spáruj hrubě 1:1 podle indexu
-        const n = times.length;
-        for (let i=0;i<n;i++){
-          items.push({ subj: subs[i] || null, room: rooms[i] || null });
-        }
-        return items;
-      };
-
-      days.Mon = pack(segMon);
-      days.Tue = pack(segTue);
-      days.Wed = pack(segWed);
-      days.Thu = pack(segThu);
-      days.Fri = pack(segFri);
-
-      return { times, days };
+      // doplň na maxLessons null
+      while (out.length < maxLessons) out.push(null);
+      return out;
     }
 
     // ==============================
@@ -656,14 +588,12 @@
     }
 
     function fmtLesson(x){
-      if (!x) return null;
-      if (!x.subj) return null;
+      if (!x || !x.subj) return null;
       if (x.room) return `${x.subj} (${x.room})`;
       return `${x.subj}`;
     }
 
     function updateDaily(now){
-      // víkend
       const dow = now.getDay();
       if (dow===0 || dow===6){ setDailyFree(); return; }
 
@@ -680,13 +610,11 @@
       const first = times[0];
       const last  = times[times.length-1];
 
-      // po škole
       if (nowMin > last.endMin){
         setDailyFree();
         return;
       }
 
-      // před začátkem
       if (nowMin < first.startMin){
         const b=$("dailyBadge"); b.className="badge live"; b.textContent="Dnes";
         const next = fmtLesson(lessons[0]) || "Hodina 1";
@@ -696,13 +624,11 @@
         return;
       }
 
-      // během dne: hodina / pauza
       for (let i=0;i<times.length;i++){
         const t=times[i];
         const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}`;
         const next = (i+1<times.length) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}`) : null;
 
-        // hodina běží
         if (nowMin >= t.startMin && nowMin <= t.endMin){
           const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
           const b=$("dailyBadge"); b.className="badge live"; b.textContent="Právě";
@@ -712,7 +638,6 @@
           return;
         }
 
-        // pauza
         const nt = times[i+1];
         if (nt && nowMin > t.endMin && nowMin < nt.startMin){
           const b=$("dailyBadge"); b.className="badge live"; b.textContent="Pauza";
@@ -723,7 +648,6 @@
         }
       }
 
-      // fallback
       setDailyFree();
     }
 
@@ -734,55 +658,48 @@
       const now = new Date();
       const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
 
-      // WEEK: Po–Pá (5 dní), víkend = orange + Weekend 😎
-      const dow = now.getDay(); // Ne=0
+      const dow = now.getDay();
       const weekend = (dow===0 || dow===6);
       const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
       const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
 
-      // Real-time week
+      // Week
       setBar("rt-week", weekPct, weekend);
       setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
-
-      // Raw-time week = stejná logika (už je bez víkendů)
       setBar("raw-week", weekPct, false);
       setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
 
-      // MONTH: calendar
+      // Month realtime
       const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
       const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
       setBar("rt-month", monthPct);
       setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
 
-      // MONTH raw: school days only in this month
+      // Month raw
       const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
       const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
       const monthRaw = rawPctBetween(mStart, mEnd, now);
       setBar("raw-month", monthRaw);
       setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
 
-      // SCHOOL YEAR realtime
+      // School year
       const yr = getSchoolYearRange(now);
       const yearPct = calendarPctBetween(yr.start, yr.end, now);
       setBar("rt-year", yearPct);
       setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
-
-      // SCHOOL YEAR raw
       const yearRaw = rawPctBetween(yr.start, yr.end, now);
       setBar("raw-year", yearRaw);
       setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
 
-      // TOTAL realtime
+      // Total
       const totalPct = calendarPctBetween(HS_START, HS_END, now);
       setBar("rt-total", totalPct);
       setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
-
-      // TOTAL raw
       const totalRaw = rawPctBetween(HS_START, HS_END, now);
       setBar("raw-total", totalRaw);
       setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
 
-      // MATURITA realtime: kalendářní dny do (orientačně květen 2027)
+      // Maturita
       const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
       setText("rt-maturita-label",
         (daysUntil>=0)
@@ -790,7 +707,6 @@
           : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
       );
 
-      // MATURITA raw: školní dny do cíle
       const rawDays = rawDaysUntil(MATURITA_APPROX, now);
       setText("raw-maturita-label",
         (rawDays>=0)
@@ -798,7 +714,7 @@
           : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
       );
 
-      // Daily (pokud zapnuto)
+      // Daily
       const toggleDaily = $("toggleDaily");
       if (!toggleDaily || toggleDaily.checked){
         updateDaily(now);
@@ -822,13 +738,11 @@
     function boot(){
       initSettings();
 
-      // first render
       try{ updateAll(); } catch(e){
         timetableStatus = "JS chyba: " + e.message;
         setStatus(false);
       }
 
-      // load timetable async
       loadTimetable().finally(() => {
         try{ updateAll(); } catch(e){
           timetableStatus = "JS chyba po rozvrhu: " + e.message;
