@@ -1,115 +1,120 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>School Progress</title>
-<link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Progress</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="wrap">
-<header class="topbar">
-<h1>School Progress</h1>
-<button id="settingsBtn" class="btn">Nastavení ⚙️</button>
-</header>
-<!-- Nastavení -->
-<div id="settingsPanel" class="block hidden">
-<h2>Nastavení</h2>
-<label class="toggle">
-<input type="checkbox" id="toggleTimetable" checked />
-<span>Zobrazit rozvrh</span>
-</label>
-<label class="toggle">
-<input type="checkbox" id="toggleDaily" checked />
-<span>Zobrazit denní progres</span>
-</label>
-<p class="hint">
-       Rozvrh se načítá z veřejné stránky Bakalářů (přes CORS proxy). Pokud by rozvrh občas nešel,
-       zkus refresh.
-</p>
-</div>
-<!-- 2 sloupce: vlevo "kalendář", vpravo "raw school time" -->
-<div class="block">
-<h2>Týden</h2>
-<div class="two-col">
-<div>
-<div class="line"><div class="fill" id="week-progress"></div></div>
-<p class="label" id="week-label"></p>
-</div>
-<div>
-<div class="line"><div class="fill" id="week-raw"></div></div>
-<p class="label" id="week-raw-label"></p>
-</div>
-</div>
-</div>
-<div class="block">
-<h2>Měsíc</h2>
-<div class="two-col">
-<div>
-<div class="line"><div class="fill" id="month-progress"></div></div>
-<p class="label" id="month-label"></p>
-</div>
-<div>
-<div class="line"><div class="fill" id="month-raw"></div></div>
-<p class="label" id="month-raw-label"></p>
-</div>
-</div>
-</div>
-<div class="block">
-<h2>Školní rok</h2>
-<div class="two-col">
-<div>
-<div class="line"><div class="fill" id="year-progress"></div></div>
-<p class="label" id="year-label"></p>
-</div>
-<div>
-<div class="line"><div class="fill" id="year-raw"></div></div>
-<p class="label" id="year-raw-label"></p>
-</div>
-</div>
-</div>
-<div class="block">
-<h2>Celkem</h2>
-<div class="two-col">
-<div>
-<div class="line"><div class="fill" id="total-progress"></div></div>
-<p class="label" id="total-label"></p>
-</div>
-<div>
-<div class="line"><div class="fill" id="total-raw"></div></div>
-<p class="label" id="total-raw-label"></p>
-</div>
-</div>
-</div>
-<div class="block">
-<h2>Maturita</h2>
-<p class="label" id="maturita-label"></p>
-</div>
-<!-- Denní progres (podle rozvrhu) -->
-<div id="dailyBlock" class="block">
-<h2>Denní progres</h2>
-<div class="dailyRow">
-<div class="badge" id="dailyStatusBadge">Načítám…</div>
-<div class="dailyText" id="dailyText">Načítám rozvrh…</div>
-</div>
-<div class="line" style="margin-top:10px;">
-<div class="fill" id="day-progress"></div>
-</div>
-<p class="label" id="day-label"></p>
-</div>
-<!-- Rozvrh -->
-<div id="timetableBlock" class="block">
-<h2>Rozvrh</h2>
-<div id="timetableMeta" class="hint">Zdroj: Bakaláři (public)</div>
-<iframe
-       id="timetableFrame"
-       class="iframe"
-       src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A"
-       loading="lazy"
-       referrerpolicy="no-referrer"
-></iframe>
-</div>
-</div>
-<script src="script.js"></script>
+  <div class="wrap">
+    <header class="topbar">
+      <h1>School Progress</h1>
+      <button id="settingsBtn" class="btn">Nastavení ⚙️</button>
+    </header>
+
+    <div id="settingsPanel" class="block hidden">
+      <h2>Nastavení</h2>
+
+      <label class="toggle">
+        <input type="checkbox" id="toggleTimetable" checked />
+        <span>Zobrazit rozvrh</span>
+      </label>
+
+      <label class="toggle">
+        <input type="checkbox" id="toggleDaily" checked />
+        <span>Zobrazit denní progres</span>
+      </label>
+
+      <p class="hint" id="debugHint"></p>
+    </div>
+
+    <div class="block">
+      <h2>Týden</h2>
+      <div class="two-col">
+        <div>
+          <div class="line"><div class="fill" id="week-progress"></div></div>
+          <p class="label" id="week-label"></p>
+        </div>
+        <div>
+          <div class="line"><div class="fill" id="week-raw"></div></div>
+          <p class="label" id="week-raw-label"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Měsíc</h2>
+      <div class="two-col">
+        <div>
+          <div class="line"><div class="fill" id="month-progress"></div></div>
+          <p class="label" id="month-label"></p>
+        </div>
+        <div>
+          <div class="line"><div class="fill" id="month-raw"></div></div>
+          <p class="label" id="month-raw-label"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Školní rok</h2>
+      <div class="two-col">
+        <div>
+          <div class="line"><div class="fill" id="year-progress"></div></div>
+          <p class="label" id="year-label"></p>
+        </div>
+        <div>
+          <div class="line"><div class="fill" id="year-raw"></div></div>
+          <p class="label" id="year-raw-label"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Celkem</h2>
+      <div class="two-col">
+        <div>
+          <div class="line"><div class="fill" id="total-progress"></div></div>
+          <p class="label" id="total-label"></p>
+        </div>
+        <div>
+          <div class="line"><div class="fill" id="total-raw"></div></div>
+          <p class="label" id="total-raw-label"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Maturita</h2>
+      <p class="label" id="maturita-label"></p>
+    </div>
+
+    <div id="dailyBlock" class="block">
+      <h2>Denní progres</h2>
+      <div class="dailyRow">
+        <div class="badge" id="dailyStatusBadge">Rozvrh…</div>
+        <div class="dailyText" id="dailyText">Načítám rozvrh…</div>
+      </div>
+      <div class="line" style="margin-top:10px;">
+        <div class="fill" id="day-progress"></div>
+      </div>
+      <p class="label" id="day-label"></p>
+    </div>
+
+    <div id="timetableBlock" class="block">
+      <h2>Rozvrh</h2>
+      <div class="hint">Zdroj: veřejný Bakaláři</div>
+      <iframe
+        id="timetableFrame"
+        class="iframe"
+        src="https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+      ></iframe>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
