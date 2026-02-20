@@ -29,7 +29,7 @@
 
       --border:#eee;
 
-      /* theme extras */
+      /* extra pro theme */
       --accent:#ff2ea6;
       --accent2:#ff5fd1;
       --glow: rgba(255,46,166,0.45);
@@ -38,7 +38,7 @@
       --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
     }
 
-    /* Dark theme (vráceno na původní “dokonalé”) */
+    /* Dark theme (PŘESNĚ jak v tvém snippet-u) */
     body.theme-dark{
       --bg:#0f1115;
       --card:#171a21;
@@ -56,14 +56,6 @@
       --badgeErr:#3a1f23;
 
       --border:#2a2f3a;
-
-      /* žádné modré akcenty */
-      --accent:#e7e9ee;
-      --accent2:#e7e9ee;
-      --glow: rgba(0,0,0,0.0);
-
-      --bgImage:none;
-      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
     }
 
     /* Loona theme */
@@ -89,12 +81,11 @@
       --accent2:#ff6bd8;
       --glow: rgba(255,46,166,0.55);
 
-      /* uloz do slozky: loona.jpg */
-      /* --bgImage: url("loona.jpg"); */
+      --bgImage: url("loona.jpg");
       --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
     }
 
-    /* SOBOKILL (Egypt) */
+    /* SOBOKILL theme (Egypt vibe, připravené na obrázek) */
     body.theme-sobokill{
       --bg:#070604;
       --card: rgba(18, 14, 8, 0.82);
@@ -117,13 +108,12 @@
       --accent2:#f1d07a;
       --glow: rgba(212,175,55,0.40);
 
-      /* uloz do slozky: sobokill.jpg */
-      /* --bgImage: url("sobokill.jpg"); */
+      --bgImage: url("sobokill.png");
       --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
     }
 
     /* =========================
-       BASE
+       BASE STYLES
        ========================= */
     *{ box-sizing:border-box; }
     body{
@@ -134,8 +124,8 @@
       background:
         var(--bgOverlay),
         var(--bgImage),
-        radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.10), transparent 55%),
-        radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.08), transparent 60%),
+        radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.14), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.12), transparent 60%),
         radial-gradient(1000px 650px at 30% 90%, rgba(212,175,55,0.10), transparent 60%),
         var(--bg);
       background-size: cover;
@@ -286,7 +276,6 @@
     .badge.live{ background:var(--badgeLive); }
     .badge.free{ background:var(--badgeFree); }
     .badge.err{ background:var(--badgeErr); }
-
     .dailyText{ font-weight:900; }
 
     .iframe{
@@ -297,7 +286,16 @@
       background:transparent;
     }
 
-    .statusOk{ color:#0a7a1f; font-weight:900; }
+    .footer{
+      margin-top: 18px;
+      padding: 14px 0 2px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .2px;
+      user-select: none;
+    }
   </style>
 </head>
 
@@ -332,7 +330,7 @@
         <span>Zobrazit denní progres</span>
       </label>
 
-      <p class="hint" id="statusHint"><span class="statusOk">Status: OK</span></p>
+      <p class="hint" id="statusHint">Status: OK</p>
     </div>
 
     <div class="grid2">
@@ -423,6 +421,8 @@
               loading="lazy"
               referrerpolicy="no-referrer"></iframe>
     </div>
+
+    <div class="footer">© 2026 All rights reserved • Version 1.2.27</div>
   </div>
 
 <script>
@@ -775,8 +775,6 @@
     if (!toggleDaily || toggleDaily.checked){
       updateDaily(now);
     }
-
-    setText("statusHint", "Status: OK");
   }
 
   function boot(){
