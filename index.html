@@ -29,6 +29,7 @@
 
       --border:#eee;
 
+      /* extra pro theme */
       --accent:#ff2ea6;
       --accent2:#ff5fd1;
       --glow: rgba(255,46,166,0.45);
@@ -36,13 +37,11 @@
       --bgImage: none;
       --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
 
-      /* Fancy timetable state colors */
+      /* fancy timetable states */
       --substBg: rgba(255, 80, 80, 0.18);
       --substBorder: rgba(255, 80, 80, 0.40);
-
       --cancelBg: rgba(255, 0, 60, 0.22);
       --cancelBorder: rgba(255, 0, 60, 0.55);
-
       --eventBg: rgba(59,181,74,0.22);
       --eventBorder: rgba(59,181,74,0.55);
 
@@ -51,6 +50,7 @@
       --ttSubjGlow: none;
     }
 
+    /* Dark theme (ten “dokonalej” tmavej) */
     body.theme-dark{
       --bg:#0f1115;
       --card:#171a21;
@@ -69,19 +69,11 @@
 
       --border:#2a2f3a;
 
-      --substBg: rgba(255, 80, 80, 0.20);
-      --substBorder: rgba(255, 80, 80, 0.48);
-
-      --cancelBg: rgba(255, 0, 60, 0.26);
-      --cancelBorder: rgba(255, 0, 60, 0.60);
-
-      --eventBg: rgba(59,181,74,0.18);
-      --eventBorder: rgba(59,181,74,0.50);
-
       --ttSubjColor: rgba(235, 240, 250, 0.95);
       --ttSubjGlow: none;
     }
 
+    /* Loona theme */
     body.theme-loona{
       --bg:#08060b;
       --card: rgba(18, 12, 22, 0.78);
@@ -120,6 +112,7 @@
       --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
     }
 
+    /* SOBOKILL theme */
     body.theme-sobokill{
       --bg:#070604;
       --card: rgba(18, 14, 8, 0.82);
@@ -180,7 +173,7 @@
       transition: background .2s ease, color .2s ease;
     }
 
-    .wrap{ max-width:1180px; margin:0 auto; }
+    .wrap{ max-width:1320px; margin:0 auto; }
     h1{
       margin:0 0 14px 0;
       text-align:center;
@@ -216,10 +209,47 @@
       box-shadow: 0 0 18px var(--glow);
     }
 
+    /* Main layout: grafy + addon panel */
+    .mainLayout{
+      display:grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap:14px;
+      align-items:start;
+    }
+
+    /* Původní grafy zůstanou 2 sloupce vedle sebe */
     .grid2{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:14px;
+      min-width:0;
+    }
+
+    /* Pravý doplňkový panel */
+    .addonCol{
+      display:flex;
+      flex-direction:column;
+      gap:0;
+      opacity:0.95;
+    }
+    .addonCol .block{ margin-top:0; }
+    .addonCol .block + .block{ margin-top:12px; }
+    .addonHead{
+      text-align:center;
+      font-weight:900;
+      color:var(--muted);
+      margin:0 0 8px 0;
+      font-size:12px;
+      letter-spacing:0.35px;
+      text-transform:uppercase;
+      opacity:0.9;
+    }
+    .addonCol .rowTitle{ font-size:16px; }
+    .addonCol .trackerMain{ font-size:14px; }
+
+    @media (max-width:1180px){
+      .mainLayout{ grid-template-columns: 1fr; }
+      .addonCol{ order:2; }
     }
     @media (max-width:980px){
       .grid2{ grid-template-columns: 1fr; }
@@ -255,7 +285,7 @@
       font-weight:900;
       color: var(--text);
     }
-    body.theme-loona .rowTitle{ color: var(--accent2); }
+    body.theme-loona .rowTitle,
     body.theme-sobokill .rowTitle{ color: var(--accent2); }
 
     .line{
@@ -295,6 +325,7 @@
       gap:10px;
       margin:10px 0 6px;
       font-weight:900;
+      flex-wrap: wrap;
     }
     select{
       padding:8px 10px;
@@ -325,82 +356,6 @@
     .dailyText{ font-weight:900; }
 
     /* =========================
-       SIDE PANELS: Events + Cafa
-       ========================= */
-    .stackList{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .stackItem{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:10px 12px;
-      background: rgba(255,255,255,0.04);
-      box-shadow: 0 1px 6px var(--shadow);
-    }
-    .stackItem.muted{
-      color: var(--muted);
-      font-weight: 900;
-    }
-    .eventItem{
-      border-left: 4px solid var(--green);
-    }
-    .eventTitle{
-      font-weight: 1000;
-      font-size: 14px;
-      line-height: 1.2;
-    }
-    .eventMeta{
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
-      line-height: 1.3;
-    }
-    .eventDesc{
-      margin-top: 6px;
-      font-size: 12px;
-      line-height: 1.35;
-      color: var(--text);
-      font-weight: 800;
-      opacity: .95;
-    }
-
-    .trackerCard{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:12px;
-      background: rgba(255,255,255,0.04);
-      box-shadow: 0 2px 10px var(--shadow);
-    }
-    .trackerBadge{
-      display:inline-block;
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:1000;
-      background: var(--badge);
-      color: var(--text);
-      margin-bottom:8px;
-    }
-    .trackerBadge.live{ background: var(--badgeLive); }
-    .trackerBadge.shadow{ background: var(--badgeFree); }
-    .trackerBadge.err{ background: var(--badgeErr); }
-    .trackerMain{
-      font-weight: 1000;
-      font-size: 15px;
-      line-height: 1.25;
-    }
-    .trackerSub{
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
-      line-height: 1.35;
-    }
-
-    /* =========================
        FANCY TIMETABLE
        ========================= */
     .timetable .tt-top{
@@ -426,26 +381,18 @@
       color: var(--muted);
       font-weight: 900;
       font-size: 12px;
-      margin-left: 8px;
-    }
-    .tt-metaRow{
-      display:flex;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:flex-end;
     }
 
     .tt-gridWrap{
-      overflow-x:auto;
-      padding-bottom:4px;
+      overflow:auto;
+      padding-bottom: 4px;
     }
 
     .tt-grid{
       display:grid;
-      grid-template-columns: 58px repeat(var(--cols), minmax(120px, 1fr));
+      grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
       gap:10px;
-      min-width: 920px;
+      min-width: 940px;
     }
 
     .tt-corner{ height:44px; }
@@ -474,10 +421,6 @@
       font-weight: 900;
       color: var(--muted);
       background: rgba(255,255,255,0.03);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height: 78px;
     }
 
     .tt-cell{
@@ -490,7 +433,6 @@
       overflow: hidden;
       min-height: 78px;
       transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-      cursor: default;
     }
     .tt-cell:hover{
       transform: translateY(-1px);
@@ -517,9 +459,7 @@
       font-size: 22px;
       color: var(--ttSubjColor) !important;
       text-shadow: var(--ttSubjGlow);
-      line-height: 1;
     }
-
     .tt-teacher{
       font-weight: 900;
       color: var(--muted);
@@ -527,7 +467,6 @@
       margin-top: 8px;
       opacity: 0.95;
     }
-
     .tt-empty{
       display:flex;
       align-items:center;
@@ -543,7 +482,6 @@
       background: var(--eventBg);
       box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25);
     }
-
     .tt-subst{
       border-color: var(--substBorder);
       background: var(--substBg);
@@ -566,17 +504,11 @@
       box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
     }
 
-    .tt-cell.current{
-      outline: 2px solid rgba(0,170,255,0.85);
-      outline-offset: -2px;
-      box-shadow: 0 0 0 1px rgba(0,170,255,0.55) inset, 0 0 20px rgba(0,170,255,0.22);
-    }
-
     /* Tooltip */
     .tt-tooltip{
       position: fixed;
       z-index: 9999;
-      max-width: 360px;
+      max-width: 340px;
       padding: 10px 12px;
       border-radius: 12px;
       border: 1px solid var(--border);
@@ -607,16 +539,98 @@
     .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
     .tt-tooltip .v{ color: #fff; text-align:right; }
 
+    /* =========================
+       ADDON PANEL
+       ========================= */
+    .stackList{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .stackItem{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:10px;
+      padding:10px;
+    }
+    .stackItem.muted{
+      color:var(--muted);
+      font-weight:900;
+      text-align:center;
+    }
+    .stackItem.event{
+      border-color: var(--eventBorder);
+      background: linear-gradient(180deg, rgba(59,181,74,0.10), rgba(59,181,74,0.04));
+    }
+    .eventTitle{
+      font-weight:1000;
+      font-size:13px;
+      margin-bottom:4px;
+      color: var(--text);
+    }
+    .eventMeta{
+      font-weight:900;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .eventDesc{
+      margin-top:6px;
+      font-size:11px;
+      font-weight:900;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    .trackerCard{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:12px;
+      padding:12px;
+    }
+    .trackerBadge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:1000;
+      font-size:11px;
+      margin-bottom:8px;
+    }
+    .trackerMain{
+      font-weight:1000;
+      line-height:1.35;
+      margin-bottom:6px;
+    }
+    .trackerSub{
+      color:var(--muted);
+      font-weight:900;
+      font-size:11px;
+      line-height:1.35;
+    }
+
     .footer{
       margin-top: 18px;
-      padding: 14px 0 2px;
+      padding: 14px 0 4px;
       text-align: center;
       color: var(--muted);
       font-weight: 900;
       font-size: 12px;
       letter-spacing: .2px;
       user-select: none;
+      line-height: 1.6;
     }
+    .footer a{
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,0.25);
+      opacity: 0.95;
+    }
+    .footer a:hover{
+      opacity: 1;
+      border-bottom-style: solid;
+    }
+    .footer .footerBy{ font-size: 13px; }
+    .footer .footerSep{ opacity: .55; margin: 0 6px; }
   </style>
 </head>
 
@@ -651,42 +665,87 @@
         <span>Zobrazit denní progres</span>
       </label>
 
-      <p class="hint" id="statusHint">Status: OK</p>
-      <p class="hint">Hover / tap na buňku rozvrhu = detail. Backend fallback na lokální data je zapnutý.</p>
+      <label class="toggle">
+        <input type="checkbox" id="toggleAddon" checked />
+        <span>Zobrazit addon panel (Události + Cáfa Tracker)</span>
+      </label>
+
+      <p class="hint" id="statusHint">Status: OK • fancy rozvrh + backend fallback</p>
     </div>
 
-    <div class="grid2">
-      <div>
-        <div class="colHead">Real-Time</div>
+    <!-- MAIN GRAPH + ADDON -->
+    <div class="mainLayout">
+      <div class="grid2">
+        <div>
+          <div class="colHead">Real-Time</div>
 
-        <div class="block">
-          <div class="rowTitle">Týden</div>
-          <div class="line"><div class="fill" id="rt-week"></div></div>
-          <p class="label" id="rt-week-label"></p>
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="rt-week"></div></div>
+            <p class="label" id="rt-week-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="rt-month"></div></div>
+            <p class="label" id="rt-month-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="rt-year"></div></div>
+            <p class="label" id="rt-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="rt-total"></div></div>
+            <p class="label" id="rt-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="rt-maturita-label"></p>
+          </div>
         </div>
 
-        <div class="block">
-          <div class="rowTitle">Měsíc</div>
-          <div class="line"><div class="fill" id="rt-month"></div></div>
-          <p class="label" id="rt-month-label"></p>
-        </div>
+        <div>
+          <div class="colHead">Raw-Time</div>
 
-        <div class="block">
-          <div class="rowTitle">Školní rok</div>
-          <div class="line"><div class="fill" id="rt-year"></div></div>
-          <p class="label" id="rt-year-label"></p>
-        </div>
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="raw-week"></div></div>
+            <p class="label" id="raw-week-label"></p>
+          </div>
 
-        <div class="block">
-          <div class="rowTitle">Celkem</div>
-          <div class="line"><div class="fill" id="rt-total"></div></div>
-          <p class="label" id="rt-total-label"></p>
-        </div>
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="raw-month"></div></div>
+            <p class="label" id="raw-month-label"></p>
+          </div>
 
-        <div class="block">
-          <div class="rowTitle">Maturita</div>
-          <p class="label" id="rt-maturita-label"></p>
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="raw-year"></div></div>
+            <p class="label" id="raw-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="raw-total"></div></div>
+            <p class="label" id="raw-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="raw-maturita-label"></p>
+          </div>
         </div>
+      </div>
+
+      <!-- ADDON PANEL -->
+      <aside id="addonPanel" class="addonCol" aria-label="Doplňkové funkce">
+        <div class="addonHead">Addon panel</div>
 
         <div class="block" id="eventsBlock">
           <div class="rowTitle">Události</div>
@@ -703,40 +762,7 @@
             <div class="trackerSub" id="cafaSub">—</div>
           </div>
         </div>
-      </div>
-
-      <div>
-        <div class="colHead">Raw-Time</div>
-
-        <div class="block">
-          <div class="rowTitle">Týden</div>
-          <div class="line"><div class="fill" id="raw-week"></div></div>
-          <p class="label" id="raw-week-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Měsíc</div>
-          <div class="line"><div class="fill" id="raw-month"></div></div>
-          <p class="label" id="raw-month-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Školní rok</div>
-          <div class="line"><div class="fill" id="raw-year"></div></div>
-          <p class="label" id="raw-year-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Celkem</div>
-          <div class="line"><div class="fill" id="raw-total"></div></div>
-          <p class="label" id="raw-total-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Maturita</div>
-          <p class="label" id="raw-maturita-label"></p>
-        </div>
-      </div>
+      </aside>
     </div>
 
     <div id="dailyBlock" class="block">
@@ -752,14 +778,14 @@
       <p class="hint" id="dailyDebug"></p>
     </div>
 
+    <!-- FANCY TIMETABLE -->
     <div id="timetableBlock" class="block timetable">
       <div class="tt-top">
         <div>
           <div class="rowTitle">Rozvrh</div>
-          <div class="tt-sub" id="ttSub">DE3A • Týdenní přehled</div>
+          <div class="tt-sub" id="ttSub">DE3A • Týdenní přehled • fancy</div>
         </div>
-        <div class="tt-metaRow">
-          <span class="tt-badge" id="ttSourceBadge">Zdroj: —</span>
+        <div class="tt-meta">
           <span class="tt-badge" id="ttUpdated">Aktualizováno: —</span>
         </div>
       </div>
@@ -768,10 +794,17 @@
         <div class="tt-grid" id="ttGrid" style="--cols: 7;"></div>
       </div>
 
-      <p class="hint">Legenda: zelená = akce • theme barva = suplování • červená šrafovaná = odpadlo</p>
+      <p class="hint">Hover / tap na buňku = detail • zelená = akce • theme barva = suplování • červená šrafovaná = odpadlo</p>
     </div>
 
-    <div class="footer">© 2026 All rights reserved • Version 1.2.27</div>
+    <div class="footer">
+      <div class="footerBy">Created By Johnny Hotovost</div>
+      <div>
+        <span>© 2026 All rights reserved</span>
+        <span class="footerSep">•</span>
+        <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
+      </div>
+    </div>
   </div>
 
   <div class="tt-tooltip" id="ttTooltip" aria-hidden="true"></div>
@@ -780,22 +813,15 @@
   /* =========================
      CONFIG
      ========================= */
-  // TODO: změň na svůj worker
-  const API_BASE = "https://YOUR-WORKER.workers.dev";
-
-  // Třída (backend endpoint /api/timetable?class=5A&type=Actual)
-  const CLASS_ID = "5A";
   const CLASS_NAME = "DE3A";
-
-  // Jan Cafourek teacher endpoint (z tvého linku)
-  const CAFA_TEACHER_ID = "UV069";
-
-  // Endpointy (worker)
-  const CLASS_URL = `${API_BASE}/api/timetable?class=${encodeURIComponent(CLASS_ID)}&type=Actual`;
-  const TEACHER_URL = `${API_BASE}/api/timetable?teacher=${encodeURIComponent(CAFA_TEACHER_ID)}&type=Actual`;
+  // Tvůj worker endpoint (uprav podle svého)
+  const BACKEND_CLASS_API = "/api/timetable?class=5A&type=Actual";
+  // Pokud dáš i parser pro učitele, můžeš použít:
+  const BACKEND_TEACHER_API = "/api/timetable?teacher=UV069&type=Actual";
+  const CORS_PROXY_ALLOWED = true; // jen info do statusu
 
   /* =========================
-     LOCAL FALLBACK TIMETABLE DATA (DE3A)
+     TIMES + LOCAL FALLBACKS
      ========================= */
   const TIMES = [
     {start:"07:55", end:"08:40"},
@@ -807,8 +833,8 @@
     {start:"13:40", end:"14:25"},
   ];
 
-  // fallback DE3A
-  const SCHEDULE = {
+  // Lokální fallback rozvrh třídy (DE3A)
+  const LOCAL_CLASS_SCHEDULE = {
     Mon: [
       {subj:"MAT", room:"UČ10", teacher:"RYB"},
       {subj:"NEJ", room:"UČ11", teacher:"PRH"},
@@ -833,8 +859,8 @@
       {subj:"VYA", room:"UČ10", teacher:"KOO"},
       {subj:"ELT", room:"UČ10", teacher:"CAJ"},
       {subj:"SWA", room:"UČ10", teacher:"CAJ"},
-      {subj:"ANJ", room:"UČ14", teacher:"KLM"},
-      {subj:"ANJ", room:"UČ14", teacher:"KLM"},
+      {subj:"ANJ", room:"UČ14", teacher:"KLE"},
+      {subj:"ANJ", room:"UČ14", teacher:"KLE"},
     ],
     Thu: [
       {subj:"VYT", room:"UČ10", teacher:"KIN"},
@@ -856,90 +882,60 @@
     ],
   };
 
-  // fallback "události" / markery do fancy rozvrhu
-  const FALLBACK_MARKS = [
-    { day:"Wed", idx:0, type:"event", title:"Akce", room:"", note:"Školní akce / placeholder" },
-    { day:"Wed", idx:1, type:"event", title:"Akce", room:"", note:"Školní akce / placeholder" },
-    { day:"Wed", idx:2, type:"event", title:"Akce", room:"", note:"Školní akce / placeholder" }
-  ];
-
-  // fallback pro Cáfu z fotky (teacher UV069) – orientační, než backend teacher parser poběží dobře
-  // indexy 0..13 = hodiny 1..14 na teacher rozvrhu
-  const CAFA_FALLBACK_TEACHER_TIMES = [
-    {start:"07:55", end:"08:40"},
-    {start:"08:50", end:"09:35"},
-    {start:"09:50", end:"10:35"},
-    {start:"10:45", end:"11:30"},
-    {start:"11:35", end:"12:20"},
-    {start:"12:50", end:"13:35"},
-    {start:"13:40", end:"14:25"},
-    {start:"14:30", end:"15:15"},
-    {start:"15:20", end:"16:05"},
-    {start:"16:10", end:"16:55"},
-    {start:"17:00", end:"17:45"},
-    {start:"17:45", end:"18:30"},
-    {start:"18:30", end:"19:15"},
-    {start:"19:15", end:"20:00"},
-  ];
-
-  // Podle screenshotu teacher UV069 (orientační fallback; backend má mít prioritu)
-  const CAFA_FALLBACK_SCHEDULE = {
+  // Lokální fallback "Cáfa" (Jan Cafourek) podle tvého screenshotu (učitel UV069)
+  // Pozn.: jen přibližný fallback; backend parser to může přepsat.
+  const LOCAL_CAFA_SCHEDULE = {
     Mon: [
-      {subj:"TEK", room:"uČ04", className:"DE1E"},
-      {subj:"TEK", room:"uČ04", className:"DE1E"},
-      {subj:"FYZ", room:"uČ04", className:"DE1E"},
+      {subj:"TEK", room:"UČD4", cls:"DE1C", teacher:"Cáfa"},
+      {subj:"TEK", room:"UČD4", cls:"DE1C", teacher:"Cáfa"},
+      {subj:"FYZ", room:"UČD4", cls:"DE1C", teacher:"Cáfa"},
       null,
-      {subj:"FYZ", room:"uČ06", className:"DE1B"},
-      null,null,null,null,null,null,null,null,null
+      {subj:"FYZ", room:"UČD6", cls:"DE1B", teacher:"Cáfa"},
+      null, null
     ],
     Tue: [
-      {subj:"ZPG", room:"uČ13", className:"DE4C"},
-      {subj:"ZPG", room:"uČ13", className:"DE4C"},
-      {subj:"FYZ", room:"uČ9", className:"DE1A"},
-      {subj:"SWA", room:"uČ13", className:"DE4C"},
-      {subj:"SWA", room:"uČ13", className:"DE4C"},
+      {subj:"ZPG", room:"UČ13", cls:"DE4A", teacher:"Cáfa"},
+      {subj:"ZPG", room:"UČ13", cls:"DE4A", teacher:"Cáfa"},
+      {subj:"FYZ", room:"UČ9", cls:"DE1A", teacher:"Cáfa"},
+      {subj:"SWA", room:"UČ13", cls:"DE4A", teacher:"Cáfa"},
+      {subj:"SWA", room:"UČ13", cls:"DE4A", teacher:"Cáfa"},
       null,
-      {subj:"ELT", room:"uČ10", className:"DE3A"},
-      null,
-      {subj:"ZPG", room:"VT3", className:"DS3IT"},
-      {subj:"ZPG", room:"VT3", className:"DS3IT"},
-      {subj:"PGR", room:"VT3", className:"DS3IT"},
-      {subj:"PGR", room:"VT3", className:"DS3IT"},
-      {subj:"SWA", room:"VT3", className:"DS3IT"},
-      {subj:"SWA", room:"VT3", className:"DS3IT"},
+      {subj:"ELT", room:"UČ10", cls:"DE3A", teacher:"Cáfa"},
     ],
     Wed: [
-      {subj:"Akce", room:"", className:"", type:"event", note:"Školní akce / suplovaná pohotovost"},
-      {subj:"Akce", room:"", className:"", type:"event", note:"Školní akce / suplovaná pohotovost"},
-      {subj:"Akce", room:"", className:"", type:"event", note:"Školní akce / suplovaná pohotovost"},
-      {subj:"ELT", room:"uČ10", className:"DE3A"},
-      {subj:"SWA", room:"uČ10", className:"DE3A"},
+      {subj:"Absc", room:"", cls:"", teacher:"Cáfa", type:"event", note:"Akce / mimo běžnou výuku"},
+      {subj:"Absc", room:"", cls:"", teacher:"Cáfa", type:"event", note:"Akce / mimo běžnou výuku"},
+      {subj:"Absc", room:"", cls:"", teacher:"Cáfa", type:"event", note:"Akce / mimo běžnou výuku"},
+      {subj:"ELT", room:"UČ10", cls:"DE3A", teacher:"Cáfa"},
+      {subj:"SWA", room:"UČ10", cls:"DE3A", teacher:"Cáfa"},
       null,
-      null,
-      null,
-      {subj:"PGR", room:"VT3", className:"DS3IT"},
-      {subj:"PGR", room:"VT3", className:"DS3IT"},
-      {subj:"ZPG", room:"VT3", className:"DS3IT"},
-      {subj:"ZPG", room:"VT3", className:"DS3IT"},
-      {subj:"ZPG", room:"VT1", className:"DS3IT"},
-      {subj:"ZPG", room:"VT1", className:"DS3IT"},
+      null
     ],
     Thu: [
-      null,null,null,null,null,
-      {subj:"SWA", room:"uČ10", className:"DE2A"},
-      {subj:"SWA", room:"uČ10", className:"DE2A"},
-      null,null,null,null,null,null,null
+      null, null, null, null, null,
+      {subj:"SWA", room:"UČ10", cls:"DE2A", teacher:"Cáfa"},
+      {subj:"SWA", room:"UČ10", cls:"DE2A", teacher:"Cáfa"},
     ],
     Fri: [
-      {subj:"SWA", room:"uČ10", className:"DE3A"},
-      {subj:"SWA", room:"uČ10", className:"DE3A"},
-      {subj:"TEK", room:"uČ18", className:"DE4B"},
-      {subj:"FYZ", room:"uČ9", className:"DE1A"},
-      {subj:"SWA", room:"VT3", className:"DE4C"},
-      {subj:"TEK", room:"uČ18", className:"DE4B"},
-      null,null,null,null,null,null,null,null
+      {subj:"SWA", room:"UČ10", cls:"DE3A", teacher:"Cáfa"},
+      {subj:"SWA", room:"UČ10", cls:"DE3A", teacher:"Cáfa"},
+      {subj:"TEK", room:"UČ18", cls:"DE4B", teacher:"Cáfa"},
+      {subj:"FYZ", room:"UČ9", cls:"DE1A", teacher:"Cáfa"},
+      {subj:"SWA", room:"VT3", cls:"DE4A", teacher:"Cáfa"},
+      {subj:"TEK", room:"UČ18", cls:"DE4B", teacher:"Cáfa"},
+      null,
     ]
   };
+
+  /* =========================
+     OPTIONAL local visual marks (demo/fallback)
+     - budou přepsány backendem pokud parser vrátí eventy/suplování
+     ========================= */
+  const LOCAL_MARKS = [
+    { day:"Wed", idx:0, type:"event", title:"Akce", room:"", note:"Školní akce" },
+    { day:"Wed", idx:1, type:"event", title:"Akce", room:"", note:"Školní akce" },
+    { day:"Wed", idx:2, type:"event", title:"Akce", room:"", note:"Školní akce" },
+  ];
 
   /* =========================
      PROGRESS DATA
@@ -972,28 +968,22 @@
   const DIRECTOR_DAYS = [];
 
   /* =========================
-     LIVE DATA STATE
+     STATE
      ========================= */
-  let LIVE_SOURCE = "local";             // "backend" | "local"
-  let LIVE_SOURCE_DETAIL = "fallback";
-  let ACTIVE_TIMES = structuredClone(TIMES);
-  let ACTIVE_SCHEDULE = structuredClone(SCHEDULE);
-  let ACTIVE_MARKS = structuredClone(FALLBACK_MARKS);
-  let ACTIVE_EVENTS = [];                // panel Události
-  let ACTIVE_CLASS_META = { className: CLASS_NAME, updatedAt: null };
-  let ACTIVE_TEACHER_FEED = null;        // parsed current/next for Cáfa if backend supports it
-  let ACTIVE_TEACHER_RAW = null;         // teacher timetable raw normalized
-  let LAST_BACKEND_ERROR = "";
-
-  const CAFA_TEACHER_MATCH = ["cafourek", "jan cafourek", "caj", "caf"];
+  const state = {
+    classSchedule: structuredClone(LOCAL_CLASS_SCHEDULE),
+    classMarks: [...LOCAL_MARKS],
+    classSource: "local",
+    cafaSchedule: structuredClone(LOCAL_CAFA_SCHEDULE),
+    cafaSource: "local",
+    lastBackendSync: null
+  };
 
   /* =========================
      Helpers
      ========================= */
   const $ = (id) => document.getElementById(id);
   const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
-  const safeStr = (v) => (v == null ? "" : String(v)).trim();
-
   const setBar = (id, pct, weekend=false) => {
     const n = $(id); if (!n) return;
     n.style.width = clamp(pct).toFixed(2) + "%";
@@ -1013,38 +1003,21 @@
   }
 
   function two(n){ return String(n).padStart(2,"0"); }
-
   function formatDateCZ(d){
-    const dd = String(d.getDate()).padStart(2,"0");
-    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const dd = two(d.getDate());
+    const mm = two(d.getMonth()+1);
     const yy = d.getFullYear();
     return `${dd}.${mm}.${yy}`;
   }
-
-  function formatDateTimeCZ(d){
+  function formatDateCZDateTime(d){
     return `${formatDateCZ(d)} ${two(d.getHours())}:${two(d.getMinutes())}`;
   }
-
-  function timeToMin(hhmm){
-    const s = safeStr(hhmm).replace(/\s/g,'');
-    const m = s.match(/^(\d{1,2}):(\d{2})$/);
-    if (!m) return null;
-    return Number(m[1])*60 + Number(m[2]);
+  function dayKeyFromDate(d){
+    const dow = d.getDay();
+    return (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":(dow===5)?"Fri":null;
   }
-
-  function normalizeTimeStr(str){
-    const s = safeStr(str);
-    if (!s) return "";
-    const m = s.match(/^(\d{1,2}):(\d{1,2})$/);
-    if (!m) return s;
-    return `${two(Number(m[1]))}:${two(Number(m[2]))}`;
-  }
-
-  function getTimesMin(){
-    return (ACTIVE_TIMES || []).map(t => ({
-      startMin: timeToMin(t.start),
-      endMin: timeToMin(t.end)
-    }));
+  function dayLabelCz(dayKey){
+    return ({Mon:"Po", Tue:"Út", Wed:"St", Thu:"Čt", Fri:"Pá"})[dayKey] || dayKey || "—";
   }
 
   function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
@@ -1089,20 +1062,22 @@
     return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
   }
 
-  function dayNumToKey(n){
-    return n===1?"Mon":n===2?"Tue":n===3?"Wed":n===4?"Thu":n===5?"Fri":null;
+  function timeToMin(hhmm){
+    const [h,m] = hhmm.split(":").map(Number);
+    return h*60 + m;
   }
-  function dayKeyToCZ(k){
-    return ({Mon:"Po", Tue:"Út", Wed:"St", Thu:"Čt", Fri:"Pá"})[k] || k || "";
-  }
+  const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
 
-  function escapeHtml(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#39;");
+  function fmtLesson(x){
+    if (!x) return null;
+    return x.room ? `${x.subj} (${x.room})` : x.subj;
+  }
+  function countTodayLessons(arr){
+    let last = -1;
+    for (let i=0;i<arr.length;i++){
+      if (arr[i] && arr[i].subj) last = i;
+    }
+    return Math.max(last+1, 0);
   }
 
   /* =========================
@@ -1122,300 +1097,141 @@
     const panel = $("settingsPanel");
     const toggleTT = $("toggleTimetable");
     const toggleDaily = $("toggleDaily");
+    const toggleAddon = $("toggleAddon");
+
     const timetableBlock = $("timetableBlock");
     const dailyBlock = $("dailyBlock");
+    const addonPanel = $("addonPanel");
+
     const themeSelect = $("themeSelect");
 
     btn.addEventListener("click", () => panel.classList.toggle("hidden"));
-    toggleTT.addEventListener("change", () => timetableBlock.classList.toggle("hidden", !toggleTT.checked));
-    toggleDaily.addEventListener("change", () => dailyBlock.classList.toggle("hidden", !toggleDaily.checked));
+
+    toggleTT.addEventListener("change", () =>
+      timetableBlock.classList.toggle("hidden", !toggleTT.checked)
+    );
+
+    toggleDaily.addEventListener("change", () =>
+      dailyBlock.classList.toggle("hidden", !toggleDaily.checked)
+    );
+
+    if (toggleAddon && addonPanel){
+      toggleAddon.addEventListener("change", () =>
+        addonPanel.classList.toggle("hidden", !toggleAddon.checked)
+      );
+    }
+
     themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
 
-    const saved = localStorage.getItem("sp_theme") || "dark";
-    applyTheme(saved);
+    const savedTheme = localStorage.getItem("sp_theme") || "dark";
+    applyTheme(savedTheme);
+
+    const savedTT = localStorage.getItem("sp_toggle_tt");
+    const savedDaily = localStorage.getItem("sp_toggle_daily");
+    const savedAddon = localStorage.getItem("sp_toggle_addon");
+
+    if (savedTT !== null) toggleTT.checked = savedTT === "1";
+    if (savedDaily !== null) toggleDaily.checked = savedDaily === "1";
+    if (savedAddon !== null && toggleAddon) toggleAddon.checked = savedAddon === "1";
+
+    timetableBlock.classList.toggle("hidden", !toggleTT.checked);
+    dailyBlock.classList.toggle("hidden", !toggleDaily.checked);
+    if (addonPanel && toggleAddon){
+      addonPanel.classList.toggle("hidden", !toggleAddon.checked);
+    }
+
+    toggleTT.addEventListener("change", () => localStorage.setItem("sp_toggle_tt", toggleTT.checked ? "1" : "0"));
+    toggleDaily.addEventListener("change", () => localStorage.setItem("sp_toggle_daily", toggleDaily.checked ? "1" : "0"));
+    if (toggleAddon){
+      toggleAddon.addEventListener("change", () => localStorage.setItem("sp_toggle_addon", toggleAddon.checked ? "1" : "0"));
+    }
   }
 
   /* =========================
-     Backend normalization
+     Daily progress
      ========================= */
-
-  // Normalize backend class timetable to our structure
-  function normalizeBackendClassPayload(data){
-    const result = {
-      ok: false,
-      times: structuredClone(TIMES),
-      schedule: structuredClone(SCHEDULE),
-      marks: [],
-      events: [],
-      classMeta: { className: CLASS_NAME, updatedAt: new Date().toISOString() }
-    };
-
-    if (!data || typeof data !== "object") return result;
-    if (!data.ok) return result;
-
-    // times
-    if (Array.isArray(data.times) && data.times.length){
-      const times = data.times.map(t => ({
-        start: normalizeTimeStr(t?.start || ""),
-        end: normalizeTimeStr(t?.end || "")
-      })).filter(t => t.start && t.end);
-      if (times.length) result.times = times;
-    }
-
-    // days
-    const backendDays = data.days || data.timetable || {};
-    const normalizedDays = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
-    for (const key of ["Mon","Tue","Wed","Thu","Fri"]){
-      const arr = Array.isArray(backendDays[key]) ? backendDays[key] : [];
-      normalizedDays[key] = arr.map(x => {
-        if (!x) return null;
-        return {
-          subj: safeStr(x.subj || x.subject || x.code || x.abbr || x.name),
-          room: safeStr(x.room || x.classroom || x.location),
-          teacher: safeStr(x.teacher || x.teacherCode || x.teacherShort || x.teacherName),
-          className: safeStr(x.className || x.class || CLASS_NAME),
-          note: safeStr(x.note || x.description || x.text),
-          type: safeStr(x.type || "")
-        };
-      });
-      while (normalizedDays[key].length < result.times.length){
-        normalizedDays[key].push(null);
-      }
-    }
-    // pokud backend vrátil aspoň něco smysluplného
-    const hasAnyLesson = Object.values(normalizedDays).some(arr =>
-      arr.some(cell => cell && (cell.subj || cell.room || cell.teacher))
-    );
-    if (hasAnyLesson){
-      result.schedule = normalizedDays;
-    }
-
-    // markery / události v buňkách
-    // podporované inputy: data.marks[] nebo příznaky přímo v cells
-    const marks = [];
-    if (Array.isArray(data.marks)){
-      for (const m of data.marks){
-        const day = safeStr(m.day);
-        const idx = Number(m.idx);
-        if (!["Mon","Tue","Wed","Thu","Fri"].includes(day)) continue;
-        if (!Number.isInteger(idx)) continue;
-        marks.push({
-          day,
-          idx,
-          type: safeStr(m.type || "").toLowerCase(), // event | subst | cancel
-          title: safeStr(m.title || "Akce"),
-          room: safeStr(m.room),
-          note: safeStr(m.note || m.description || m.text)
-        });
-      }
-    }
-
-    // Heuristika: když buňka má type/event/subst/cancel, zvedneme mark
-    for (const day of ["Mon","Tue","Wed","Thu","Fri"]){
-      (result.schedule[day] || []).forEach((cell, idx) => {
-        if (!cell) return;
-        const t = safeStr(cell.type).toLowerCase();
-        if (["event","subst","cancel"].includes(t)){
-          marks.push({
-            day, idx, type:t,
-            title: safeStr(cell.subj || "Akce"),
-            room: safeStr(cell.room || ""),
-            note: safeStr(cell.note || "")
-          });
-        }
-      });
-    }
-    result.marks = dedupeMarks(marks);
-
-    // events panel
-    result.events = normalizeBackendEvents(data.events || data.schoolEvents || []);
-
-    // meta
-    const className = safeStr(data.className || data.source?.classId || CLASS_NAME);
-    const updatedAt = safeStr(data.generatedAt || data.updatedAt || new Date().toISOString());
-    result.classMeta = { className, updatedAt };
-
-    result.ok = true;
-    return result;
+  function setDailyBadge(kind, text){
+    const b=$("dailyBadge");
+    b.className = "badge" + (kind ? (" "+kind) : "");
+    b.textContent = text;
   }
 
-  function dedupeMarks(list){
-    const map = new Map();
-    for (const m of list || []){
-      const key = `${m.day}|${m.idx}`;
-      if (!map.has(key)) map.set(key, m);
-    }
-    return [...map.values()];
-  }
+  function updateDaily(now){
+    const dayKey = dayKeyFromDate(now);
 
-  function normalizeBackendEvents(list){
-    if (!Array.isArray(list)) return [];
-    return list.map(ev => {
-      const title = safeStr(ev.title || ev.name || ev.subject || ev.label || "Akce");
-      const desc = safeStr(ev.desc || ev.description || ev.note || ev.text);
-      const place = safeStr(ev.place || ev.room || ev.location);
-
-      let dateLabel = safeStr(ev.dateLabel || ev.date || "");
-      let timeLabel = safeStr(ev.timeLabel || ev.time || "");
-      let ts = null;
-
-      const rawDateTime = safeStr(ev.datetime || ev.dateTime || ev.start);
-      if (rawDateTime){
-        const d = new Date(rawDateTime);
-        if (!Number.isNaN(d.getTime())){
-          ts = d.getTime();
-          if (!dateLabel) dateLabel = formatDateCZ(d);
-          if (!timeLabel) timeLabel = `${two(d.getHours())}:${two(d.getMinutes())}`;
-        }
-      }
-      return { title, desc, place, dateLabel, timeLabel, _ts: ts };
-    }).filter(ev => ev.title || ev.desc || ev.place);
-  }
-
-  // Normalize teacher payload (Cáfa) from backend worker
-  // Supports:
-  // 1) explicit { current, next }
-  // 2) timetable-like { times, days }
-  function normalizeBackendTeacherPayload(data){
-    if (!data || typeof data !== "object" || !data.ok) return null;
-
-    // explicit tracker feed
-    const explicit = data.teacherTracker || data.tracker || data.currentNext;
-    if (explicit && typeof explicit === "object"){
-      const out = {
-        current: explicit.current ? normalizeTeacherCurrentNextItem(explicit.current) : null,
-        next: explicit.next ? normalizeTeacherCurrentNextItem(explicit.next) : null,
-        source: "explicit"
-      };
-      if (out.current || out.next) return out;
+    if (!dayKey){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
+      return;
     }
 
-    // timetable-like
-    const times = Array.isArray(data.times) ? data.times.map(t => ({
-      start: normalizeTimeStr(t?.start || ""),
-      end: normalizeTimeStr(t?.end || "")
-    })) : null;
+    const lessons = (state.classSchedule[dayKey] || []).slice(0, TIMES_MIN.length);
+    const totalToday = countTodayLessons(lessons) || TIMES_MIN.length;
 
-    const daysObj = data.days && typeof data.days === "object" ? data.days : null;
-    if (times && times.length && daysObj){
-      const days = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
-      for (const key of ["Mon","Tue","Wed","Thu","Fri"]){
-        const arr = Array.isArray(daysObj[key]) ? daysObj[key] : [];
-        days[key] = arr.map(x => x ? ({
-          subj: safeStr(x.subj || x.subject || x.code || x.abbr || x.name),
-          room: safeStr(x.room || x.classroom || x.location),
-          teacher: safeStr(x.teacher || x.teacherName || "Jan Cafourek"),
-          className: safeStr(x.className || x.class || ""),
-          note: safeStr(x.note || x.description || x.text),
-          type: safeStr(x.type || "")
-        }) : null);
-      }
-      return { times, days, source: "timetable" };
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const first = TIMES_MIN[0];
+    const last = TIMES_MIN[totalToday-1] || TIMES_MIN[TIMES_MIN.length-1];
+
+    if (nowMin > last.endMin){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      return;
     }
 
-    return null;
-  }
-
-  function normalizeTeacherCurrentNextItem(x){
-    return {
-      subj: safeStr(x.subj || x.subject || x.name),
-      room: safeStr(x.room || x.classroom || x.location),
-      teacher: safeStr(x.teacher || x.teacherName || "Jan Cafourek"),
-      className: safeStr(x.className || x.class || ""),
-      note: safeStr(x.note || x.description || x.text),
-      start: normalizeTimeStr(x.start || ""),
-      end: normalizeTimeStr(x.end || "")
-    };
-  }
-
-  async function loadBackendClassTimetable(){
-    try{
-      const res = await fetch(CLASS_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      const norm = normalizeBackendClassPayload(data);
-
-      if (!norm.ok){
-        throw new Error("Backend class payload not usable");
-      }
-
-      ACTIVE_TIMES = norm.times;
-      ACTIVE_SCHEDULE = norm.schedule;
-      ACTIVE_MARKS = norm.marks.length ? norm.marks : structuredClone(FALLBACK_MARKS);
-      ACTIVE_EVENTS = norm.events;
-      ACTIVE_CLASS_META = norm.classMeta;
-      LIVE_SOURCE = "backend";
-      LIVE_SOURCE_DETAIL = "class";
-      LAST_BACKEND_ERROR = "";
-
-      return true;
-    }catch(err){
-      LAST_BACKEND_ERROR = err?.message || String(err);
-      ACTIVE_TIMES = structuredClone(TIMES);
-      ACTIVE_SCHEDULE = structuredClone(SCHEDULE);
-      ACTIVE_MARKS = structuredClone(FALLBACK_MARKS);
-      ACTIVE_EVENTS = [];
-      ACTIVE_CLASS_META = { className: CLASS_NAME, updatedAt: new Date().toISOString() };
-      LIVE_SOURCE = "local";
-      LIVE_SOURCE_DETAIL = "fallback";
-      return false;
+    if (nowMin < first.startMin){
+      setDailyBadge("live","Dnes");
+      const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
+      setText("dailyText",`Za chvíli začne: ${next}`);
+      setBar("daybar",0);
+      setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      return;
     }
-  }
 
-  async function loadBackendCafaTeacher(){
-    try{
-      const res = await fetch(TEACHER_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      const norm = normalizeBackendTeacherPayload(data);
+    for (let i=0;i<totalToday;i++){
+      const t = TIMES_MIN[i];
+      const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
+      const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
 
-      if (!norm){
-        ACTIVE_TEACHER_FEED = null;
-        ACTIVE_TEACHER_RAW = null;
-        return false;
+      if (nowMin >= t.startMin && nowMin <= t.endMin){
+        const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
+        setDailyBadge("live","Právě");
+        setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
+        setBar("daybar", pct);
+        setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        return;
       }
 
-      if (norm.source === "explicit"){
-        ACTIVE_TEACHER_FEED = norm;
-        ACTIVE_TEACHER_RAW = null;
-      } else {
-        ACTIVE_TEACHER_FEED = null;
-        ACTIVE_TEACHER_RAW = norm;
+      const nt = TIMES_MIN[i+1];
+      if (nt && nowMin > t.endMin && nowMin < nt.startMin){
+        setDailyBadge("live","Pauza");
+        setText("dailyText", `Následuje: ${next}`);
+        setBar("daybar", 0);
+        setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        return;
       }
-      return true;
-    }catch(err){
-      ACTIVE_TEACHER_FEED = null;
-      ACTIVE_TEACHER_RAW = null;
-      return false;
     }
+
+    setDailyBadge("free","Volno");
+    setText("dailyText","Volno 😎");
+    setBar("daybar",100);
+    setText("daylabel","");
+    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
   }
 
   /* =========================
-     Fancy timetable rendering
+     Fancy timetable render
      ========================= */
   function getMark(day, idx){
-    return (ACTIVE_MARKS || []).find(m => m.day===day && Number(m.idx)===Number(idx)) || null;
-  }
-
-  function fmtClassLesson(x){
-    if (!x) return null;
-    return x.room ? `${x.subj} (${x.room})` : x.subj;
-  }
-
-  function getCurrentClassSlot(now){
-    const dayKey = dayNumToKey(now.getDay());
-    if (!dayKey) return null;
-    const timesMin = getTimesMin();
-    const nowMin = now.getHours()*60 + now.getMinutes();
-
-    for (let i=0;i<timesMin.length;i++){
-      const t = timesMin[i];
-      if (t.startMin == null || t.endMin == null) continue;
-      if (nowMin >= t.startMin && nowMin <= t.endMin){
-        return { dayKey, idx:i };
-      }
-    }
-    return null;
+    return state.classMarks.find(m => m.day===day && m.idx===idx) || null;
   }
 
   const tooltip = $("ttTooltip");
@@ -1434,27 +1250,24 @@
     tooltip.style.display = "none";
     tooltip.setAttribute("aria-hidden", "true");
   }
+  document.addEventListener("click", () => hideTooltip());
 
   function tooltipHTML(data){
     return `
-      <div class="t-title">${escapeHtml(data.dayLabel)} • ${escapeHtml(data.dateLong)} • Hodina ${data.hourIdx+1}/${data.totalHours} (${escapeHtml(data.time)})</div>
-      <div class="t-row"><div class="k">Třída</div><div class="v">${escapeHtml(data.className || "-")}</div></div>
-      <div class="t-row"><div class="k">Předmět</div><div class="v">${escapeHtml(data.subj || "-")}</div></div>
-      <div class="t-row"><div class="k">Učebna</div><div class="v">${escapeHtml(data.room || "-")}</div></div>
-      <div class="t-row"><div class="k">Učitel</div><div class="v">${escapeHtml(data.teacher || "-")}</div></div>
-      ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${escapeHtml(data.type)}</div></div>` : ``}
-      ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${escapeHtml(data.note)}</div></div>` : ``}
+      <div class="t-title">${data.dayLabel} • ${data.dateLong} • Hodina ${data.hourIdx+1}/${TIMES.length} (${data.time})</div>
+      <div class="t-row"><div class="k">Třída</div><div class="v">${data.className || "-"}</div></div>
+      <div class="t-row"><div class="k">Předmět</div><div class="v">${data.subj || "-"}</div></div>
+      <div class="t-row"><div class="k">Učebna</div><div class="v">${data.room || "-"}</div></div>
+      <div class="t-row"><div class="k">Učitel</div><div class="v">${data.teacher || "-"}</div></div>
+      ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
+      ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
+      ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
     `;
   }
 
-  function renderFancyTimetable(){
+  function renderTimetable(){
     const grid = $("ttGrid");
-    if (!grid) return;
-
-    const times = ACTIVE_TIMES || TIMES;
-    const schedule = ACTIVE_SCHEDULE || SCHEDULE;
-    const cols = times.length;
-
+    const cols = TIMES.length;
     grid.style.setProperty("--cols", cols);
     grid.innerHTML = "";
 
@@ -1462,10 +1275,10 @@
     corner.className = "tt-corner";
     grid.appendChild(corner);
 
-    times.forEach((t, i) => {
+    TIMES.forEach((t, i) => {
       const h = document.createElement("div");
       h.className = "tt-h";
-      h.innerHTML = `${i+1}<br><span>${escapeHtml(t.start)}–${escapeHtml(t.end)}</span>`;
+      h.innerHTML = `${i+1}<br><span>${t.start}–${t.end}</span>`;
       grid.appendChild(h);
     });
 
@@ -1477,8 +1290,6 @@
       {key:"Fri", label:"Pá"},
     ];
 
-    const currentSlot = getCurrentClassSlot(new Date());
-
     for (const d of dayOrder){
       const dayCell = document.createElement("div");
       dayCell.className = "tt-day";
@@ -1486,15 +1297,11 @@
       grid.appendChild(dayCell);
 
       for (let i=0;i<cols;i++){
-        const base = (schedule[d.key] && schedule[d.key][i]) ? schedule[d.key][i] : null;
+        const base = (state.classSchedule[d.key] && state.classSchedule[d.key][i]) ? state.classSchedule[d.key][i] : null;
         const mark = getMark(d.key, i);
 
         const cell = document.createElement("div");
         cell.className = "tt-cell";
-
-        if (currentSlot && currentSlot.dayKey === d.key && currentSlot.idx === i){
-          cell.classList.add("current");
-        }
 
         if (!base && !mark){
           cell.classList.add("tt-empty");
@@ -1503,39 +1310,29 @@
           continue;
         }
 
-        let typeLabel = "";
-        if (mark?.type === "event"){ cell.classList.add("tt-event"); typeLabel = "Akce"; }
-        if (mark?.type === "subst"){ cell.classList.add("tt-subst"); typeLabel = "Suplování"; }
-        if (mark?.type === "cancel"){ cell.classList.add("tt-cancel"); typeLabel = "Odpadlo"; }
+        let type = "";
+        if (mark?.type === "event") { cell.classList.add("tt-event"); type = "Akce"; }
+        if (mark?.type === "subst") { cell.classList.add("tt-subst"); type = "Suplování"; }
+        if (mark?.type === "cancel") { cell.classList.add("tt-cancel"); type = "Odpadlo"; }
 
-        const subj = (mark?.type === "event")
-          ? (mark.title || "Akce")
-          : (base?.subj || "");
-
-        const room = (mark?.type === "event")
-          ? (mark.room || "")
-          : (base?.room || "");
-
-        const teacher = (mark?.type === "event")
-          ? ""
-          : (base?.teacher || "");
-
-        const className = safeStr(base?.className || ACTIVE_CLASS_META?.className || CLASS_NAME || "DE3A");
-        const note = safeStr(mark?.note || base?.note || "");
+        const subj = (mark?.type === "event") ? (mark.title || "Akce") : (base?.subj || "");
+        const room = (mark?.type === "event") ? (mark.room || "") : (base?.room || "");
+        const teacher = (mark?.type === "event") ? "" : (base?.teacher || "");
+        const note = mark?.note || "";
 
         const topline = document.createElement("div");
         topline.className = "tt-topline";
-        topline.innerHTML = `<span class="cls">${escapeHtml(className)}</span><span class="room">${escapeHtml(room)}</span>`;
+        topline.innerHTML = `<span class="cls">${CLASS_NAME}</span><span class="room">${room || ""}</span>`;
         cell.appendChild(topline);
 
         const subjEl = document.createElement("div");
         subjEl.className = "tt-subj";
-        subjEl.textContent = subj || "—";
+        subjEl.textContent = subj;
         cell.appendChild(subjEl);
 
         const teacherEl = document.createElement("div");
         teacherEl.className = "tt-teacher";
-        teacherEl.textContent = teacher || "";
+        teacherEl.textContent = teacher;
         cell.appendChild(teacherEl);
 
         const now = new Date();
@@ -1543,394 +1340,295 @@
           dayLabel: d.label,
           dateLong: formatDateCZ(now),
           hourIdx: i,
-          totalHours: cols,
-          time: `${times[i]?.start || "?"}–${times[i]?.end || "?"}`,
-          className,
+          time: `${TIMES[i].start}–${TIMES[i].end}`,
+          className: CLASS_NAME,
           subj,
           room,
           teacher,
           note,
-          type: typeLabel
+          type,
+          source: state.classSource
         };
 
         cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
         cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
         cell.addEventListener("mouseleave", () => hideTooltip());
         cell.addEventListener("click", (e) => {
-          const visible = tooltip.style.display === "block";
-          if (visible) hideTooltip();
-          else showTooltip(tooltipHTML(tdata), e.clientX || (window.innerWidth/2), e.clientY || (window.innerHeight/2));
           e.stopPropagation();
+          if (tooltip.style.display === "block") hideTooltip();
+          else showTooltip(tooltipHTML(tdata), e.clientX || (window.innerWidth/2), e.clientY || (window.innerHeight/2));
         });
 
         grid.appendChild(cell);
       }
     }
 
-    $("ttSub").textContent = `${ACTIVE_CLASS_META?.className || CLASS_NAME} • Týdenní přehled`;
-    $("ttUpdated").textContent = "Aktualizováno: " + formatDateTimeCZ(new Date());
-    $("ttSourceBadge").textContent = `Zdroj: ${LIVE_SOURCE === "backend" ? "Bakaláři (backend)" : "Lokální fallback"}`;
+    const srcText = state.classSource === "backend" ? "backend (Bakaláři)" : "lokální fallback";
+    $("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${srcText}`;
   }
 
   /* =========================
-     Events panel
+     Addon: events + cafa tracker
      ========================= */
   function renderEventsPanel(){
-    const root = $("eventsList");
-    if (!root) return;
-    root.innerHTML = "";
+    const list = $("eventsList");
+    list.innerHTML = "";
 
-    const events = Array.isArray(ACTIVE_EVENTS) ? ACTIVE_EVENTS : [];
+    const events = [];
+
+    // Vytáhni eventy z marks
+    for (const m of state.classMarks){
+      if (m.type === "event"){
+        const hour = TIMES[m.idx];
+        events.push({
+          day: m.day,
+          title: m.title || "Akce",
+          time: hour ? `${hour.start}–${hour.end}` : "—",
+          desc: m.note || "Školní akce",
+          room: m.room || ""
+        });
+      }
+    }
 
     if (!events.length){
-      const div = document.createElement("div");
-      div.className = "stackItem muted";
-      div.textContent = (LIVE_SOURCE === "backend")
-        ? "Žádné události v datech."
-        : "Události nejsou dostupné (local fallback).";
-      root.appendChild(div);
+      const empty = document.createElement("div");
+      empty.className = "stackItem muted";
+      empty.textContent = "Žádné události (zatím)";
+      list.appendChild(empty);
       return;
     }
 
-    const sorted = [...events].sort((a,b) => {
-      const ta = a._ts || Number.MAX_SAFE_INTEGER;
-      const tb = b._ts || Number.MAX_SAFE_INTEGER;
-      return ta - tb;
-    }).slice(0, 8);
+    const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
+    events.sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || a.time.localeCompare(b.time));
 
-    for (const ev of sorted){
+    for (const ev of events){
       const item = document.createElement("div");
-      item.className = "stackItem eventItem";
+      item.className = "stackItem event";
 
       const title = document.createElement("div");
       title.className = "eventTitle";
-      title.textContent = ev.title || "Akce";
-      item.appendChild(title);
+      title.textContent = ev.title;
 
       const meta = document.createElement("div");
       meta.className = "eventMeta";
-      const parts = [];
-      if (ev.dateLabel) parts.push(ev.dateLabel);
-      if (ev.timeLabel) parts.push(ev.timeLabel);
-      if (ev.place) parts.push(ev.place);
-      meta.textContent = parts.join(" • ") || "Bez detailů";
+      meta.textContent = `${dayLabelCz(ev.day)} • ${ev.time}${ev.room ? " • " + ev.room : ""}`;
+
+      const desc = document.createElement("div");
+      desc.className = "eventDesc";
+      desc.textContent = ev.desc;
+
+      item.appendChild(title);
       item.appendChild(meta);
-
-      if (ev.desc){
-        const desc = document.createElement("div");
-        desc.className = "eventDesc";
-        desc.textContent = ev.desc;
-        item.appendChild(desc);
-      }
-
-      root.appendChild(item);
+      item.appendChild(desc);
+      list.appendChild(item);
     }
   }
 
-  /* =========================
-     Cáfa Tracker
-     ========================= */
-  function setCafaState(kind, main, sub){
-    const badge = $("cafaBadge");
-    const mainEl = $("cafaMain");
-    const subEl = $("cafaSub");
-    if (!badge || !mainEl || !subEl) return;
+  function getCurrentLessonFromSchedule(schedule, now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return null;
 
-    badge.className = "trackerBadge";
-    if (kind) badge.classList.add(kind);
-
-    if (kind === "live") badge.textContent = "Cáfa • Live";
-    else if (kind === "shadow") badge.textContent = "Cáfa • Stíny";
-    else if (kind === "err") badge.textContent = "Cáfa • ?";
-    else badge.textContent = "Cáfa";
-
-    mainEl.textContent = main || "—";
-    subEl.textContent = sub || "—";
-  }
-
-  // Teacher tracker from backend explicit current/next
-  function findCafaFromExplicitFeed(now){
-    if (!ACTIVE_TEACHER_FEED || ACTIVE_TEACHER_FEED.source !== "explicit") return null;
-
-    const cur = ACTIVE_TEACHER_FEED.current;
-    const next = ACTIVE_TEACHER_FEED.next;
-
-    if (cur){
-      return { state:"live", lesson:cur, time:{start:cur.start, end:cur.end}, className:cur.className };
-    }
-    if (next){
-      return { state:"upcoming", lesson:next, time:{start:next.start, end:next.end}, className:next.className };
-    }
-    return { state:"shadow", reason:"no-current-next" };
-  }
-
-  // Teacher tracker from backend teacher timetable (normalized)
-  function findCafaFromTeacherTimetable(now){
-    if (!ACTIVE_TEACHER_RAW || ACTIVE_TEACHER_RAW.source !== "timetable") return null;
-
-    const dayKey = dayNumToKey(now.getDay());
-    if (!dayKey) return { state:"shadow", reason:"weekend" };
-
-    const times = ACTIVE_TEACHER_RAW.times || [];
-    const days = ACTIVE_TEACHER_RAW.days || {};
-    const lessons = Array.isArray(days[dayKey]) ? days[dayKey] : [];
+    const arr = schedule[dayKey] || [];
     const nowMin = now.getHours()*60 + now.getMinutes();
 
-    for (let i=0;i<times.length;i++){
-      const l = lessons[i] || null;
-      if (!l) continue;
-
-      const startMin = timeToMin(times[i]?.start || "");
-      const endMin = timeToMin(times[i]?.end || "");
-      if (startMin == null || endMin == null) continue;
-
-      if (nowMin >= startMin && nowMin <= endMin){
-        return { state:"live", dayKey, idx:i, lesson:l, time:times[i], className:l.className || "" };
-      }
-      if (nowMin < startMin){
-        return { state:"upcoming", dayKey, idx:i, lesson:l, time:times[i], className:l.className || "" };
+    for (let i=0; i<TIMES_MIN.length; i++){
+      const t = TIMES_MIN[i];
+      if (nowMin >= t.startMin && nowMin <= t.endMin){
+        return { dayKey, idx:i, lesson: arr[i] || null, time: TIMES[i] };
       }
     }
-    return { state:"shadow", reason:"no-lesson-now" };
-  }
-
-  // fallback from screenshot-based manual schedule
-  function findCafaFromFallback(now){
-    const dayKey = dayNumToKey(now.getDay());
-    if (!dayKey) return { state:"shadow", reason:"weekend" };
-
-    const lessons = CAFA_FALLBACK_SCHEDULE[dayKey] || [];
-    const times = CAFA_FALLBACK_TEACHER_TIMES;
-    const nowMin = now.getHours()*60 + now.getMinutes();
-
-    for (let i=0;i<times.length;i++){
-      const l = lessons[i] || null;
-      if (!l) continue;
-      const startMin = timeToMin(times[i].start);
-      const endMin = timeToMin(times[i].end);
-
-      if (nowMin >= startMin && nowMin <= endMin){
-        return { state:"live", dayKey, idx:i, lesson:l, time:times[i], className:l.className || "" };
-      }
-      if (nowMin < startMin){
-        return { state:"upcoming", dayKey, idx:i, lesson:l, time:times[i], className:l.className || "" };
-      }
-    }
-
-    return { state:"shadow", reason:"no-lesson-now" };
-  }
-
-  // fallback from current class schedule if teacher code is present in class row
-  function findCafaInClassSchedule(now){
-    const dayKey = dayNumToKey(now.getDay());
-    if (!dayKey) return { state:"shadow", reason:"weekend" };
-
-    const timesMin = getTimesMin();
-    const lessons = (ACTIVE_SCHEDULE[dayKey] || []).slice(0, timesMin.length);
-    const nowMin = now.getHours()*60 + now.getMinutes();
-
-    for (let i=0; i<lessons.length; i++){
-      const l = lessons[i];
-      if (!l) continue;
-
-      const teacher = safeStr(l.teacher).toLowerCase();
-      const hasCafa = CAFA_TEACHER_MATCH.some(m => teacher.includes(m));
-      if (!hasCafa) continue;
-
-      const t = ACTIVE_TIMES[i];
-      const tm = timesMin[i];
-      if (!tm || tm.startMin == null || tm.endMin == null) continue;
-
-      if (nowMin >= tm.startMin && nowMin <= tm.endMin){
-        return { state:"live", dayKey, idx:i, lesson:l, time:t, className:l.className || ACTIVE_CLASS_META.className || CLASS_NAME };
-      }
-      if (nowMin < tm.startMin){
-        return { state:"upcoming", dayKey, idx:i, lesson:l, time:t, className:l.className || ACTIVE_CLASS_META.className || CLASS_NAME };
-      }
-    }
-
-    return { state:"shadow", reason:"not-in-class-now" };
+    return { dayKey, idx:null, lesson:null, time:null };
   }
 
   function updateCafaTracker(now){
-    let found = null;
+    const main = $("cafaMain");
+    const sub = $("cafaSub");
+    const badge = $("cafaBadge");
 
-    // 1) backend explicit current/next (best)
-    found = findCafaFromExplicitFeed(now);
+    const cur = getCurrentLessonFromSchedule(state.cafaSchedule, now);
+    const srcText = state.cafaSource === "backend" ? "backend (Bakaláři)" : "fallback";
 
-    // 2) backend teacher timetable (very good)
-    if (!found) found = findCafaFromTeacherTimetable(now);
-
-    // 3) screenshot/manual fallback for UV069 (good fallback)
-    if (!found) found = findCafaFromFallback(now);
-
-    // 4) class schedule fallback (weak)
-    if (!found) found = findCafaInClassSchedule(now);
-
-    if (!found){
-      setCafaState("err", "Cáfa tracker selhal", "Nedokážu vyhodnotit polohu.");
+    if (!cur){
+      badge.textContent = "Cáfa • off";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `Mimo školní čas • ${formatDateCZ(now)} • ${srcText}`;
       return;
     }
 
-    if (found.state === "live"){
-      const subj = found.lesson?.subj || "Výuka";
-      const room = found.lesson?.room || "—";
-      const cls = found.className ? ` • ${found.className}` : "";
-      const start = found.time?.start || "??:??";
-      const end = found.time?.end || "??:??";
-
-      setCafaState(
-        "live",
-        `Právě učí: ${subj} (${room})`,
-        `${start}–${end}${cls}`
-      );
-      return;
-    }
-
-    if (found.state === "upcoming"){
-      const subj = found.lesson?.subj || "Výuka";
-      const room = found.lesson?.room || "—";
-      const start = found.time?.start || "??:??";
-      const cls = found.className ? ` • ${found.className}` : "";
-      const dayLabel = dayKeyToCZ(found.dayKey) || "Dnes";
-
-      setCafaState(
-        "shadow",
-        "Cáfa se skrývá ve stínech…",
-        `${dayLabel} • další stopa: ${subj} (${room}) v ${start}${cls}`
-      );
-      return;
-    }
-
-    if (found.reason === "weekend"){
-      setCafaState(
-        "shadow",
-        "Cáfa se skrývá ve stínech 😎",
-        `Víkend • ${formatDateCZ(now)}`
-      );
-      return;
-    }
-
-    setCafaState(
-      "shadow",
-      "Cáfa se skrývá ve stínech…",
-      `Mimo aktuální výuku • ${formatDateCZ(now)}`
-    );
-  }
-
-  /* =========================
-     Daily progress (local/active timetable)
-     ========================= */
-  function countTodayLessons(arr){
-    let last = -1;
-    for (let i=0;i<arr.length;i++){
-      if (arr[i] && (arr[i].subj || arr[i].room || arr[i].teacher)) last = i;
-    }
-    return Math.max(last+1, 0);
-  }
-  function setDailyBadge(kind, text){
-    const b=$("dailyBadge");
-    b.className = "badge" + (kind ? (" "+kind) : "");
-    b.textContent = text;
-  }
-
-  function updateDaily(now){
-    const dow = now.getDay();
-    const dayKey = dayNumToKey(dow);
-
-    if (!dayKey){
-      setDailyBadge("free","Volno");
-      setText("dailyText","Volno 😎");
-      setBar("daybar",100);
-      setText("daylabel","");
-      setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
-      return;
-    }
-
-    const timesMin = getTimesMin();
-    const lessons = (ACTIVE_SCHEDULE[dayKey] || []).slice(0, timesMin.length);
-    const totalToday = countTodayLessons(lessons) || timesMin.length;
-
+    const arr = state.cafaSchedule[cur.dayKey] || [];
     const nowMin = now.getHours()*60 + now.getMinutes();
-    const first = timesMin[0];
-    const last = timesMin[totalToday-1] || timesMin[timesMin.length-1];
 
-    if (!first || !last || first.startMin == null || last.endMin == null){
-      setDailyBadge("err","Chyba");
-      setText("dailyText","Časy hodin nejsou dostupné.");
-      setBar("daybar",0);
-      setText("daylabel","");
-      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      return;
-    }
-
-    if (nowMin > last.endMin){
-      setDailyBadge("free","Volno");
-      setText("dailyText","Volno 😎");
-      setBar("daybar",100);
-      setText("daylabel","");
-      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      return;
-    }
-
-    if (nowMin < first.startMin){
-      setDailyBadge("live","Dnes");
-      const next = fmtClassLesson(lessons[0]) || `Hodina 1/${totalToday}`;
-      setText("dailyText",`Za chvíli začne: ${next}`);
-      setBar("daybar",0);
-      setText("daylabel",`Hodina 1/${totalToday} • start v ${(ACTIVE_TIMES[0]||{}).start || "??:??"}`);
-      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      return;
-    }
-
-    for (let i=0;i<totalToday;i++){
-      const t = timesMin[i];
-      if (!t || t.startMin == null || t.endMin == null) continue;
-
-      const cur = fmtClassLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
-      const next = (i+1<totalToday) ? (fmtClassLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
-
-      if (nowMin >= t.startMin && nowMin <= t.endMin){
-        const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
-        setDailyBadge("live","Právě");
-        setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
-        setBar("daybar", pct);
-        setText("daylabel", `Hodina ${i+1}/${totalToday} • ${(ACTIVE_TIMES[i]||{}).start || "?"}–${(ACTIVE_TIMES[i]||{}).end || "?"} • ${pct.toFixed(0)}%`);
-        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-        return;
+    // Pokud zrovna hodina neběží, zkus najít další
+    if (cur.idx === null){
+      let nextIdx = null;
+      for (let i=0; i<TIMES_MIN.length; i++){
+        if (nowMin < TIMES_MIN[i].startMin && arr[i]){
+          nextIdx = i; break;
+        }
       }
 
-      const nt = timesMin[i+1];
-      if (nt && nt.startMin != null && nowMin > t.endMin && nowMin < nt.startMin){
-        setDailyBadge("live","Pauza");
-        setText("dailyText", `Následuje: ${next}`);
-        setBar("daybar", 0);
-        setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${(ACTIVE_TIMES[i+1]||{}).start || "??:??"}`);
-        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-        return;
+      if (nextIdx !== null){
+        const l = arr[nextIdx];
+        badge.textContent = "Cáfa • standby";
+        main.textContent = `Další stopa: ${l.subj || "Výuka"} • ${l.cls || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
+        sub.textContent = `${dayLabelCz(cur.dayKey)} • hodina ${nextIdx+1}/${countTodayLessons(arr)||TIMES.length} • start ${TIMES[nextIdx].start} • ${srcText}`;
+      } else {
+        badge.textContent = "Cáfa • gone";
+        main.textContent = "Cáfa se skrývá ve stínech 😎";
+        sub.textContent = `${dayLabelCz(cur.dayKey)} • po výuce • ${srcText}`;
       }
+      return;
     }
 
-    setDailyBadge("free","Volno");
-    setText("dailyText","Volno 😎");
-    setBar("daybar",100);
-    setText("daylabel","");
-    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+    const l = cur.lesson;
+    if (!l){
+      badge.textContent = "Cáfa • stealth";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `${dayLabelCz(cur.dayKey)} • hodina ${cur.idx+1}/${TIMES.length} • ${cur.time.start}–${cur.time.end} • ${srcText}`;
+      return;
+    }
+
+    if (l.type === "event" || (l.subj && l.subj.toLowerCase() === "absc")){
+      badge.textContent = "Cáfa • akce";
+      main.textContent = `Cáfa je na akci • ${l.subj || "Akce"}`;
+      sub.textContent = `${dayLabelCz(cur.dayKey)} • hodina ${cur.idx+1}/${countTodayLessons(arr)||TIMES.length} • ${cur.time.start}–${cur.time.end} • ${srcText}`;
+      return;
+    }
+
+    badge.textContent = "Cáfa • live";
+    main.textContent = `Právě učí: ${l.subj || "Výuka"} • ${l.cls || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
+    sub.textContent = `${dayLabelCz(cur.dayKey)} • hodina ${cur.idx+1}/${countTodayLessons(arr)||TIMES.length} • ${cur.time.start}–${cur.time.end} • ${srcText}`;
   }
 
   /* =========================
-     Status/UI helpers
+     Backend parsing / sync
      ========================= */
-  function updateStatusHint(){
-    const status = $("statusHint");
-    if (!status) return;
+  function normalizeDayKey(k){
+    if (!k) return null;
+    const map = {Mon:"Mon", Tue:"Tue", Wed:"Wed", Thu:"Thu", Fri:"Fri", Po:"Mon", Út:"Tue", St:"Wed", Čt:"Thu", Pá:"Fri"};
+    return map[k] || null;
+  }
 
-    if (LIVE_SOURCE === "backend"){
-      status.textContent = "Status: OK • Bakaláři backend připojen";
-      return;
+  function status(msg){
+    const el = $("statusHint");
+    if (el) el.textContent = msg;
+  }
+
+  // MVP: pokud backend vrátí jen null array, nech fallback.
+  // Pokud vrátí days + data, mapneme subject/room/teacher co jde.
+  function tryApplyClassBackendPayload(payload){
+    if (!payload || !payload.ok || !payload.days) return false;
+
+    const hasAnyLesson = Object.values(payload.days).some(arr =>
+      Array.isArray(arr) && arr.some(x => x && (x.subj || x.subject || x.name))
+    );
+
+    // Když parser nic nenašel, nepřepisuj fallback
+    if (!hasAnyLesson) return false;
+
+    const out = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
+    for (const dayKey of ["Mon","Tue","Wed","Thu","Fri"]){
+      const arr = payload.days[dayKey] || [];
+      out[dayKey] = [];
+      for (let i=0;i<TIMES.length;i++){
+        const x = arr[i];
+        if (!x){ out[dayKey][i] = null; continue; }
+        out[dayKey][i] = {
+          subj: x.subj || x.subject || x.name || "",
+          room: x.room || x.classroom || "",
+          teacher: x.teacher || x.teacherShort || x.teacherAbbr || ""
+        };
+      }
     }
 
-    status.textContent = `Status: Fallback • Lokální data (${LAST_BACKEND_ERROR || "backend nedostupný"})`;
+    state.classSchedule = out;
+    state.classSource = "backend";
+    state.lastBackendSync = new Date();
+
+    // pokud parser vrací marks/events, zkus je vzít
+    if (Array.isArray(payload.marks)){
+      state.classMarks = payload.marks
+        .map(m => ({
+          day: normalizeDayKey(m.day) || m.day,
+          idx: Number.isFinite(m.idx) ? m.idx : m.lessonIndex,
+          type: m.type,
+          title: m.title || "Akce",
+          room: m.room || "",
+          note: m.note || m.description || ""
+        }))
+        .filter(m => m.day && Number.isInteger(m.idx));
+    }
+
+    return true;
+  }
+
+  function tryApplyTeacherBackendPayload(payload){
+    if (!payload || !payload.ok || !payload.days) return false;
+
+    const hasAnyLesson = Object.values(payload.days).some(arr =>
+      Array.isArray(arr) && arr.some(x => x && (x.subj || x.subject || x.name))
+    );
+    if (!hasAnyLesson) return false;
+
+    const out = { Mon:[], Tue:[], Wed:[], Thu:[], Fri:[] };
+    for (const dayKey of ["Mon","Tue","Wed","Thu","Fri"]){
+      const arr = payload.days[dayKey] || [];
+      out[dayKey] = [];
+      for (let i=0;i<TIMES.length;i++){
+        const x = arr[i];
+        if (!x){ out[dayKey][i] = null; continue; }
+        out[dayKey][i] = {
+          subj: x.subj || x.subject || x.name || "",
+          room: x.room || x.classroom || "",
+          cls: x.class || x.className || x.cls || "",
+          teacher: "Cáfa",
+          type: x.type || "",
+          note: x.note || x.description || ""
+        };
+      }
+    }
+    state.cafaSchedule = out;
+    state.cafaSource = "backend";
+    return true;
+  }
+
+  async function fetchJsonSafe(url){
+    try{
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    }catch(err){
+      return { __error: String(err?.message || err) };
+    }
+  }
+
+  async function syncBackend(){
+    let classOk = false;
+    let teacherOk = false;
+
+    // class timetable
+    const classData = await fetchJsonSafe(BACKEND_CLASS_API);
+    if (!classData.__error){
+      classOk = tryApplyClassBackendPayload(classData);
+    }
+
+    // teacher timetable (optional)
+    const teacherData = await fetchJsonSafe(BACKEND_TEACHER_API);
+    if (!teacherData.__error){
+      teacherOk = tryApplyTeacherBackendPayload(teacherData);
+    }
+
+    renderTimetable();
+    renderEventsPanel();
+    updateCafaTracker(new Date());
+
+    const bits = [];
+    bits.push(`Class: ${classOk ? "backend" : "fallback"}`);
+    bits.push(`Cáfa: ${teacherOk ? "backend" : "fallback"}`);
+    if (classData.__error || teacherData.__error){
+      bits.push("část backend fetch selhala");
+    }
+    status(`Status: OK • ${bits.join(" • ")}`);
   }
 
   /* =========================
@@ -1994,40 +1692,25 @@
     }
 
     updateCafaTracker(now);
-    renderFancyTimetable(); // přebarví current slot
   }
 
   /* =========================
-     Data load orchestration
+     Boot
      ========================= */
-  async function refreshLiveData(){
-    await loadBackendClassTimetable();
-    await loadBackendCafaTeacher();
-
-    updateStatusHint();
-    renderEventsPanel();
-    renderFancyTimetable();
-    updateCafaTracker(new Date());
-  }
-
-  function boot(){
+  async function boot(){
     initSettings();
 
-    // close tooltip on outside click
-    document.addEventListener("click", () => hideTooltip());
-
-    // první render fallback okamžitě
-    updateStatusHint();
+    // initial render from fallback (instant)
+    renderTimetable();
     renderEventsPanel();
-    renderFancyTimetable();
     updateAll();
 
-    // pak načti backend
-    refreshLiveData();
+    // then try backend
+    await syncBackend();
 
-    // timers
-    setInterval(updateAll, 30_000);      // progress + current slot + cafa state
-    setInterval(refreshLiveData, 180_000); // refresh backend každé 3 min
+    // periodic refresh
+    setInterval(updateAll, 30_000);
+    setInterval(syncBackend, 5 * 60_000);
   }
 
   document.addEventListener("DOMContentLoaded", boot);
