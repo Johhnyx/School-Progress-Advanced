@@ -243,7 +243,6 @@
 
     .hint{ margin:10px 0 0 0; color:var(--muted); font-size:13px; line-height:1.35; font-weight:900; }
     .label{ margin:10px 0 0 0; font-weight:900; }
-
     .hidden{ display:none !important; }
 
     .field{
@@ -366,6 +365,22 @@
     .addonCol .rowTitle{ font-size:16px; }
 
     .stackList{ display:flex; flex-direction:column; gap:8px; }
+
+    /* ✅ Události: max ~3 položky a pak scroll uvnitř */
+    #eventsList{
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+    #eventsList::-webkit-scrollbar{ width: 10px; }
+    #eventsList::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,0.14);
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+    #eventsList::-webkit-scrollbar-track{ background: transparent; }
+
     .stackItem{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
@@ -776,7 +791,7 @@
   const CLASS_NAME = "DE3A";
 
   /* =========================
-     SUBJECT SHORT MAP (zkratky)
+     SUBJECT SHORT MAP
      ========================= */
   const SUBJECT_SHORT = {
     "Matematika":"MAT",
@@ -796,6 +811,7 @@
     "Ruský jazyk":"RUJ",
     "Anglický jazyk":"ANJ",
     "Akce školy":"AŠK",
+    "Akce skoly":"AŠK",
   };
 
   function shortSubj(full){
@@ -1249,15 +1265,17 @@
       list.appendChild(item);
     }
 
-    // marks (supl/odpadlo)
+    // marks (supl/odpadlo) – ✅ ignorujeme marks typu "event", aby se AŠK nezobrazovalo 2×
     const markSorted = [...marks].sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || (a.idx-b.idx));
     for (const ev of markSorted){
+      if (ev.type === "event") continue; // <-- FIX duplicit AŠK
+
       const item = document.createElement("div");
       item.className = "stackItem " + (ev.type || "");
 
       const title = document.createElement("div");
       title.className = "eventTitle";
-      title.textContent = ev.type === "subst" ? "Suplování" : (ev.type === "cancel" ? "Odpadlo" : "Akce");
+      title.textContent = ev.type === "subst" ? "Suplování" : "Odpadlo";
 
       const meta = document.createElement("div");
       meta.className = "eventMeta";
@@ -1487,7 +1505,6 @@
   }
 
   async function syncBackend(){
-    // class
     const c = await fetchJsonSafe(BACKEND_CLASS_API);
     if (!c.__error && c.ok && c.days && hasAnyLesson(c.days)){
       state.classDays = c.days;
@@ -1498,7 +1515,6 @@
       state.classSource = "fallback";
     }
 
-    // teacher
     const t = await fetchJsonSafe(BACKEND_TEACHER_API);
     if (!t.__error && t.ok && t.days && hasAnyLesson(t.days)){
       state.teacherDays = t.days;
@@ -1526,8 +1542,6 @@
 
   function boot(){
     initSettings();
-
-    // initial UI (before backend)
     state.classSource = "loading";
     state.teacherSource = "loading";
     statusText();
@@ -1536,7 +1550,6 @@
     renderEventsPanel();
     tick();
 
-    // fetch backend
     syncBackend();
 
     setInterval(tick, 30_000);
