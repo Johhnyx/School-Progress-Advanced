@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>School Progress – Fancy Timetable</title>
+  <title>School Progress</title>
 
   <style>
     /* =========================
-       THEMES
+       THEMES via CSS variables
        ========================= */
     body{
       --bg:#f4f4f4;
@@ -16,23 +16,32 @@
       --muted:#666;
       --shadow: rgba(0,0,0,0.06);
       --linebg:#e0e0e0;
+      --green:#3bb54a;
+      --orange:#ff9800;
 
       --btn:#111;
       --btnText:#fff;
 
       --badge:#eee;
+      --badgeLive:#e8f5e9;
+      --badgeFree:#fff3cd;
+      --badgeErr:#fdecea;
+
       --border:#eee;
 
-      --bgImage:none;
+      /* extra pro theme */
+      --accent:#ff2ea6;
+      --accent2:#ff5fd1;
+      --glow: rgba(255,46,166,0.45);
+
+      --bgImage: none;
       --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
 
-      /* state colors */
+      /* Fancy timetable state colors */
       --substBg: rgba(255, 80, 80, 0.18);
       --substBorder: rgba(255, 80, 80, 0.40);
-
       --cancelBg: rgba(255, 0, 60, 0.22);
       --cancelBorder: rgba(255, 0, 60, 0.55);
-
       --eventBg: rgba(59,181,74,0.22);
       --eventBorder: rgba(59,181,74,0.55);
 
@@ -41,6 +50,7 @@
       --ttSubjGlow: none;
     }
 
+    /* Dark theme (PŘESNĚ jak v tvém snippet-u) */
     body.theme-dark{
       --bg:#0f1115;
       --card:#171a21;
@@ -53,14 +63,16 @@
       --btnText:#111;
 
       --badge:#232836;
+      --badgeLive:#1f3a2a;
+      --badgeFree:#3a311f;
+      --badgeErr:#3a1f23;
+
       --border:#2a2f3a;
 
       --substBg: rgba(255, 80, 80, 0.20);
       --substBorder: rgba(255, 80, 80, 0.48);
-
       --cancelBg: rgba(255, 0, 60, 0.26);
       --cancelBorder: rgba(255, 0, 60, 0.60);
-
       --eventBg: rgba(59,181,74,0.18);
       --eventBorder: rgba(59,181,74,0.50);
 
@@ -68,6 +80,7 @@
       --ttSubjGlow: none;
     }
 
+    /* Loona theme */
     body.theme-loona{
       --bg:#08060b;
       --card: rgba(18, 12, 22, 0.78);
@@ -80,17 +93,23 @@
       --btnText:#120812;
 
       --badge: rgba(255, 46, 166, 0.18);
+      --badgeLive: rgba(0, 255, 170, 0.12);
+      --badgeFree: rgba(255, 190, 60, 0.16);
+      --badgeErr: rgba(255, 80, 80, 0.16);
+
       --border: rgba(255, 70, 190, 0.20);
+
+      --accent:#ff2ea6;
+      --accent2:#ff6bd8;
+      --glow: rgba(255,46,166,0.55);
 
       --bgImage: url("loona.png");
       --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
 
       --substBg: rgba(255, 46, 166, 0.22);
       --substBorder: rgba(255, 46, 166, 0.52);
-
       --cancelBg: rgba(255, 0, 90, 0.28);
       --cancelBorder: rgba(255, 0, 90, 0.62);
-
       --eventBg: rgba(59,181,74,0.20);
       --eventBorder: rgba(59,181,74,0.55);
 
@@ -98,6 +117,7 @@
       --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
     }
 
+    /* SOBOKILL theme (Egypt vibe, připravené na obrázek) */
     body.theme-sobokill{
       --bg:#070604;
       --card: rgba(18, 14, 8, 0.82);
@@ -110,17 +130,23 @@
       --btnText:#1a1206;
 
       --badge: rgba(212,175,55,0.16);
+      --badgeLive: rgba(0, 210, 160, 0.12);
+      --badgeFree: rgba(255,190,60,0.16);
+      --badgeErr: rgba(255,80,80,0.16);
+
       --border: rgba(212,175,55,0.22);
+
+      --accent:#d4af37;
+      --accent2:#f1d07a;
+      --glow: rgba(212,175,55,0.40);
 
       --bgImage: url("sobokill.png");
       --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
 
       --substBg: rgba(212, 175, 55, 0.22);
       --substBorder: rgba(212, 175, 55, 0.50);
-
       --cancelBg: rgba(255, 0, 60, 0.24);
       --cancelBorder: rgba(255, 0, 60, 0.58);
-
       --eventBg: rgba(59,181,74,0.20);
       --eventBorder: rgba(59,181,74,0.55);
 
@@ -129,7 +155,7 @@
     }
 
     /* =========================
-       BASE
+       BASE STYLES
        ========================= */
     *{ box-sizing:border-box; }
     body{
@@ -140,8 +166,8 @@
       background:
         var(--bgOverlay),
         var(--bgImage),
-        radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.10), transparent 55%),
-        radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.08), transparent 60%),
+        radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.14), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.12), transparent 60%),
         radial-gradient(1000px 650px at 30% 90%, rgba(212,175,55,0.10), transparent 60%),
         var(--bg);
       background-size: cover;
@@ -156,6 +182,11 @@
       text-align:center;
       font-weight:900;
       letter-spacing:0.2px;
+      text-shadow: 0 0 0 transparent;
+    }
+    body.theme-loona h1,
+    body.theme-sobokill h1{
+      text-shadow: 0 0 18px var(--glow);
     }
 
     .topbar{
@@ -174,6 +205,30 @@
       font-weight:900;
       cursor:pointer;
       white-space:nowrap;
+      box-shadow: 0 0 0 transparent;
+    }
+    body.theme-loona .btn,
+    body.theme-sobokill .btn{
+      box-shadow: 0 0 18px var(--glow);
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width:900px){
+      .grid2{ grid-template-columns: 1fr; }
+      body{ padding:16px; }
+    }
+
+    .colHead{
+      text-align:center;
+      font-weight:900;
+      color:var(--muted);
+      margin:0 0 8px 0;
+      font-size:13px;
+      letter-spacing:0.3px;
     }
 
     .block{
@@ -185,14 +240,51 @@
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
     }
+    body.theme-loona .block,
+    body.theme-sobokill .block{
+      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
+    }
 
     .rowTitle{
       margin:0 0 10px 0;
       font-size:18px;
       font-weight:900;
+      color: var(--text);
     }
+    body.theme-loona .rowTitle{ color: var(--accent2); }
+    body.theme-sobokill .rowTitle{ color: var(--accent2); }
+
+    .line{
+      position:relative;
+      width:100%;
+      height:3px;
+      background:var(--linebg);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .fill{
+      position:absolute;
+      left:0; top:0;
+      height:100%;
+      width:0%;
+      background:var(--green);
+      border-radius:999px;
+      transition: width 0.35s ease;
+    }
+    .fill.weekend{ background:var(--orange); }
+
+    .label{ margin:10px 0 0 0; font-weight:900; }
+    .hint{ margin:10px 0 0 0; color:var(--muted); font-size:13px; line-height:1.35; }
 
     .hidden{ display:none; }
+    .toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:8px 0;
+      font-weight:900;
+    }
+
     .field{
       display:flex;
       align-items:center;
@@ -209,16 +301,35 @@
       font-weight:900;
       outline:none;
     }
-    .hint{
-      margin:10px 0 0 0;
-      color:var(--muted);
+
+    .dailyRow{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:900;
       font-size:13px;
-      line-height:1.35;
-      font-weight: 900;
+    }
+    .badge.live{ background:var(--badgeLive); }
+    .badge.free{ background:var(--badgeFree); }
+    .badge.err{ background:var(--badgeErr); }
+    .dailyText{ font-weight:900; }
+
+    .iframe{
+      width:100%;
+      height:520px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:transparent;
     }
 
     /* =========================
-       TIMETABLE (fancy layout)
+       FANCY TIMETABLE (inserted)
        ========================= */
     .timetable .tt-top{
       display:flex;
@@ -226,7 +337,7 @@
       justify-content:space-between;
       gap:12px;
       margin-bottom:12px;
-      flex-wrap: wrap;
+      flex-wrap:wrap;
     }
     .tt-sub{
       color: var(--muted);
@@ -369,7 +480,6 @@
       box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
     }
 
-    /* Tooltip */
     .tt-tooltip{
       position: fixed;
       z-index: 9999;
@@ -406,6 +516,7 @@
 
     .footer{
       margin-top: 18px;
+      padding: 14px 0 2px;
       text-align: center;
       color: var(--muted);
       font-weight: 900;
@@ -437,10 +548,101 @@
         </select>
       </div>
 
-      <p class="hint">Hover na buňku = detail. Na mobilu tap (přepne tooltip).</p>
-      <p class="hint" id="apiStatus">API: fallback (lokální data)</p>
+      <label class="toggle">
+        <input type="checkbox" id="toggleTimetable" checked />
+        <span>Zobrazit rozvrh</span>
+      </label>
+
+      <label class="toggle">
+        <input type="checkbox" id="toggleDaily" checked />
+        <span>Zobrazit denní progres</span>
+      </label>
+
+      <p class="hint" id="statusHint">Status: OK</p>
     </div>
 
+    <div class="grid2">
+      <div>
+        <div class="colHead">Real-Time</div>
+
+        <div class="block">
+          <div class="rowTitle">Týden</div>
+          <div class="line"><div class="fill" id="rt-week"></div></div>
+          <p class="label" id="rt-week-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Měsíc</div>
+          <div class="line"><div class="fill" id="rt-month"></div></div>
+          <p class="label" id="rt-month-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Školní rok</div>
+          <div class="line"><div class="fill" id="rt-year"></div></div>
+          <p class="label" id="rt-year-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Celkem</div>
+          <div class="line"><div class="fill" id="rt-total"></div></div>
+          <p class="label" id="rt-total-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Maturita</div>
+          <p class="label" id="rt-maturita-label"></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="colHead">Raw-Time</div>
+
+        <div class="block">
+          <div class="rowTitle">Týden</div>
+          <div class="line"><div class="fill" id="raw-week"></div></div>
+          <p class="label" id="raw-week-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Měsíc</div>
+          <div class="line"><div class="fill" id="raw-month"></div></div>
+          <p class="label" id="raw-month-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Školní rok</div>
+          <div class="line"><div class="fill" id="raw-year"></div></div>
+          <p class="label" id="raw-year-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Celkem</div>
+          <div class="line"><div class="fill" id="raw-total"></div></div>
+          <p class="label" id="raw-total-label"></p>
+        </div>
+
+        <div class="block">
+          <div class="rowTitle">Maturita</div>
+          <p class="label" id="raw-maturita-label"></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="dailyBlock" class="block">
+      <div class="rowTitle">Denní progres</div>
+      <div class="dailyRow">
+        <div class="badge" id="dailyBadge">Rozvrh</div>
+        <div class="dailyText" id="dailyText">—</div>
+      </div>
+      <div class="line" style="margin-top:10px;">
+        <div class="fill" id="daybar"></div>
+      </div>
+      <p class="label" id="daylabel"></p>
+      <p class="hint" id="dailyDebug"></p>
+    </div>
+
+    <!-- REPLACED: iframe timetable -> fancy timetable -->
     <div id="timetableBlock" class="block timetable">
       <div class="tt-top">
         <div>
@@ -464,13 +666,9 @@
 
 <script>
   /* =========================
-     API (DOPLŇ TVOU WORKER URL)
+     LOCAL TIMETABLE DATA
      ========================= */
-  const API_URL = "https://TVUJ-WORKER.workers.dev/api/timetable?class=5A&type=Actual";
-
-  let CLASS_NAME = "DE3A";
-
-  let TIMES = [
+  const TIMES = [
     {start:"07:55", end:"08:40"},
     {start:"08:50", end:"09:35"},
     {start:"09:50", end:"10:35"},
@@ -480,7 +678,8 @@
     {start:"13:40", end:"14:25"},
   ];
 
-  let SCHEDULE = {
+  // Rozšířeno o teacher pro fancy tooltip (grafy/logika zůstává kompatibilní)
+  const SCHEDULE = {
     Mon: [
       {subj:"MAT", room:"UČ10", teacher:"BUP"},
       {subj:"NEJ", room:"UČ11", teacher:"PRH"},
@@ -488,25 +687,25 @@
       {subj:"EKO", room:"UČ11", teacher:"FRP"},
       {subj:"VYT", room:"UČ10", teacher:"KIN"},
       {subj:"NEJ", room:"UČ21", teacher:"PRH"},
-      {subj:"ČJL", room:"UČ9", teacher:"BAP"},
+      {subj:"MAT", room:"UČ9", teacher:"BAP"},
     ],
     Tue: [
-      {subj:"KAJ", room:"UČ2", teacher:"BUI"},
-      {subj:"PSK", room:"VT1", teacher:"KOO"},
+      {subj:"KAJ", room:"UČ10", teacher:"BUI"},
+      {subj:"PSK", room:"UČ10", teacher:"KOO"},
       {subj:"ZPG", room:"UČ10", teacher:"KUO"},
       {subj:"ZPG", room:"UČ10", teacher:"KUO"},
       {subj:"ČJL", room:"UČ10", teacher:"BAP"},
       {subj:"ČJL", room:"UČ10", teacher:"BAP"},
-      {subj:"ELT", room:"UČ10", teacher:"CAJ"},
+      {subj:"ELT", room:"UČ9", teacher:"CAJ"},
     ],
     Wed: [
-      {subj:"AŠK", room:"", teacher:""},
-      {subj:"AŠK", room:"", teacher:""},
-      {subj:"AŠK", room:"", teacher:""},
+      {subj:"NEJ", room:"UČ10", teacher:"PRH"},
+      {subj:"MAT", room:"UČ10", teacher:"BUP"},
+      {subj:"VYA", room:"UČ10", teacher:"KOO"},
       {subj:"ELT", room:"UČ10", teacher:"CAJ"},
       {subj:"SWA", room:"UČ10", teacher:"CAJ"},
-      {subj:"ANJ", room:"UČ11", teacher:"KLE"},
-      {subj:"ANJ", room:"UČ10", teacher:"KLE"},
+      {subj:"ANJ", room:"UČ14", teacher:"KLE"},
+      {subj:"ANJ", room:"UČ14", teacher:"KLE"},
     ],
     Thu: [
       {subj:"VYT", room:"UČ10", teacher:"KIN"},
@@ -528,23 +727,126 @@
     ],
   };
 
-  // Demo stavy (dokud backend nebude vracet změny/supl/akce)
+  /* Fancy timetable marks (demo stavy) */
+  const CLASS_NAME = "DE3A";
   let MARKS = [
     { day:"Mon", idx:2, type:"event", title:"Akce", room:"Aula", note:"Workshop" },
     { day:"Mon", idx:1, type:"subst", note:"supl: PRH → KLE" },
     { day:"Fri", idx:4, type:"cancel", note:"ODPADLO" },
   ];
 
-  const DAY_ORDER = [
-    {key:"Mon", label:"Po"},
-    {key:"Tue", label:"Út"},
-    {key:"Wed", label:"St"},
-    {key:"Thu", label:"Čt"},
-    {key:"Fri", label:"Pá"},
+  /* =========================
+     PROGRESS DATA
+     ========================= */
+  const HS_START = localDate(2023, 9, 4);
+  const HS_END   = localDateEnd(2027, 6, 30);
+  const MATURITA_APPROX = localDateEnd(2027, 5, 1);
+
+  const BREAKS = [
+    r("2023-10-26","2023-10-27"),
+    r("2023-12-23","2024-01-02"),
+    r("2024-02-02","2024-02-02"),
+    r("2024-02-26","2024-03-03"),
+    r("2024-07-01","2024-08-31"),
+    r("2024-10-29","2024-10-30"),
+    r("2024-12-23","2025-01-03"),
+    r("2025-01-31","2025-01-31"),
+    r("2025-03-03","2025-03-09"),
+    r("2025-07-01","2025-08-31"),
+    r("2025-10-27","2025-10-29"),
+    r("2025-12-22","2026-01-02"),
+    r("2026-01-30","2026-01-30"),
+    r("2026-03-09","2026-03-15"),
+    r("2026-07-01","2026-08-31"),
+    r("2026-10-29","2026-10-30"),
+    r("2026-12-23","2027-01-03"),
+    r("2027-01-29","2027-01-29"),
+    r("2027-02-01","2027-02-07"),
   ];
+  const DIRECTOR_DAYS = [];
 
+  /* =========================
+     Helpers
+     ========================= */
   const $ = (id) => document.getElementById(id);
+  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+  const setBar = (id, pct, weekend=false) => {
+    const n = $(id); if (!n) return;
+    n.style.width = clamp(pct).toFixed(2) + "%";
+    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
+  };
+  const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
 
+  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+  function r(s,e){ return {s,e}; }
+
+  function toISO(d){
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,'0');
+    const da=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${da}`;
+  }
+  function formatDateCZ(d){
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const yy = d.getFullYear();
+    return `${dd}.${mm}.${yy}`;
+  }
+  function formatDateTimeCZ(d){
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const yy = d.getFullYear();
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mi = String(d.getMinutes()).padStart(2,"0");
+    return `${dd}.${mm}.${yy} ${hh}:${mi}`;
+  }
+
+  function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
+  function isSchoolDay(d){
+    const dow = d.getDay();
+    if (dow===0 || dow===6) return false;
+    const iso = toISO(d);
+    if (DIRECTOR_DAYS.includes(iso)) return false;
+    if (inBreak(iso)) return false;
+    return true;
+  }
+  function countSchoolDays(start, end){
+    const s = new Date(start); s.setHours(0,0,0,0);
+    const e = new Date(end);   e.setHours(23,59,59,999);
+    let c=0;
+    const cur = new Date(s);
+    while (cur <= e){
+      if (isSchoolDay(cur)) c++;
+      cur.setDate(cur.getDate()+1);
+    }
+    return c;
+  }
+  function calendarPctBetween(start, end, now){
+    const total = end - start; if (total<=0) return 0;
+    const passed = Math.min(Math.max(now-start, 0), total);
+    return (passed/total)*100;
+  }
+  function rawPctBetween(start, end, now){
+    const total = countSchoolDays(start, end);
+    const clipped = now < start ? start : (now > end ? end : now);
+    const passed = countSchoolDays(start, clipped);
+    return total ? (passed/total)*100 : 0;
+  }
+  function rawDaysUntil(target, now){
+    const start = new Date(now); start.setHours(0,0,0,0);
+    const end = new Date(target); end.setHours(23,59,59,999);
+    if (end < start) return -countSchoolDays(end, start);
+    return countSchoolDays(start, end);
+  }
+  function getSchoolYearRange(now){
+    const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
+    return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
+  }
+
+  /* =========================
+     Theme switching
+     ========================= */
   function applyTheme(theme){
     const body = document.body;
     body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
@@ -555,20 +857,131 @@
   }
 
   function initSettings(){
-    $("settingsBtn").addEventListener("click", () => $("settingsPanel").classList.toggle("hidden"));
-    $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
-    applyTheme(localStorage.getItem("sp_theme") || "dark");
+    const btn = $("settingsBtn");
+    const panel = $("settingsPanel");
+    const toggleTT = $("toggleTimetable");
+    const toggleDaily = $("toggleDaily");
+    const timetableBlock = $("timetableBlock");
+    const dailyBlock = $("dailyBlock");
+    const themeSelect = $("themeSelect");
+
+    btn.addEventListener("click", () => panel.classList.toggle("hidden"));
+    toggleTT.addEventListener("change", () => timetableBlock.classList.toggle("hidden", !toggleTT.checked));
+    toggleDaily.addEventListener("change", () => dailyBlock.classList.toggle("hidden", !toggleDaily.checked));
+    themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+
+    const saved = localStorage.getItem("sp_theme") || "dark";
+    applyTheme(saved);
   }
 
-  function two(n){ return String(n).padStart(2,"0"); }
-  function formatDateCZ(d){
-    return `${two(d.getDate())}.${two(d.getMonth()+1)}.${d.getFullYear()} ${two(d.getHours())}:${two(d.getMinutes())}`;
+  /* =========================
+     Daily progress (local)
+     ========================= */
+  function timeToMin(hhmm){
+    const [h,m] = hhmm.split(":").map(Number);
+    return h*60 + m;
+  }
+  const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
+
+  function fmtLesson(x){
+    if (!x) return null;
+    return x.room ? `${x.subj} (${x.room})` : x.subj;
+  }
+  function countTodayLessons(arr){
+    let last = -1;
+    for (let i=0;i<arr.length;i++){
+      if (arr[i] && arr[i].subj) last = i;
+    }
+    return Math.max(last+1, 0);
+  }
+  function setDailyBadge(kind, text){
+    const b=$("dailyBadge");
+    b.className = "badge" + (kind ? (" "+kind) : "");
+    b.textContent = text;
   }
 
-  function padTime(hhmm){
-    const [h,m] = String(hhmm).split(":");
-    return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+  function updateDaily(now){
+    const dow = now.getDay();
+    const dayKey = (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":(dow===5)?"Fri":null;
+
+    if (!dayKey){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
+      return;
+    }
+
+    const lessons = (SCHEDULE[dayKey] || []).slice(0, TIMES_MIN.length);
+    const totalToday = countTodayLessons(lessons) || TIMES_MIN.length;
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const first = TIMES_MIN[0];
+    const last = TIMES_MIN[totalToday-1] || TIMES_MIN[TIMES_MIN.length-1];
+
+    if (nowMin > last.endMin){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      return;
+    }
+
+    if (nowMin < first.startMin){
+      setDailyBadge("live","Dnes");
+      const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
+      setText("dailyText",`Za chvíli začne: ${next}`);
+      setBar("daybar",0);
+      setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      return;
+    }
+
+    for (let i=0;i<totalToday;i++){
+      const t = TIMES_MIN[i];
+      const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
+      const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
+
+      if (nowMin >= t.startMin && nowMin <= t.endMin){
+        const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
+        setDailyBadge("live","Právě");
+        setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
+        setBar("daybar", pct);
+        setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        return;
+      }
+
+      const nt = TIMES_MIN[i+1];
+      if (nt && nowMin > t.endMin && nowMin < nt.startMin){
+        setDailyBadge("live","Pauza");
+        setText("dailyText", `Následuje: ${next}`);
+        setBar("daybar", 0);
+        setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        return;
+      }
+    }
+
+    setDailyBadge("free","Volno");
+    setText("dailyText","Volno 😎");
+    setBar("daybar",100);
+    setText("daylabel","");
+    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
   }
+
+  /* =========================
+     Fancy timetable logic
+     ========================= */
+  const DAY_ORDER = [
+    {key:"Mon", label:"Po"},
+    {key:"Tue", label:"Út"},
+    {key:"Wed", label:"St"},
+    {key:"Thu", label:"Čt"},
+    {key:"Fri", label:"Pá"},
+  ];
 
   function getMark(day, idx){
     return MARKS.find(m => m.day===day && m.idx===idx) || null;
@@ -577,7 +990,7 @@
   function getWeekDatesMonToFri(now = new Date()){
     const d = new Date(now);
     d.setHours(0,0,0,0);
-    const day = d.getDay(); // 0-6
+    const day = d.getDay();
     const diffToMon = (day === 0 ? -6 : 1 - day);
     d.setDate(d.getDate() + diffToMon);
 
@@ -590,73 +1003,13 @@
     return out;
   }
 
-  function normalizeLesson(x){
-    if (!x) return null;
-    return {
-      subj: x.subj || x.subject || "",
-      room: x.room || x.classroom || "",
-      teacher: x.teacher || "",
-    };
-  }
-
-  function hasAnyApiLesson(days){
-    if (!days || typeof days !== "object") return false;
-    const keys = ["Mon","Tue","Wed","Thu","Fri"];
-    return keys.some(k => Array.isArray(days[k]) && days[k].some(v => v && (v.subj || v.subject)));
-  }
-
-  async function loadFromApi(){
-    const statusEl = $("apiStatus");
-    try{
-      if (API_URL.includes("TVUJ-WORKER")) {
-        statusEl.textContent = "API: fallback (doplň API_URL)";
-        return false;
-      }
-
-      statusEl.textContent = "API: načítám…";
-      const res = await fetch(API_URL, { cache: "no-store" });
-      const data = await res.json();
-
-      if (!res.ok || !data?.ok) throw new Error(data?.error || `HTTP ${res.status}`);
-
-      // times (to už ti funguje)
-      if (Array.isArray(data.times) && data.times.length){
-        TIMES = data.times.map(t => ({
-          start: padTime(t.start),
-          end: padTime(t.end),
-        }));
-      }
-
-      // lessons only if parser vrátí něco použitelného
-      if (hasAnyApiLesson(data.days)){
-        const next = {};
-        for (const d of ["Mon","Tue","Wed","Thu","Fri"]){
-          const arr = Array.isArray(data.days[d]) ? data.days[d] : [];
-          next[d] = arr.map(normalizeLesson);
-          while (next[d].length < TIMES.length) next[d].push(null);
-          next[d] = next[d].slice(0, TIMES.length);
-        }
-        SCHEDULE = next;
-        statusEl.textContent = "API: live data ✅";
-      } else {
-        statusEl.textContent = "API: parser běží, lessons zatím fallback ⚠️";
-      }
-
-      // zkus class id
-      if (data?.source?.classId){
-        // class=5A z API je ID, ale UI chceš DE3A; nechám DE3A pokud už máš nastaveno
-        // případně můžeš odkomentovat:
-        // CLASS_NAME = data.source.classId;
-      }
-
-      $("ttUpdated").textContent = "Aktualizováno: " + formatDateCZ(new Date());
-      return true;
-    }catch(err){
-      console.error(err);
-      statusEl.textContent = "API: error, fallback (lokální data)";
-      $("ttUpdated").textContent = "Aktualizováno: " + formatDateCZ(new Date());
-      return false;
+  function getTotalHoursForDay(dayKey){
+    const arr = SCHEDULE[dayKey] || [];
+    let last = -1;
+    for (let i=0;i<arr.length;i++){
+      if (arr[i] && arr[i].subj) last = i;
     }
+    return Math.max(1, last+1);
   }
 
   const tooltip = $("ttTooltip");
@@ -693,17 +1046,10 @@
     `;
   }
 
-  function getTotalHoursForDay(dayKey){
-    const arr = SCHEDULE[dayKey] || [];
-    let last = -1;
-    for (let i=0;i<arr.length;i++){
-      if (arr[i] && (arr[i].subj || arr[i].subject)) last = i;
-    }
-    return Math.max(1, last + 1);
-  }
-
   function renderTimetable(){
     const grid = $("ttGrid");
+    if (!grid) return;
+
     const cols = TIMES.length;
     grid.style.setProperty("--cols", cols);
     grid.innerHTML = "";
@@ -715,7 +1061,7 @@
     TIMES.forEach((t, i) => {
       const h = document.createElement("div");
       h.className = "tt-h";
-      h.innerHTML = `${i+1}<br><span>${padTime(t.start)}–${padTime(t.end)}</span>`;
+      h.innerHTML = `${i+1}<br><span>${t.start}–${t.end}</span>`;
       grid.appendChild(h);
     });
 
@@ -730,7 +1076,7 @@
       grid.appendChild(dayCell);
 
       for (let i=0;i<cols;i++){
-        const base = (SCHEDULE[d.key] && SCHEDULE[d.key][i]) ? normalizeLesson(SCHEDULE[d.key][i]) : null;
+        const base = (SCHEDULE[d.key] && SCHEDULE[d.key][i]) ? SCHEDULE[d.key][i] : null;
         const mark = getMark(d.key, i);
 
         const cell = document.createElement("div");
@@ -748,18 +1094,9 @@
         if (mark?.type === "subst") { cell.classList.add("tt-subst"); type = "Suplování"; }
         if (mark?.type === "cancel") { cell.classList.add("tt-cancel"); type = "Odpadlo"; }
 
-        const subj =
-          (mark?.type === "event") ? (mark.title || "Akce")
-          : (base?.subj || "");
-
-        const room =
-          (mark?.type === "event") ? (mark.room || "")
-          : (base?.room || "");
-
-        const teacher =
-          (mark?.type === "event") ? ""
-          : (base?.teacher || "");
-
+        const subj = (mark?.type === "event") ? (mark.title || "Akce") : (base?.subj || "");
+        const room = (mark?.type === "event") ? (mark.room || "") : (base?.room || "");
+        const teacher = (mark?.type === "event") ? "" : (base?.teacher || "");
         const note = mark?.note || "";
 
         const topline = document.createElement("div");
@@ -782,10 +1119,10 @@
 
         const tdata = {
           dayLabel: d.label,
-          dateLong: dayDate ? `${two(dayDate.getDate())}.${two(dayDate.getMonth()+1)}.${dayDate.getFullYear()}` : "-",
+          dateLong: dayDate ? formatDateCZ(dayDate) : "-",
           hourIdx: i,
           totalHours,
-          time: `${padTime(TIMES[i].start)}–${padTime(TIMES[i].end)}`,
+          time: `${TIMES[i].start}–${TIMES[i].end}`,
           className: CLASS_NAME,
           subj,
           room,
@@ -801,7 +1138,6 @@
         cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
         cell.addEventListener("mouseleave", () => hideTooltip());
 
-        // mobile tap / desktop click pin toggle
         cell.addEventListener("click", (e) => {
           e.stopPropagation();
           const isVisible = tooltip.style.display === "block";
@@ -817,21 +1153,78 @@
       }
     }
 
-    $("ttUpdated").textContent = "Aktualizováno: " + formatDateCZ(new Date());
+    setText("ttUpdated", "Aktualizováno: " + formatDateTimeCZ(new Date()));
+  }
+
+  /* =========================
+     Main update
+     ========================= */
+  function updateAll(){
+    const now = new Date();
+    const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
+
+    const dow = now.getDay();
+    const weekend = (dow===0 || dow===6);
+    const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
+    const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
+
+    setBar("rt-week", weekPct, weekend);
+    setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
+    setBar("raw-week", weekPct, false);
+    setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
+
+    const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
+    setBar("rt-month", monthPct);
+    setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
+
+    const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
+    const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
+    const monthRaw = rawPctBetween(mStart, mEnd, now);
+    setBar("raw-month", monthRaw);
+    setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
+
+    const yr = getSchoolYearRange(now);
+    const yearPct = calendarPctBetween(yr.start, yr.end, now);
+    setBar("rt-year", yearPct);
+    setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
+    const yearRaw = rawPctBetween(yr.start, yr.end, now);
+    setBar("raw-year", yearRaw);
+    setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
+
+    const totalPct = calendarPctBetween(HS_START, HS_END, now);
+    setBar("rt-total", totalPct);
+    setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
+    const totalRaw = rawPctBetween(HS_START, HS_END, now);
+    setBar("raw-total", totalRaw);
+    setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
+
+    const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
+    setText("rt-maturita-label", (daysUntil>=0)
+      ? `Real-Time: ~${daysUntil} dní`
+      : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
+    );
+
+    const rawDays = rawDaysUntil(MATURITA_APPROX, now);
+    setText("raw-maturita-label", (rawDays>=0)
+      ? `Raw-Time: ~${rawDays} školních dní`
+      : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
+    );
+
+    const toggleDaily = $("toggleDaily");
+    if (!toggleDaily || toggleDaily.checked){
+      updateDaily(now);
+    }
+
+    // refresh badge času u rozvrhu
+    if ($("ttUpdated")) setText("ttUpdated", "Aktualizováno: " + formatDateTimeCZ(now));
   }
 
   function boot(){
     initSettings();
-    renderTimetable();       // okamžitě fallback
-    loadFromApi().then(() => {
-      renderTimetable();     // překresli po API (times/live lessons)
-    });
-
-    // auto refresh
-    setInterval(async () => {
-      await loadFromApi();
-      renderTimetable();
-    }, 5 * 60 * 1000);
+    renderTimetable();
+    updateAll();
+    setInterval(updateAll, 30_000);
 
     document.addEventListener("click", () => hideTooltip(true));
     window.addEventListener("scroll", () => hideTooltip(true), { passive:true });
