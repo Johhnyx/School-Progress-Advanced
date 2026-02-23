@@ -4,82 +4,173 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>School Progress</title>
+
   <style>
+    /* =========================
+       THEMES via CSS variables
+       ========================= */
     body{
-      --bg:#f4f4f4; --card:#fff; --text:#222; --muted:#666; --shadow: rgba(0,0,0,0.06);
-      --linebg:#e0e0e0; --green:#3bb54a; --orange:#ff9800;
-      --btn:#111; --btnText:#fff;
-      --badge:#eee; --badgeLive:#e8f5e9; --badgeFree:#fff3cd; --badgeErr:#fdecea;
+      --bg:#f4f4f4;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --shadow: rgba(0,0,0,0.06);
+      --linebg:#e0e0e0;
+      --green:#3bb54a;
+      --orange:#ff9800;
+
+      --btn:#111;
+      --btnText:#fff;
+
+      --badge:#eee;
+      --badgeLive:#e8f5e9;
+      --badgeFree:#fff3cd;
+      --badgeErr:#fdecea;
+
       --border:#eee;
-      --accent:#ff2ea6; --accent2:#ff5fd1; --glow: rgba(255,46,166,0.45);
-      --bgImage:none;
-      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0));
-      --substBg: rgba(255, 80, 80, 0.18); --substBorder: rgba(255, 80, 80, 0.40);
-      --cancelBg: rgba(255, 0, 60, 0.22); --cancelBorder: rgba(255, 0, 60, 0.55);
-      --eventBg: rgba(59,181,74,0.22); --eventBorder: rgba(59,181,74,0.55);
+
+      --accent:#ff2ea6;
+      --accent2:#ff5fd1;
+      --glow: rgba(255,46,166,0.45);
+
+      --bgImage: none;
+      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
+
+      --substBg: rgba(255, 80, 80, 0.18);
+      --substBorder: rgba(255, 80, 80, 0.40);
+      --cancelBg: rgba(255, 0, 60, 0.22);
+      --cancelBorder: rgba(255, 0, 60, 0.55);
+      --eventBg: rgba(59,181,74,0.22);
+      --eventBorder: rgba(59,181,74,0.55);
+
       --ttSubjColor: rgba(20, 35, 60, 0.92);
       --ttSubjGlow: none;
+
       --uiScale: 1;
     }
+
+    /* Dark theme */
     body.theme-dark{
-      --bg:#0f1115; --card:#171a21; --text:#e7e9ee; --muted:#a6acb8;
-      --shadow: rgba(0,0,0,0.35); --linebg:#2a2f3a;
-      --btn:#e7e9ee; --btnText:#111;
-      --badge:#232836; --badgeLive:#1f3a2a; --badgeFree:#3a311f; --badgeErr:#3a1f23;
+      --bg:#0f1115;
+      --card:#171a21;
+      --text:#e7e9ee;
+      --muted:#a6acb8;
+      --shadow: rgba(0,0,0,0.35);
+      --linebg:#2a2f3a;
+
+      --btn:#e7e9ee;
+      --btnText:#111;
+
+      --badge:#232836;
+      --badgeLive:#1f3a2a;
+      --badgeFree:#3a311f;
+      --badgeErr:#3a1f23;
+
       --border:#2a2f3a;
+
       --ttSubjColor: rgba(235, 240, 250, 0.95);
+      --ttSubjGlow: none;
     }
+
+    /* Loona theme */
     body.theme-loona{
-      --bg:#08060b; --card: rgba(18, 12, 22, 0.78); --text:#ffe9f6; --muted:#d7a6c4;
-      --shadow: rgba(0,0,0,0.55); --linebg: rgba(255, 70, 190, 0.18);
-      --btn:#ff2ea6; --btnText:#120812;
+      --bg:#08060b;
+      --card: rgba(18, 12, 22, 0.78);
+      --text:#ffe9f6;
+      --muted:#d7a6c4;
+      --shadow: rgba(0,0,0,0.55);
+      --linebg: rgba(255, 70, 190, 0.18);
+
+      --btn:#ff2ea6;
+      --btnText:#120812;
+
       --badge: rgba(255, 46, 166, 0.18);
       --badgeLive: rgba(0, 255, 170, 0.12);
       --badgeFree: rgba(255, 190, 60, 0.16);
       --badgeErr: rgba(255, 80, 80, 0.16);
+
       --border: rgba(255, 70, 190, 0.20);
-      --accent:#ff2ea6; --accent2:#ff6bd8; --glow: rgba(255,46,166,0.55);
+
+      --accent:#ff2ea6;
+      --accent2:#ff6bd8;
+      --glow: rgba(255,46,166,0.55);
+
       --bgImage: url("loona.png");
       --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
-      --substBg: rgba(255, 46, 166, 0.22); --substBorder: rgba(255, 46, 166, 0.52);
-      --cancelBg: rgba(255, 0, 90, 0.28); --cancelBorder: rgba(255, 0, 90, 0.62);
-      --eventBg: rgba(59,181,74,0.20); --eventBorder: rgba(59,181,74,0.55);
+
+      --substBg: rgba(255, 46, 166, 0.22);
+      --substBorder: rgba(255, 46, 166, 0.52);
+      --cancelBg: rgba(255, 0, 90, 0.28);
+      --cancelBorder: rgba(255, 0, 90, 0.62);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
       --ttSubjColor: rgba(255, 107, 216, 0.98);
       --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
     }
+
+    /* SOBOKILL theme */
     body.theme-sobokill{
-      --bg:#070604; --card: rgba(18, 14, 8, 0.82); --text:#fff3dc; --muted:#d2b98b;
-      --shadow: rgba(0,0,0,0.60); --linebg: rgba(212, 175, 55, 0.18);
-      --btn:#d4af37; --btnText:#1a1206;
+      --bg:#070604;
+      --card: rgba(18, 14, 8, 0.82);
+      --text:#fff3dc;
+      --muted:#d2b98b;
+      --shadow: rgba(0,0,0,0.60);
+      --linebg: rgba(212, 175, 55, 0.18);
+
+      --btn:#d4af37;
+      --btnText:#1a1206;
+
       --badge: rgba(212,175,55,0.16);
       --badgeLive: rgba(0, 210, 160, 0.12);
       --badgeFree: rgba(255,190,60,0.16);
       --badgeErr: rgba(255,80,80,0.16);
+
       --border: rgba(212,175,55,0.22);
-      --accent:#d4af37; --accent2:#f1d07a; --glow: rgba(212,175,55,0.40);
+
+      --accent:#d4af37;
+      --accent2:#f1d07a;
+      --glow: rgba(212,175,55,0.40);
+
       --bgImage: url("sobokill.png");
       --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
-      --substBg: rgba(212, 175, 55, 0.22); --substBorder: rgba(212, 175, 55, 0.50);
-      --cancelBg: rgba(255, 0, 60, 0.24); --cancelBorder: rgba(255, 0, 60, 0.58);
-      --eventBg: rgba(59,181,74,0.20); --eventBorder: rgba(59,181,74,0.55);
+
+      --substBg: rgba(212, 175, 55, 0.22);
+      --substBorder: rgba(212, 175, 55, 0.50);
+      --cancelBg: rgba(255, 0, 60, 0.24);
+      --cancelBorder: rgba(255, 0, 60, 0.58);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
       --ttSubjColor: rgba(241, 208, 122, 0.98);
       --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
     }
 
+    /* =========================
+       BASE
+       ========================= */
     *{ box-sizing:border-box; }
     body{
-      font-family: Arial, sans-serif; margin:0; padding:24px; color:var(--text);
+      font-family: Arial, sans-serif;
+      margin:0;
+      padding:24px;
+      color:var(--text);
       background:
-        var(--bgOverlay), var(--bgImage),
+        var(--bgOverlay),
+        var(--bgImage),
         radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.14), transparent 55%),
         radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.12), transparent 60%),
         radial-gradient(1000px 650px at 30% 90%, rgba(212,175,55,0.10), transparent 60%),
         var(--bg);
-      background-size: cover; background-position: center; background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       transition: background .2s ease, color .2s ease;
     }
+
     .wrap{
-      max-width:1320px; margin:0 auto;
+      max-width:1320px;
+      margin:0 auto;
       transform: scale(var(--uiScale));
       transform-origin: top center;
       width: calc(100% / var(--uiScale));
@@ -89,109 +180,422 @@
       .wrap{ transform:none; width:100%; }
       body{ padding:16px; }
     }
-    h1{ margin:0 0 14px 0; text-align:center; font-weight:900; letter-spacing:0.2px; }
-    body.theme-loona h1, body.theme-sobokill h1{ text-shadow: 0 0 18px var(--glow); }
 
-    .topbar{ display:flex; justify-content:flex-end; margin-bottom:12px; gap:10px; }
-    .btn{ border:none; padding:10px 12px; border-radius:10px; background:var(--btn); color:var(--btnText); font-weight:900; cursor:pointer; }
-    .block{
-      background:var(--card); padding:16px 16px 12px; border-radius:12px; margin:12px 0;
-      border:1px solid var(--border); box-shadow:0 2px 10px var(--shadow); backdrop-filter: blur(10px);
+    h1{
+      margin:0 0 14px 0;
+      text-align:center;
+      font-weight:900;
+      letter-spacing:0.2px;
+      text-shadow: 0 0 0 transparent;
     }
-    .rowTitle{ margin:0 0 10px 0; font-size:18px; font-weight:900; }
-    body.theme-loona .rowTitle, body.theme-sobokill .rowTitle{ color: var(--accent2); }
+    body.theme-loona h1,
+    body.theme-sobokill h1{
+      text-shadow: 0 0 18px var(--glow);
+    }
 
-    .hidden{ display:none !important; }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      margin-bottom:12px;
+      gap:10px;
+    }
+    .btn{
+      border:none;
+      padding:10px 12px;
+      border-radius:10px;
+      background:var(--btn);
+      color:var(--btnText);
+      font-weight:900;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 0 0 transparent;
+    }
+    body.theme-loona .btn,
+    body.theme-sobokill .btn{
+      box-shadow: 0 0 18px var(--glow);
+    }
 
-    .field{ display:flex; align-items:center; gap:10px; margin:10px 0 6px; font-weight:900; flex-wrap:wrap; }
-    select, input[type="range"]{ accent-color: var(--accent); }
-    select{ padding:8px 10px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text); font-weight:900; outline:none; }
-    .toggle{ display:flex; align-items:center; gap:10px; margin:8px 0; font-weight:900; }
+    .block{
+      background:var(--card);
+      padding:16px 16px 12px;
+      border-radius:12px;
+      margin:12px 0;
+      border: 1px solid var(--border);
+      box-shadow:0 2px 10px var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    body.theme-loona .block,
+    body.theme-sobokill .block{
+      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
+    }
+
+    .rowTitle{
+      margin:0 0 10px 0;
+      font-size:18px;
+      font-weight:900;
+      color: var(--text);
+    }
+    body.theme-loona .rowTitle,
+    body.theme-sobokill .rowTitle{
+      color: var(--accent2);
+    }
+
     .hint{ margin:10px 0 0 0; color:var(--muted); font-size:13px; line-height:1.35; font-weight:900; }
     .label{ margin:10px 0 0 0; font-weight:900; }
 
-    .line{ position:relative; width:100%; height:3px; background:var(--linebg); border-radius:999px; overflow:hidden; }
-    .fill{ position:absolute; left:0; top:0; height:100%; width:0%; background:var(--green); border-radius:999px; transition: width .35s ease; }
+    .hidden{ display:none !important; }
+
+    .field{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:10px 0 6px;
+      font-weight:900;
+      flex-wrap: wrap;
+    }
+    select, input[type="range"]{ accent-color: var(--accent); }
+    select{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-weight:900;
+      outline:none;
+    }
+
+    .toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:8px 0;
+      font-weight:900;
+    }
+
+    .scaleRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:10px 0 6px;
+      font-weight:900;
+      flex-wrap:wrap;
+    }
+    .scaleRow input[type="range"]{ flex:1 1 240px; min-width:180px; }
+    .scaleValue{ min-width:56px; text-align:right; color: var(--muted); font-weight:900; }
+
+    .line{
+      position:relative;
+      width:100%;
+      height:3px;
+      background:var(--linebg);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .fill{
+      position:absolute;
+      left:0; top:0;
+      height:100%;
+      width:0%;
+      background:var(--green);
+      border-radius:999px;
+      transition: width 0.35s ease;
+    }
     .fill.weekend{ background:var(--orange); }
 
-    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
-    @media (max-width:980px){ .grid2{ grid-template-columns:1fr; } }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      min-width:0;
+    }
+    .colHead{
+      text-align:center;
+      font-weight:900;
+      color:var(--muted);
+      margin:0 0 8px 0;
+      font-size:13px;
+      letter-spacing:0.3px;
+    }
+    @media (max-width:980px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
 
-    .colHead{ text-align:center; font-weight:900; color:var(--muted); margin:0 0 8px 0; font-size:13px; letter-spacing:0.3px; }
+    .mainLayout{
+      display:grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width:1180px){
+      .mainLayout{ grid-template-columns: 1fr; }
+      .addonCol{ order:2; }
+    }
 
-    .mainLayout{ display:grid; grid-template-columns: minmax(0,1fr) 300px; gap:14px; align-items:start; }
-    @media (max-width:1180px){ .mainLayout{ grid-template-columns:1fr; } }
-
-    .dailyRow{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-    .badge{ padding:6px 10px; border-radius:999px; background:var(--badge); font-weight:900; font-size:13px; }
+    /* DAILY */
+    .dailyRow{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:900;
+      font-size:13px;
+    }
     .badge.live{ background:var(--badgeLive); }
     .badge.free{ background:var(--badgeFree); }
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
-    /* addon */
-    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:.95; }
-    .addonHead{ text-align:center; font-weight:900; color:var(--muted); margin:0 0 8px 0; font-size:12px; letter-spacing:0.35px; text-transform:uppercase; opacity:.9; }
+    /* ADDON */
+    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
+    .addonHead{
+      text-align:center;
+      font-weight:900;
+      color:var(--muted);
+      margin:0 0 8px 0;
+      font-size:12px;
+      letter-spacing:0.35px;
+      text-transform:uppercase;
+      opacity:0.9;
+    }
+    .addonCol .rowTitle{ font-size:16px; }
+
     .stackList{ display:flex; flex-direction:column; gap:8px; }
-    .stackItem{ border:1px solid var(--border); background: rgba(255,255,255,0.03); border-radius:10px; padding:10px; }
+    .stackItem{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:10px;
+      padding:10px;
+    }
     .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
-    .stackItem.event{ border-color: var(--eventBorder); background: linear-gradient(180deg, rgba(59,181,74,0.10), rgba(59,181,74,0.04)); }
-    .stackItem.subst{ border-color: var(--substBorder); background: linear-gradient(180deg, rgba(255,80,80,0.12), rgba(255,80,80,0.05)); }
-    .stackItem.cancel{ border-color: var(--cancelBorder); background: linear-gradient(180deg, rgba(255,0,60,0.12), rgba(255,0,60,0.05)); }
+    .stackItem.event{
+      border-color: var(--eventBorder);
+      background: linear-gradient(180deg, rgba(59,181,74,0.10), rgba(59,181,74,0.04));
+    }
+    .stackItem.subst{
+      border-color: var(--substBorder);
+      background: linear-gradient(180deg, rgba(255,80,80,0.12), rgba(255,80,80,0.05));
+    }
+    .stackItem.cancel{
+      border-color: var(--cancelBorder);
+      background: linear-gradient(180deg, rgba(255,0,60,0.12), rgba(255,0,60,0.05));
+    }
     .eventTitle{ font-weight:1000; font-size:13px; margin-bottom:4px; }
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
     .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
 
-    .trackerCard{ border:1px solid var(--border); background: rgba(255,255,255,0.03); border-radius:12px; padding:12px; }
-    .trackerBadge{ display:inline-block; padding:5px 9px; border-radius:999px; background:var(--badge); font-weight:1000; font-size:11px; margin-bottom:8px; }
+    .trackerCard{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:12px;
+      padding:12px;
+    }
+    .trackerBadge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:1000;
+      font-size:11px;
+      margin-bottom:8px;
+    }
     .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
     .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
 
-    /* timetable */
-    .timetable .tt-top{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
-    .tt-sub{ color:var(--muted); font-weight:900; font-size:12px; margin-top:2px; }
-    .tt-badge{ display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--muted); font-weight:900; font-size:12px; }
-
-    .tt-gridWrap{ overflow:auto; padding-bottom:4px; }
-    .tt-grid{ display:grid; grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr)); gap:10px; min-width: 940px; }
-    .tt-corner{ height:44px; }
-    .tt-h{ border:1px solid var(--border); border-radius:12px; padding:10px; background: rgba(255,255,255,0.04); text-align:center; font-weight:900; }
-    .tt-h span{ display:block; font-size:11px; font-weight:900; color:var(--muted); margin-top:4px; }
-    .tt-day{ border:1px solid var(--border); border-radius:12px; padding:10px 0; text-align:center; font-weight:900; color:var(--muted); background: rgba(255,255,255,0.03); }
-
-    .tt-cell{ border:1px solid var(--border); border-radius:14px; padding:10px; background: rgba(255,255,255,0.04); box-shadow: 0 2px 10px var(--shadow); min-height:78px; transition: transform .12s ease, box-shadow .12s ease; }
-    .tt-cell:hover{ transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
-
-    .tt-topline{ display:flex; justify-content:space-between; align-items:center; gap:8px; font-weight:1000; font-size:11px; color:var(--muted); opacity:.95; }
-    .tt-subj{ font-weight:1000; letter-spacing:.2px; margin-top:6px; font-size:22px; color:var(--ttSubjColor) !important; text-shadow: var(--ttSubjGlow); }
-    .tt-teacher{ font-weight:900; color:var(--muted); font-size:11px; margin-top:8px; opacity:.95; }
-
-    .tt-empty{ display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:900; background: rgba(255,255,255,0.02); box-shadow:none; }
-
-    .tt-event{ border-color: var(--eventBorder); background: var(--eventBg); box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25); }
-    .tt-subst{ border-color: var(--substBorder); background: var(--substBg); box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30); }
-    .tt-cancel{ border-color: var(--cancelBorder); background: repeating-linear-gradient(135deg, rgba(255,255,255,0.14) 0px, rgba(255,255,255,0.14) 10px, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 20px), var(--cancelBg); }
-
-    .tt-tooltip{
-      position: fixed; z-index: 9999; max-width: 360px; padding: 10px 12px;
-      border-radius: 12px; border: 1px solid var(--border);
-      background: rgba(20, 20, 26, 0.92); color:#fff;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.35); backdrop-filter: blur(10px);
-      font-weight: 900; font-size: 12px; line-height: 1.35;
-      transform: translate(12px, 12px);
-      display:none; pointer-events:none;
+    /* TIMETABLE */
+    .timetable .tt-top{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap: wrap;
     }
-    .tt-tooltip .t-title{ font-size: 13px; letter-spacing: .2px; margin-bottom: 6px; }
-    .tt-tooltip .t-row{ display:flex; justify-content:space-between; gap:10px; border-top: 1px solid rgba(255,255,255,0.10); padding-top:6px; margin-top:6px; }
+    .tt-sub{ color: var(--muted); font-weight: 900; font-size: 12px; margin-top: 2px; }
+    .tt-badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .tt-gridWrap{ overflow:auto; padding-bottom: 4px; }
+    .tt-grid{
+      display:grid;
+      grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
+      gap:10px;
+      min-width: 940px;
+    }
+    .tt-corner{ height:44px; }
+
+    .tt-h{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px;
+      background: rgba(255,255,255,0.04);
+      text-align:center;
+      font-weight: 900;
+    }
+    .tt-h span{
+      display:block;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .tt-day{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 0;
+      text-align:center;
+      font-weight: 900;
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .tt-cell{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 2px 10px var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 78px;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .tt-cell:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    }
+
+    .tt-topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      font-weight: 1000;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.95;
+    }
+
+    .tt-subj{
+      font-weight: 1000;
+      letter-spacing: .2px;
+      margin-top: 6px;
+      font-size: 22px;
+      color: var(--ttSubjColor) !important;
+      text-shadow: var(--ttSubjGlow);
+    }
+
+    .tt-teacher{
+      font-weight: 900;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+      opacity: 0.95;
+    }
+
+    .tt-empty{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--muted);
+      font-weight: 900;
+      background: rgba(255,255,255,0.02);
+      box-shadow: none;
+    }
+
+    .tt-event{
+      border-color: var(--eventBorder);
+      background: var(--eventBg);
+      box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25);
+    }
+    .tt-subst{
+      border-color: var(--substBorder);
+      background: var(--substBg);
+      box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30);
+    }
+    .tt-cancel{
+      border-color: var(--cancelBorder);
+      background:
+        repeating-linear-gradient(
+          135deg,
+          rgba(255,255,255,0.14) 0px,
+          rgba(255,255,255,0.14) 10px,
+          rgba(0,0,0,0.00) 10px,
+          rgba(0,0,0,0.00) 20px
+        ),
+        var(--cancelBg);
+      box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
+    }
+
+    /* Tooltip */
+    .tt-tooltip{
+      position: fixed;
+      z-index: 9999;
+      max-width: 360px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(20, 20, 26, 0.92);
+      color: #fff;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.35;
+      transform: translate(12px, 12px);
+      display:none;
+      pointer-events:none;
+    }
+    .tt-tooltip .t-title{
+      font-size: 13px;
+      letter-spacing: .2px;
+      margin-bottom: 6px;
+    }
+    .tt-tooltip .t-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding-top: 6px;
+      margin-top: 6px;
+    }
     .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
     .tt-tooltip .v{ color: #fff; text-align:right; }
 
     .footer{
-      margin-top: 18px; padding: 14px 0 4px; text-align:center; color:var(--muted);
-      font-weight:900; font-size:12px; letter-spacing:.2px; user-select:none; line-height:1.6;
+      margin-top: 18px;
+      padding: 14px 0 4px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .2px;
+      user-select: none;
+      line-height: 1.6;
     }
-    .footer a{ color:inherit; text-decoration:none; border-bottom:1px dashed rgba(255,255,255,0.25); }
-    .footer a:hover{ border-bottom-style:solid; }
+    .footer a{
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,0.25);
+      opacity: 0.95;
+    }
+    .footer a:hover{ opacity: 1; border-bottom-style: solid; }
+    .footer .footerBy{ font-size: 13px; }
+    .footer .footerSep{ opacity: .55; margin: 0 6px; }
   </style>
 </head>
 
@@ -216,16 +620,16 @@
         </select>
       </div>
 
-      <div class="field">
+      <div class="scaleRow">
         <span>Velikost UI</span>
         <input type="range" id="uiScaleRange" min="85" max="120" step="1" value="100" />
-        <span id="uiScaleValue" style="min-width:56px;text-align:right;color:var(--muted);font-weight:900;">100%</span>
+        <span id="uiScaleValue" class="scaleValue">100%</span>
       </div>
 
-      <label class="toggle"><input type="checkbox" id="toggleTimetable" checked> <span>Zobrazit rozvrh</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleDaily" checked> <span>Zobrazit denní progres</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleEvents" checked> <span>Zobrazit Události</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleCafa" checked> <span>Zobrazit Cáfa Tracker</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Cáfa Tracker</span></label>
 
       <p class="hint" id="statusHint">Status: OK</p>
     </div>
@@ -235,21 +639,67 @@
         <div>
           <div class="colHead">Real-Time</div>
 
-          <div class="block"><div class="rowTitle">Týden</div><div class="line"><div class="fill" id="rt-week"></div></div><p class="label" id="rt-week-label"></p></div>
-          <div class="block"><div class="rowTitle">Měsíc</div><div class="line"><div class="fill" id="rt-month"></div></div><p class="label" id="rt-month-label"></p></div>
-          <div class="block"><div class="rowTitle">Školní rok</div><div class="line"><div class="fill" id="rt-year"></div></div><p class="label" id="rt-year-label"></p></div>
-          <div class="block"><div class="rowTitle">Celkem</div><div class="line"><div class="fill" id="rt-total"></div></div><p class="label" id="rt-total-label"></p></div>
-          <div class="block"><div class="rowTitle">Maturita</div><p class="label" id="rt-maturita-label"></p></div>
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="rt-week"></div></div>
+            <p class="label" id="rt-week-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="rt-month"></div></div>
+            <p class="label" id="rt-month-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="rt-year"></div></div>
+            <p class="label" id="rt-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="rt-total"></div></div>
+            <p class="label" id="rt-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="rt-maturita-label"></p>
+          </div>
         </div>
 
         <div>
           <div class="colHead">Raw-Time</div>
 
-          <div class="block"><div class="rowTitle">Týden</div><div class="line"><div class="fill" id="raw-week"></div></div><p class="label" id="raw-week-label"></p></div>
-          <div class="block"><div class="rowTitle">Měsíc</div><div class="line"><div class="fill" id="raw-month"></div></div><p class="label" id="raw-month-label"></p></div>
-          <div class="block"><div class="rowTitle">Školní rok</div><div class="line"><div class="fill" id="raw-year"></div></div><p class="label" id="raw-year-label"></p></div>
-          <div class="block"><div class="rowTitle">Celkem</div><div class="line"><div class="fill" id="raw-total"></div></div><p class="label" id="raw-total-label"></p></div>
-          <div class="block"><div class="rowTitle">Maturita</div><p class="label" id="raw-maturita-label"></p></div>
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="raw-week"></div></div>
+            <p class="label" id="raw-week-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="raw-month"></div></div>
+            <p class="label" id="raw-month-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="raw-year"></div></div>
+            <p class="label" id="raw-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="raw-total"></div></div>
+            <p class="label" id="raw-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="raw-maturita-label"></p>
+          </div>
         </div>
       </div>
 
@@ -280,7 +730,9 @@
         <div class="badge" id="dailyBadge">Rozvrh</div>
         <div class="dailyText" id="dailyText">—</div>
       </div>
-      <div class="line" style="margin-top:10px;"><div class="fill" id="daybar"></div></div>
+      <div class="line" style="margin-top:10px;">
+        <div class="fill" id="daybar"></div>
+      </div>
       <p class="label" id="daylabel"></p>
       <p class="hint" id="dailyDebug"></p>
     </div>
@@ -289,9 +741,11 @@
       <div class="tt-top">
         <div>
           <div class="rowTitle">Rozvrh</div>
-          <div class="tt-sub" id="ttSub">DE3A • Týdenní přehled • fancy</div>
+          <div class="tt-sub">DE3A • Týdenní přehled • fancy</div>
         </div>
-        <div><span class="tt-badge" id="ttUpdated">Aktualizováno: —</span></div>
+        <div class="tt-meta">
+          <span class="tt-badge" id="ttUpdated">Aktualizováno: —</span>
+        </div>
       </div>
 
       <div class="tt-gridWrap">
@@ -300,8 +754,12 @@
     </div>
 
     <div class="footer">
-      <div style="font-size:13px;">Created By Johnny Hotovost</div>
-      <div>© 2026 All rights reserved • <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a></div>
+      <div class="footerBy">Created By Johnny Hotovost</div>
+      <div>
+        <span>© 2026 All rights reserved</span>
+        <span class="footerSep">•</span>
+        <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
+      </div>
     </div>
   </div>
 
@@ -309,7 +767,7 @@
 
 <script>
   /* =========================
-     API CONFIG (already your domain)
+     API CONFIG (YOUR DOMAIN)
      ========================= */
   const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
   const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
@@ -343,11 +801,13 @@
     const s = String(full || "").trim();
     if (!s) return "";
     if (SUBJECT_SHORT[s]) return SUBJECT_SHORT[s];
-    // fallback: first 3 letters without diacritics
     const noDia = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     return noDia.replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || s.slice(0,3).toUpperCase();
   }
 
+  /* =========================
+     TIMES
+     ========================= */
   const TIMES = [
     {start:"07:55", end:"08:40"},
     {start:"08:50", end:"09:35"},
@@ -357,6 +817,11 @@
     {start:"12:50", end:"13:35"},
     {start:"13:40", end:"14:25"},
   ];
+
+  function timeToMin(hhmm){
+    const [h,m] = hhmm.split(":").map(Number);
+    return h*60 + m;
+  }
   const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
 
   /* =========================
@@ -403,7 +868,7 @@
   };
 
   /* =========================
-     HELPERS
+     DOM helpers
      ========================= */
   const $ = (id) => document.getElementById(id);
   const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
@@ -478,16 +943,24 @@
     return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
   }
 
-  function timeToMin(hhmm){ const [h,m] = hhmm.split(":").map(Number); return h*60+m; }
   function dayKeyFromDate(d){
     const dow = d.getDay();
     return (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":(dow===5)?"Fri":null;
   }
-  function dayLabelCz(dayKey){ return ({Mon:"Po", Tue:"Út", Wed:"St", Thu:"Čt", Fri:"Pá"})[dayKey] || dayKey || "—"; }
+  function dayLabelCz(dayKey){
+    return ({Mon:"Po", Tue:"Út", Wed:"St", Thu:"Čt", Fri:"Pá"})[dayKey] || dayKey || "—";
+  }
   function hasAnyLesson(days){
     return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj));
   }
 
+  function statusText(){
+    $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Cáfa: ${state.teacherSource}`;
+  }
+
+  /* =========================
+     THEME + SETTINGS + SCALE
+     ========================= */
   function applyTheme(theme){
     const body = document.body;
     body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
@@ -496,6 +969,7 @@
     const sel = $("themeSelect");
     if (sel) sel.value = theme;
   }
+
   function applyUiScale(percent){
     const p = Math.max(85, Math.min(120, Number(percent) || 100));
     document.body.style.setProperty("--uiScale", String(p / 100));
@@ -505,12 +979,17 @@
   }
 
   function refreshAddonPanelVisibility(){
-    const addon = $("addonPanel");
-    const evB = $("eventsBlock");
-    const cfB = $("cafaBlock");
-    const any = !evB.classList.contains("hidden") || !cfB.classList.contains("hidden");
-    addon.classList.toggle("hidden", !any);
-    addon.querySelector(".addonHead").classList.toggle("hidden", !any);
+    const addonPanel = $("addonPanel");
+    const eventsBlock = $("eventsBlock");
+    const cafaBlock = $("cafaBlock");
+    const addonHead = addonPanel.querySelector(".addonHead");
+
+    const eventsVisible = !eventsBlock.classList.contains("hidden");
+    const cafaVisible = !cafaBlock.classList.contains("hidden");
+    const anyVisible = eventsVisible || cafaVisible;
+
+    addonPanel.classList.toggle("hidden", !anyVisible);
+    addonHead.classList.toggle("hidden", !anyVisible);
   }
 
   function initSettings(){
@@ -560,11 +1039,8 @@
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
     $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
     $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
-    refreshAddonPanelVisibility();
-  }
 
-  function statusText(){
-    $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Cáfa: ${state.teacherSource}`;
+    refreshAddonPanelVisibility();
   }
 
   /* =========================
@@ -576,23 +1052,29 @@
     tooltip.style.left = x + "px";
     tooltip.style.top = y + "px";
     tooltip.style.display = "block";
-    tooltip.setAttribute("aria-hidden","false");
+    tooltip.setAttribute("aria-hidden", "false");
   }
-  function moveTooltip(x,y){ tooltip.style.left=x+"px"; tooltip.style.top=y+"px"; }
-  function hideTooltip(){ tooltip.style.display="none"; tooltip.setAttribute("aria-hidden","true"); }
+  function moveTooltip(x, y){
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+  }
+  function hideTooltip(){
+    tooltip.style.display = "none";
+    tooltip.setAttribute("aria-hidden", "true");
+  }
   document.addEventListener("click", () => hideTooltip());
 
-  function tooltipHTML(d){
+  function tooltipHTML(data){
     return `
-      <div class="t-title">${d.dayLabel} • ${d.dateLong} • Hodina ${d.hourIdx+1}/7 (${d.time})</div>
-      <div class="t-row"><div class="k">Třída</div><div class="v">${d.className || "-"}</div></div>
-      <div class="t-row"><div class="k">Předmět</div><div class="v">${d.subjFull || "-"}</div></div>
-      <div class="t-row"><div class="k">Učebna</div><div class="v">${d.room || "-"}</div></div>
-      <div class="t-row"><div class="k">Učitel</div><div class="v">${d.teacher || "-"}</div></div>
-      ${d.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${d.cls}</div></div>` : ``}
-      ${d.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${d.type}</div></div>` : ``}
-      ${d.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${d.note}</div></div>` : ``}
-      ${d.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${d.source}</div></div>` : ``}
+      <div class="t-title">${data.dayLabel} • ${data.dateLong} • Hodina ${data.hourIdx+1}/7 (${data.time})</div>
+      <div class="t-row"><div class="k">Třída</div><div class="v">${data.className || "-"}</div></div>
+      <div class="t-row"><div class="k">Předmět</div><div class="v">${data.subjFull || "-"}</div></div>
+      <div class="t-row"><div class="k">Učebna</div><div class="v">${data.room || "-"}</div></div>
+      <div class="t-row"><div class="k">Učitel</div><div class="v">${data.teacher || "-"}</div></div>
+      ${data.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${data.cls}</div></div>` : ``}
+      ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
+      ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
+      ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
     `;
   }
 
@@ -609,11 +1091,12 @@
   }
 
   /* =========================
-     RENDER TIMETABLE
+     TIMETABLE RENDER
      ========================= */
   function markForCell(dayKey, idx){
     return (state.classMarks || []).find(m => m.day===dayKey && m.idx===idx) || null;
   }
+
   function renderTimetable(){
     const days = getClassDays();
     const grid = $("ttGrid");
@@ -645,8 +1128,8 @@
       dayCell.textContent = d.label;
       grid.appendChild(dayCell);
 
-      for (let i=0;i<7;i++){
-        const base = days[d.key]?.[i] || null;
+      for (let i=0;i<TIMES.length;i++){
+        const base = (days[d.key] && days[d.key][i]) ? days[d.key][i] : null;
         const mk = markForCell(d.key, i);
 
         const cell = document.createElement("div");
@@ -666,6 +1149,7 @@
 
         const subjFull = base?.subj || (mk?.type==="event" ? "Akce" : "");
         const subjShort = shortSubj(subjFull);
+
         const room = base?.room || mk?.room || "";
         const teacher = base?.teacher || "";
         const cls = base?.class || "";
@@ -694,17 +1178,22 @@
           time: `${TIMES[i].start}–${TIMES[i].end}`,
           className: CLASS_NAME,
           subjFull,
-          room, teacher, cls, note,
+          room,
+          teacher,
+          cls,
+          note,
           type,
-          source: (state.classSource === "backend") ? "backend" : "—"
+          source: state.classSource
         };
 
         cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
         cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
         cell.addEventListener("mouseleave", () => hideTooltip());
+
         cell.addEventListener("click", (e) => {
           e.stopPropagation();
-          if (tooltip.style.display === "block") hideTooltip();
+          const visible = tooltip.style.display === "block";
+          if (visible) hideTooltip();
           else showTooltip(tooltipHTML(tdata), e.clientX || (window.innerWidth/2), e.clientY || (window.innerHeight/2));
         });
 
@@ -716,7 +1205,7 @@
   }
 
   /* =========================
-     EVENTS PANEL (Akce + Marks)
+     EVENTS PANEL
      ========================= */
   function renderEventsPanel(){
     const list = $("eventsList");
@@ -727,8 +1216,7 @@
     const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
     const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
 
-    const any = evs.length || marks.length;
-    if (!any){
+    if (!evs.length && !marks.length){
       const empty = document.createElement("div");
       empty.className = "stackItem muted";
       empty.textContent = "Žádné události (zatím)";
@@ -736,8 +1224,8 @@
       return;
     }
 
-    // 1) Akce školy
-    const evSorted = [...evs].sort((a,b) => (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || (String(a.begin).localeCompare(String(b.begin))));
+    // events (Akce školy)
+    const evSorted = [...evs].sort((a,b) => (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || String(a.begin||"").localeCompare(String(b.begin||"")));
     for (const e of evSorted){
       const item = document.createElement("div");
       item.className = "stackItem event";
@@ -760,7 +1248,7 @@
       list.appendChild(item);
     }
 
-    // 2) Supl/odpadlo (marks)
+    // marks (supl/odpadlo)
     const markSorted = [...marks].sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || (a.idx-b.idx));
     for (const ev of markSorted){
       const item = document.createElement("div");
@@ -841,11 +1329,13 @@
     b.className = "badge" + (kind ? (" "+kind) : "");
     b.textContent = text;
   }
+
   function fmtLesson(x){
     if (!x) return null;
     const room = x.room ? ` (${x.room})` : "";
     return `${shortSubj(x.subj)}${room}`;
   }
+
   function countTodayLessons(arr){
     let last = -1;
     for (let i=0;i<arr.length;i++){
@@ -853,6 +1343,7 @@
     }
     return Math.max(last+1, 0) || 7;
   }
+
   function updateDaily(now){
     const dayKey = dayKeyFromDate(now);
     const days = getClassDays();
@@ -903,6 +1394,16 @@
         setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
         setBar("daybar", pct);
         setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        return;
+      }
+
+      const nt = TIMES_MIN[i+1];
+      if (nt && nowMin > t.endMin && nowMin < nt.startMin){
+        setDailyBadge("live","Pauza");
+        setText("dailyText", `Následuje: ${next}`);
+        setBar("daybar", 0);
+        setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
         setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
         return;
       }
@@ -959,9 +1460,16 @@
     setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
 
     const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
-    setText("rt-maturita-label", (daysUntil>=0) ? `Real-Time: ~${daysUntil} dní` : `Real-Time: hotovo`);
+    setText("rt-maturita-label", (daysUntil>=0)
+      ? `Real-Time: ~${daysUntil} dní`
+      : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
+    );
+
     const rawDays = rawDaysUntil(MATURITA_APPROX, now);
-    setText("raw-maturita-label", (rawDays>=0) ? `Raw-Time: ~${rawDays} školních dní` : `Raw-Time: hotovo`);
+    setText("raw-maturita-label", (rawDays>=0)
+      ? `Raw-Time: ~${rawDays} školních dní`
+      : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
+    );
   }
 
   /* =========================
@@ -978,6 +1486,7 @@
   }
 
   async function syncBackend(){
+    // class
     const c = await fetchJsonSafe(BACKEND_CLASS_API);
     if (!c.__error && c.ok && c.days && hasAnyLesson(c.days)){
       state.classDays = c.days;
@@ -986,18 +1495,15 @@
       state.classSource = "backend";
     } else {
       state.classSource = "fallback";
-      state.classMarks = [];
-      state.classEvents = [];
-      state.classDays = { Mon:Array(7).fill(null), Tue:Array(7).fill(null), Wed:Array(7).fill(null), Thu:Array(7).fill(null), Fri:Array(7).fill(null) };
     }
 
+    // teacher
     const t = await fetchJsonSafe(BACKEND_TEACHER_API);
     if (!t.__error && t.ok && t.days && hasAnyLesson(t.days)){
       state.teacherDays = t.days;
       state.teacherSource = "backend";
     } else {
       state.teacherSource = "fallback";
-      state.teacherDays = { Mon:Array(7).fill(null), Tue:Array(7).fill(null), Wed:Array(7).fill(null), Thu:Array(7).fill(null), Fri:Array(7).fill(null) };
     }
 
     statusText();
@@ -1008,169 +1514,35 @@
   }
 
   /* =========================
-     SETTINGS UI + VISIBILITY
-     ========================= */
-  function bootSettings(){
-    initSettings();
-    const savedTT = localStorage.getItem("sp_toggle_tt");
-    const savedDaily = localStorage.getItem("sp_toggle_daily");
-    const savedEvents = localStorage.getItem("sp_toggle_events");
-    const savedCafa = localStorage.getItem("sp_toggle_cafa");
-
-    if (savedTT !== null) $("toggleTimetable").checked = savedTT === "1";
-    if (savedDaily !== null) $("toggleDaily").checked = savedDaily === "1";
-    if (savedEvents !== null) $("toggleEvents").checked = savedEvents === "1";
-    if (savedCafa !== null) $("toggleCafa").checked = savedCafa === "1";
-
-    $("timetableBlock").classList.toggle("hidden", !$("toggleTimetable").checked);
-    $("dailyBlock").classList.toggle("hidden", !$("toggleDaily").checked);
-    $("eventsBlock").classList.toggle("hidden", !$("toggleEvents").checked);
-    $("cafaBlock").classList.toggle("hidden", !$("toggleCafa").checked);
-    refreshAddonPanelVisibility();
-  }
-
-  /* =========================
-     TICK LOOP
+     BOOT + LOOP
      ========================= */
   function tick(){
     const now = new Date();
     updateProgressBars();
-    if ($("toggleDaily").checked) updateDaily(now);
+    if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
     updateCafaTracker(now);
   }
 
-  /* =========================
-     BOOT
-     ========================= */
-  document.addEventListener("DOMContentLoaded", async () => {
-    bootSettings();
+  function boot(){
+    initSettings();
+
+    // initial UI (before backend)
+    state.classSource = "loading";
+    state.teacherSource = "loading";
     statusText();
+
     renderTimetable();
     renderEventsPanel();
     tick();
-    await syncBackend();
+
+    // fetch backend
+    syncBackend();
+
     setInterval(tick, 30_000);
     setInterval(syncBackend, 5 * 60_000);
-  });
-
-  /* =========================
-     DUMB RENDER FALLBACKS
-     ========================= */
-  function renderTimetable(){ /* replaced below by real implementation */ }
-
-  // Real renderTimetable implementation (needs tooltip)
-  const tooltip = document.getElementById("ttTooltip");
-  function showTooltip(html, x, y){
-    tooltip.innerHTML = html;
-    tooltip.style.left = x + "px";
-    tooltip.style.top = y + "px";
-    tooltip.style.display = "block";
-    tooltip.setAttribute("aria-hidden","false");
   }
-  function moveTooltip(x,y){ tooltip.style.left=x+"px"; tooltip.style.top=y+"px"; }
-  function hideTooltip(){ tooltip.style.display="none"; tooltip.setAttribute("aria-hidden","true"); }
-  document.addEventListener("click", () => hideTooltip());
 
-  function renderTimetable(){
-    const days = getClassDays();
-    const grid = document.getElementById("ttGrid");
-    grid.style.setProperty("--cols", 7);
-    grid.innerHTML = "";
-
-    const corner = document.createElement("div");
-    corner.className = "tt-corner";
-    grid.appendChild(corner);
-
-    TIMES.forEach((t, i) => {
-      const h = document.createElement("div");
-      h.className = "tt-h";
-      h.innerHTML = `${i+1}<br><span>${t.start}–${t.end}</span>`;
-      grid.appendChild(h);
-    });
-
-    const order = [
-      {key:"Mon", label:"Po"},
-      {key:"Tue", label:"Út"},
-      {key:"Wed", label:"St"},
-      {key:"Thu", label:"Čt"},
-      {key:"Fri", label:"Pá"},
-    ];
-
-    for (const d of order){
-      const dayCell = document.createElement("div");
-      dayCell.className = "tt-day";
-      dayCell.textContent = d.label;
-      grid.appendChild(dayCell);
-
-      for (let i=0;i<7;i++){
-        const base = days[d.key]?.[i] || null;
-        const mk = markForCell(d.key, i);
-
-        const cell = document.createElement("div");
-        cell.className = "tt-cell";
-
-        if (!base && !mk){
-          cell.classList.add("tt-empty");
-          cell.textContent = "—";
-          grid.appendChild(cell);
-          continue;
-        }
-
-        let type = "";
-        if (mk?.type === "event") { cell.classList.add("tt-event"); type = "Akce"; }
-        if (mk?.type === "subst") { cell.classList.add("tt-subst"); type = "Suplování"; }
-        if (mk?.type === "cancel") { cell.classList.add("tt-cancel"); type = "Odpadlo"; }
-
-        const subjFull = base?.subj || (mk?.type==="event" ? "Akce" : "");
-        const subjShort = shortSubj(subjFull);
-        const room = base?.room || mk?.room || "";
-        const teacher = base?.teacher || "";
-        const cls = base?.class || "";
-        const note = mk?.note || base?.note || "";
-
-        const topline = document.createElement("div");
-        topline.className = "tt-topline";
-        topline.innerHTML = `<span class="cls">${CLASS_NAME}</span><span class="room">${room || ""}</span>`;
-        cell.appendChild(topline);
-
-        const subjEl = document.createElement("div");
-        subjEl.className = "tt-subj";
-        subjEl.textContent = subjShort || "—";
-        cell.appendChild(subjEl);
-
-        const teacherEl = document.createElement("div");
-        teacherEl.className = "tt-teacher";
-        teacherEl.textContent = teacher || "";
-        cell.appendChild(teacherEl);
-
-        const now = new Date();
-        const tdata = {
-          dayLabel: d.label,
-          dateLong: formatDateCZ(now),
-          hourIdx: i,
-          time: `${TIMES[i].start}–${TIMES[i].end}`,
-          className: CLASS_NAME,
-          subjFull,
-          room, teacher, cls, note,
-          type,
-          source: state.classSource
-        };
-
-        cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
-        cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
-        cell.addEventListener("mouseleave", () => hideTooltip());
-        cell.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (tooltip.style.display === "block") hideTooltip();
-          else showTooltip(tooltipHTML(tdata), e.clientX || (window.innerWidth/2), e.clientY || (window.innerHeight/2));
-        });
-
-        grid.appendChild(cell);
-      }
-    }
-
-    document.getElementById("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
-  }
+  document.addEventListener("DOMContentLoaded", boot);
 </script>
 </body>
 </html>
