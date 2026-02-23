@@ -5,6 +5,8 @@
   const TIMETABLE_URL = "https://1kspa-kladno.bakalari.cz/Timetable/Public/Permanent/Class/5A";
   const CORS_PROXY = "https://api.allorigins.win/raw?url=";
 
+  const API_URL = "https://bakalariapijanpilat-bp.workers.dev.workers.dev/api/timetable?class=5A&type=Actual";
+  
   // 4 roky dohromady (jak jsi psal)
   const HS_START = localDate(2023, 9, 4);
   const HS_END   = localDateEnd(2027, 6, 30);
