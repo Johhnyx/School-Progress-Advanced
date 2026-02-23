@@ -3,40 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>School Progress</title>
+  <title>School Progress – Fancy Timetable</title>
+
   <style>
-    :root{
+    /* =========================
+       THEMES
+       ========================= */
+    body{
       --bg:#f4f4f4;
       --card:#ffffff;
       --text:#222;
       --muted:#666;
-      --shadow: rgba(0,0,0,0.08);
-      --linebg:#e6e6e6;
-      --green:#3bb54a;
-      --orange:#ff9800;
+      --shadow: rgba(0,0,0,0.06);
+      --linebg:#e0e0e0;
+
       --btn:#111;
       --btnText:#fff;
+
       --badge:#eee;
-      --badgeLive:#e8f5e9;
-      --badgeFree:#fff3cd;
-      --badgeErr:#fdecea;
-      --border:#ececec;
-      --accent:#00b7ff;
-      --accent2:#7ee3ff;
-      --glow: rgba(0,183,255,0.25);
-      --tt-head:#4ea6df;
-      --tt-cell:#3f4348;
-      --tt-day:#4b4f54;
-      --tt-text:#f5f7fa;
-      --tt-sub:#ced5dd;
-      --tt-outline:#2b2f34;
-      --tt-hover:#00b7ff;
-      --tt-event:#9fd077;
-      --tt-cancel:#ff8d9d;
-      --tt-subst:#f0a7d8; /* light/dark default */
+      --border:#eee;
+
       --bgImage:none;
-      --bgOverlay:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0));
-      --subjectColor: var(--accent);
+      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
+
+      /* state colors */
+      --substBg: rgba(255, 80, 80, 0.18);
+      --substBorder: rgba(255, 80, 80, 0.40);
+
+      --cancelBg: rgba(255, 0, 60, 0.22);
+      --cancelBorder: rgba(255, 0, 60, 0.55);
+
+      --eventBg: rgba(59,181,74,0.22);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      /* unified timetable subject color */
+      --ttSubjColor: rgba(20, 35, 60, 0.92);
+      --ttSubjGlow: none;
     }
 
     body.theme-dark{
@@ -46,56 +48,24 @@
       --muted:#a6acb8;
       --shadow: rgba(0,0,0,0.35);
       --linebg:#2a2f3a;
+
       --btn:#e7e9ee;
       --btnText:#111;
-      --badge:#232836;
-      --badgeLive:#1f3a2a;
-      --badgeFree:#3a311f;
-      --badgeErr:#3a1f23;
-      --border:#2a2f3a;
-      --accent:#00b7ff;
-      --accent2:#7ee3ff;
-      --glow: rgba(0,183,255,0.25);
-      --tt-head:#4ea6df;
-      --tt-cell:#3a3f45;
-      --tt-day:#4b4f54;
-      --tt-text:#f5f7fa;
-      --tt-sub:#d4dae1;
-      --tt-outline:#2b2f34;
-      --tt-hover:#00b7ff;
-      --tt-event:#9fd077;
-      --tt-cancel:#ffb6c1;
-      --tt-subst:#ff6b6b; /* dark/light = červenější */
-      --subjectColor:#10b7ff;
-    }
 
-    body.theme-light{
-      --bg:#f4f4f4;
-      --card:#ffffff;
-      --text:#222;
-      --muted:#666;
-      --shadow: rgba(0,0,0,0.08);
-      --linebg:#e6e6e6;
-      --btn:#111;
-      --btnText:#fff;
-      --badge:#eee;
-      --badgeLive:#e8f5e9;
-      --badgeFree:#fff3cd;
-      --badgeErr:#fdecea;
-      --border:#ececec;
-      --accent:#0095d9;
-      --accent2:#5fd2ff;
-      --tt-head:#4ea6df;
-      --tt-cell:#4c5158;
-      --tt-day:#5c6168;
-      --tt-text:#fff;
-      --tt-sub:#f1f3f5;
-      --tt-outline:#dce2e7;
-      --tt-hover:#0db8ff;
-      --tt-event:#a8d87f;
-      --tt-cancel:#ffc1cb;
-      --tt-subst:#ff7a7a;
-      --subjectColor:#09b4ff;
+      --badge:#232836;
+      --border:#2a2f3a;
+
+      --substBg: rgba(255, 80, 80, 0.20);
+      --substBorder: rgba(255, 80, 80, 0.48);
+
+      --cancelBg: rgba(255, 0, 60, 0.26);
+      --cancelBorder: rgba(255, 0, 60, 0.60);
+
+      --eventBg: rgba(59,181,74,0.18);
+      --eventBorder: rgba(59,181,74,0.50);
+
+      --ttSubjColor: rgba(235, 240, 250, 0.95);
+      --ttSubjGlow: none;
     }
 
     body.theme-loona{
@@ -105,96 +75,95 @@
       --muted:#d7a6c4;
       --shadow: rgba(0,0,0,0.55);
       --linebg: rgba(255, 70, 190, 0.18);
+
       --btn:#ff2ea6;
       --btnText:#120812;
+
       --badge: rgba(255, 46, 166, 0.18);
-      --badgeLive: rgba(0, 255, 170, 0.12);
-      --badgeFree: rgba(255, 190, 60, 0.16);
-      --badgeErr: rgba(255, 80, 80, 0.16);
       --border: rgba(255, 70, 190, 0.20);
-      --accent:#ff2ea6;
-      --accent2:#ff6bd8;
-      --glow: rgba(255,46,166,0.55);
-      --tt-head:#d83b91;
-      --tt-cell:rgba(38,24,44,0.9);
-      --tt-day:rgba(56,34,64,0.95);
-      --tt-text:#ffe9f6;
-      --tt-sub:#ffd0ea;
-      --tt-outline:rgba(255, 70, 190, 0.25);
-      --tt-hover:#ff2ea6;
-      --tt-event:#78d98f;
-      --tt-cancel:#ff8eb8;
-      --tt-subst:#ff2ea6; /* theme color */
-      --subjectColor:#ff69cf;
-      --bgImage:url("loona.png");
-      --bgOverlay:linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
+
+      --bgImage: url("loona.png");
+      --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
+
+      --substBg: rgba(255, 46, 166, 0.22);
+      --substBorder: rgba(255, 46, 166, 0.52);
+
+      --cancelBg: rgba(255, 0, 90, 0.28);
+      --cancelBorder: rgba(255, 0, 90, 0.62);
+
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(255, 107, 216, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
     }
 
-    /* Sobokill placeholder (nahraj sobokill.png později) */
     body.theme-sobokill{
-      --bg:#0d0a07;
-      --card: rgba(28, 20, 14, 0.86);
-      --text:#f8e8cf;
-      --muted:#d8be95;
-      --shadow: rgba(0,0,0,0.55);
-      --linebg: rgba(214, 153, 82, 0.20);
-      --btn:#d69952;
-      --btnText:#1a120a;
-      --badge: rgba(214, 153, 82, 0.16);
-      --badgeLive: rgba(120, 214, 150, 0.12);
-      --badgeFree: rgba(235, 183, 85, 0.16);
-      --badgeErr: rgba(255, 110, 110, 0.16);
-      --border: rgba(214, 153, 82, 0.22);
-      --accent:#d69952;
-      --accent2:#f4c17a;
-      --glow: rgba(214,153,82,0.35);
-      --tt-head:#b97c3b;
-      --tt-cell:rgba(55,39,27,0.92);
-      --tt-day:rgba(75,52,34,0.96);
-      --tt-text:#f7ead7;
-      --tt-sub:#ebd4b2;
-      --tt-outline:rgba(214,153,82,0.26);
-      --tt-hover:#d69952;
-      --tt-event:#8bcf7a;
-      --tt-cancel:#f49797;
-      --tt-subst:#d69952;
-      --subjectColor:#f2be72;
-      --bgImage:url("sobokill.png");
-      --bgOverlay:linear-gradient(180deg, rgba(13,10,7,0.78), rgba(13,10,7,0.92));
+      --bg:#070604;
+      --card: rgba(18, 14, 8, 0.82);
+      --text:#fff3dc;
+      --muted:#d2b98b;
+      --shadow: rgba(0,0,0,0.60);
+      --linebg: rgba(212, 175, 55, 0.18);
+
+      --btn:#d4af37;
+      --btnText:#1a1206;
+
+      --badge: rgba(212,175,55,0.16);
+      --border: rgba(212,175,55,0.22);
+
+      --bgImage: url("sobokill.png");
+      --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
+
+      --substBg: rgba(212, 175, 55, 0.22);
+      --substBorder: rgba(212, 175, 55, 0.50);
+
+      --cancelBg: rgba(255, 0, 60, 0.24);
+      --cancelBorder: rgba(255, 0, 60, 0.58);
+
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(241, 208, 122, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
     }
 
+    /* =========================
+       BASE
+       ========================= */
     *{ box-sizing:border-box; }
     body{
+      font-family: Arial, sans-serif;
       margin:0;
       padding:24px;
-      font-family: Arial, sans-serif;
       color:var(--text);
       background:
         var(--bgOverlay),
         var(--bgImage),
-        radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.08), transparent 55%),
-        radial-gradient(900px 600px at 85% 20%, rgba(0,183,255,0.08), transparent 60%),
+        radial-gradient(1200px 700px at 15% 15%, rgba(255,46,166,0.10), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.08), transparent 60%),
+        radial-gradient(1000px 650px at 30% 90%, rgba(212,175,55,0.10), transparent 60%),
         var(--bg);
-      background-size:cover;
-      background-position:center;
-      background-attachment:fixed;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: background .2s ease, color .2s ease;
     }
-    .wrap{ max-width:1180px; margin:0 auto; }
+
+    .wrap{ max-width:1080px; margin:0 auto; }
     h1{
       margin:0 0 14px 0;
       text-align:center;
       font-weight:900;
-      letter-spacing:.2px;
-      text-shadow: 0 0 0 transparent;
+      letter-spacing:0.2px;
     }
-    body.theme-loona h1, body.theme-sobokill h1{ text-shadow: 0 0 16px var(--glow); }
 
     .topbar{
       display:flex;
-      justify-content:flex-end;
       align-items:center;
-      gap:10px;
+      justify-content:flex-end;
       margin-bottom:12px;
+      gap:10px;
     }
     .btn{
       border:none;
@@ -204,85 +173,32 @@
       color:var(--btnText);
       font-weight:900;
       cursor:pointer;
-      box-shadow: 0 0 0 transparent;
+      white-space:nowrap;
     }
-    body.theme-loona .btn, body.theme-sobokill .btn{ box-shadow:0 0 18px var(--glow); }
 
     .block{
       background:var(--card);
       padding:16px 16px 12px;
       border-radius:12px;
       margin:12px 0;
-      border:1px solid var(--border);
+      border: 1px solid var(--border);
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
     }
+
     .rowTitle{
       margin:0 0 10px 0;
       font-size:18px;
       font-weight:900;
-      color:var(--text);
-    }
-    body.theme-loona .rowTitle, body.theme-sobokill .rowTitle{
-      color:var(--accent2);
-      text-shadow:0 0 10px color-mix(in srgb, var(--accent) 35%, transparent);
     }
 
-    .grid2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-    @media (max-width:960px){
-      body{ padding:14px; }
-      .grid2{ grid-template-columns:1fr; }
-    }
-
-    .colHead{
-      text-align:center;
-      font-weight:900;
-      color:var(--muted);
-      margin:0 0 8px;
-      font-size:13px;
-      letter-spacing:.4px;
-    }
-
-    .line{
-      position:relative;
-      width:100%;
-      height:3px;
-      background:var(--linebg);
-      border-radius:999px;
-      overflow:hidden;
-    }
-    .fill{
-      position:absolute;
-      top:0; left:0;
-      width:0%;
-      height:100%;
-      background:var(--green);
-      border-radius:999px;
-      transition:width .3s ease;
-    }
-    .fill.weekend{ background:var(--orange); }
-    .label{ margin:10px 0 0 0; font-weight:800; }
-    .hint{ margin:10px 0 0 0; color:var(--muted); font-size:13px; line-height:1.35; }
-    .hidden{ display:none !important; }
-
-    .toggle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:8px 0;
-      font-weight:800;
-    }
+    .hidden{ display:none; }
     .field{
       display:flex;
       align-items:center;
       gap:10px;
       margin:10px 0 6px;
       font-weight:900;
-      flex-wrap:wrap;
     }
     select{
       padding:8px 10px;
@@ -293,264 +209,213 @@
       font-weight:900;
       outline:none;
     }
-
-    .dailyRow{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .badge{
-      padding:6px 10px;
-      border-radius:999px;
-      background:var(--badge);
-      font-weight:900;
+    .hint{
+      margin:10px 0 0 0;
+      color:var(--muted);
       font-size:13px;
+      line-height:1.35;
+      font-weight: 900;
     }
-    .badge.live{ background:var(--badgeLive); }
-    .badge.free{ background:var(--badgeFree); }
-    .badge.err{ background:var(--badgeErr); }
 
-    .dailyText{ font-weight:900; }
-    .statusOk{ color:#0a7a1f; font-weight:900; }
-
-    /* ===== Timetable fancy ===== */
+    /* =========================
+       TIMETABLE (fancy layout)
+       ========================= */
     .timetable .tt-top{
       display:flex;
+      align-items:flex-end;
       justify-content:space-between;
-      align-items:flex-start;
-      gap:10px;
-      margin-bottom:10px;
-      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap: wrap;
     }
     .tt-sub{
-      color:var(--muted);
-      font-weight:800;
-      font-size:13px;
-      margin-top:2px;
-    }
-    .tt-meta{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+      margin-top: 2px;
     }
     .tt-badge{
-      font-size:12px;
-      font-weight:800;
-      border:1px solid var(--border);
-      background:var(--badge);
+      display:inline-block;
       padding:6px 10px;
       border-radius:999px;
-      color:var(--text);
-    }
-
-    .tt-wrap{
-      position:relative;
-      overflow:auto;
-      border-radius:12px;
-      border:1px solid var(--tt-outline);
-      background:color-mix(in srgb, var(--card) 65%, black 35%);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
     }
 
     .tt-grid{
       display:grid;
-      min-width:820px;
-      grid-template-columns: 130px repeat(var(--cols,7), minmax(110px, 1fr));
-      gap:2px;
-      background:var(--tt-outline);
+      grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
+      gap:10px;
+    }
+    @media (max-width: 900px){
+      .tt-grid{
+        overflow:auto;
+        grid-template-columns: 48px repeat(var(--cols), 150px);
+        padding-bottom: 6px;
+      }
     }
 
-    .tt-cell{
-      background:var(--tt-cell);
-      color:var(--tt-text);
-      min-height:96px;
-      padding:8px 8px 7px;
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-    }
+    .tt-corner{ height:44px; }
 
-    .tt-head{
-      background:var(--tt-head);
-      color:#fff;
-      min-height:84px;
-      justify-content:center;
-      align-items:center;
+    .tt-h{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px;
+      background: rgba(255,255,255,0.04);
       text-align:center;
-      padding:6px;
+      font-weight: 900;
     }
-    .tt-head .n{
-      font-size:24px;
-      font-weight:900;
-      line-height:1;
-      margin-bottom:8px;
-    }
-    .tt-head .t{
-      font-size:12px;
-      opacity:.95;
-      font-weight:800;
+    .tt-h span{
+      display:block;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--muted);
+      margin-top: 4px;
     }
 
     .tt-day{
-      background:var(--tt-day);
-      justify-content:center;
-      align-items:center;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 0;
       text-align:center;
-      min-height:96px;
-      padding:8px 6px;
-    }
-    .tt-day .d1{
-      color:var(--accent);
-      font-weight:900;
-      font-size:22px;
-      letter-spacing:1px;
-      line-height:1;
-    }
-    .tt-day .d2{
-      color:var(--tt-sub);
-      font-weight:900;
-      font-size:12px;
-      margin-top:10px;
+      font-weight: 900;
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
     }
 
-    .tt-empty{
-      opacity:.45;
-      background:color-mix(in srgb, var(--tt-cell) 82%, #888 18%);
+    .tt-cell{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 2px 10px var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 78px;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .tt-cell:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
 
     .tt-topline{
       display:flex;
       justify-content:space-between;
+      align-items:center;
       gap:8px;
-      color:var(--tt-sub);
-      font-size:11px;
-      font-weight:800;
-      line-height:1.1;
-      margin-bottom:6px;
+      font-weight: 1000;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.95;
     }
+    .tt-topline .cls{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tt-topline .room{ white-space:nowrap; opacity: 0.95; }
 
     .tt-subj{
-      margin-top:auto;
-      margin-bottom:2px;
-      font-size:22px;
-      font-weight:900;
-      line-height:1.05;
-      color:var(--subjectColor); /* všechny stejně fancy */
-      letter-spacing:.5px;
-      text-shadow:0 0 0 transparent;
-    }
-    body.theme-loona .tt-subj,
-    body.theme-sobokill .tt-subj{
-      text-shadow:0 0 12px color-mix(in srgb, var(--subjectColor) 40%, transparent);
+      font-weight: 1000;
+      letter-spacing: .2px;
+      margin-top: 6px;
+      font-size: 22px;
+      color: var(--ttSubjColor) !important;
+      text-shadow: var(--ttSubjGlow);
     }
 
     .tt-teacher{
-      color:var(--tt-sub);
-      font-size:12px;
-      font-weight:800;
-      margin-top:3px;
-      letter-spacing:.5px;
+      font-weight: 900;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+      opacity: 0.95;
     }
 
-    .tt-cell.lesson{
-      cursor:pointer;
-      transition: transform .12s ease, box-shadow .15s ease, outline-color .15s ease;
-      outline:2px solid transparent;
-    }
-    .tt-cell.lesson:hover{
-      transform: translateY(-1px);
-      outline-color: color-mix(in srgb, var(--tt-hover) 75%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tt-hover) 35%, transparent),
-                  0 0 18px color-mix(in srgb, var(--tt-hover) 28%, transparent);
-      z-index:2;
-    }
-
-    .tt-cell.event{
-      background:var(--tt-event);
-      color:#173615;
-    }
-    .tt-cell.event .tt-topline,
-    .tt-cell.event .tt-teacher{ color:#2d4b24; }
-    .tt-cell.event .tt-subj{ color:#3f8d22; text-shadow:none; }
-
-    .tt-cell.subst{
-      background:
-        linear-gradient(180deg, color-mix(in srgb, var(--tt-subst) 28%, transparent), color-mix(in srgb, var(--tt-subst) 18%, transparent)),
-        var(--tt-cell);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tt-subst) 35%, transparent);
-    }
-
-    .tt-cell.cancelled{
-      background:
-        repeating-linear-gradient(-35deg,
-          color-mix(in srgb, var(--tt-cancel) 45%, transparent) 0 10px,
-          color-mix(in srgb, var(--tt-cancel) 25%, transparent) 10px 20px),
-        var(--tt-cell);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tt-cancel) 30%, transparent);
-    }
-
-    .tt-cell.current{
-      outline:2px solid var(--tt-hover);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tt-hover) 30%, transparent);
-    }
-
-    .tt-legend{
+    .tt-empty{
       display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .tt-legend .pill{
-      font-size:12px;
-      font-weight:800;
-      border-radius:999px;
-      padding:5px 9px;
-      border:1px solid var(--border);
-      background:var(--badge);
+      align-items:center;
+      justify-content:center;
+      color: var(--muted);
+      font-weight: 900;
+      background: rgba(255,255,255,0.02);
+      box-shadow: none;
     }
 
-    /* tooltip */
+    .tt-event{
+      border-color: var(--eventBorder);
+      background: var(--eventBg);
+      box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25);
+    }
+    .tt-subst{
+      border-color: var(--substBorder);
+      background: var(--substBg);
+      box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30);
+    }
+    body.theme-loona .tt-subst{ box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 24px rgba(255,46,166,0.30); }
+    body.theme-sobokill .tt-subst{ box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 24px rgba(212,175,55,0.28); }
+
+    .tt-cancel{
+      border-color: var(--cancelBorder);
+      background:
+        repeating-linear-gradient(
+          135deg,
+          rgba(255,255,255,0.14) 0px,
+          rgba(255,255,255,0.14) 10px,
+          rgba(0,0,0,0.00) 10px,
+          rgba(0,0,0,0.00) 20px
+        ),
+        var(--cancelBg);
+      box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
+    }
+
+    /* Tooltip */
     .tt-tooltip{
-      position:fixed;
-      z-index:9999;
-      max-width:280px;
+      position: fixed;
+      z-index: 9999;
+      max-width: 340px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(20, 20, 26, 0.92);
+      color: #fff;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.35;
+      transform: translate(12px, 12px);
+      display:none;
       pointer-events:none;
-      opacity:0;
-      transform:translateY(4px);
-      transition:opacity .1s ease, transform .1s ease;
-      background:var(--card);
-      border:1px solid var(--border);
-      color:var(--text);
-      border-radius:12px;
-      box-shadow:0 8px 24px rgba(0,0,0,.28);
-      padding:10px 12px;
-      backdrop-filter: blur(8px);
     }
-    .tt-tooltip.show{ opacity:1; transform:translateY(0); }
-    .tt-tooltip .title{
-      font-weight:900;
-      margin:0 0 6px;
-      color:var(--accent);
+    .tt-tooltip .t-title{
+      font-size: 13px;
+      letter-spacing: .2px;
+      margin-bottom: 6px;
     }
-    .tt-tooltip .line2{
-      font-size:12px;
-      line-height:1.35;
-      margin:2px 0;
-      color:var(--text);
+    .tt-tooltip .t-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding-top: 6px;
+      margin-top: 6px;
     }
-    .tt-tooltip .muted{ color:var(--muted); }
+    .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
+    .tt-tooltip .v{ color: #fff; text-align:right; }
 
-    footer{
-      margin:18px 0 6px;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.2px;
+    .footer{
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .2px;
+      user-select: none;
     }
   </style>
 </head>
+
 <body class="theme-dark">
   <div class="wrap">
     <h1>School Progress</h1>
@@ -568,821 +433,411 @@
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="loona">Loona</option>
-          <option value="sobokill">Sobokill</option>
+          <option value="sobokill">SOBOKILL</option>
         </select>
       </div>
 
-      <label class="toggle">
-        <input type="checkbox" id="toggleTimetable" checked />
-        <span>Zobrazit rozvrh</span>
-      </label>
-
-      <label class="toggle">
-        <input type="checkbox" id="toggleDaily" checked />
-        <span>Zobrazit denní progres</span>
-      </label>
-
-      <p class="hint" id="statusHint"><span class="statusOk">Status: OK</span> • Rozvrh jede přes API + fallback</p>
-      <p class="hint">Tip: dej do složky obrázky <b>loona.png</b> a <b>sobokill.png</b> pro plný theme background.</p>
+      <p class="hint">Hover na buňku = detail. Na mobilu tap (přepne tooltip).</p>
+      <p class="hint" id="apiStatus">API: fallback (lokální data)</p>
     </div>
 
-    <div class="grid2">
-      <div>
-        <div class="colHead">Real-Time</div>
-
-        <div class="block">
-          <div class="rowTitle">Týden</div>
-          <div class="line"><div class="fill" id="rt-week"></div></div>
-          <p class="label" id="rt-week-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Měsíc</div>
-          <div class="line"><div class="fill" id="rt-month"></div></div>
-          <p class="label" id="rt-month-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Školní rok</div>
-          <div class="line"><div class="fill" id="rt-year"></div></div>
-          <p class="label" id="rt-year-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Celkem</div>
-          <div class="line"><div class="fill" id="rt-total"></div></div>
-          <p class="label" id="rt-total-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Maturita</div>
-          <p class="label" id="rt-maturita-label"></p>
-        </div>
-      </div>
-
-      <div>
-        <div class="colHead">Raw-Time</div>
-
-        <div class="block">
-          <div class="rowTitle">Týden</div>
-          <div class="line"><div class="fill" id="raw-week"></div></div>
-          <p class="label" id="raw-week-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Měsíc</div>
-          <div class="line"><div class="fill" id="raw-month"></div></div>
-          <p class="label" id="raw-month-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Školní rok</div>
-          <div class="line"><div class="fill" id="raw-year"></div></div>
-          <p class="label" id="raw-year-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Celkem</div>
-          <div class="line"><div class="fill" id="raw-total"></div></div>
-          <p class="label" id="raw-total-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Maturita</div>
-          <p class="label" id="raw-maturita-label"></p>
-        </div>
-      </div>
-    </div>
-
-    <div id="dailyBlock" class="block">
-      <div class="rowTitle">Denní progres</div>
-      <div class="dailyRow">
-        <div class="badge" id="dailyBadge">Rozvrh</div>
-        <div class="dailyText" id="dailyText">—</div>
-      </div>
-      <div class="line" style="margin-top:10px;">
-        <div class="fill" id="daybar"></div>
-      </div>
-      <p class="label" id="daylabel"></p>
-      <p class="hint" id="dailyDebug"></p>
-    </div>
-
-    <!-- Fancy timetable -->
     <div id="timetableBlock" class="block timetable">
       <div class="tt-top">
         <div>
           <div class="rowTitle">Rozvrh</div>
-          <div class="tt-sub" id="ttSub">5A • Týdenní přehled</div>
+          <div class="tt-sub" id="ttSub">DE3A • Týdenní přehled</div>
         </div>
         <div class="tt-meta">
           <span class="tt-badge" id="ttUpdated">Aktualizováno: —</span>
-          <span class="tt-badge" id="ttLiveBadge">Načítání…</span>
         </div>
       </div>
 
-      <div class="tt-wrap">
-        <div class="tt-grid" id="ttGrid" style="--cols: 7;"></div>
-      </div>
+      <div class="tt-grid" id="ttGrid" style="--cols: 7;"></div>
 
-      <div class="tt-legend">
-        <span class="pill">🟩 Akce</span>
-        <span class="pill">✨ Suplování</span>
-        <span class="pill">🚫 Odpadlo</span>
-        <span class="pill">🖱️ Hover = detail</span>
-      </div>
+      <p class="hint">Legenda: zelená = akce • theme = suplování • červená šrafovaná = odpadlo</p>
     </div>
 
-    <footer>2026 all rights reserved • version 1.2.27</footer>
+    <div class="footer">© 2026 All rights reserved • Version 1.2.27</div>
   </div>
 
-  <div id="ttTooltip" class="tt-tooltip" aria-hidden="true"></div>
+  <div class="tt-tooltip" id="ttTooltip" aria-hidden="true"></div>
 
 <script>
-/* =========================
-   API URL (ZMĚŇ NA TVOU)
-   ========================= */
-const API_URL = "https://TVUJ-WORKER.workers.dev/api/timetable?class=5A&type=Actual";
+  /* =========================
+     API (DOPLŇ TVOU WORKER URL)
+     ========================= */
+  const API_URL = "https://TVUJ-WORKER.workers.dev/api/timetable?class=5A&type=Actual";
 
-/* =========================
-   Local fallback timetable
-   ========================= */
-let TIMES = [
-  {start:"07:55", end:"08:40"},
-  {start:"08:50", end:"09:35"},
-  {start:"09:50", end:"10:35"},
-  {start:"10:45", end:"11:30"},
-  {start:"11:35", end:"12:20"},
-  {start:"12:50", end:"13:35"},
-  {start:"13:40", end:"14:25"},
-];
+  let CLASS_NAME = "DE3A";
 
-let SCHEDULE = {
-  Mon: [
-    {subj:"MAT", room:"UČ10", teacher:"RYB"},
-    {subj:"NEJ", room:"UČ11", teacher:"PRH"},
-    {subj:"OBN", room:"UČ10", teacher:"ZYJ"},
-    {subj:"EKO", room:"UČ11", teacher:"FRP"},
-    {subj:"VYT", room:"UČ10", teacher:"KIN"},
-    {subj:"NEJ", room:"UČ21", teacher:"PRH"},
-    {subj:"MAT", room:"UČ9",  teacher:"RYB"},
-  ],
-  Tue: [
-    {subj:"KAJ", room:"UČ10", teacher:"BUI"},
-    {subj:"PSK", room:"VT1",  teacher:"KOO"},
-    {subj:"ZPG", room:"UČ10", teacher:"KUO"},
-    {subj:"ZPG", room:"UČ10", teacher:"KUO"},
-    {subj:"ČJL", room:"UČ10", teacher:"BAP"},
-    {subj:"ČJL", room:"UČ10", teacher:"BAP"},
-    {subj:"ELT", room:"UČ9",  teacher:"CAJ"},
-  ],
-  Wed: [
-    {subj:"NEJ", room:"UČ10", teacher:"PRH"},
-    {subj:"MAT", room:"UČ10", teacher:"RYB"},
-    {subj:"VYA", room:"UČ10", teacher:"KOO"},
-    {subj:"ELT", room:"UČ10", teacher:"CAJ"},
-    {subj:"SWA", room:"UČ10", teacher:"CAJ"},
-    {subj:"ANJ", room:"UČ14", teacher:"KLM"},
-    {subj:"ANJ", room:"UČ14", teacher:"KLM"},
-  ],
-  Thu: [
-    {subj:"VYT", room:"UČ10", teacher:"KIN"},
-    {subj:"VYA", room:"UČ10", teacher:"KOO"},
-    {subj:"ANJ", room:"UČ2",  teacher:"KLM"},
-    {subj:"VYA", room:"UČ13", teacher:"KOO"},
-    null,
-    {subj:"TVY", room:"TV3",  teacher:"PRM"},
-    {subj:"TVY", room:"TV3",  teacher:"PRM"},
-  ],
-  Fri: [
-    {subj:"SWA", room:"UČ10", teacher:"CAJ"},
-    {subj:"SWA", room:"UČ10", teacher:"CAJ"},
-    {subj:"ČJL", room:"UČ10", teacher:"BAP"},
-    {subj:"PSK", room:"UČ10", teacher:"KOO"},
-    {subj:"ČJL", room:"UČ20", teacher:"BAP"},
-    null,
-    null,
-  ],
-};
+  let TIMES = [
+    {start:"07:55", end:"08:40"},
+    {start:"08:50", end:"09:35"},
+    {start:"09:50", end:"10:35"},
+    {start:"10:45", end:"11:30"},
+    {start:"11:35", end:"12:20"},
+    {start:"12:50", end:"13:35"},
+    {start:"13:40", end:"14:25"},
+  ];
 
-/* volitelná demo metadata pro design (později nahradíš backendem) */
-let LESSON_FLAGS = {
-  Mon: [null, null, null, null, null, null, null],
-  Tue: [null, null, null, null, null, null, null],
-  Wed: [
-    {type:"event", note:"Akce", desc:"Akce školy / mimo výuku"},
-    {type:"event", note:"Akce", desc:"Akce školy / mimo výuku"},
-    {type:"event", note:"Akce", desc:"Akce školy / mimo výuku"},
-    null, null,
-    {type:"cancelled", note:"Odpadlo", desc:"Hodina odpadla"},
-    {type:"cancelled", note:"Odpadlo", desc:"Hodina odpadla"},
-  ],
-  Thu: [null, null, {type:"subst", note:"Suplování", desc:"Změna učitele/místnosti"}, null, null, null, null],
-  Fri: [null, null, null, null, null, null, null],
-};
-
-/* =========================
-   Progress constants
-   ========================= */
-const HS_START = localDate(2023, 9, 4);        // první pondělí v září 2023
-const HS_END   = localDateEnd(2027, 6, 30);    // konec 4 let
-const MATURITA_APPROX = localDateEnd(2027, 5, 1);
-
-/* školní volno / prázdniny (real-time raw výpočty) */
-const BREAKS = [
-  r("2023-10-26","2023-10-27"),
-  r("2023-12-23","2024-01-02"),
-  r("2024-02-02","2024-02-02"),
-  r("2024-02-26","2024-03-03"),
-  r("2024-07-01","2024-08-31"),
-  r("2024-10-29","2024-10-30"),
-  r("2024-12-23","2025-01-03"),
-  r("2025-01-31","2025-01-31"),
-  r("2025-03-03","2025-03-09"),
-  r("2025-07-01","2025-08-31"),
-  r("2025-10-27","2025-10-29"),
-  r("2025-12-22","2026-01-02"),
-  r("2026-01-30","2026-01-30"),
-  r("2026-03-09","2026-03-15"),
-  r("2026-07-01","2026-08-31"),
-  r("2026-10-29","2026-10-30"),
-  r("2026-12-23","2027-01-03"),
-  r("2027-01-29","2027-01-29"),
-  r("2027-02-01","2027-02-07"),
-];
-const DIRECTOR_DAYS = [];
-
-/* =========================
-   Helpers
-   ========================= */
-const $ = (id) => document.getElementById(id);
-const DAY_KEYS = ["Mon","Tue","Wed","Thu","Fri"];
-const DAY_LABELS = { Mon:"MON", Tue:"TUE", Wed:"WED", Thu:"THU", Fri:"FRI" };
-
-function clamp(x, a=0, b=100){ return Math.max(a, Math.min(b, x)); }
-function setBar(id, pct, weekend=false){
-  const n = $(id); if(!n) return;
-  n.style.width = clamp(pct).toFixed(2) + "%";
-  weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
-}
-function setText(id, txt){ const n=$(id); if(n) n.textContent = txt; }
-
-function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
-function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
-function r(s,e){ return {s,e}; }
-
-function toISO(d){
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,'0');
-  const da=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${da}`;
-}
-function fmtDateCZ(d){
-  return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
-}
-function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
-function isSchoolDay(d){
-  const dow = d.getDay();
-  if (dow===0 || dow===6) return false;
-  const iso = toISO(d);
-  if (DIRECTOR_DAYS.includes(iso)) return false;
-  if (inBreak(iso)) return false;
-  return true;
-}
-function countSchoolDays(start, end){
-  const s = new Date(start); s.setHours(0,0,0,0);
-  const e = new Date(end);   e.setHours(23,59,59,999);
-  let c=0; const cur = new Date(s);
-  while (cur <= e){
-    if (isSchoolDay(cur)) c++;
-    cur.setDate(cur.getDate()+1);
-  }
-  return c;
-}
-function calendarPctBetween(start, end, now){
-  const total = end - start; if (total<=0) return 0;
-  const passed = Math.min(Math.max(now-start, 0), total);
-  return (passed/total)*100;
-}
-function rawPctBetween(start, end, now){
-  const total = countSchoolDays(start, end);
-  const clipped = now < start ? start : (now > end ? end : now);
-  const passed = countSchoolDays(start, clipped);
-  return total ? (passed/total)*100 : 0;
-}
-function rawDaysUntil(target, now){
-  const start = new Date(now); start.setHours(0,0,0,0);
-  const end = new Date(target); end.setHours(23,59,59,999);
-  if (end < start) return -countSchoolDays(end, start);
-  return countSchoolDays(start, end);
-}
-function getSchoolYearRange(now){
-  const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
-  return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
-}
-function timeToMin(hhmm){
-  const [h,m] = String(hhmm).split(":").map(Number);
-  return h*60 + m;
-}
-function padTime(hhmm){
-  const [h,m] = String(hhmm).split(":");
-  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
-}
-function normalizeLesson(x){
-  if (!x) return null;
-  return {
-    subj: x.subj || x.subject || "",
-    room: x.room || x.classroom || "",
-    teacher: x.teacher || "",
-    className: x.className || "DE3A",
-    type: x.type || null,
-    note: x.note || "",
-    desc: x.desc || ""
+  let SCHEDULE = {
+    Mon: [
+      {subj:"MAT", room:"UČ10", teacher:"BUP"},
+      {subj:"NEJ", room:"UČ11", teacher:"PRH"},
+      {subj:"OBN", room:"UČ10", teacher:"ZYJ"},
+      {subj:"EKO", room:"UČ11", teacher:"FRP"},
+      {subj:"VYT", room:"UČ10", teacher:"KIN"},
+      {subj:"NEJ", room:"UČ21", teacher:"PRH"},
+      {subj:"ČJL", room:"UČ9", teacher:"BAP"},
+    ],
+    Tue: [
+      {subj:"KAJ", room:"UČ2", teacher:"BUI"},
+      {subj:"PSK", room:"VT1", teacher:"KOO"},
+      {subj:"ZPG", room:"UČ10", teacher:"KUO"},
+      {subj:"ZPG", room:"UČ10", teacher:"KUO"},
+      {subj:"ČJL", room:"UČ10", teacher:"BAP"},
+      {subj:"ČJL", room:"UČ10", teacher:"BAP"},
+      {subj:"ELT", room:"UČ10", teacher:"CAJ"},
+    ],
+    Wed: [
+      {subj:"AŠK", room:"", teacher:""},
+      {subj:"AŠK", room:"", teacher:""},
+      {subj:"AŠK", room:"", teacher:""},
+      {subj:"ELT", room:"UČ10", teacher:"CAJ"},
+      {subj:"SWA", room:"UČ10", teacher:"CAJ"},
+      {subj:"ANJ", room:"UČ11", teacher:"KLE"},
+      {subj:"ANJ", room:"UČ10", teacher:"KLE"},
+    ],
+    Thu: [
+      {subj:"VYT", room:"UČ10", teacher:"KIN"},
+      {subj:"VYA", room:"UČ10", teacher:"KOO"},
+      {subj:"ANJ", room:"UČ2", teacher:"KLM"},
+      {subj:"VYA", room:"UČ13", teacher:"KOO"},
+      null,
+      {subj:"TVY", room:"TV3", teacher:"PRM"},
+      {subj:"TVY", room:"TV3", teacher:"PRM"},
+    ],
+    Fri: [
+      {subj:"SWA", room:"UČ10", teacher:"CAJ"},
+      {subj:"SWA", room:"UČ10", teacher:"CAJ"},
+      {subj:"ČJL", room:"UČ10", teacher:"BAP"},
+      {subj:"PSK", room:"UČ10", teacher:"KOO"},
+      {subj:"ČJL", room:"UČ20", teacher:"BAP"},
+      null,
+      null,
+    ],
   };
-}
-function lessonText(x){
-  if (!x) return "";
-  return x.room ? `${x.subj} (${x.room})` : x.subj;
-}
 
-/* =========================
-   Theme & settings
-   ========================= */
-function applyTheme(theme){
-  const body = document.body;
-  body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
-  body.classList.add("theme-" + theme);
-  localStorage.setItem("sp_theme", theme);
-  const sel = $("themeSelect");
-  if (sel) sel.value = theme;
-}
-function initSettings(){
-  const btn = $("settingsBtn");
-  const panel = $("settingsPanel");
-  const toggleTT = $("toggleTimetable");
-  const toggleDaily = $("toggleDaily");
-  const timetableBlock = $("timetableBlock");
-  const dailyBlock = $("dailyBlock");
-  const themeSelect = $("themeSelect");
+  // Demo stavy (dokud backend nebude vracet změny/supl/akce)
+  let MARKS = [
+    { day:"Mon", idx:2, type:"event", title:"Akce", room:"Aula", note:"Workshop" },
+    { day:"Mon", idx:1, type:"subst", note:"supl: PRH → KLE" },
+    { day:"Fri", idx:4, type:"cancel", note:"ODPADLO" },
+  ];
 
-  btn.addEventListener("click", () => panel.classList.toggle("hidden"));
-  toggleTT.addEventListener("change", () => timetableBlock.classList.toggle("hidden", !toggleTT.checked));
-  toggleDaily.addEventListener("change", () => dailyBlock.classList.toggle("hidden", !toggleDaily.checked));
-  themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+  const DAY_ORDER = [
+    {key:"Mon", label:"Po"},
+    {key:"Tue", label:"Út"},
+    {key:"Wed", label:"St"},
+    {key:"Thu", label:"Čt"},
+    {key:"Fri", label:"Pá"},
+  ];
 
-  const saved = localStorage.getItem("sp_theme") || "dark";
-  applyTheme(saved);
-}
+  const $ = (id) => document.getElementById(id);
 
-/* =========================
-   API load (live + fallback)
-   ========================= */
-async function loadTimetableFromApi() {
-  const liveBadge = $("ttLiveBadge");
-  const updatedBadge = $("ttUpdated");
-  const statusHint = $("statusHint");
+  function applyTheme(theme){
+    const body = document.body;
+    body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
+    body.classList.add("theme-" + theme);
+    localStorage.setItem("sp_theme", theme);
+    const sel = $("themeSelect");
+    if (sel) sel.value = theme;
+  }
 
-  try {
-    if (liveBadge) liveBadge.textContent = "Načítání…";
+  function initSettings(){
+    $("settingsBtn").addEventListener("click", () => $("settingsPanel").classList.toggle("hidden"));
+    $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
+    applyTheme(localStorage.getItem("sp_theme") || "dark");
+  }
 
-    // pokud uživatel nezměnil URL, nespadni brutálně
-    if (!API_URL.includes("workers.dev") || API_URL.includes("TVUJ-WORKER")) {
-      if (liveBadge) liveBadge.textContent = "Fallback (nastav API_URL) ⚠️";
-      if (statusHint) statusHint.innerHTML = `<span class="statusOk">Status:</span> Lokální fallback • doplň API_URL`;
+  function two(n){ return String(n).padStart(2,"0"); }
+  function formatDateCZ(d){
+    return `${two(d.getDate())}.${two(d.getMonth()+1)}.${d.getFullYear()} ${two(d.getHours())}:${two(d.getMinutes())}`;
+  }
+
+  function padTime(hhmm){
+    const [h,m] = String(hhmm).split(":");
+    return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+  }
+
+  function getMark(day, idx){
+    return MARKS.find(m => m.day===day && m.idx===idx) || null;
+  }
+
+  function getWeekDatesMonToFri(now = new Date()){
+    const d = new Date(now);
+    d.setHours(0,0,0,0);
+    const day = d.getDay(); // 0-6
+    const diffToMon = (day === 0 ? -6 : 1 - day);
+    d.setDate(d.getDate() + diffToMon);
+
+    const out = [];
+    for (let i=0; i<5; i++){
+      const x = new Date(d);
+      x.setDate(d.getDate() + i);
+      out.push(x);
+    }
+    return out;
+  }
+
+  function normalizeLesson(x){
+    if (!x) return null;
+    return {
+      subj: x.subj || x.subject || "",
+      room: x.room || x.classroom || "",
+      teacher: x.teacher || "",
+    };
+  }
+
+  function hasAnyApiLesson(days){
+    if (!days || typeof days !== "object") return false;
+    const keys = ["Mon","Tue","Wed","Thu","Fri"];
+    return keys.some(k => Array.isArray(days[k]) && days[k].some(v => v && (v.subj || v.subject)));
+  }
+
+  async function loadFromApi(){
+    const statusEl = $("apiStatus");
+    try{
+      if (API_URL.includes("TVUJ-WORKER")) {
+        statusEl.textContent = "API: fallback (doplň API_URL)";
+        return false;
+      }
+
+      statusEl.textContent = "API: načítám…";
+      const res = await fetch(API_URL, { cache: "no-store" });
+      const data = await res.json();
+
+      if (!res.ok || !data?.ok) throw new Error(data?.error || `HTTP ${res.status}`);
+
+      // times (to už ti funguje)
+      if (Array.isArray(data.times) && data.times.length){
+        TIMES = data.times.map(t => ({
+          start: padTime(t.start),
+          end: padTime(t.end),
+        }));
+      }
+
+      // lessons only if parser vrátí něco použitelného
+      if (hasAnyApiLesson(data.days)){
+        const next = {};
+        for (const d of ["Mon","Tue","Wed","Thu","Fri"]){
+          const arr = Array.isArray(data.days[d]) ? data.days[d] : [];
+          next[d] = arr.map(normalizeLesson);
+          while (next[d].length < TIMES.length) next[d].push(null);
+          next[d] = next[d].slice(0, TIMES.length);
+        }
+        SCHEDULE = next;
+        statusEl.textContent = "API: live data ✅";
+      } else {
+        statusEl.textContent = "API: parser běží, lessons zatím fallback ⚠️";
+      }
+
+      // zkus class id
+      if (data?.source?.classId){
+        // class=5A z API je ID, ale UI chceš DE3A; nechám DE3A pokud už máš nastaveno
+        // případně můžeš odkomentovat:
+        // CLASS_NAME = data.source.classId;
+      }
+
+      $("ttUpdated").textContent = "Aktualizováno: " + formatDateCZ(new Date());
+      return true;
+    }catch(err){
+      console.error(err);
+      statusEl.textContent = "API: error, fallback (lokální data)";
+      $("ttUpdated").textContent = "Aktualizováno: " + formatDateCZ(new Date());
       return false;
     }
-
-    const res = await fetch(API_URL, { cache: "no-store" });
-    const data = await res.json();
-
-    if (!res.ok || !data?.ok) {
-      throw new Error(data?.error || `HTTP ${res.status}`);
-    }
-
-    // times (to většinou funguje)
-    if (Array.isArray(data.times) && data.times.length) {
-      TIMES = data.times.map(t => ({
-        start: padTime(t.start),
-        end: padTime(t.end),
-      }));
-    }
-
-    // lessons only if parser found something
-    const hasAnyLesson =
-      data.days &&
-      DAY_KEYS.some(d => Array.isArray(data.days[d]) && data.days[d].some(x => x && (x.subj || x.subject)));
-
-    if (hasAnyLesson) {
-      const next = {};
-      for (const d of DAY_KEYS) {
-        const arr = Array.isArray(data.days[d]) ? data.days[d] : [];
-        next[d] = arr.map(normalizeLesson);
-        while (next[d].length < TIMES.length) next[d].push(null);
-        next[d] = next[d].slice(0, TIMES.length);
-      }
-      SCHEDULE = next;
-      if (liveBadge) liveBadge.textContent = "Live data ✅";
-      if (statusHint) statusHint.innerHTML = `<span class="statusOk">Status: OK</span> • Rozvrh načten z API`;
-    } else {
-      if (liveBadge) liveBadge.textContent = "Fallback (lokální rozvrh) ⚠️";
-      if (statusHint) statusHint.innerHTML = `<span class="statusOk">Status:</span> API běží, parser lessons zatím slabý • používám fallback`;
-    }
-
-    if (updatedBadge) {
-      const dt = data.generatedAt ? new Date(data.generatedAt) : new Date();
-      updatedBadge.textContent = `Aktualizováno: ${fmtDateCZ(dt)} ${String(dt.getHours()).padStart(2,"0")}:${String(dt.getMinutes()).padStart(2,"0")}`;
-    }
-
-    if (data?.source?.classId) $("ttSub").textContent = `${data.source.classId} • Týdenní přehled`;
-    return true;
-  } catch (err) {
-    console.error("Timetable API failed, fallback used:", err);
-    if (liveBadge) liveBadge.textContent = "Fallback (API error) ⚠️";
-    if (statusHint) statusHint.innerHTML = `<span class="statusOk">Status:</span> API error • lokální fallback`;
-    return false;
-  }
-}
-
-/* =========================
-   Daily progress
-   ========================= */
-function countTodayLessons(arr){
-  let last = -1;
-  for (let i=0;i<arr.length;i++){
-    if (arr[i] && (arr[i].subj || arr[i].subject)) last = i;
-  }
-  return Math.max(last + 1, 0);
-}
-function setDailyBadge(kind, text){
-  const b = $("dailyBadge");
-  b.className = "badge" + (kind ? (" " + kind) : "");
-  b.textContent = text;
-}
-function updateDaily(now){
-  const dow = now.getDay();
-
-  if (dow===0 || dow===6){
-    setDailyBadge("free","Volno");
-    setText("dailyText","Volno 😎");
-    setBar("daybar",100);
-    setText("daylabel","");
-    setText("dailyDebug","Weekend 😎");
-    return;
   }
 
-  const key = (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":"Fri";
-  const lessons = (SCHEDULE[key] || []).slice(0, TIMES.length);
-  const totalToday = countTodayLessons(lessons);
+  const tooltip = $("ttTooltip");
+  let tooltipPinned = false;
 
-  if (totalToday === 0) {
-    setDailyBadge("free","Volno");
-    setText("dailyText","Dnes bez výuky 😎");
-    setBar("daybar",100);
-    setText("daylabel","");
-    setText("dailyDebug",`${DAY_LABELS[key]} • ${fmtDateCZ(now)}`);
-    return;
+  function showTooltip(html, x, y){
+    tooltip.innerHTML = html;
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+    tooltip.style.display = "block";
+    tooltip.setAttribute("aria-hidden", "false");
+  }
+  function moveTooltip(x, y){
+    if (tooltipPinned) return;
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+  }
+  function hideTooltip(force = false){
+    if (tooltipPinned && !force) return;
+    tooltip.style.display = "none";
+    tooltip.setAttribute("aria-hidden", "true");
+    tooltipPinned = false;
   }
 
-  const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
-  const first = TIMES_MIN[0];
-  const last = TIMES_MIN[totalToday - 1];
-  const nowMin = now.getHours()*60 + now.getMinutes();
-
-  if (nowMin > last.endMin){
-    setDailyBadge("free","Volno");
-    setText("dailyText","Volno 😎");
-    setBar("daybar",100);
-    setText("daylabel","");
-    setText("dailyDebug",`${DAY_LABELS[key]} • ${fmtDateCZ(now)}`);
-    return;
-  }
-
-  if (nowMin < first.startMin){
-    setDailyBadge("live","Dnes");
-    const next = lessons[0] ? lessonText(lessons[0]) : `Hodina 1/${totalToday}`;
-    setText("dailyText",`Za chvíli začne: ${next}`);
-    setBar("daybar",0);
-    setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
-    setText("dailyDebug",`${DAY_LABELS[key]} • ${fmtDateCZ(now)}`);
-    return;
-  }
-
-  for (let i=0;i<totalToday;i++){
-    const t = TIMES_MIN[i];
-    const curL = lessons[i];
-    const cur = curL ? lessonText(curL) : `Hodina ${i+1}/${totalToday}`;
-    const nextL = (i+1<totalToday) ? lessons[i+1] : null;
-    const next = nextL ? lessonText(nextL) : (i+1<totalToday ? `Hodina ${i+2}/${totalToday}` : null);
-
-    if (nowMin >= t.startMin && nowMin <= t.endMin){
-      const pct = ((nowMin - t.startMin) / Math.max(1, (t.endMin - t.startMin))) * 100;
-      setDailyBadge("live","Právě");
-      setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
-      setBar("daybar", pct);
-      setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
-      setText("dailyDebug",`${DAY_LABELS[key]} • ${fmtDateCZ(now)}`);
-      return;
-    }
-
-    const nt = TIMES_MIN[i+1];
-    if (nt && nowMin > t.endMin && nowMin < nt.startMin){
-      setDailyBadge("live","Pauza");
-      setText("dailyText", next ? `Následuje: ${next}` : "Pauza");
-      setBar("daybar", 0);
-      setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
-      setText("dailyDebug",`${DAY_LABELS[key]} • ${fmtDateCZ(now)}`);
-      return;
-    }
-  }
-
-  setDailyBadge("free","Volno");
-  setText("dailyText","Volno 😎");
-  setBar("daybar",100);
-  setText("daylabel","");
-  setText("dailyDebug",`${DAY_LABELS[key]} • ${fmtDateCZ(now)}`);
-}
-
-/* =========================
-   Progress bars
-   ========================= */
-function updateAll(){
-  const now = new Date();
-  const timeInDay = now.getHours()/24 + now.getMinutes()/1440 + now.getSeconds()/86400;
-
-  const dow = now.getDay();
-  const weekend = (dow===0 || dow===6);
-  const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
-  const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
-
-  setBar("rt-week", weekPct, weekend);
-  setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
-
-  setBar("raw-week", weekPct, false);
-  setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
-
-  const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-  const monthPct = ((now.getDate()-1 + timeInDay) / dim) * 100;
-  setBar("rt-month", monthPct);
-  setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
-
-  const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
-  const mEnd = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
-  const monthRaw = rawPctBetween(mStart, mEnd, now);
-  setBar("raw-month", monthRaw);
-  setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
-
-  const yr = getSchoolYearRange(now);
-  const yearPct = calendarPctBetween(yr.start, yr.end, now);
-  setBar("rt-year", yearPct);
-  setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
-
-  const yearRaw = rawPctBetween(yr.start, yr.end, now);
-  setBar("raw-year", yearRaw);
-  setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
-
-  const totalPct = calendarPctBetween(HS_START, HS_END, now);
-  setBar("rt-total", totalPct);
-  setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
-
-  const totalRaw = rawPctBetween(HS_START, HS_END, now);
-  setBar("raw-total", totalRaw);
-  setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
-
-  const daysUntil = Math.ceil((MATURITA_APPROX - now) / 86400000);
-  setText("rt-maturita-label", daysUntil >= 0
-    ? `Real-Time: ~${daysUntil} dní`
-    : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`);
-
-  const rawDays = rawDaysUntil(MATURITA_APPROX, now);
-  setText("raw-maturita-label", rawDays >= 0
-    ? `Raw-Time: ~${rawDays} školních dní`
-    : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`);
-
-  if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
-
-  renderTimetableCurrentHighlight(now);
-}
-
-/* =========================
-   Timetable render (fancy)
-   ========================= */
-function getWeekDatesMonToFri(now = new Date()){
-  const d = new Date(now);
-  d.setHours(0,0,0,0);
-  const day = d.getDay(); // 0 Sun..6 Sat
-  const diffToMon = (day === 0 ? -6 : 1 - day);
-  d.setDate(d.getDate() + diffToMon);
-  const out = [];
-  for (let i=0;i<5;i++){
-    const x = new Date(d);
-    x.setDate(d.getDate() + i);
-    out.push(x);
-  }
-  return out;
-}
-
-function getCurrentLessonPosition(now){
-  const dow = now.getDay();
-  if (dow < 1 || dow > 5) return null;
-
-  const dayKey = DAY_KEYS[dow-1];
-  const lessons = SCHEDULE[dayKey] || [];
-  const nowMin = now.getHours()*60 + now.getMinutes();
-
-  for (let i=0;i<TIMES.length;i++){
-    const l = lessons[i];
-    if (!l || !(l.subj || l.subject)) continue;
-    const s = timeToMin(TIMES[i].start);
-    const e = timeToMin(TIMES[i].end);
-    if (nowMin >= s && nowMin <= e) return { dayKey, lessonIndex:i };
-  }
-  return null;
-}
-
-function renderTimetableCurrentHighlight(now = new Date()){
-  document.querySelectorAll(".tt-cell.current").forEach(el => el.classList.remove("current"));
-  const pos = getCurrentLessonPosition(now);
-  if (!pos) return;
-  const el = document.querySelector(`.tt-cell.lesson[data-day="${pos.dayKey}"][data-lesson="${pos.lessonIndex}"]`);
-  if (el) el.classList.add("current");
-}
-
-function renderTimetable(){
-  const grid = $("ttGrid");
-  if (!grid) return;
-
-  grid.style.setProperty("--cols", String(TIMES.length));
-  grid.innerHTML = "";
-
-  // Header row
-  const topLeft = document.createElement("div");
-  topLeft.className = "tt-cell tt-day";
-  topLeft.innerHTML = `<div class="d1" style="font-size:17px;">TÝDEN</div><div class="d2">aktuální</div>`;
-  grid.appendChild(topLeft);
-
-  TIMES.forEach((t, idx) => {
-    const c = document.createElement("div");
-    c.className = "tt-cell tt-head";
-    c.innerHTML = `<div class="n">${idx+1}</div><div class="t">${padTime(t.start)} – ${padTime(t.end)}</div>`;
-    grid.appendChild(c);
-  });
-
-  // Days + dates
-  const weekDates = getWeekDatesMonToFri(new Date());
-
-  DAY_KEYS.forEach((dayKey, rowIdx) => {
-    const dcell = document.createElement("div");
-    dcell.className = "tt-cell tt-day";
-    dcell.innerHTML = `
-      <div class="d1">${DAY_LABELS[dayKey]}</div>
-      <div class="d2">${weekDates[rowIdx] ? `${weekDates[rowIdx].getDate()}.${weekDates[rowIdx].getMonth()+1}.` : ""}</div>
+  function tooltipHTML(data){
+    return `
+      <div class="t-title">${data.dayLabel} • ${data.dateLong} • Hodina ${data.hourIdx+1}/${data.totalHours} (${data.time})</div>
+      <div class="t-row"><div class="k">Třída</div><div class="v">${data.className || "-"}</div></div>
+      <div class="t-row"><div class="k">Předmět</div><div class="v">${data.subj || "-"}</div></div>
+      <div class="t-row"><div class="k">Učebna</div><div class="v">${data.room || "-"}</div></div>
+      <div class="t-row"><div class="k">Učitel</div><div class="v">${data.teacher || "-"}</div></div>
+      ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
+      ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
     `;
-    grid.appendChild(dcell);
+  }
 
-    const lessons = (SCHEDULE[dayKey] || []).slice(0, TIMES.length);
-    const flags = (LESSON_FLAGS[dayKey] || []);
-
-    for (let i=0;i<TIMES.length;i++){
-      const raw = lessons[i];
-      const lesson = normalizeLesson(raw);
-      const flag = flags[i] || null;
-
-      const c = document.createElement("div");
-
-      if (!lesson || !lesson.subj){
-        c.className = "tt-cell tt-empty";
-        c.innerHTML = "";
-        grid.appendChild(c);
-        continue;
-      }
-
-      c.className = "tt-cell lesson";
-      c.dataset.day = dayKey;
-      c.dataset.lesson = String(i);
-
-      // flag styles
-      const finalType = flag?.type || lesson.type || null;
-      if (finalType === "event") c.classList.add("event");
-      if (finalType === "subst") c.classList.add("subst");
-      if (finalType === "cancelled") c.classList.add("cancelled");
-
-      const className = lesson.className || "DE3A";
-      const room = lesson.room || "";
-      const teacher = lesson.teacher || "";
-      const subj = lesson.subj || "";
-      const time = `${padTime(TIMES[i].start)} – ${padTime(TIMES[i].end)}`;
-
-      c.innerHTML = `
-        <div class="tt-topline">
-          <span>${className}</span>
-          <span>${room || "—"}</span>
-        </div>
-        <div class="tt-subj">${escapeHtml(subj)}</div>
-        <div class="tt-teacher">${escapeHtml(teacher || "—")}</div>
-      `;
-
-      // tooltip detail
-      c.dataset.tooltip = JSON.stringify({
-        predmet: subj,
-        den: DAY_LABELS[dayKey],
-        hodina: `${i+1}/${countTodayLessons(SCHEDULE[dayKey] || []) || TIMES.length}`,
-        cas: time,
-        ucitel: teacher || "—",
-        ucebna: room || "—",
-        trida: className,
-        stav: (finalType === "event" ? "Akce" : finalType === "subst" ? "Suplování" : finalType === "cancelled" ? "Odpadlo" : "Normální"),
-        poznamka: flag?.desc || lesson.desc || lesson.note || flag?.note || ""
-      });
-
-      c.addEventListener("mouseenter", onTTEnter);
-      c.addEventListener("mousemove", onTTMove);
-      c.addEventListener("mouseleave", onTTLeave);
-
-      grid.appendChild(c);
+  function getTotalHoursForDay(dayKey){
+    const arr = SCHEDULE[dayKey] || [];
+    let last = -1;
+    for (let i=0;i<arr.length;i++){
+      if (arr[i] && (arr[i].subj || arr[i].subject)) last = i;
     }
-  });
+    return Math.max(1, last + 1);
+  }
 
-  renderTimetableCurrentHighlight(new Date());
-}
+  function renderTimetable(){
+    const grid = $("ttGrid");
+    const cols = TIMES.length;
+    grid.style.setProperty("--cols", cols);
+    grid.innerHTML = "";
 
-/* =========================
-   Tooltip
-   ========================= */
-function onTTEnter(e){
-  const tip = $("ttTooltip");
-  if (!tip) return;
-  let data = null;
-  try { data = JSON.parse(e.currentTarget.dataset.tooltip || "{}"); } catch {}
-  if (!data) return;
+    const corner = document.createElement("div");
+    corner.className = "tt-corner";
+    grid.appendChild(corner);
 
-  tip.innerHTML = `
-    <div class="title">${escapeHtml(data.predmet || "Předmět")}</div>
-    <div class="line2"><b>Den:</b> ${escapeHtml(data.den || "—")}</div>
-    <div class="line2"><b>Hodina:</b> ${escapeHtml(data.hodina || "—")}</div>
-    <div class="line2"><b>Čas:</b> ${escapeHtml(data.cas || "—")}</div>
-    <div class="line2"><b>Učitel:</b> ${escapeHtml(data.ucitel || "—")}</div>
-    <div class="line2"><b>Učebna:</b> ${escapeHtml(data.ucebna || "—")}</div>
-    <div class="line2"><b>Třída:</b> ${escapeHtml(data.trida || "—")}</div>
-    <div class="line2"><b>Stav:</b> ${escapeHtml(data.stav || "—")}</div>
-    ${data.poznamka ? `<div class="line2 muted"><b>Pozn.:</b> ${escapeHtml(data.poznamka)}</div>` : ""}
-  `;
-  tip.classList.add("show");
-  tip.setAttribute("aria-hidden","false");
-  onTTMove(e);
-}
-function onTTMove(e){
-  const tip = $("ttTooltip");
-  if (!tip || !tip.classList.contains("show")) return;
-  const pad = 14;
-  let x = e.clientX + 14;
-  let y = e.clientY + 14;
-  const r = tip.getBoundingClientRect();
-  if (x + r.width + pad > window.innerWidth) x = e.clientX - r.width - 14;
-  if (y + r.height + pad > window.innerHeight) y = e.clientY - r.height - 14;
-  tip.style.left = x + "px";
-  tip.style.top = y + "px";
-}
-function onTTLeave(){
-  const tip = $("ttTooltip");
-  if (!tip) return;
-  tip.classList.remove("show");
-  tip.setAttribute("aria-hidden","true");
-}
+    TIMES.forEach((t, i) => {
+      const h = document.createElement("div");
+      h.className = "tt-h";
+      h.innerHTML = `${i+1}<br><span>${padTime(t.start)}–${padTime(t.end)}</span>`;
+      grid.appendChild(h);
+    });
 
-function escapeHtml(s){
-  return String(s)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
+    const weekDates = getWeekDatesMonToFri(new Date());
 
-/* =========================
-   Boot
-   ========================= */
-async function boot(){
-  initSettings();
+    for (let dIndex = 0; dIndex < DAY_ORDER.length; dIndex++){
+      const d = DAY_ORDER[dIndex];
 
-  // initial render with fallback immediately (rychlé zobrazení)
-  renderTimetable();
-  updateAll();
+      const dayCell = document.createElement("div");
+      dayCell.className = "tt-day";
+      dayCell.textContent = d.label;
+      grid.appendChild(dayCell);
 
-  // pak zkus API
-  await loadTimetableFromApi();
-  renderTimetable();
-  updateAll();
+      for (let i=0;i<cols;i++){
+        const base = (SCHEDULE[d.key] && SCHEDULE[d.key][i]) ? normalizeLesson(SCHEDULE[d.key][i]) : null;
+        const mark = getMark(d.key, i);
 
-  // refresh progress
-  setInterval(updateAll, 30_000);
+        const cell = document.createElement("div");
+        cell.className = "tt-cell";
 
-  // refresh API + timetable
-  setInterval(async () => {
-    await loadTimetableFromApi();
-    renderTimetable();
-  }, 5 * 60 * 1000);
-}
+        if (!base && !mark){
+          cell.classList.add("tt-empty");
+          cell.textContent = "—";
+          grid.appendChild(cell);
+          continue;
+        }
 
-document.addEventListener("DOMContentLoaded", boot);
+        let type = "";
+        if (mark?.type === "event") { cell.classList.add("tt-event"); type = "Akce"; }
+        if (mark?.type === "subst") { cell.classList.add("tt-subst"); type = "Suplování"; }
+        if (mark?.type === "cancel") { cell.classList.add("tt-cancel"); type = "Odpadlo"; }
+
+        const subj =
+          (mark?.type === "event") ? (mark.title || "Akce")
+          : (base?.subj || "");
+
+        const room =
+          (mark?.type === "event") ? (mark.room || "")
+          : (base?.room || "");
+
+        const teacher =
+          (mark?.type === "event") ? ""
+          : (base?.teacher || "");
+
+        const note = mark?.note || "";
+
+        const topline = document.createElement("div");
+        topline.className = "tt-topline";
+        topline.innerHTML = `<span class="cls">${CLASS_NAME}</span><span class="room">${room || ""}</span>`;
+        cell.appendChild(topline);
+
+        const subjEl = document.createElement("div");
+        subjEl.className = "tt-subj";
+        subjEl.textContent = subj;
+        cell.appendChild(subjEl);
+
+        const teacherEl = document.createElement("div");
+        teacherEl.className = "tt-teacher";
+        teacherEl.textContent = teacher;
+        cell.appendChild(teacherEl);
+
+        const dayDate = weekDates[dIndex];
+        const totalHours = getTotalHoursForDay(d.key);
+
+        const tdata = {
+          dayLabel: d.label,
+          dateLong: dayDate ? `${two(dayDate.getDate())}.${two(dayDate.getMonth()+1)}.${dayDate.getFullYear()}` : "-",
+          hourIdx: i,
+          totalHours,
+          time: `${padTime(TIMES[i].start)}–${padTime(TIMES[i].end)}`,
+          className: CLASS_NAME,
+          subj,
+          room,
+          teacher,
+          note,
+          type
+        };
+
+        cell.addEventListener("mouseenter", (e) => {
+          tooltipPinned = false;
+          showTooltip(tooltipHTML(tdata), e.clientX, e.clientY);
+        });
+        cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
+        cell.addEventListener("mouseleave", () => hideTooltip());
+
+        // mobile tap / desktop click pin toggle
+        cell.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isVisible = tooltip.style.display === "block";
+          if (isVisible && tooltipPinned){
+            hideTooltip(true);
+          } else {
+            tooltipPinned = true;
+            showTooltip(tooltipHTML(tdata), e.clientX || (window.innerWidth/2), e.clientY || (window.innerHeight/2));
+          }
+        });
+
+        grid.appendChild(cell);
+      }
+    }
+
+    $("ttUpdated").textContent = "Aktualizováno: " + formatDateCZ(new Date());
+  }
+
+  function boot(){
+    initSettings();
+    renderTimetable();       // okamžitě fallback
+    loadFromApi().then(() => {
+      renderTimetable();     // překresli po API (times/live lessons)
+    });
+
+    // auto refresh
+    setInterval(async () => {
+      await loadFromApi();
+      renderTimetable();
+    }, 5 * 60 * 1000);
+
+    document.addEventListener("click", () => hideTooltip(true));
+    window.addEventListener("scroll", () => hideTooltip(true), { passive:true });
+    window.addEventListener("resize", () => hideTooltip(true));
+  }
+  document.addEventListener("DOMContentLoaded", boot);
 </script>
 </body>
 </html>
