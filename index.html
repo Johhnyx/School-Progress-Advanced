@@ -1510,17 +1510,17 @@
       state.classDays = c.days;
       state.classMarks = Array.isArray(c.marks) ? c.marks : [];
       state.classEvents = Array.isArray(c.events) ? c.events : [];
-      state.classSource = "backend";
+      state.classSource = "Bakaláří";
     } else {
-      state.classSource = "fallback";
+      state.classSource = "Lokální";
     }
 
     const t = await fetchJsonSafe(BACKEND_TEACHER_API);
     if (!t.__error && t.ok && t.days && hasAnyLesson(t.days)){
       state.teacherDays = t.days;
-      state.teacherSource = "backend";
+      state.teacherSource = "Bakaláři";
     } else {
-      state.teacherSource = "fallback";
+      state.teacherSource = "Lokální";
     }
 
     statusText();
