@@ -146,6 +146,80 @@
       --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
     }
 
+    /* KašpárnaKart™ theme (blue) */
+    body.theme-kasparnakart{
+      --bg:#061427;
+      --card: rgba(10, 24, 48, 0.82);
+      --text:#eaf3ff;
+      --muted:#a6c4e6;
+      --shadow: rgba(0,0,0,0.55);
+      --linebg: rgba(0, 153, 255, 0.18);
+
+      --btn:#0099ff;
+      --btnText:#061427;
+
+      --badge: rgba(0,153,255,0.16);
+      --badgeLive: rgba(0, 210, 255, 0.14);
+      --badgeFree: rgba(255,190,60,0.16);
+      --badgeErr: rgba(255,80,80,0.16);
+
+      --border: rgba(0,153,255,0.22);
+
+      --accent:#0099ff;
+      --accent2:#66ccff;
+      --glow: rgba(0,153,255,0.45);
+
+      --bgImage: url("KasparnaKart.png");
+      --bgOverlay: linear-gradient(180deg, rgba(6,20,39,0.78), rgba(6,20,39,0.92));
+
+      --substBg: rgba(0, 153, 255, 0.20);
+      --substBorder: rgba(0, 153, 255, 0.50);
+      --cancelBg: rgba(255, 0, 60, 0.22);
+      --cancelBorder: rgba(255, 0, 60, 0.55);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(230, 247, 255, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(0,153,255,0.25);
+    }
+
+    /* Battle Cats theme (colors inspired by the game UI: cream/ink + playful yellow) */
+    body.theme-battlecats{
+      --bg:#fbf1d8;
+      --card: rgba(255, 255, 255, 0.88);
+      --text:#1a1a1a;
+      --muted:#5b5142;
+      --shadow: rgba(0,0,0,0.12);
+      --linebg: rgba(0,0,0,0.12);
+
+      --btn:#ffd84a;
+      --btnText:#1a1a1a;
+
+      --badge: rgba(0,0,0,0.06);
+      --badgeLive: rgba(59,181,74,0.14);
+      --badgeFree: rgba(255,190,60,0.18);
+      --badgeErr: rgba(255,80,80,0.16);
+
+      --border: rgba(0,0,0,0.14);
+
+      --accent:#ffd84a;
+      --accent2:#ffb000;
+      --glow: rgba(255,216,74,0.45);
+
+      --bgImage: url("BattleCats.png");
+      --bgOverlay: linear-gradient(180deg, rgba(251,241,216,0.78), rgba(251,241,216,0.92));
+
+      --substBg: rgba(255, 80, 80, 0.16);
+      --substBorder: rgba(255, 80, 80, 0.40);
+      --cancelBg: rgba(255, 0, 60, 0.16);
+      --cancelBorder: rgba(255, 0, 60, 0.42);
+      --eventBg: rgba(59,181,74,0.18);
+      --eventBorder: rgba(59,181,74,0.45);
+
+      --ttSubjColor: rgba(26, 26, 26, 0.95);
+      --ttSubjGlow: none;
+    }
+
     /* =========================
        BASE
        ========================= */
@@ -181,7 +255,7 @@
       body{ padding:16px; }
     }
 
-    /* ====== Minecraft splash additions (ONLY) ====== */
+    /* ===== Minecraft splash (centered under title) ===== */
     @font-face{
       font-family: "Monocraft";
       src: url("./Monocraft.ttf") format("truetype");
@@ -191,6 +265,7 @@
       position: relative;
       margin: 0 0 14px 0;
       display:flex;
+      flex-direction: column;
       justify-content:center;
       align-items:center;
     }
@@ -202,58 +277,54 @@
       text-shadow: 0 0 0 transparent;
     }
     body.theme-loona h1,
-    body.theme-sobokill h1{
+    body.theme-sobokill h1,
+    body.theme-kasparnakart h1,
+    body.theme-battlecats h1{
       text-shadow: 0 0 18px var(--glow);
     }
 
-    /* splash – blíž k nadpisu, nikdy mimo obrazovku */
     .mcSplash{
-      position:absolute;
-      right: 50%;
-      top: -4px;
-      transform: translateX(220px) rotate(-18deg) scale(1);
-      transform-origin: center;
+      margin-top: 6px;
+      text-align: center;
       color: #ffd43b;
       text-shadow:
         2px 2px 0 #4a3700,
         0 0 10px rgba(255,212,59,.25);
       font-family: "Monocraft", monospace;
       font-size: 13px;
-      line-height: 1;
+      line-height: 1.15;
       white-space: nowrap;
       pointer-events: none;
       user-select: none;
       animation: mcSplashPulse .55s ease-in-out infinite alternate;
-      max-width: 44vw;
+      max-width: 92%;
       overflow:hidden;
       text-overflow: ellipsis;
     }
     @keyframes mcSplashPulse{
-      from { transform: translateX(220px) rotate(-18deg) scale(0.94); }
-      to   { transform: translateX(220px) rotate(-18deg) scale(1.08); }
+      from { transform: scale(0.95); opacity: 0.92; }
+      to   { transform: scale(1.05); opacity: 1; }
     }
     @media (max-width:980px){
-      .mcSplash{
-        top: -6px;
-        transform: translateX(165px) rotate(-18deg) scale(1);
-        max-width: 60vw;
-        font-size: 10px;
-      }
-      @keyframes mcSplashPulse{
-        from { transform: translateX(165px) rotate(-18deg) scale(0.94); }
-        to   { transform: translateX(165px) rotate(-18deg) scale(1.08); }
-      }
+      .mcSplash{ font-size: 10px; margin-top: 5px; }
     }
-    @media (max-width:420px){
-      .mcSplash{
-        transform: translateX(135px) rotate(-18deg) scale(1);
-      }
-      @keyframes mcSplashPulse{
-        from { transform: translateX(135px) rotate(-18deg) scale(0.94); }
-        to   { transform: translateX(135px) rotate(-18deg) scale(1.08); }
-      }
+
+    /* ===== six seven easter egg ===== */
+    .ss{
+      display:inline-block;
+      position: relative;
+      will-change: transform, filter;
     }
-    /* ====== end Minecraft additions ====== */
+    .ss.hot{
+      animation: ssBounce .55s ease-in-out 2;
+      filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 90, 0, 0.55));
+    }
+    @keyframes ssBounce{
+      0%   { transform: translateY(0); }
+      35%  { transform: translateY(-6px); }
+      70%  { transform: translateY(0); }
+      100% { transform: translateY(-2px); }
+    }
 
     .topbar{
       display:flex;
@@ -274,7 +345,9 @@
       box-shadow: 0 0 0 transparent;
     }
     body.theme-loona .btn,
-    body.theme-sobokill .btn{
+    body.theme-sobokill .btn,
+    body.theme-kasparnakart .btn,
+    body.theme-battlecats .btn{
       box-shadow: 0 0 18px var(--glow);
     }
 
@@ -288,7 +361,9 @@
       backdrop-filter: blur(10px);
     }
     body.theme-loona .block,
-    body.theme-sobokill .block{
+    body.theme-sobokill .block,
+    body.theme-kasparnakart .block,
+    body.theme-battlecats .block{
       box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
     }
 
@@ -299,7 +374,9 @@
       color: var(--text);
     }
     body.theme-loona .rowTitle,
-    body.theme-sobokill .rowTitle{
+    body.theme-sobokill .rowTitle,
+    body.theme-kasparnakart .rowTitle,
+    body.theme-battlecats .rowTitle{
       color: var(--accent2);
     }
 
@@ -393,6 +470,7 @@
       .addonCol{ order:2; }
     }
 
+    /* DAILY */
     .dailyRow{
       display:flex;
       align-items:center;
@@ -411,6 +489,7 @@
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
+    /* ADDON */
     .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
     .addonHead{
       text-align:center;
@@ -426,6 +505,7 @@
 
     .stackList{ display:flex; flex-direction:column; gap:8px; }
 
+    /* Události: max ~3 položky a pak scroll uvnitř */
     #eventsList{
       max-height: 260px;
       overflow-y: auto;
@@ -481,6 +561,7 @@
     .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
     .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
 
+    /* TIMETABLE */
     .timetable .tt-top{
       display:flex;
       align-items:flex-end;
@@ -552,6 +633,13 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
 
+    /* Current hour outline (orange) */
+    .tt-now{
+      outline: 2px solid rgba(255, 152, 0, 0.95);
+      outline-offset: -2px;
+      box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.25) inset, 0 0 18px rgba(255, 152, 0, 0.35);
+    }
+
     .tt-topline{
       display:flex;
       justify-content:space-between;
@@ -614,6 +702,7 @@
       box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
     }
 
+    /* Tooltip */
     .tt-tooltip{
       position: fixed;
       z-index: 9999;
@@ -673,7 +762,6 @@
 
 <body class="theme-dark">
   <div class="wrap">
-    <!-- titleWrap + splash added, h1 has id so we can change it in modes -->
     <div class="titleWrap">
       <h1 id="pageTitle">School Progress</h1>
       <div id="mcSplash" class="mcSplash">Loading splash…</div>
@@ -693,10 +781,11 @@
           <option value="dark">Dark</option>
           <option value="loona">Loona</option>
           <option value="sobokill">SOBOKILL</option>
+          <option value="kasparnakart">KašpárnaKart™</option>
+          <option value="battlecats">Battle Cats</option>
         </select>
       </div>
 
-      <!-- NEW: Nonchalant / Freaky mode -->
       <div class="field">
         <span>Mode</span>
         <select id="modeSelect" aria-label="Mode">
@@ -720,7 +809,6 @@
       <p class="hint" id="statusHint">Status: OK</p>
     </div>
 
-    <!-- everything else unchanged -->
     <div class="mainLayout">
       <div class="grid2">
         <div>
@@ -841,7 +929,7 @@
     </div>
 
     <div class="footer">
-      <div class="footerBy">Created By Johnny Hotovost</div>
+      <div class="footerBy">Created By Johnny Hotovost Corporation, LLC</div>
       <div>
         <span>© 2026 All rights reserved</span>
         <span class="footerSep">•</span>
@@ -863,7 +951,7 @@
   const CLASS_NAME = "DE3A";
 
   /* =========================
-     Minecraft splash (ONLY add-on)
+     Minecraft splash
      ========================= */
   async function loadMinecraftSplash(){
     const el = document.getElementById("mcSplash");
@@ -914,7 +1002,6 @@
     if (!sel) return;
 
     sel.addEventListener("change", () => applyTitleMode(sel.value));
-
     const saved = localStorage.getItem("sp_mode") || "normal";
     applyTitleMode(saved);
   }
@@ -1109,7 +1196,9 @@
      ========================= */
   function applyTheme(theme){
     const body = document.body;
-    body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
+    body.classList.remove(
+      "theme-light","theme-dark","theme-loona","theme-sobokill","theme-kasparnakart","theme-battlecats"
+    );
     body.classList.add("theme-" + theme);
     localStorage.setItem("sp_theme", theme);
     const sel = $("themeSelect");
@@ -1122,6 +1211,7 @@
     $("uiScaleRange").value = String(p);
     $("uiScaleValue").textContent = `${p}%`;
     localStorage.setItem("sp_ui_scale", String(p));
+    scheduleSixSevenScan();
   }
 
   function refreshAddonPanelVisibility(){
@@ -1136,6 +1226,7 @@
 
     addonPanel.classList.toggle("hidden", !anyVisible);
     addonHead.classList.toggle("hidden", !anyVisible);
+    scheduleSixSevenScan();
   }
 
   function initSettings(){
@@ -1152,10 +1243,12 @@
     toggleTT.addEventListener("change", () => {
       $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
       localStorage.setItem("sp_toggle_tt", toggleTT.checked ? "1" : "0");
+      scheduleSixSevenScan();
     });
     toggleDaily.addEventListener("change", () => {
       $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
       localStorage.setItem("sp_toggle_daily", toggleDaily.checked ? "1" : "0");
+      scheduleSixSevenScan();
     });
     toggleEvents.addEventListener("change", () => {
       $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
@@ -1168,7 +1261,9 @@
       refreshAddonPanelVisibility();
     });
 
-    applyTheme(localStorage.getItem("sp_theme") || "dark");
+    const savedTheme = localStorage.getItem("sp_theme") || "dark";
+    applyTheme(savedTheme);
+
     applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
 
     const savedTT = localStorage.getItem("sp_toggle_tt");
@@ -1187,6 +1282,127 @@
     $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
 
     refreshAddonPanelVisibility();
+  }
+
+  /* =========================
+     six seven detector + emote
+     ========================= */
+  let ssScanTimer = null;
+
+  function scheduleSixSevenScan(){
+    if (ssScanTimer) clearTimeout(ssScanTimer);
+    ssScanTimer = setTimeout(() => {
+      try { wrapSixSeven(document.querySelector(".wrap")); } catch {}
+    }, 60);
+  }
+
+  // Wrap only these patterns:
+  // - 6/7 (with optional spaces)
+  // - 6.7 (optionally followed by .YYYY etc)
+  // - 67 (e.g. 2067)
+  // Keeps it sane (doesn't wrap every single '6' in 2026).
+  function wrapSixSeven(root){
+    if (!root) return;
+
+    const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
+    const patterns = [
+      /6\s*\/\s*7/g,
+      /6\.7(?:\.\d{2,4})?/g,
+      /67/g
+    ];
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const p = node.parentNode;
+        if (!p || SKIP_TAGS.has(p.nodeName)) return NodeFilter.FILTER_REJECT;
+        if (p.closest && p.closest(".tt-tooltip")) return NodeFilter.FILTER_REJECT;
+        if (!node.nodeValue || !node.nodeValue.match(/6\s*\/\s*7|6\.7|67/)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    for (const textNode of nodes){
+      const original = textNode.nodeValue;
+      let parts = [{ text: original, isMatch: false }];
+
+      for (const re of patterns){
+        const nextParts = [];
+        for (const part of parts){
+          if (part.isMatch){
+            nextParts.push(part);
+            continue;
+          }
+          const s = part.text;
+          let last = 0;
+          let m;
+          re.lastIndex = 0;
+          while ((m = re.exec(s)) !== null){
+            if (m.index > last) nextParts.push({ text: s.slice(last, m.index), isMatch:false });
+            nextParts.push({ text: m[0], isMatch:true });
+            last = m.index + m[0].length;
+          }
+          if (last < s.length) nextParts.push({ text: s.slice(last), isMatch:false });
+        }
+        parts = nextParts;
+      }
+
+      // If no match after processing, skip
+      if (!parts.some(p => p.isMatch)) continue;
+
+      const frag = document.createDocumentFragment();
+      for (const p of parts){
+        if (!p.isMatch){
+          frag.appendChild(document.createTextNode(p.text));
+        } else {
+          const span = document.createElement("span");
+          span.className = "ss";
+          span.textContent = p.text;
+          frag.appendChild(span);
+        }
+      }
+
+      textNode.parentNode.replaceChild(frag, textNode);
+    }
+  }
+
+  function triggerSixSevenEmote(){
+    const els = document.querySelectorAll(".ss");
+    if (!els.length) return;
+    els.forEach(el => el.classList.add("hot"));
+    setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1200);
+  }
+
+  /* =========================
+     Mode (Nonchalant/Freaky) for title
+     ========================= */
+  function applyTitleMode(mode){
+    const titleEl = document.getElementById("pageTitle");
+    if (!titleEl) return;
+
+    if (mode === "nonchalant"){
+      titleEl.textContent = "Bakaláři, kdyby nebyly mid";
+    } else if (mode === "freaky"){
+      titleEl.textContent = "Kdy to utrpení skončí";
+    } else {
+      titleEl.textContent = "School Progress";
+    }
+
+    localStorage.setItem("sp_mode", mode);
+    const sel = document.getElementById("modeSelect");
+    if (sel) sel.value = mode;
+    scheduleSixSevenScan();
+  }
+
+  function initModeSelector(){
+    const sel = document.getElementById("modeSelect");
+    if (!sel) return;
+
+    sel.addEventListener("change", () => applyTitleMode(sel.value));
+    const saved = localStorage.getItem("sp_mode") || "normal";
+    applyTitleMode(saved);
   }
 
   /* =========================
@@ -1249,6 +1465,10 @@
     grid.style.setProperty("--cols", TIMES.length);
     grid.innerHTML = "";
 
+    const now = new Date();
+    const todayKey = dayKeyFromDate(now);
+    const nowMin = now.getHours()*60 + now.getMinutes();
+
     const corner = document.createElement("div");
     corner.className = "tt-corner";
     grid.appendChild(corner);
@@ -1280,6 +1500,10 @@
 
         const cell = document.createElement("div");
         cell.className = "tt-cell";
+
+        // current hour highlight
+        const inThisHour = (todayKey === d.key && nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin);
+        if (inThisHour) cell.classList.add("tt-now");
 
         if (!base && !mk){
           cell.classList.add("tt-empty");
@@ -1316,7 +1540,6 @@
         teacherEl.textContent = teacher || "";
         cell.appendChild(teacherEl);
 
-        const now = new Date();
         const tdata = {
           dayLabel: d.label,
           dateLong: formatDateCZ(now),
@@ -1348,6 +1571,7 @@
     }
 
     $("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1367,6 +1591,7 @@
       empty.className = "stackItem muted";
       empty.textContent = "Žádné události (zatím)";
       list.appendChild(empty);
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1417,6 +1642,8 @@
       if (ev.note) item.appendChild(desc);
       list.appendChild(item);
     }
+
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1435,6 +1662,7 @@
       badge.textContent = "Cáfa • off";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
       sub.textContent = `Víkend • ${formatDateCZ(now)} • ${src}`;
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1451,6 +1679,7 @@
       badge.textContent = "Cáfa • gone";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
       sub.textContent = `${dayLabelCz(dayKey)} • mimo hodiny • ${src}`;
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1459,12 +1688,14 @@
       badge.textContent = "Cáfa • stealth";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
       sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      scheduleSixSevenScan();
       return;
     }
 
     badge.textContent = "Cáfa • live";
     main.textContent = `Právě: ${shortSubj(l.subj)} • ${l.class || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
     sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1500,6 +1731,7 @@
       setBar("daybar",100);
       setText("daylabel","");
       setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1516,6 +1748,7 @@
       setBar("daybar",100);
       setText("daylabel","");
       setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1526,6 +1759,7 @@
       setBar("daybar",0);
       setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
       setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1541,6 +1775,7 @@
         setBar("daybar", pct);
         setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
         setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        scheduleSixSevenScan();
         return;
       }
 
@@ -1551,6 +1786,7 @@
         setBar("daybar", 0);
         setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
         setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        scheduleSixSevenScan();
         return;
       }
     }
@@ -1560,6 +1796,7 @@
     setBar("daybar",100);
     setText("daylabel","");
     setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1616,6 +1853,8 @@
       ? `Raw-Time: ~${rawDays} školních dní`
       : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
     );
+
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1655,6 +1894,7 @@
     renderEventsPanel();
     updateCafaTracker(new Date());
     updateDaily(new Date());
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1665,12 +1905,14 @@
     updateProgressBars();
     if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
     updateCafaTracker(now);
+    // Timetable rerender to keep tt-now accurate (cheap enough)
+    renderTimetable();
   }
 
   function boot(){
     initSettings();
-    initModeSelector();     // NEW
-    loadMinecraftSplash();  // NEW
+    initModeSelector();
+    loadMinecraftSplash();
 
     state.classSource = "loading";
     state.teacherSource = "loading";
@@ -1681,6 +1923,12 @@
     tick();
 
     syncBackend();
+
+    // initial scan
+    scheduleSixSevenScan();
+
+    // every 10s do "six seven" emote (only if there are matches)
+    setInterval(triggerSixSevenEmote, 10_000);
 
     setInterval(tick, 30_000);
     setInterval(syncBackend, 5 * 60_000);
