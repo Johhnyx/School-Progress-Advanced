@@ -36,9 +36,20 @@
       --bgImage: none;
       --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
 
+      --substBg: rgba(255, 80, 80, 0.18);
+      --substBorder: rgba(255, 80, 80, 0.40);
+      --cancelBg: rgba(255, 0, 60, 0.22);
+      --cancelBorder: rgba(255, 0, 60, 0.55);
+      --eventBg: rgba(59,181,74,0.22);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(20, 35, 60, 0.92);
+      --ttSubjGlow: none;
+
       --uiScale: 1;
     }
 
+    /* Dark theme */
     body.theme-dark{
       --bg:#0f1115;
       --card:#171a21;
@@ -56,8 +67,12 @@
       --badgeErr:#3a1f23;
 
       --border:#2a2f3a;
+
+      --ttSubjColor: rgba(235, 240, 250, 0.95);
+      --ttSubjGlow: none;
     }
 
+    /* Loona theme */
     body.theme-loona{
       --bg:#08060b;
       --card: rgba(18, 12, 22, 0.78);
@@ -82,8 +97,19 @@
 
       --bgImage: url("loona.png");
       --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
+
+      --substBg: rgba(255, 46, 166, 0.22);
+      --substBorder: rgba(255, 46, 166, 0.52);
+      --cancelBg: rgba(255, 0, 90, 0.28);
+      --cancelBorder: rgba(255, 0, 90, 0.62);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(255, 107, 216, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
     }
 
+    /* SOBOKILL theme */
     body.theme-sobokill{
       --bg:#070604;
       --card: rgba(18, 14, 8, 0.82);
@@ -108,14 +134,26 @@
 
       --bgImage: url("sobokill.png");
       --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
+
+      --substBg: rgba(212, 175, 55, 0.22);
+      --substBorder: rgba(212, 175, 55, 0.50);
+      --cancelBg: rgba(255, 0, 60, 0.24);
+      --cancelBorder: rgba(255, 0, 60, 0.58);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(241, 208, 122, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
     }
 
+    /* =========================
+       BASE
+       ========================= */
     *{ box-sizing:border-box; }
-    html, body { min-height:100%; }
     body{
       font-family: Arial, sans-serif;
       margin:0;
-      padding: calc(24px * var(--uiScale));
+      padding:24px;
       color:var(--text);
       background:
         var(--bgOverlay),
@@ -130,72 +168,103 @@
       transition: background .2s ease, color .2s ease;
     }
 
-    .wrap{ max-width: 1500px; margin:0 auto; }
-
-    .titleWrap{
-      position: relative;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height: calc(54px * var(--uiScale));
-      margin-bottom: calc(14px * var(--uiScale));
+    .wrap{
+      max-width:1320px;
+      margin:0 auto;
+      transform: scale(var(--uiScale));
+      transform-origin: top center;
+      width: calc(100% / var(--uiScale));
+      transition: transform .15s ease;
     }
-    h1.mainTitle{
-      margin:0;
-      text-align:center;
-      font-weight:900;
-      letter-spacing:0.2px;
-      font-size: calc(34px * var(--uiScale));
-      line-height: 1.1;
-      text-shadow: 0 0 0 transparent;
-    }
-    body.theme-loona h1.mainTitle,
-    body.theme-sobokill h1.mainTitle{
-      text-shadow: 0 0 18px var(--glow);
+    @media (max-width:980px){
+      .wrap{ transform:none; width:100%; }
+      body{ padding:16px; }
     }
 
-    @font-face {
+    /* ====== Minecraft splash additions (ONLY) ====== */
+    @font-face{
       font-family: "Monocraft";
       src: url("./Monocraft.ttf") format("truetype");
       font-display: swap;
     }
+    .titleWrap{
+      position: relative;
+      margin: 0 0 14px 0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    h1{
+      margin:0;
+      text-align:center;
+      font-weight:900;
+      letter-spacing:0.2px;
+      text-shadow: 0 0 0 transparent;
+    }
+    body.theme-loona h1,
+    body.theme-sobokill h1{
+      text-shadow: 0 0 18px var(--glow);
+    }
 
+    /* splash – blíž k nadpisu, nikdy mimo obrazovku */
     .mcSplash{
       position:absolute;
-      right: clamp(4px, 7vw, 120px);
-      top: 0;
-      transform: rotate(-18deg) scale(1);
+      right: 50%;
+      top: -4px;
+      transform: translateX(220px) rotate(-18deg) scale(1);
       transform-origin: center;
       color: #ffd43b;
       text-shadow:
         2px 2px 0 #4a3700,
         0 0 10px rgba(255,212,59,.25);
       font-family: "Monocraft", monospace;
-      font-size: calc(13px * var(--uiScale));
-      line-height:1;
+      font-size: 13px;
+      line-height: 1;
       white-space: nowrap;
-      pointer-events:none;
-      user-select:none;
+      pointer-events: none;
+      user-select: none;
       animation: mcSplashPulse .55s ease-in-out infinite alternate;
-      max-width: 40vw;
+      max-width: 44vw;
       overflow:hidden;
       text-overflow: ellipsis;
     }
-    @keyframes mcSplashPulse {
-      from { transform: rotate(-18deg) scale(0.94); }
-      to   { transform: rotate(-18deg) scale(1.08); }
+    @keyframes mcSplashPulse{
+      from { transform: translateX(220px) rotate(-18deg) scale(0.94); }
+      to   { transform: translateX(220px) rotate(-18deg) scale(1.08); }
     }
+    @media (max-width:980px){
+      .mcSplash{
+        top: -6px;
+        transform: translateX(165px) rotate(-18deg) scale(1);
+        max-width: 60vw;
+        font-size: 10px;
+      }
+      @keyframes mcSplashPulse{
+        from { transform: translateX(165px) rotate(-18deg) scale(0.94); }
+        to   { transform: translateX(165px) rotate(-18deg) scale(1.08); }
+      }
+    }
+    @media (max-width:420px){
+      .mcSplash{
+        transform: translateX(135px) rotate(-18deg) scale(1);
+      }
+      @keyframes mcSplashPulse{
+        from { transform: translateX(135px) rotate(-18deg) scale(0.94); }
+        to   { transform: translateX(135px) rotate(-18deg) scale(1.08); }
+      }
+    }
+    /* ====== end Minecraft additions ====== */
 
     .topbar{
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      margin-bottom: calc(12px * var(--uiScale));
-      gap: calc(10px * var(--uiScale));
+      margin-bottom:12px;
+      gap:10px;
     }
     .btn{
       border:none;
-      padding: calc(10px * var(--uiScale)) calc(12px * var(--uiScale));
+      padding:10px 12px;
       border-radius:10px;
       background:var(--btn);
       color:var(--btnText);
@@ -203,48 +272,20 @@
       cursor:pointer;
       white-space:nowrap;
       box-shadow: 0 0 0 transparent;
-      font-size: calc(14px * var(--uiScale));
     }
     body.theme-loona .btn,
     body.theme-sobokill .btn{
       box-shadow: 0 0 18px var(--glow);
     }
 
-    .layout{
-      display:grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(260px, 310px);
-      gap: calc(14px * var(--uiScale));
-      align-items:start;
-    }
-    .leftMain, .rightMain, .addonCol{ min-width:0; }
-
-    @media (max-width: 1200px){
-      .layout{
-        grid-template-columns: 1fr;
-      }
-      .addonCol{ order:3; }
-      body{ padding:16px; }
-      .mcSplash{ right: 6px; top:-2px; max-width: 55vw; font-size: 10px; }
-    }
-
-    .colHead{
-      text-align:center;
-      font-weight:900;
-      color:var(--muted);
-      margin:0 0 calc(8px * var(--uiScale)) 0;
-      font-size: calc(13px * var(--uiScale));
-      letter-spacing:0.3px;
-    }
-
     .block{
       background:var(--card);
-      padding: calc(16px * var(--uiScale)) calc(16px * var(--uiScale)) calc(12px * var(--uiScale));
+      padding:16px 16px 12px;
       border-radius:12px;
-      margin: calc(12px * var(--uiScale)) 0;
+      margin:12px 0;
       border: 1px solid var(--border);
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
-      min-width: 0;
     }
     body.theme-loona .block,
     body.theme-sobokill .block{
@@ -252,19 +293,62 @@
     }
 
     .rowTitle{
-      margin:0 0 calc(10px * var(--uiScale)) 0;
-      font-size: calc(18px * var(--uiScale));
+      margin:0 0 10px 0;
+      font-size:18px;
       font-weight:900;
       color: var(--text);
     }
     body.theme-loona .rowTitle,
-    body.theme-sobokill .rowTitle{ color: var(--accent2); }
+    body.theme-sobokill .rowTitle{
+      color: var(--accent2);
+    }
+
+    .hint{ margin:10px 0 0 0; color:var(--muted); font-size:13px; line-height:1.35; font-weight:900; }
+    .label{ margin:10px 0 0 0; font-weight:900; }
+    .hidden{ display:none !important; }
+
+    .field{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:10px 0 6px;
+      font-weight:900;
+      flex-wrap: wrap;
+    }
+    select, input[type="range"]{ accent-color: var(--accent); }
+    select{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-weight:900;
+      outline:none;
+    }
+
+    .toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:8px 0;
+      font-weight:900;
+    }
+
+    .scaleRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:10px 0 6px;
+      font-weight:900;
+      flex-wrap:wrap;
+    }
+    .scaleRow input[type="range"]{ flex:1 1 240px; min-width:180px; }
+    .scaleValue{ min-width:56px; text-align:right; color: var(--muted); font-weight:900; }
 
     .line{
       position:relative;
       width:100%;
-      height: calc(3px * var(--uiScale));
-      min-height: 3px;
+      height:3px;
       background:var(--linebg);
       border-radius:999px;
       overflow:hidden;
@@ -280,52 +364,33 @@
     }
     .fill.weekend{ background:var(--orange); }
 
-    .label{
-      margin: calc(10px * var(--uiScale)) 0 0 0;
-      font-weight:900;
-      font-size: calc(14px * var(--uiScale));
-      line-height:1.3;
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      min-width:0;
     }
-    .hint{
-      margin: calc(10px * var(--uiScale)) 0 0 0;
+    .colHead{
+      text-align:center;
+      font-weight:900;
       color:var(--muted);
-      font-size: calc(13px * var(--uiScale));
-      line-height:1.35;
+      margin:0 0 8px 0;
+      font-size:13px;
+      letter-spacing:0.3px;
+    }
+    @media (max-width:980px){
+      .grid2{ grid-template-columns: 1fr; }
     }
 
-    .hidden{ display:none !important; }
-    .toggle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:8px 0;
-      font-weight:900;
-      font-size: calc(14px * var(--uiScale));
+    .mainLayout{
+      display:grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap:14px;
+      align-items:start;
     }
-
-    .field{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:10px 0 6px;
-      font-weight:900;
-      flex-wrap: wrap;
-      font-size: calc(14px * var(--uiScale));
-    }
-    select{
-      padding:8px 10px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      font-weight:900;
-      outline:none;
-      font-size: calc(14px * var(--uiScale));
-    }
-
-    input[type="range"]{
-      width: 220px;
-      accent-color: var(--accent);
+    @media (max-width:1180px){
+      .mainLayout{ grid-template-columns: 1fr; }
+      .addonCol{ order:2; }
     }
 
     .dailyRow{
@@ -339,212 +404,279 @@
       border-radius:999px;
       background:var(--badge);
       font-weight:900;
-      font-size: calc(13px * var(--uiScale));
+      font-size:13px;
     }
     .badge.live{ background:var(--badgeLive); }
     .badge.free{ background:var(--badgeFree); }
     .badge.err{ background:var(--badgeErr); }
+    .dailyText{ font-weight:900; }
 
-    /* Fancy local timetable */
-    .ttWrap{
-      overflow:hidden;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background: rgba(255,255,255,0.02);
-    }
-    .ttGrid{
-      display:grid;
-      grid-template-columns: 70px repeat(7, 1fr);
-      gap:8px;
-      padding:10px;
-      min-width: 0;
-    }
-    .ttCorner, .ttHourHead, .ttDayHead, .ttCell{
-      border-radius:10px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.02);
-    }
-    .ttCorner{
-      min-height: 52px;
-      display:flex; align-items:center; justify-content:center;
-      color:var(--muted); font-weight:900;
-      font-size: 12px;
-    }
-    .ttHourHead{
-      min-height: 52px;
-      padding:6px;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
+    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
+    .addonHead{
       text-align:center;
-    }
-    .ttHourHead .n{ font-weight:900; font-size: 16px; line-height:1; }
-    .ttHourHead .t{ font-size: 11px; color:var(--muted); margin-top:3px; }
-    .ttDayHead{
-      min-height: 54px;
-      display:flex; align-items:center; justify-content:center;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
       font-weight:900;
       color:var(--muted);
-      letter-spacing:.3px;
-      font-size: 13px;
+      margin:0 0 8px 0;
+      font-size:12px;
+      letter-spacing:0.35px;
+      text-transform:uppercase;
+      opacity:0.9;
     }
-    .ttCell{
-      min-height: 74px;
-      padding:8px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:4px;
-      overflow:hidden;
-      position:relative;
-    }
-    .ttCell.empty{
-      background: rgba(255,255,255,0.01);
-      border-style:dashed;
-      opacity:.55;
-    }
-    .ttCell .subj{
-      font-weight:900;
-      font-size: 14px;
-      line-height:1.1;
-      word-break: break-word;
-    }
-    .ttCell .meta{
-      font-size: 11px;
-      color:var(--muted);
-      font-weight:900;
-      line-height:1.2;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .ttCell.mark{
-      box-shadow: inset 0 0 0 1px rgba(255,60,60,.25);
-      background: rgba(255,60,60,.06);
-    }
-    .ttCell.event{
-      box-shadow: inset 0 0 0 1px rgba(59,181,74,.25);
-      background: rgba(59,181,74,.07);
-    }
-    .ttCell.now{
-      outline: 2px solid rgba(255,212,59,.6);
-      outline-offset: -2px;
-    }
+    .addonCol .rowTitle{ font-size:16px; }
 
-    /* Addon panel */
-    .addonCol .colHead{
-      text-transform: uppercase;
-      letter-spacing: .9px;
-    }
+    .stackList{ display:flex; flex-direction:column; gap:8px; }
 
-    .eventsList{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      max-height: 320px; /* ~3 cards visible */
+    #eventsList{
+      max-height: 260px;
       overflow-y: auto;
-      padding-right: 4px;
-      scroll-behavior: smooth;
+      padding-right: 6px;
     }
-    .eventsList::-webkit-scrollbar{ width: 8px; }
-    .eventsList::-webkit-scrollbar-thumb{
-      background: var(--linebg);
+    #eventsList::-webkit-scrollbar{ width: 10px; }
+    #eventsList::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,0.14);
       border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+    #eventsList::-webkit-scrollbar-track{ background: transparent; }
+
+    .stackItem{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:10px;
+      padding:10px;
+    }
+    .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
+    .stackItem.event{
+      border-color: var(--eventBorder);
+      background: linear-gradient(180deg, rgba(59,181,74,0.10), rgba(59,181,74,0.04));
+    }
+    .stackItem.subst{
+      border-color: var(--substBorder);
+      background: linear-gradient(180deg, rgba(255,80,80,0.12), rgba(255,80,80,0.05));
+    }
+    .stackItem.cancel{
+      border-color: var(--cancelBorder);
+      background: linear-gradient(180deg, rgba(255,0,60,0.12), rgba(255,0,60,0.05));
+    }
+    .eventTitle{ font-weight:1000; font-size:13px; margin-bottom:4px; }
+    .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
+    .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
+
+    .trackerCard{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:12px;
+      padding:12px;
+    }
+    .trackerBadge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:1000;
+      font-size:11px;
+      margin-bottom:8px;
+    }
+    .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
+    .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
+
+    .timetable .tt-top{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap: wrap;
+    }
+    .tt-sub{ color: var(--muted); font-weight: 900; font-size: 12px; margin-top: 2px; }
+    .tt-badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
     }
 
-    .eventItem{
+    .tt-gridWrap{ overflow:auto; padding-bottom: 4px; }
+    .tt-grid{
+      display:grid;
+      grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
+      gap:10px;
+      min-width: 940px;
+    }
+    .tt-corner{ height:44px; }
+
+    .tt-h{
       border:1px solid var(--border);
       border-radius:12px;
       padding:10px;
-      background: rgba(255,255,255,.02);
+      background: rgba(255,255,255,0.04);
+      text-align:center;
+      font-weight: 900;
     }
-    .eventItem.event-green{
-      border-color: rgba(59,181,74,.4);
-      background: rgba(59,181,74,.08);
-    }
-    .eventItem.event-red{
-      border-color: rgba(255,80,80,.35);
-      background: rgba(255,80,80,.08);
-    }
-    .eventTitle{
-      font-weight:900;
-      font-size: 15px;
-      margin-bottom:4px;
-    }
-    .eventSub{
-      color:var(--muted);
-      font-weight:900;
-      font-size: 12px;
-      margin-bottom:3px;
-    }
-    .eventDesc{
-      font-weight:900;
-      font-size: 13px;
-      line-height:1.25;
-      word-break: break-word;
+    .tt-h span{
+      display:block;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--muted);
+      margin-top: 4px;
     }
 
-    /* Cáfa Tracker */
-    .cafaState{
+    .tt-day{
       border:1px solid var(--border);
-      border-radius:14px;
-      padding:12px;
+      border-radius:12px;
+      padding:10px 0;
+      text-align:center;
+      font-weight: 900;
+      color: var(--muted);
       background: rgba(255,255,255,0.03);
     }
-    .cafaState.ct-live{
-      border-color: rgba(59,181,74,.45);
-      background: rgba(59,181,74,.10);
-      box-shadow: inset 0 0 0 1px rgba(59,181,74,.14);
+
+    .tt-cell{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 2px 10px var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 78px;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
-    .cafaState.ct-break{
-      border-color: rgba(255,193,7,.45);
-      background: rgba(255,193,7,.08);
-      box-shadow: inset 0 0 0 1px rgba(255,193,7,.14);
+    .tt-cell:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
-    .cafaState.ct-shadows{
-      border-color: rgba(120,120,150,.35);
-      background: rgba(120,120,150,.06);
+
+    .tt-topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      font-weight: 1000;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.95;
     }
-    .cafaState.ct-off{
-      border-color: rgba(255,80,80,.30);
-      background: rgba(255,80,80,.05);
+
+    .tt-subj{
+      font-weight: 1000;
+      letter-spacing: .2px;
+      margin-top: 6px;
+      font-size: 22px;
+      color: var(--ttSubjColor) !important;
+      text-shadow: var(--ttSubjGlow);
     }
-    .cafaTitle{ font-weight:900; margin-bottom:8px; font-size:15px; }
-    .cafaLine1{ font-weight:900; font-size:14px; margin-bottom:6px; line-height:1.3; }
-    .cafaLine2{ color:var(--muted); font-weight:900; font-size:13px; line-height:1.35; }
-    .cafaMeta{ margin-top:8px; font-size:12px; color:var(--muted); font-weight:900; }
+
+    .tt-teacher{
+      font-weight: 900;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+      opacity: 0.95;
+    }
+
+    .tt-empty{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--muted);
+      font-weight: 900;
+      background: rgba(255,255,255,0.02);
+      box-shadow: none;
+    }
+
+    .tt-event{
+      border-color: var(--eventBorder);
+      background: var(--eventBg);
+      box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25);
+    }
+    .tt-subst{
+      border-color: var(--substBorder);
+      background: var(--substBg);
+      box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30);
+    }
+    .tt-cancel{
+      border-color: var(--cancelBorder);
+      background:
+        repeating-linear-gradient(
+          135deg,
+          rgba(255,255,255,0.14) 0px,
+          rgba(255,255,255,0.14) 10px,
+          rgba(0,0,0,0.00) 10px,
+          rgba(0,0,0,0.00) 20px
+        ),
+        var(--cancelBg);
+      box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
+    }
+
+    .tt-tooltip{
+      position: fixed;
+      z-index: 9999;
+      max-width: 360px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(20, 20, 26, 0.92);
+      color: #fff;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.35;
+      transform: translate(12px, 12px);
+      display:none;
+      pointer-events:none;
+    }
+    .tt-tooltip .t-title{
+      font-size: 13px;
+      letter-spacing: .2px;
+      margin-bottom: 6px;
+    }
+    .tt-tooltip .t-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding-top: 6px;
+      margin-top: 6px;
+    }
+    .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
+    .tt-tooltip .v{ color: #fff; text-align:right; }
 
     .footer{
       margin-top: 18px;
-      padding: 14px 0 2px;
+      padding: 14px 0 4px;
       text-align: center;
       color: var(--muted);
       font-weight: 900;
       font-size: 12px;
       letter-spacing: .2px;
       user-select: none;
-      line-height: 1.7;
+      line-height: 1.6;
     }
     .footer a{
-      color: var(--text);
+      color: inherit;
       text-decoration: none;
-      border-bottom: 1px dashed var(--border);
+      border-bottom: 1px dashed rgba(255,255,255,0.25);
+      opacity: 0.95;
     }
-    .footer a:hover{ opacity:.9; }
-
-    @media (max-width:900px){
-      .ttGrid{ grid-template-columns: 54px repeat(7, minmax(80px,1fr)); overflow:auto; }
-      .ttWrap{ overflow:auto; }
-      .ttCell{ min-height: 68px; }
-    }
+    .footer a:hover{ opacity: 1; border-bottom-style: solid; }
+    .footer .footerBy{ font-size: 13px; }
+    .footer .footerSep{ opacity: .55; margin: 0 6px; }
   </style>
 </head>
 
 <body class="theme-dark">
   <div class="wrap">
+    <!-- titleWrap + splash added, h1 has id so we can change it in modes -->
     <div class="titleWrap">
-      <h1 class="mainTitle">School Progress</h1>
-      <div id="mcSplash" class="mcSplash">Loading splash...</div>
+      <h1 id="pageTitle">School Progress</h1>
+      <div id="mcSplash" class="mcSplash">Loading splash…</div>
     </div>
 
     <div class="topbar">
@@ -564,141 +696,126 @@
         </select>
       </div>
 
+      <!-- NEW: Nonchalant / Freaky mode -->
       <div class="field">
-        <span>Velikost UI</span>
-        <input id="uiScaleRange" type="range" min="85" max="125" step="1" value="100" />
-        <span id="uiScaleLabel">100%</span>
+        <span>Mode</span>
+        <select id="modeSelect" aria-label="Mode">
+          <option value="normal">Normal</option>
+          <option value="nonchalant">Nonchalant Mode</option>
+          <option value="freaky">Freaky Mode</option>
+        </select>
       </div>
 
-      <label class="toggle">
-        <input type="checkbox" id="toggleTimetable" checked />
-        <span>Zobrazit rozvrh</span>
-      </label>
+      <div class="scaleRow">
+        <span>Velikost UI</span>
+        <input type="range" id="uiScaleRange" min="85" max="120" step="1" value="100" />
+        <span id="uiScaleValue" class="scaleValue">100%</span>
+      </div>
 
-      <label class="toggle">
-        <input type="checkbox" id="toggleDaily" checked />
-        <span>Zobrazit denní progres</span>
-      </label>
-
-      <label class="toggle">
-        <input type="checkbox" id="toggleAddon" checked />
-        <span>Zobrazit addon panel</span>
-      </label>
-
-      <label class="toggle">
-        <input type="checkbox" id="toggleEvents" checked />
-        <span>Zobrazit Události</span>
-      </label>
-
-      <label class="toggle">
-        <input type="checkbox" id="toggleCafa" checked />
-        <span>Zobrazit Cáfa Tracker</span>
-      </label>
+      <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Cáfa Tracker</span></label>
 
       <p class="hint" id="statusHint">Status: OK</p>
     </div>
 
-    <div class="layout">
-      <!-- LEFT -->
-      <div class="leftMain">
-        <div class="colHead">Real-Time</div>
+    <!-- everything else unchanged -->
+    <div class="mainLayout">
+      <div class="grid2">
+        <div>
+          <div class="colHead">Real-Time</div>
 
-        <div class="block">
-          <div class="rowTitle">Týden</div>
-          <div class="line"><div class="fill" id="rt-week"></div></div>
-          <p class="label" id="rt-week-label"></p>
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="rt-week"></div></div>
+            <p class="label" id="rt-week-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="rt-month"></div></div>
+            <p class="label" id="rt-month-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="rt-year"></div></div>
+            <p class="label" id="rt-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="rt-total"></div></div>
+            <p class="label" id="rt-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="rt-maturita-label"></p>
+          </div>
         </div>
 
-        <div class="block">
-          <div class="rowTitle">Měsíc</div>
-          <div class="line"><div class="fill" id="rt-month"></div></div>
-          <p class="label" id="rt-month-label"></p>
-        </div>
+        <div>
+          <div class="colHead">Raw-Time</div>
 
-        <div class="block">
-          <div class="rowTitle">Školní rok</div>
-          <div class="line"><div class="fill" id="rt-year"></div></div>
-          <p class="label" id="rt-year-label"></p>
-        </div>
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="raw-week"></div></div>
+            <p class="label" id="raw-week-label"></p>
+          </div>
 
-        <div class="block">
-          <div class="rowTitle">Celkem</div>
-          <div class="line"><div class="fill" id="rt-total"></div></div>
-          <p class="label" id="rt-total-label"></p>
-        </div>
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="raw-month"></div></div>
+            <p class="label" id="raw-month-label"></p>
+          </div>
 
-        <div class="block">
-          <div class="rowTitle">Maturita</div>
-          <p class="label" id="rt-maturita-label"></p>
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="raw-year"></div></div>
+            <p class="label" id="raw-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="raw-total"></div></div>
+            <p class="label" id="raw-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="raw-maturita-label"></p>
+          </div>
         </div>
       </div>
 
-      <!-- RIGHT -->
-      <div class="rightMain">
-        <div class="colHead">Raw-Time</div>
+      <aside id="addonPanel" class="addonCol">
+        <div class="addonHead">Info Panel</div>
 
-        <div class="block">
-          <div class="rowTitle">Týden</div>
-          <div class="line"><div class="fill" id="raw-week"></div></div>
-          <p class="label" id="raw-week-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Měsíc</div>
-          <div class="line"><div class="fill" id="raw-month"></div></div>
-          <p class="label" id="raw-month-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Školní rok</div>
-          <div class="line"><div class="fill" id="raw-year"></div></div>
-          <p class="label" id="raw-year-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Celkem</div>
-          <div class="line"><div class="fill" id="raw-total"></div></div>
-          <p class="label" id="raw-total-label"></p>
-        </div>
-
-        <div class="block">
-          <div class="rowTitle">Maturita</div>
-          <p class="label" id="raw-maturita-label"></p>
-        </div>
-      </div>
-
-      <!-- ADDON -->
-      <div class="addonCol" id="addonPanel">
-        <div class="colHead">Addon Panel</div>
-
-        <div id="eventsBlock" class="block">
+        <div class="block" id="eventsBlock">
           <div class="rowTitle">Události</div>
-          <div id="eventsList" class="eventsList">
-            <div class="eventItem">
-              <div class="eventTitle">Načítání...</div>
-              <div class="eventDesc">Čekám na data z backendu.</div>
-            </div>
+          <div id="eventsList" class="stackList">
+            <div class="stackItem muted">Načítání…</div>
           </div>
         </div>
 
-        <div id="cafaBlock" class="block">
+        <div class="block" id="cafaBlock">
           <div class="rowTitle">Cáfa Tracker</div>
-          <div id="cafaTrackerBody">
-            <div class="cafaState ct-off">
-              <div class="cafaTitle">Cáfa Tracker</div>
-              <div class="cafaLine1">Načítání...</div>
-              <div class="cafaLine2">Čekám na rozvrh učitele.</div>
-            </div>
+          <div class="trackerCard">
+            <div class="trackerBadge" id="cafaBadge">Cáfa</div>
+            <div class="trackerMain" id="cafaMain">Načítání…</div>
+            <div class="trackerSub" id="cafaSub">—</div>
           </div>
         </div>
-      </div>
+      </aside>
     </div>
 
     <div id="dailyBlock" class="block">
       <div class="rowTitle">Denní progres</div>
       <div class="dailyRow">
         <div class="badge" id="dailyBadge">Rozvrh</div>
-        <div class="dailyText" id="dailyText" style="font-weight:900;">—</div>
+        <div class="dailyText" id="dailyText">—</div>
       </div>
       <div class="line" style="margin-top:10px;">
         <div class="fill" id="daybar"></div>
@@ -707,998 +824,869 @@
       <p class="hint" id="dailyDebug"></p>
     </div>
 
-    <div id="timetableBlock" class="block">
-      <div class="rowTitle">Rozvrh</div>
-      <div class="ttWrap">
-        <div id="ttFancy" class="ttGrid"></div>
+    <div id="timetableBlock" class="block timetable">
+      <div class="tt-top">
+        <div>
+          <div class="rowTitle">Rozvrh</div>
+          <div class="tt-sub">DE3A • Týdenní přehled • fancy</div>
+        </div>
+        <div class="tt-meta">
+          <span class="tt-badge" id="ttUpdated">Aktualizováno: —</span>
+        </div>
       </div>
-      <p class="hint" id="ttSourceHint">Zdroj: načítám...</p>
+
+      <div class="tt-gridWrap">
+        <div class="tt-grid" id="ttGrid" style="--cols: 7;"></div>
+      </div>
     </div>
 
     <div class="footer">
-      <div>Created By Johnny Hotovost</div>
-      <div>© 2026 All rights reserved</div>
-      <div><a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Podpořit na Ko-fi</a></div>
+      <div class="footerBy">Created By Johnny Hotovost</div>
+      <div>
+        <span>© 2026 All rights reserved</span>
+        <span class="footerSep">•</span>
+        <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
+      </div>
     </div>
   </div>
 
+  <div class="tt-tooltip" id="ttTooltip" aria-hidden="true"></div>
+
 <script>
-/* =========================
-   BACKEND API
-   ========================= */
-const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
-const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
-const BACKEND_TEACHER_API = `${WORKER_BASE}/api/timetable?teacher=UV069&type=Actual`;
+  /* =========================
+     API CONFIG (YOUR DOMAIN)
+     ========================= */
+  const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
+  const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
+  const BACKEND_TEACHER_API = `${WORKER_BASE}/api/timetable?teacher=UV069&type=Actual`;
 
-/* =========================
-   LOCAL FALLBACK TIMETABLE DATA
-   (použije se jen když backend selže)
-   ========================= */
-const TIMES_FALLBACK = [
-  {start:"07:55", end:"08:40"},
-  {start:"08:50", end:"09:35"},
-  {start:"09:50", end:"10:35"},
-  {start:"10:45", end:"11:30"},
-  {start:"11:35", end:"12:20"},
-  {start:"12:50", end:"13:35"},
-  {start:"13:40", end:"14:25"},
-];
+  const CLASS_NAME = "DE3A";
 
-const SCHEDULE_FALLBACK = {
-  Mon: [
-    {subj:"MAT", room:"UČ10"},
-    {subj:"NEJ", room:"UČ11"},
-    {subj:"OBN", room:"UČ10"},
-    {subj:"EKO", room:"UČ11"},
-    {subj:"VYT", room:"UČ10"},
-    {subj:"NEJ", room:"UČ21"},
-    {subj:"MAT", room:"UČ9"},
-  ],
-  Tue: [
-    {subj:"KAJ", room:"UČ10"},
-    {subj:"PSK", room:"UČ10"},
-    {subj:"ZPG", room:"UČ10"},
-    {subj:"ZPG", room:"UČ10"},
-    {subj:"ČJL", room:"UČ10"},
-    {subj:"ČJL", room:"UČ10"},
-    {subj:"ELT", room:"UČ9"},
-  ],
-  Wed: [
-    {subj:"NEJ", room:"UČ10"},
-    {subj:"MAT", room:"UČ10"},
-    {subj:"VYA", room:"UČ10"},
-    {subj:"ELT", room:"UČ10"},
-    {subj:"SWA", room:"UČ10"},
-    {subj:"ANJ", room:"UČ14"},
-    {subj:"ANJ", room:"UČ14"},
-  ],
-  Thu: [
-    {subj:"VYT", room:"UČ10"},
-    {subj:"VYA", room:"UČ10"},
-    {subj:"ANJ", room:"UČ2"},
-    {subj:"VYA", room:"UČ13"},
-    null,
-    {subj:"TVY", room:"TV3"},
-    {subj:"TVY", room:"TV3"},
-  ],
-  Fri: [
-    {subj:"SWA", room:"UČ10"},
-    {subj:"SWA", room:"UČ10"},
-    {subj:"ČJL", room:"UČ10"},
-    {subj:"PSK", room:"UČ10"},
-    {subj:"ČJL", room:"UČ20"},
-    null,
-    null,
-  ],
-};
+  /* =========================
+     Minecraft splash (ONLY add-on)
+     ========================= */
+  async function loadMinecraftSplash(){
+    const el = document.getElementById("mcSplash");
+    if (!el) return;
 
-/* =========================
-   PROGRESS DATA
-   ========================= */
-const HS_START = localDate(2023, 9, 4);
-const HS_END   = localDateEnd(2027, 6, 30);
-const MATURITA_APPROX = localDateEnd(2027, 5, 1);
+    const fallback = [
+      "Now with Cáfa Tracker!",
+      "Suplování detected!",
+      "Bakaláři moment",
+      "Touch grass after class",
+      "School grind never ends",
+      "Raw-Time supremacy"
+    ];
 
-const BREAKS = [
-  r("2023-10-26","2023-10-27"),
-  r("2023-12-23","2024-01-02"),
-  r("2024-02-02","2024-02-02"),
-  r("2024-02-26","2024-03-03"),
-  r("2024-07-01","2024-08-31"),
-  r("2024-10-29","2024-10-30"),
-  r("2024-12-23","2025-01-03"),
-  r("2025-01-31","2025-01-31"),
-  r("2025-03-03","2025-03-09"),
-  r("2025-07-01","2025-08-31"),
-  r("2025-10-27","2025-10-29"),
-  r("2025-12-22","2026-01-02"),
-  r("2026-01-30","2026-01-30"),
-  r("2026-03-09","2026-03-15"),
-  r("2026-07-01","2026-08-31"),
-  r("2026-10-29","2026-10-30"),
-  r("2026-12-23","2027-01-03"),
-  r("2027-01-29","2027-01-29"),
-  r("2027-02-01","2027-02-07"),
-];
-const DIRECTOR_DAYS = [];
-
-/* =========================
-   SUBJECT SHORT MAP (zkratky)
-   ========================= */
-const SUBJECT_SHORT = {
-  "Matematika":"MAT",
-  "Český jazyk a literatura":"ČJL",
-  "Elektrotechnika":"ELT",
-  "Softwarové aplikace":"SWA",
-  "Počítačové sítě a komunikace":"PSK",
-  "Základní programové vybavení":"ZPG",
-  "Vývoj aplikací":"VYA",
-  "Výpočetní technika":"VYT",
-  "Ekonomie":"EKO",
-  "Občanská nauka":"OBN",
-  "Fyzika":"FYZ",
-  "Technické kreslení":"TEK",
-  "Tělesná výchova":"TV",
-  "Tělesná výchova ":"TV",
-  "Německý jazyk":"NEJ",
-  "Ruský jazyk":"RUJ",
-  "Anglický jazyk":"ANJ",
-  "ANJ1 / ANJ2":"ANJ",
-  "RUJ / NEJ":"JAZ",
-  "Akce školy":"AŠK",
-};
-
-function shortSubj(full){
-  const s = String(full || "").trim();
-  if (!s) return "";
-  if (SUBJECT_SHORT[s]) return SUBJECT_SHORT[s];
-
-  // merged combos
-  if (s.includes("/")) {
-    const parts = s.split("/").map(x => x.trim()).filter(Boolean);
-    const mapped = parts.map(p => SUBJECT_SHORT[p] || p.slice(0,3).toUpperCase());
-    return [...new Set(mapped)].join("/");
+    try{
+      const res = await fetch("./MinecraftTextSource.txt?ts=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("source not found");
+      const txt = await res.text();
+      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(x => x && !x.startsWith("#"));
+      el.textContent = lines.length ? lines[Math.floor(Math.random()*lines.length)] : fallback[0];
+    }catch(e){
+      el.textContent = fallback[Math.floor(Math.random()*fallback.length)];
+    }
   }
 
-  // fallback normalize 3 letters
-  const normalized = s
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^A-Za-z]/g, "");
-  return (normalized.slice(0,3) || s.slice(0,3)).toUpperCase();
-}
+  /* =========================
+     Mode (Nonchalant/Freaky) for title
+     ========================= */
+  function applyTitleMode(mode){
+    const titleEl = document.getElementById("pageTitle");
+    if (!titleEl) return;
 
-/* =========================
-   GLOBAL STATE
-   ========================= */
-const state = {
-  classData: null,
-  teacherData: null,
-  backendOk: false,
-  teacherBackendOk: false,
-  classSourceMode: "local-fallback",
-  teacherSourceMode: "none",
-  lastFetchAt: null,
-};
+    if (mode === "nonchalant"){
+      titleEl.textContent = "Bakaláři, kdyby nebyly mid";
+    } else if (mode === "freaky"){
+      titleEl.textContent = "Kdy to utrpení skončí";
+    } else {
+      titleEl.textContent = "School Progress";
+    }
 
-/* =========================
-   Helpers
-   ========================= */
-const $ = (id) => document.getElementById(id);
-const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
-const setBar = (id, pct, weekend=false) => {
-  const n = $(id); if (!n) return;
-  n.style.width = clamp(pct).toFixed(2) + "%";
-  weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
-};
-const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-
-function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
-function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
-function r(s,e){ return {s,e}; }
-
-function toISO(d){
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,'0');
-  const da=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${da}`;
-}
-function formatDateCZ(d){
-  const dd = String(d.getDate()).padStart(2,"0");
-  const mm = String(d.getMonth()+1).padStart(2,"0");
-  const yy = d.getFullYear();
-  return `${dd}.${mm}.${yy}`;
-}
-function fmtHm(hhmm){
-  const [h,m]=String(hhmm).split(":");
-  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
-}
-
-function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
-function isSchoolDay(d){
-  const dow = d.getDay();
-  if (dow===0 || dow===6) return false;
-  const iso = toISO(d);
-  if (DIRECTOR_DAYS.includes(iso)) return false;
-  if (inBreak(iso)) return false;
-  return true;
-}
-function countSchoolDays(start, end){
-  const s = new Date(start); s.setHours(0,0,0,0);
-  const e = new Date(end);   e.setHours(23,59,59,999);
-  let c=0;
-  const cur = new Date(s);
-  while (cur <= e){
-    if (isSchoolDay(cur)) c++;
-    cur.setDate(cur.getDate()+1);
+    localStorage.setItem("sp_mode", mode);
+    const sel = document.getElementById("modeSelect");
+    if (sel) sel.value = mode;
   }
-  return c;
-}
-function calendarPctBetween(start, end, now){
-  const total = end - start; if (total<=0) return 0;
-  const passed = Math.min(Math.max(now-start, 0), total);
-  return (passed/total)*100;
-}
-function rawPctBetween(start, end, now){
-  const total = countSchoolDays(start, end);
-  const clipped = now < start ? start : (now > end ? end : now);
-  const passed = countSchoolDays(start, clipped);
-  return total ? (passed/total)*100 : 0;
-}
-function rawDaysUntil(target, now){
-  const start = new Date(now); start.setHours(0,0,0,0);
-  const end = new Date(target); end.setHours(23,59,59,999);
-  if (end < start) return -countSchoolDays(end, start);
-  return countSchoolDays(start, end);
-}
-function getSchoolYearRange(now){
-  const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
-  return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
-}
-function timeToMin(hhmm){
-  const [h,m] = String(hhmm).split(":").map(Number);
-  return h*60 + m;
-}
-function getTodayKey(now = new Date()){
-  const d = now.getDay();
-  return d===1?"Mon":d===2?"Tue":d===3?"Wed":d===4?"Thu":d===5?"Fri":null;
-}
-function dayKeyToCz(k){
-  return ({Mon:"Po",Tue:"Út",Wed:"St",Thu:"Čt",Fri:"Pá"})[k] || k;
-}
-function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
 
-function normalizeTimes(times){
-  if (!Array.isArray(times) || !times.length) return TIMES_FALLBACK;
-  return times.slice(0,7).map(t => ({
-    start: fmtHm(t.start ?? t.from ?? "07:55"),
-    end: fmtHm(t.end ?? t.to ?? "08:40")
-  }));
-}
-function normalizeDays(days){
-  const empty = {Mon:[null,null,null,null,null,null,null],Tue:[null,null,null,null,null,null,null],Wed:[null,null,null,null,null,null,null],Thu:[null,null,null,null,null,null,null],Fri:[null,null,null,null,null,null,null]};
-  if (!days || typeof days !== "object") return empty;
-  for (const key of Object.keys(empty)){
-    const arr = Array.isArray(days[key]) ? days[key] : [];
-    empty[key] = Array.from({length:7}, (_,i) => arr[i] ?? null);
+  function initModeSelector(){
+    const sel = document.getElementById("modeSelect");
+    if (!sel) return;
+
+    sel.addEventListener("change", () => applyTitleMode(sel.value));
+
+    const saved = localStorage.getItem("sp_mode") || "normal";
+    applyTitleMode(saved);
   }
-  return empty;
-}
-function normalizeDataForUi(data, fallbackType="class"){
-  if (!data || !data.days) {
-    return {
-      times: TIMES_FALLBACK,
-      days: normalizeDays(SCHEDULE_FALLBACK),
-      marks: [],
-      events: [],
-      source: { mode: "local-fallback" }
-    };
-  }
-  return {
-    times: normalizeTimes(data.times),
-    days: normalizeDays(data.days),
-    marks: Array.isArray(data.marks) ? data.marks : [],
-    events: Array.isArray(data.events) ? data.events : [],
-    source: data.source || { mode: fallbackType }
+
+  /* =========================
+     SUBJECT SHORT MAP
+     ========================= */
+  const SUBJECT_SHORT = {
+    "Matematika":"MAT",
+    "Český jazyk a literatura":"ČJL",
+    "Elektrotechnika":"ELT",
+    "Softwarové aplikace":"SWA",
+    "Počítačové sítě a komunikace":"PSK",
+    "Základní programové vybavení":"ZPG",
+    "Vývoj aplikací":"VYA",
+    "Výpočetní technika":"VYT",
+    "Ekonomie":"EKO",
+    "Občanská nauka":"OBN",
+    "Fyzika":"FYZ",
+    "Technické kreslení":"TEK",
+    "Tělesná výchova":"TV",
+    "Německý jazyk":"NEJ",
+    "Ruský jazyk":"RUJ",
+    "Anglický jazyk":"ANJ",
+    "Akce školy":"AŠK",
+    "Akce skoly":"AŠK",
   };
-}
 
-/* =========================
-   Theme + Settings
-   ========================= */
-function applyTheme(theme){
-  const body = document.body;
-  body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
-  body.classList.add("theme-" + theme);
-  localStorage.setItem("sp_theme", theme);
-  const sel = $("themeSelect");
-  if (sel) sel.value = theme;
-}
-function applyUiScale(percent){
-  const v = Math.max(85, Math.min(125, Number(percent)||100));
-  document.body.style.setProperty("--uiScale", (v/100).toFixed(2));
-  localStorage.setItem("sp_uiScale", String(v));
-  if ($("uiScaleRange")) $("uiScaleRange").value = String(v);
-  if ($("uiScaleLabel")) $("uiScaleLabel").textContent = `${v}%`;
-}
-function setToggleState(id, value){
-  localStorage.setItem(`sp_${id}`, value ? "1" : "0");
-}
-function getToggleState(id, def=true){
-  const v = localStorage.getItem(`sp_${id}`);
-  if (v == null) return def;
-  return v === "1";
-}
-
-function initSettings(){
-  const btn = $("settingsBtn");
-  const panel = $("settingsPanel");
-  const toggleTT = $("toggleTimetable");
-  const toggleDaily = $("toggleDaily");
-  const toggleAddon = $("toggleAddon");
-  const toggleEvents = $("toggleEvents");
-  const toggleCafa = $("toggleCafa");
-  const timetableBlock = $("timetableBlock");
-  const dailyBlock = $("dailyBlock");
-  const addonPanel = $("addonPanel");
-  const eventsBlock = $("eventsBlock");
-  const cafaBlock = $("cafaBlock");
-  const themeSelect = $("themeSelect");
-  const uiScaleRange = $("uiScaleRange");
-
-  btn.addEventListener("click", () => panel.classList.toggle("hidden"));
-
-  function syncVisibility(){
-    timetableBlock.classList.toggle("hidden", !toggleTT.checked);
-    dailyBlock.classList.toggle("hidden", !toggleDaily.checked);
-    addonPanel.classList.toggle("hidden", !toggleAddon.checked);
-    eventsBlock.classList.toggle("hidden", !toggleEvents.checked || !toggleAddon.checked);
-    cafaBlock.classList.toggle("hidden", !toggleCafa.checked || !toggleAddon.checked);
+  function shortSubj(full){
+    const s = String(full || "").trim();
+    if (!s) return "";
+    if (SUBJECT_SHORT[s]) return SUBJECT_SHORT[s];
+    const noDia = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return noDia.replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || s.slice(0,3).toUpperCase();
   }
 
-  [toggleTT, toggleDaily, toggleAddon, toggleEvents, toggleCafa].forEach(el => {
-    el.addEventListener("change", () => {
-      setToggleState(el.id, el.checked);
-      syncVisibility();
-    });
-  });
-
-  themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
-  uiScaleRange.addEventListener("input", () => applyUiScale(uiScaleRange.value));
-
-  toggleTT.checked = getToggleState("toggleTimetable", true);
-  toggleDaily.checked = getToggleState("toggleDaily", true);
-  toggleAddon.checked = getToggleState("toggleAddon", true);
-  toggleEvents.checked = getToggleState("toggleEvents", true);
-  toggleCafa.checked = getToggleState("toggleCafa", true);
-
-  applyTheme(localStorage.getItem("sp_theme") || "dark");
-  applyUiScale(localStorage.getItem("sp_uiScale") || 100);
-  syncVisibility();
-}
-
-/* =========================
-   Minecraft splash
-   ========================= */
-async function loadMinecraftSplash(){
-  const el = $("mcSplash");
-  if (!el) return;
-  const fallback = [
-    "Now with Cáfa Tracker!",
-    "Suplování detected!",
-    "Bakaláři moment",
-    "Touch grass after class",
-    "School grind never ends",
-    "Powered by Johnny!",
-    "Raw-Time supremacy"
-  ];
-  try {
-    const res = await fetch("./MinecraftTextSource.txt?ts=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("source not found");
-    const txt = await res.text();
-    const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(x => x && !x.startsWith("#"));
-    el.textContent = (lines[Math.floor(Math.random()*lines.length)] || fallback[0]);
-  } catch (e) {
-    el.textContent = fallback[Math.floor(Math.random()*fallback.length)];
-    console.warn("Splash load failed:", e);
-  }
-}
-
-/* =========================
-   Backend fetch + fallback
-   ========================= */
-async function fetchJsonSafe(url){
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return await res.json();
-}
-
-function fallbackClassData(){
-  return {
-    ok:true,
-    source:{mode:"local-fallback"},
-    times: TIMES_FALLBACK,
-    days: normalizeDays(SCHEDULE_FALLBACK),
-    marks: [],
-    events: []
-  };
-}
-function fallbackTeacherData(){
-  // Minimal fallback = unknown/off
-  return {
-    ok:true,
-    source:{mode:"none"},
-    times: TIMES_FALLBACK,
-    days: {Mon:[null,null,null,null,null,null,null],Tue:[null,null,null,null,null,null,null],Wed:[null,null,null,null,null,null,null],Thu:[null,null,null,null,null,null,null],Fri:[null,null,null,null,null,null,null]},
-    marks: [],
-    events: []
-  };
-}
-
-async function refreshBackendData(){
-  let classErr = null, teacherErr = null;
-
-  try {
-    const classJson = await fetchJsonSafe(BACKEND_CLASS_API);
-    state.classData = normalizeDataForUi(classJson, "class");
-    state.backendOk = true;
-    state.classSourceMode = classJson?.source?.mode || "class";
-  } catch (e) {
-    classErr = e;
-    state.classData = normalizeDataForUi(fallbackClassData(), "class");
-    state.backendOk = false;
-    state.classSourceMode = "local-fallback";
-  }
-
-  try {
-    const teacherJson = await fetchJsonSafe(BACKEND_TEACHER_API);
-    state.teacherData = normalizeDataForUi(teacherJson, "teacher");
-    state.teacherBackendOk = true;
-    state.teacherSourceMode = teacherJson?.source?.mode || "teacher";
-  } catch (e) {
-    teacherErr = e;
-    state.teacherData = normalizeDataForUi(fallbackTeacherData(), "teacher");
-    state.teacherBackendOk = false;
-    state.teacherSourceMode = "local-fallback";
-  }
-
-  state.lastFetchAt = new Date();
-
-  const statusParts = [];
-  statusParts.push(`Class: ${state.backendOk ? "OK" : "Fallback"}`);
-  statusParts.push(`Teacher: ${state.teacherBackendOk ? "OK" : "Fallback"}`);
-  setText("statusHint", "Status: " + statusParts.join(" • "));
-
-  if (classErr) console.warn("Class API failed:", classErr);
-  if (teacherErr) console.warn("Teacher API failed:", teacherErr);
-
-  renderTimetable();
-  renderEvents();
-  renderCafaTrackerCard(state.teacherData);
-}
-
-/* =========================
-   Daily progress (class timetable aware)
-   ========================= */
-function fmtLesson(x){
-  if (!x) return null;
-  const s = shortSubj(x.subj || x.subject || "");
-  return x.room ? `${s || x.subj} (${x.room})` : (s || x.subj || "Hodina");
-}
-function countTodayLessons(arr){
-  let last = -1;
-  for (let i=0;i<arr.length;i++){
-    if (arr[i]) last = i;
-  }
-  return Math.max(last+1, 0);
-}
-function setDailyBadge(kind, text){
-  const b=$("dailyBadge");
-  if (!b) return;
-  b.className = "badge" + (kind ? (" "+kind) : "");
-  b.textContent = text;
-}
-
-function updateDaily(now){
-  const d = state.classData || normalizeDataForUi(fallbackClassData(),"class");
-  const TIMES = d.times || TIMES_FALLBACK;
-  const DAYS = d.days || normalizeDays(SCHEDULE_FALLBACK);
-
-  const dow = now.getDay();
-  const dayKey = (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":(dow===5)?"Fri":null;
-
-  if (!dayKey){
-    setDailyBadge("free","Volno");
-    setText("dailyText","Volno 😎");
-    setBar("daybar",100);
-    setText("daylabel","");
-    setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
-    return;
-  }
-
-  const timesMin = TIMES.slice(0,7).map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
-  const lessons = (DAYS[dayKey] || []).slice(0, timesMin.length);
-  const totalToday = Math.max(countTodayLessons(lessons), 0) || timesMin.length;
-
-  const nowMin = now.getHours()*60 + now.getMinutes();
-  const first = timesMin[0];
-  const last = timesMin[totalToday-1] || timesMin[timesMin.length-1];
-
-  if (nowMin > last.endMin){
-    setDailyBadge("free","Volno");
-    setText("dailyText","Volno 😎");
-    setBar("daybar",100);
-    setText("daylabel","");
-    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-    return;
-  }
-
-  if (nowMin < first.startMin){
-    setDailyBadge("live","Dnes");
-    const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
-    setText("dailyText",`Za chvíli začne: ${next}`);
-    setBar("daybar",0);
-    setText("daylabel",`Hodina 1/${totalToday} • start v ${fmtHm(TIMES[0].start)}`);
-    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-    return;
-  }
-
-  for (let i=0;i<totalToday;i++){
-    const t = timesMin[i];
-    const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
-    const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
-
-    if (nowMin >= t.startMin && nowMin <= t.endMin){
-      const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
-      setDailyBadge("live","Právě");
-      setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
-      setBar("daybar", pct);
-      setText("daylabel", `Hodina ${i+1}/${totalToday} • ${fmtHm(TIMES[i].start)}–${fmtHm(TIMES[i].end)} • ${pct.toFixed(0)}%`);
-      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      return;
-    }
-
-    const nt = timesMin[i+1];
-    if (nt && nowMin > t.endMin && nowMin < nt.startMin){
-      setDailyBadge("live","Pauza");
-      setText("dailyText", `Následuje: ${next || "—"}`);
-      setBar("daybar", 0);
-      setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${fmtHm(TIMES[i+1].start)}`);
-      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      return;
-    }
-  }
-
-  setDailyBadge("free","Volno");
-  setText("dailyText","Volno 😎");
-  setBar("daybar",100);
-  setText("daylabel","");
-  setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-}
-
-/* =========================
-   Timetable render (fancy local)
-   ========================= */
-function getMarkMap(marks){
-  const map = new Map();
-  (marks || []).forEach(m => {
-    if (!m || !m.day || typeof m.idx !== "number") return;
-    map.set(`${m.day}-${m.idx}`, m);
-  });
-  return map;
-}
-
-function dedupeEvents(items){
-  const seen = new Set();
-  const out = [];
-  for (const x of items){
-    const key = [
-      (x.title||"").trim().toLowerCase(),
-      (x.day||"").trim().toLowerCase(),
-      x.idx ?? "",
-      (x.note||"").trim().toLowerCase(),
-      (x.room||"").trim().toLowerCase()
-    ].join("|");
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push(x);
-  }
-  return out;
-}
-
-function buildEventItemsFromClassData(classData){
-  const out = [];
-  const times = (classData?.times || TIMES_FALLBACK).slice(0,7);
-  const marks = Array.isArray(classData?.marks) ? classData.marks : [];
-  const days = classData?.days || {};
-
-  // 1) explicit events from backend
-  if (Array.isArray(classData?.events)) {
-    for (const ev of classData.events) {
-      out.push({
-        type: "event",
-        title: ev.title || "Akce",
-        day: ev.day || "",
-        idx: typeof ev.idx === "number" ? ev.idx : null,
-        note: ev.note || ev.desc || ev.subject || "Akce školy",
-        room: ev.room || ""
-      });
-    }
-  }
-
-  // 2) marks (substitutions etc.)
-  for (const m of marks){
-    out.push({
-      type: (m.type === "subst" ? "subst" : "event"),
-      title: m.title || (m.type === "subst" ? "Suplování" : "Akce"),
-      day: m.day || "",
-      idx: typeof m.idx === "number" ? m.idx : null,
-      note: m.note || "",
-      room: m.room || ""
-    });
-  }
-
-  // 3) infer "Akce školy" from empty subject cells / notes in class timetable (weekly/actual weirdness)
-  const dayKeys = ["Mon","Tue","Wed","Thu","Fri"];
-  for (const day of dayKeys){
-    const arr = Array.isArray(days[day]) ? days[day] : [];
-    for (let i=0;i<Math.min(7, arr.length);i++){
-      const it = arr[i];
-      if (!it) continue;
-      const subj = String(it.subj || "").trim().toLowerCase();
-      const note = String(it.note || "").trim().toLowerCase();
-      if (subj.includes("akce školy") || note.includes("akce školy")) {
-        out.push({
-          type: "event",
-          title: "Akce",
-          day,
-          idx: i,
-          note: "Akce školy",
-          room: it.room || ""
-        });
-      }
-    }
-  }
-
-  // 4) remove duplicates
-  const deduped = dedupeEvents(out);
-
-  // 5) sort day/hour
-  const order = {Mon:1,Tue:2,Wed:3,Thu:4,Fri:5};
-  deduped.sort((a,b) => (order[a.day]||99) - (order[b.day]||99) || ((a.idx ?? 99) - (b.idx ?? 99)));
-
-  return deduped;
-}
-
-function renderTimetable(){
-  const box = $("ttFancy");
-  if (!box) return;
-
-  const d = state.classData || normalizeDataForUi(fallbackClassData(),"class");
-  const TIMES = (d.times || TIMES_FALLBACK).slice(0,7);
-  const DAYS = d.days || normalizeDays(SCHEDULE_FALLBACK);
-  const marksMap = getMarkMap(d.marks || []);
-  const now = new Date();
-  const todayKey = getTodayKey(now);
-  const nowMin = now.getHours()*60 + now.getMinutes();
-
-  const dayNames = [
-    {key:"Mon", label:"Po"},
-    {key:"Tue", label:"Út"},
-    {key:"Wed", label:"St"},
-    {key:"Thu", label:"Čt"},
-    {key:"Fri", label:"Pá"},
+  /* =========================
+     TIMES
+     ========================= */
+  const TIMES = [
+    {start:"07:55", end:"08:40"},
+    {start:"08:50", end:"09:35"},
+    {start:"09:50", end:"10:35"},
+    {start:"10:45", end:"11:30"},
+    {start:"11:35", end:"12:20"},
+    {start:"12:50", end:"13:35"},
+    {start:"13:40", end:"14:25"},
   ];
 
-  let html = "";
+  function timeToMin(hhmm){
+    const [h,m] = hhmm.split(":").map(Number);
+    return h*60 + m;
+  }
+  const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
 
-  html += `<div class="ttCorner">Den / Hod</div>`;
-  for (let i=0;i<7;i++){
-    const t = TIMES[i] || TIMES_FALLBACK[i];
-    html += `
-      <div class="ttHourHead">
-        <div class="n">${i+1}</div>
-        <div class="t">${esc(fmtHm(t.start))}-${esc(fmtHm(t.end))}</div>
-      </div>
-    `;
+  /* =========================
+     PROGRESS DATA
+     ========================= */
+  const HS_START = localDate(2023, 9, 4);
+  const HS_END   = localDateEnd(2027, 6, 30);
+  const MATURITA_APPROX = localDateEnd(2027, 5, 1);
+
+  const BREAKS = [
+    r("2023-10-26","2023-10-27"),
+    r("2023-12-23","2024-01-02"),
+    r("2024-02-02","2024-02-02"),
+    r("2024-02-26","2024-03-03"),
+    r("2024-07-01","2024-08-31"),
+    r("2024-10-29","2024-10-30"),
+    r("2024-12-23","2025-01-03"),
+    r("2025-01-31","2025-01-31"),
+    r("2025-03-03","2025-03-09"),
+    r("2025-07-01","2025-08-31"),
+    r("2025-10-27","2025-10-29"),
+    r("2025-12-22","2026-01-02"),
+    r("2026-01-30","2026-01-30"),
+    r("2026-03-09","2026-03-15"),
+    r("2026-07-01","2026-08-31"),
+    r("2026-10-29","2026-10-30"),
+    r("2026-12-23","2027-01-03"),
+    r("2027-01-29","2027-01-29"),
+    r("2027-02-01","2027-02-07"),
+  ];
+  const DIRECTOR_DAYS = [];
+
+  /* =========================
+     STATE
+     ========================= */
+  const state = {
+    classDays: null,
+    classMarks: [],
+    classEvents: [],
+    classSource: "loading",
+
+    teacherDays: null,
+    teacherSource: "loading",
+  };
+
+  /* =========================
+     DOM helpers
+     ========================= */
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+  const setBar = (id, pct, weekend=false) => {
+    const n = $(id); if (!n) return;
+    n.style.width = clamp(pct).toFixed(2) + "%";
+    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
+  };
+  const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
+
+  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+  function r(s,e){ return {s,e}; }
+
+  function toISO(d){
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,'0');
+    const da=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${da}`;
+  }
+  function formatDateCZ(d){
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const yy = d.getFullYear();
+    return `${dd}.${mm}.${yy}`;
+  }
+  function formatDateCZDateTime(d){
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mi = String(d.getMinutes()).padStart(2,"0");
+    return `${formatDateCZ(d)} ${hh}:${mi}`;
   }
 
-  for (const day of dayNames){
-    html += `<div class="ttDayHead">${day.label}</div>`;
-    const arr = (DAYS[day.key] || []).slice(0,7);
-
-    for (let i=0;i<7;i++){
-      const item = arr[i] ?? null;
-      const mark = marksMap.get(`${day.key}-${i}`);
-      const t = TIMES[i] || TIMES_FALLBACK[i];
-      const startMin = timeToMin(t.start), endMin = timeToMin(t.end);
-      const isNow = (day.key === todayKey && nowMin >= startMin && nowMin <= endMin);
-
-      if (!item){
-        // if no lesson, but infer event slot on Wednesday first 3 hours bug-case from backend events list
-        const inferredEvent = (buildEventItemsFromClassData(d) || []).find(e => e.day===day.key && e.idx===i && String(e.note||"").toLowerCase().includes("akce školy"));
-        const classes = ["ttCell"];
-        if (inferredEvent) classes.push("event");
-        if (isNow) classes.push("now");
-        if (!inferredEvent) classes.push("empty");
-
-        if (inferredEvent){
-          html += `
-            <div class="${classes.join(" ")}" title="${esc(inferredEvent.note || "Akce školy")}">
-              <div class="subj">AŠK</div>
-              <div class="meta">${esc(inferredEvent.note || "Akce školy")}</div>
-              <div class="meta">${esc(inferredEvent.room || "")}</div>
-            </div>
-          `;
-        } else {
-          html += `<div class="${classes.join(" ")}"></div>`;
-        }
-        continue;
-      }
-
-      const subjFull = item.subj || "";
-      const subjShort = shortSubj(subjFull);
-      const room = item.room || "";
-      const note = item.note || "";
-      const isEvent = String(subjFull).toLowerCase().includes("akce školy") || String(note).toLowerCase().includes("akce školy");
-
-      const classes = ["ttCell"];
-      if (mark) classes.push("mark");
-      if (isEvent) classes.push("event");
-      if (isNow) classes.push("now");
-
-      const title = [subjFull, room, item.teacher, item.class, note].filter(Boolean).join(" • ");
-
-      html += `
-        <div class="${classes.join(" ")}" title="${esc(title)}">
-          <div class="subj">${esc(subjShort || subjFull || "—")}</div>
-          <div class="meta">${esc(room)}</div>
-          <div class="meta">${esc((item.class || item.teacher || note || "").slice(0,60))}</div>
-        </div>
-      `;
+  function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
+  function isSchoolDay(d){
+    const dow = d.getDay();
+    if (dow===0 || dow===6) return false;
+    const iso = toISO(d);
+    if (DIRECTOR_DAYS.includes(iso)) return false;
+    if (inBreak(iso)) return false;
+    return true;
+  }
+  function countSchoolDays(start, end){
+    const s = new Date(start); s.setHours(0,0,0,0);
+    const e = new Date(end);   e.setHours(23,59,59,999);
+    let c=0;
+    const cur = new Date(s);
+    while (cur <= e){
+      if (isSchoolDay(cur)) c++;
+      cur.setDate(cur.getDate()+1);
     }
+    return c;
+  }
+  function calendarPctBetween(start, end, now){
+    const total = end - start; if (total<=0) return 0;
+    const passed = Math.min(Math.max(now-start, 0), total);
+    return (passed/total)*100;
+  }
+  function rawPctBetween(start, end, now){
+    const total = countSchoolDays(start, end);
+    const clipped = now < start ? start : (now > end ? end : now);
+    const passed = countSchoolDays(start, clipped);
+    return total ? (passed/total)*100 : 0;
+  }
+  function rawDaysUntil(target, now){
+    const start = new Date(now); start.setHours(0,0,0,0);
+    const end = new Date(target); end.setHours(23,59,59,999);
+    if (end < start) return -countSchoolDays(end, start);
+    return countSchoolDays(start, end);
+  }
+  function getSchoolYearRange(now){
+    const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
+    return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
   }
 
-  box.innerHTML = html;
-
-  const sourceMode = state.backendOk ? "Backend (Bakaláři API)" : "Lokální fallback";
-  const classMode = state.classSourceMode ? ` • mode: ${state.classSourceMode}` : "";
-  const eventsCount = buildEventItemsFromClassData(d).length;
-  setText("ttSourceHint", `Zdroj: ${sourceMode}${classMode} • událostí: ${eventsCount}`);
-}
-
-/* =========================
-   Události (MAX ~3 visible + scroll)
-   ========================= */
-function renderEvents(){
-  const box = $("eventsList");
-  if (!box) return;
-
-  const d = state.classData || normalizeDataForUi(fallbackClassData(),"class");
-  const events = buildEventItemsFromClassData(d);
-  const TIMES = (d.times || TIMES_FALLBACK).slice(0,7);
-
-  if (!events.length){
-    box.innerHTML = `
-      <div class="eventItem">
-        <div class="eventTitle">Nic nenalezeno</div>
-        <div class="eventDesc">Backend aktuálně nevrátil školní akce / změny pro tento rozvrh.</div>
-      </div>
-    `;
-    return;
+  function dayKeyFromDate(d){
+    const dow = d.getDay();
+    return (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":(dow===5)?"Fri":null;
+  }
+  function dayLabelCz(dayKey){
+    return ({Mon:"Po", Tue:"Út", Wed:"St", Thu:"Čt", Fri:"Pá"})[dayKey] || dayKey || "—";
+  }
+  function hasAnyLesson(days){
+    return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj));
   }
 
-  box.innerHTML = events.map(ev => {
-    const cls = ev.type === "subst" ? "eventItem event-red" : "eventItem event-green";
-    const idx = typeof ev.idx === "number" ? ev.idx : null;
-    const t = idx != null ? TIMES[idx] : null;
-    const when = idx != null && t
-      ? `${dayKeyToCz(ev.day)} • hodina ${idx+1}/7 • ${fmtHm(t.start)}-${fmtHm(t.end)}${ev.room ? ` • ${ev.room}` : ""}`
-      : `${dayKeyToCz(ev.day || "")}${ev.room ? ` • ${ev.room}` : ""}`;
+  function statusText(){
+    $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Cáfa: ${state.teacherSource}`;
+  }
 
+  /* =========================
+     THEME + SETTINGS + SCALE
+     ========================= */
+  function applyTheme(theme){
+    const body = document.body;
+    body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill");
+    body.classList.add("theme-" + theme);
+    localStorage.setItem("sp_theme", theme);
+    const sel = $("themeSelect");
+    if (sel) sel.value = theme;
+  }
+
+  function applyUiScale(percent){
+    const p = Math.max(85, Math.min(120, Number(percent) || 100));
+    document.body.style.setProperty("--uiScale", String(p / 100));
+    $("uiScaleRange").value = String(p);
+    $("uiScaleValue").textContent = `${p}%`;
+    localStorage.setItem("sp_ui_scale", String(p));
+  }
+
+  function refreshAddonPanelVisibility(){
+    const addonPanel = $("addonPanel");
+    const eventsBlock = $("eventsBlock");
+    const cafaBlock = $("cafaBlock");
+    const addonHead = addonPanel.querySelector(".addonHead");
+
+    const eventsVisible = !eventsBlock.classList.contains("hidden");
+    const cafaVisible = !cafaBlock.classList.contains("hidden");
+    const anyVisible = eventsVisible || cafaVisible;
+
+    addonPanel.classList.toggle("hidden", !anyVisible);
+    addonHead.classList.toggle("hidden", !anyVisible);
+  }
+
+  function initSettings(){
+    $("settingsBtn").addEventListener("click", () => $("settingsPanel").classList.toggle("hidden"));
+
+    $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
+    $("uiScaleRange").addEventListener("input", () => applyUiScale($("uiScaleRange").value));
+
+    const toggleTT = $("toggleTimetable");
+    const toggleDaily = $("toggleDaily");
+    const toggleEvents = $("toggleEvents");
+    const toggleCafa = $("toggleCafa");
+
+    toggleTT.addEventListener("change", () => {
+      $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
+      localStorage.setItem("sp_toggle_tt", toggleTT.checked ? "1" : "0");
+    });
+    toggleDaily.addEventListener("change", () => {
+      $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
+      localStorage.setItem("sp_toggle_daily", toggleDaily.checked ? "1" : "0");
+    });
+    toggleEvents.addEventListener("change", () => {
+      $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
+      localStorage.setItem("sp_toggle_events", toggleEvents.checked ? "1" : "0");
+      refreshAddonPanelVisibility();
+    });
+    toggleCafa.addEventListener("change", () => {
+      $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
+      localStorage.setItem("sp_toggle_cafa", toggleCafa.checked ? "1" : "0");
+      refreshAddonPanelVisibility();
+    });
+
+    applyTheme(localStorage.getItem("sp_theme") || "dark");
+    applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
+
+    const savedTT = localStorage.getItem("sp_toggle_tt");
+    const savedDaily = localStorage.getItem("sp_toggle_daily");
+    const savedEvents = localStorage.getItem("sp_toggle_events");
+    const savedCafa = localStorage.getItem("sp_toggle_cafa");
+
+    if (savedTT !== null) toggleTT.checked = savedTT === "1";
+    if (savedDaily !== null) toggleDaily.checked = savedDaily === "1";
+    if (savedEvents !== null) toggleEvents.checked = savedEvents === "1";
+    if (savedCafa !== null) toggleCafa.checked = savedCafa === "1";
+
+    $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
+    $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
+    $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
+    $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
+
+    refreshAddonPanelVisibility();
+  }
+
+  /* =========================
+     TOOLTIP
+     ========================= */
+  const tooltip = $("ttTooltip");
+  function showTooltip(html, x, y){
+    tooltip.innerHTML = html;
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+    tooltip.style.display = "block";
+    tooltip.setAttribute("aria-hidden", "false");
+  }
+  function moveTooltip(x, y){
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+  }
+  function hideTooltip(){
+    tooltip.style.display = "none";
+    tooltip.setAttribute("aria-hidden", "true");
+  }
+  document.addEventListener("click", () => hideTooltip());
+
+  function tooltipHTML(data){
     return `
-      <div class="${cls}">
-        <div class="eventTitle">${esc(ev.title || "Akce")}</div>
-        <div class="eventSub">${esc(when)}</div>
-        <div class="eventDesc">${esc(ev.note || "Akce školy")}</div>
-      </div>
+      <div class="t-title">${data.dayLabel} • ${data.dateLong} • Hodina ${data.hourIdx+1}/7 (${data.time})</div>
+      <div class="t-row"><div class="k">Třída</div><div class="v">${data.className || "-"}</div></div>
+      <div class="t-row"><div class="k">Předmět</div><div class="v">${data.subjFull || "-"}</div></div>
+      <div class="t-row"><div class="k">Učebna</div><div class="v">${data.room || "-"}</div></div>
+      <div class="t-row"><div class="k">Učitel</div><div class="v">${data.teacher || "-"}</div></div>
+      ${data.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${data.cls}</div></div>` : ``}
+      ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
+      ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
+      ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
     `;
-  }).join("");
-}
-
-/* =========================
-   Cáfa Tracker (with "last seen" on break)
-   ========================= */
-function getCafaState(teacherData, now = new Date()){
-  if (!teacherData || !teacherData.days || !teacherData.times) {
-    return { mode:"offline", title:"Cáfa Tracker", line1:"Data nejsou dostupná", line2:"Cáfa se skrývá ve stínech." };
   }
 
-  const dayKey = getTodayKey(now);
-  if (!dayKey) {
-    return { mode:"shadows", title:"Cáfa Tracker", line1:"Dnes nevyučuje", line2:"Cáfa se skrývá ve stínech." };
+  /* =========================
+     DATA PICKERS
+     ========================= */
+  function getClassDays(){
+    if (state.classDays && hasAnyLesson(state.classDays)) return state.classDays;
+    return { Mon:Array(7).fill(null), Tue:Array(7).fill(null), Wed:Array(7).fill(null), Thu:Array(7).fill(null), Fri:Array(7).fill(null) };
+  }
+  function getTeacherDays(){
+    if (state.teacherDays && hasAnyLesson(state.teacherDays)) return state.teacherDays;
+    return { Mon:Array(7).fill(null), Tue:Array(7).fill(null), Wed:Array(7).fill(null), Thu:Array(7).fill(null), Fri:Array(7).fill(null) };
   }
 
-  const day = (teacherData.days[dayKey] || []).slice(0,7);
-  const times = (teacherData.times || TIMES_FALLBACK).slice(0,7);
-  const nowMin = now.getHours()*60 + now.getMinutes();
-
-  let firstIdx = -1, lastIdx = -1;
-  for (let i=0;i<Math.min(day.length,times.length);i++){
-    if (day[i]) {
-      if (firstIdx === -1) firstIdx = i;
-      lastIdx = i;
-    }
+  /* =========================
+     TIMETABLE RENDER
+     ========================= */
+  function markForCell(dayKey, idx){
+    return (state.classMarks || []).find(m => m.day===dayKey && m.idx===idx) || null;
   }
 
-  if (firstIdx === -1) {
-    return { mode:"shadows", title:"Cáfa Tracker", line1:"Dnes nemá výuku", line2:"Cáfa se skrývá ve stínech." };
-  }
+  function renderTimetable(){
+    const days = getClassDays();
+    const grid = $("ttGrid");
+    grid.style.setProperty("--cols", TIMES.length);
+    grid.innerHTML = "";
 
-  const firstStart = timeToMin(times[firstIdx].start);
-  const lastEnd = timeToMin(times[lastIdx].end);
+    const corner = document.createElement("div");
+    corner.className = "tt-corner";
+    grid.appendChild(corner);
 
-  if (nowMin < firstStart){
-    return { mode:"shadows", title:"Cáfa Tracker", line1:"Ještě nezačal učit", line2:"Cáfa se skrývá ve stínech." };
-  }
+    TIMES.forEach((t, i) => {
+      const h = document.createElement("div");
+      h.className = "tt-h";
+      h.innerHTML = `${i+1}<br><span>${t.start}–${t.end}</span>`;
+      grid.appendChild(h);
+    });
 
-  if (nowMin > lastEnd){
-    return { mode:"shadows", title:"Cáfa Tracker", line1:"Výuka skončila", line2:"Cáfa se skrývá ve stínech." };
-  }
+    const dayOrder = [
+      {key:"Mon", label:"Po"},
+      {key:"Tue", label:"Út"},
+      {key:"Wed", label:"St"},
+      {key:"Thu", label:"Čt"},
+      {key:"Fri", label:"Pá"},
+    ];
 
-  let lastSeen = null;
+    for (const d of dayOrder){
+      const dayCell = document.createElement("div");
+      dayCell.className = "tt-day";
+      dayCell.textContent = d.label;
+      grid.appendChild(dayCell);
 
-  for (let i=0;i<Math.min(day.length,times.length);i++){
-    const lesson = day[i];
-    const t = times[i];
-    const start = timeToMin(t.start);
-    const end = timeToMin(t.end);
+      for (let i=0;i<TIMES.length;i++){
+        const base = (days[d.key] && days[d.key][i]) ? days[d.key][i] : null;
+        const mk = markForCell(d.key, i);
 
-    if (lesson && nowMin >= start) lastSeen = { idx:i, lesson, t };
+        const cell = document.createElement("div");
+        cell.className = "tt-cell";
 
-    if (lesson && nowMin >= start && nowMin <= end){
-      return {
-        mode: "live",
-        title: "Cáfa Tracker",
-        line1: `Právě učí: ${shortSubj(lesson.subj) || lesson.subj || "Předmět"}`,
-        line2: `${lesson.class || "Třída"} • ${lesson.room || "?"} • ${fmtHm(t.start)}–${fmtHm(t.end)}`,
-        meta: `Hodina ${i+1}/7`
-      };
-    }
+        if (!base && !mk){
+          cell.classList.add("tt-empty");
+          cell.textContent = "—";
+          grid.appendChild(cell);
+          continue;
+        }
 
-    const nextT = times[i+1];
-    if (nextT && nowMin > end && nowMin < timeToMin(nextT.start)){
-      if (lastSeen?.lesson){
-        return {
-          mode: "break",
-          title: "Cáfa Tracker",
-          line1: "Přestávka",
-          line2: `Naposledy viděn: ${lastSeen.lesson.class || "Třída"} • ${lastSeen.lesson.room || "?"}`,
-          meta: `${shortSubj(lastSeen.lesson.subj) || lastSeen.lesson.subj || "Předmět"} • hodina ${lastSeen.idx+1}/7`
+        let type = "";
+        if (mk?.type === "event") { cell.classList.add("tt-event"); type = "Akce"; }
+        if (mk?.type === "subst") { cell.classList.add("tt-subst"); type = "Suplování"; }
+        if (mk?.type === "cancel") { cell.classList.add("tt-cancel"); type = "Odpadlo"; }
+
+        const subjFull = base?.subj || (mk?.type==="event" ? "Akce" : "");
+        const subjShort = shortSubj(subjFull);
+
+        const room = base?.room || mk?.room || "";
+        const teacher = base?.teacher || "";
+        const cls = base?.class || "";
+        const note = mk?.note || base?.note || "";
+
+        const topline = document.createElement("div");
+        topline.className = "tt-topline";
+        topline.innerHTML = `<span class="cls">${CLASS_NAME}</span><span class="room">${room || ""}</span>`;
+        cell.appendChild(topline);
+
+        const subjEl = document.createElement("div");
+        subjEl.className = "tt-subj";
+        subjEl.textContent = subjShort || "—";
+        cell.appendChild(subjEl);
+
+        const teacherEl = document.createElement("div");
+        teacherEl.className = "tt-teacher";
+        teacherEl.textContent = teacher || "";
+        cell.appendChild(teacherEl);
+
+        const now = new Date();
+        const tdata = {
+          dayLabel: d.label,
+          dateLong: formatDateCZ(now),
+          hourIdx: i,
+          time: `${TIMES[i].start}–${TIMES[i].end}`,
+          className: CLASS_NAME,
+          subjFull,
+          room,
+          teacher,
+          cls,
+          note,
+          type,
+          source: state.classSource
         };
+
+        cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
+        cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
+        cell.addEventListener("mouseleave", () => hideTooltip());
+
+        cell.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const visible = tooltip.style.display === "block";
+          if (visible) hideTooltip();
+          else showTooltip(tooltipHTML(tdata), e.clientX || (window.innerWidth/2), e.clientY || (window.innerHeight/2));
+        });
+
+        grid.appendChild(cell);
       }
-      return {
-        mode: "break",
-        title: "Cáfa Tracker",
-        line1: "Přestávka",
-        line2: "Naposledy viděn: neznámo",
-        meta: ""
-      };
+    }
+
+    $("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
+  }
+
+  /* =========================
+     EVENTS PANEL
+     ========================= */
+  function renderEventsPanel(){
+    const list = $("eventsList");
+    list.innerHTML = "";
+
+    const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
+
+    const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
+    const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
+
+    if (!evs.length && !marks.length){
+      const empty = document.createElement("div");
+      empty.className = "stackItem muted";
+      empty.textContent = "Žádné události (zatím)";
+      list.appendChild(empty);
+      return;
+    }
+
+    const evSorted = [...evs].sort((a,b) => (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || String(a.begin||"").localeCompare(String(b.begin||"")));
+    for (const e of evSorted){
+      const item = document.createElement("div");
+      item.className = "stackItem event";
+
+      const title = document.createElement("div");
+      title.className = "eventTitle";
+      title.textContent = e.name || "Akce";
+
+      const meta = document.createElement("div");
+      meta.className = "eventMeta";
+      meta.textContent = `${e.dayText || dayLabelCz(e.dayKey) || "—"}${(e.begin && e.end) ? ` • ${e.begin}–${e.end}` : ""}`;
+
+      const desc = document.createElement("div");
+      desc.className = "eventDesc";
+      desc.textContent = e.info || "";
+
+      item.appendChild(title);
+      item.appendChild(meta);
+      if (e.info) item.appendChild(desc);
+      list.appendChild(item);
+    }
+
+    const markSorted = [...marks].sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || (a.idx-b.idx));
+    for (const ev of markSorted){
+      if (ev.type === "event") continue;
+
+      const item = document.createElement("div");
+      item.className = "stackItem " + (ev.type || "");
+
+      const title = document.createElement("div");
+      title.className = "eventTitle";
+      title.textContent = ev.type === "subst" ? "Suplování" : "Odpadlo";
+
+      const meta = document.createElement("div");
+      meta.className = "eventMeta";
+      meta.textContent = `${dayLabelCz(ev.day)} • hodina ${ev.idx+1}/7 • ${TIMES[ev.idx]?.start || ""}–${TIMES[ev.idx]?.end || ""}${ev.room ? " • "+ev.room : ""}`;
+
+      const desc = document.createElement("div");
+      desc.className = "eventDesc";
+      desc.textContent = ev.note || "";
+
+      item.appendChild(title);
+      item.appendChild(meta);
+      if (ev.note) item.appendChild(desc);
+      list.appendChild(item);
     }
   }
 
-  return { mode:"shadows", title:"Cáfa Tracker", line1:"Cáfa se skrývá ve stínech.", line2:"" };
-}
+  /* =========================
+     CAFA TRACKER
+     ========================= */
+  function updateCafaTracker(now){
+    const badge = $("cafaBadge");
+    const main = $("cafaMain");
+    const sub = $("cafaSub");
 
-function renderCafaTrackerCard(teacherData){
-  const box = $("cafaTrackerBody");
-  if (!box) return;
+    const dayKey = dayKeyFromDate(now);
+    const days = getTeacherDays();
+    const src = state.teacherSource;
 
-  const stateC = getCafaState(teacherData, new Date());
+    if (!dayKey){
+      badge.textContent = "Cáfa • off";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `Víkend • ${formatDateCZ(now)} • ${src}`;
+      return;
+    }
 
-  const modeClass =
-    stateC.mode === "live" ? "ct-live" :
-    stateC.mode === "break" ? "ct-break" :
-    stateC.mode === "shadows" ? "ct-shadows" : "ct-off";
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const arr = days[dayKey] || Array(7).fill(null);
 
-  box.innerHTML = `
-    <div class="cafaState ${modeClass}">
-      <div class="cafaTitle">${esc(stateC.title || "Cáfa Tracker")}</div>
-      <div class="cafaLine1">${esc(stateC.line1 || "")}</div>
-      <div class="cafaLine2">${esc(stateC.line2 || "")}</div>
-      ${stateC.meta ? `<div class="cafaMeta">${esc(stateC.meta)}</div>` : ``}
-    </div>
-  `;
-}
+    let curIdx = null;
+    for (let i=0;i<7;i++){
+      const t = TIMES_MIN[i];
+      if (nowMin >= t.startMin && nowMin <= t.endMin){ curIdx=i; break; }
+    }
 
-/* =========================
-   Main update
-   ========================= */
-function updateAll(){
-  const now = new Date();
-  const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
+    if (curIdx === null){
+      badge.textContent = "Cáfa • gone";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `${dayLabelCz(dayKey)} • mimo hodiny • ${src}`;
+      return;
+    }
 
-  const dow = now.getDay();
-  const weekend = (dow===0 || dow===6);
-  const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
-  const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
+    const l = arr[curIdx];
+    if (!l){
+      badge.textContent = "Cáfa • stealth";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      return;
+    }
 
-  setBar("rt-week", weekPct, weekend);
-  setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
-  setBar("raw-week", weekPct, false);
-  setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
+    badge.textContent = "Cáfa • live";
+    main.textContent = `Právě: ${shortSubj(l.subj)} • ${l.class || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
+    sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+  }
 
-  const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-  const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
-  setBar("rt-month", monthPct);
-  setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
+  /* =========================
+     DAILY PROGRESS
+     ========================= */
+  function setDailyBadge(kind, text){
+    const b=$("dailyBadge");
+    b.className = "badge" + (kind ? (" "+kind) : "");
+    b.textContent = text;
+  }
 
-  const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
-  const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
-  const monthRaw = rawPctBetween(mStart, mEnd, now);
-  setBar("raw-month", monthRaw);
-  setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
+  function fmtLesson(x){
+    if (!x) return null;
+    const room = x.room ? ` (${x.room})` : "";
+    return `${shortSubj(x.subj)}${room}`;
+  }
 
-  const yr = getSchoolYearRange(now);
-  const yearPct = calendarPctBetween(yr.start, yr.end, now);
-  setBar("rt-year", yearPct);
-  setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
-  const yearRaw = rawPctBetween(yr.start, yr.end, now);
-  setBar("raw-year", yearRaw);
-  setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
+  function countTodayLessons(arr){
+    let last = -1;
+    for (let i=0;i<arr.length;i++){
+      if (arr[i] && arr[i].subj) last = i;
+    }
+    return Math.max(last+1, 0) || 7;
+  }
 
-  const totalPct = calendarPctBetween(HS_START, HS_END, now);
-  setBar("rt-total", totalPct);
-  setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
-  const totalRaw = rawPctBetween(HS_START, HS_END, now);
-  setBar("raw-total", totalRaw);
-  setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
+  function updateDaily(now){
+    const dayKey = dayKeyFromDate(now);
+    const days = getClassDays();
 
-  const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
-  setText("rt-maturita-label", (daysUntil>=0)
-    ? `Real-Time: ~${daysUntil} dní`
-    : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`);
+    if (!dayKey){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
+      return;
+    }
 
-  const rawDays = rawDaysUntil(MATURITA_APPROX, now);
-  setText("raw-maturita-label", (rawDays>=0)
-    ? `Raw-Time: ~${rawDays} školních dní`
-    : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`);
+    const lessons = (days[dayKey] || []).slice(0, 7);
+    const totalToday = countTodayLessons(lessons);
 
-  const toggleDaily = $("toggleDaily");
-  if (!toggleDaily || toggleDaily.checked) updateDaily(now);
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const first = TIMES_MIN[0];
+    const last = TIMES_MIN[totalToday-1] || TIMES_MIN[6];
 
-  // refresh live highlights
-  renderTimetable();
-  renderCafaTrackerCard(state.teacherData);
-}
+    if (nowMin > last.endMin){
+      setDailyBadge("free","Volno");
+      setText("dailyText","Volno 😎");
+      setBar("daybar",100);
+      setText("daylabel","");
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      return;
+    }
 
-/* =========================
-   Boot
-   ========================= */
-async function boot(){
-  initSettings();
-  loadMinecraftSplash();
+    if (nowMin < first.startMin){
+      setDailyBadge("live","Dnes");
+      const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
+      setText("dailyText",`Za chvíli začne: ${next}`);
+      setBar("daybar",0);
+      setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      return;
+    }
 
-  // Pre-fill fallback so page never stays blank
-  state.classData = normalizeDataForUi(fallbackClassData(),"class");
-  state.teacherData = normalizeDataForUi(fallbackTeacherData(),"teacher");
-  renderTimetable();
-  renderEvents();
-  renderCafaTrackerCard(state.teacherData);
+    for (let i=0;i<totalToday;i++){
+      const t = TIMES_MIN[i];
+      const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
+      const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
 
-  updateAll();
+      if (nowMin >= t.startMin && nowMin <= t.endMin){
+        const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
+        setDailyBadge("live","Právě");
+        setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
+        setBar("daybar", pct);
+        setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        return;
+      }
 
-  // Load backend
-  await refreshBackendData();
-  updateAll();
+      const nt = TIMES_MIN[i+1];
+      if (nt && nowMin > t.endMin && nowMin < nt.startMin){
+        setDailyBadge("live","Pauza");
+        setText("dailyText", `Následuje: ${next}`);
+        setBar("daybar", 0);
+        setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        return;
+      }
+    }
 
-  // Timers
-  setInterval(updateAll, 30_000);
-  setInterval(refreshBackendData, 5 * 60_000);
-}
+    setDailyBadge("free","Volno");
+    setText("dailyText","Volno 😎");
+    setBar("daybar",100);
+    setText("daylabel","");
+    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+  }
 
-document.addEventListener("DOMContentLoaded", boot);
+  /* =========================
+     PROGRESS BARS
+     ========================= */
+  function updateProgressBars(){
+    const now = new Date();
+    const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
+
+    const dow = now.getDay();
+    const weekend = (dow===0 || dow===6);
+    const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
+    const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
+
+    setBar("rt-week", weekPct, weekend);
+    setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
+    setBar("raw-week", weekPct, false);
+    setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
+
+    const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
+    setBar("rt-month", monthPct);
+    setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
+
+    const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
+    const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
+    const monthRaw = rawPctBetween(mStart, mEnd, now);
+    setBar("raw-month", monthRaw);
+    setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
+
+    const yr = getSchoolYearRange(now);
+    const yearPct = calendarPctBetween(yr.start, yr.end, now);
+    setBar("rt-year", yearPct);
+    setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
+    const yearRaw = rawPctBetween(yr.start, yr.end, now);
+    setBar("raw-year", yearRaw);
+    setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
+
+    const totalPct = calendarPctBetween(HS_START, HS_END, now);
+    setBar("rt-total", totalPct);
+    setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
+    const totalRaw = rawPctBetween(HS_START, HS_END, now);
+    setBar("raw-total", totalRaw);
+    setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
+
+    const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
+    setText("rt-maturita-label", (daysUntil>=0)
+      ? `Real-Time: ~${daysUntil} dní`
+      : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
+    );
+
+    const rawDays = rawDaysUntil(MATURITA_APPROX, now);
+    setText("raw-maturita-label", (rawDays>=0)
+      ? `Raw-Time: ~${rawDays} školních dní`
+      : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
+    );
+  }
+
+  /* =========================
+     BACKEND SYNC
+     ========================= */
+  async function fetchJsonSafe(url){
+    try{
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    }catch(err){
+      return { __error: String(err?.message || err) };
+    }
+  }
+
+  async function syncBackend(){
+    const c = await fetchJsonSafe(BACKEND_CLASS_API);
+    if (!c.__error && c.ok && c.days && hasAnyLesson(c.days)){
+      state.classDays = c.days;
+      state.classMarks = Array.isArray(c.marks) ? c.marks : [];
+      state.classEvents = Array.isArray(c.events) ? c.events : [];
+      state.classSource = "Bakaláří";
+    } else {
+      state.classSource = "Lokální";
+    }
+
+    const t = await fetchJsonSafe(BACKEND_TEACHER_API);
+    if (!t.__error && t.ok && t.days && hasAnyLesson(t.days)){
+      state.teacherDays = t.days;
+      state.teacherSource = "Bakaláři";
+    } else {
+      state.teacherSource = "Lokální";
+    }
+
+    statusText();
+    renderTimetable();
+    renderEventsPanel();
+    updateCafaTracker(new Date());
+    updateDaily(new Date());
+  }
+
+  /* =========================
+     BOOT + LOOP
+     ========================= */
+  function tick(){
+    const now = new Date();
+    updateProgressBars();
+    if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
+    updateCafaTracker(now);
+  }
+
+  function boot(){
+    initSettings();
+    initModeSelector();     // NEW
+    loadMinecraftSplash();  // NEW
+
+    state.classSource = "loading";
+    state.teacherSource = "loading";
+    statusText();
+
+    renderTimetable();
+    renderEventsPanel();
+    tick();
+
+    syncBackend();
+
+    setInterval(tick, 30_000);
+    setInterval(syncBackend, 5 * 60_000);
+  }
+
+  document.addEventListener("DOMContentLoaded", boot);
 </script>
 </body>
 </html>
