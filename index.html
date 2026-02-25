@@ -47,6 +47,9 @@
       --ttSubjGlow: none;
 
       --uiScale: 1;
+
+      --hot: rgba(255, 140, 0, 0.85);
+      --hot2: rgba(255, 80, 0, 0.55);
     }
 
     /* Dark theme */
@@ -174,8 +177,10 @@
 
       --substBg: rgba(0, 153, 255, 0.20);
       --substBorder: rgba(0, 153, 255, 0.50);
+
       --cancelBg: rgba(255, 0, 60, 0.22);
       --cancelBorder: rgba(255, 0, 60, 0.55);
+
       --eventBg: rgba(59,181,74,0.20);
       --eventBorder: rgba(59,181,74,0.55);
 
@@ -183,7 +188,7 @@
       --ttSubjGlow: 0 0 14px rgba(0,153,255,0.25);
     }
 
-    /* Battle Cats theme (colors inspired by the game UI: cream/ink + playful yellow) */
+    /* Battle Cats theme */
     body.theme-battlecats{
       --bg:#fbf1d8;
       --card: rgba(255, 255, 255, 0.88);
@@ -211,8 +216,10 @@
 
       --substBg: rgba(255, 80, 80, 0.16);
       --substBorder: rgba(255, 80, 80, 0.40);
+
       --cancelBg: rgba(255, 0, 60, 0.16);
       --cancelBorder: rgba(255, 0, 60, 0.42);
+
       --eventBg: rgba(59,181,74,0.18);
       --eventBorder: rgba(59,181,74,0.45);
 
@@ -221,7 +228,7 @@
     }
 
     /* =========================
-       BASE
+       BASE + MOBILE FIX
        ========================= */
     *{ box-sizing:border-box; }
     body{
@@ -238,8 +245,14 @@
         var(--bg);
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
+      background-attachment: fixed; /* desktop ok */
       transition: background .2s ease, color .2s ease;
+    }
+    @media (max-width:980px){
+      body{
+        padding:16px;
+        background-attachment: scroll; /* iOS fix */
+      }
     }
 
     .wrap{
@@ -251,8 +264,11 @@
       transition: transform .15s ease;
     }
     @media (max-width:980px){
-      .wrap{ transform:none; width:100%; }
-      body{ padding:16px; }
+      .wrap{
+        transform:none;
+        width:100%;
+        max-width: 100%;
+      }
     }
 
     /* ===== Minecraft splash (centered under title) ===== */
@@ -262,12 +278,12 @@
       font-display: swap;
     }
     .titleWrap{
-      position: relative;
       margin: 0 0 14px 0;
       display:flex;
       flex-direction: column;
       justify-content:center;
       align-items:center;
+      gap: 6px;
     }
     h1{
       margin:0;
@@ -284,7 +300,6 @@
     }
 
     .mcSplash{
-      margin-top: 6px;
       text-align: center;
       color: #ffd43b;
       text-shadow:
@@ -306,24 +321,7 @@
       to   { transform: scale(1.05); opacity: 1; }
     }
     @media (max-width:980px){
-      .mcSplash{ font-size: 10px; margin-top: 5px; }
-    }
-
-    /* ===== six seven easter egg ===== */
-    .ss{
-      display:inline-block;
-      position: relative;
-      will-change: transform, filter;
-    }
-    .ss.hot{
-      animation: ssBounce .55s ease-in-out 2;
-      filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 90, 0, 0.55));
-    }
-    @keyframes ssBounce{
-      0%   { transform: translateY(0); }
-      35%  { transform: translateY(-6px); }
-      70%  { transform: translateY(0); }
-      100% { transform: translateY(-2px); }
+      .mcSplash{ font-size: 10px; }
     }
 
     .topbar{
@@ -489,23 +487,12 @@
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
-    /* ADDON */
+    /* ADDON (no "Info Panel" text) */
     .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
-    .addonHead{
-      text-align:center;
-      font-weight:900;
-      color:var(--muted);
-      margin:0 0 8px 0;
-      font-size:12px;
-      letter-spacing:0.35px;
-      text-transform:uppercase;
-      opacity:0.9;
-    }
-    .addonCol .rowTitle{ font-size:16px; }
 
     .stackList{ display:flex; flex-direction:column; gap:8px; }
 
-    /* Události: max ~3 položky a pak scroll uvnitř */
+    /* Události scroll box */
     #eventsList{
       max-height: 260px;
       overflow-y: auto;
@@ -543,6 +530,7 @@
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
     .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
 
+    /* Tracker */
     .trackerCard{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
@@ -560,6 +548,61 @@
     }
     .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
     .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
+
+    /* SANITY */
+    .sanityWrap{ display:flex; flex-direction:column; gap:10px; }
+    .sanityTop{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .sanityPct{ font-weight:1000; font-size:14px; color: var(--muted); }
+    .sanityGraph{
+      width:100%;
+      height:90px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      overflow:hidden;
+    }
+    .sanityGraph svg{ width:100%; height:100%; display:block; }
+    .sanityAlert{
+      font-weight:1000;
+      color: rgba(255,60,60,0.95);
+      display:none;
+    }
+    .sanityActions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .kakBtn{
+      display:none;
+      border:none;
+      padding:10px 12px;
+      border-radius:10px;
+      background: #ff9800;
+      color:#111;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 0 18px rgba(255,152,0,0.35);
+    }
+    .kakBtn:active{ transform: translateY(1px); }
+
+    .checkBtn{
+      display:none;
+      border:none;
+      padding:10px 12px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.10);
+      color: var(--text);
+      font-weight:1000;
+      cursor:pointer;
+      border: 1px solid var(--border);
+    }
 
     /* TIMETABLE */
     .timetable .tt-top{
@@ -588,6 +631,12 @@
       grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
       gap:10px;
       min-width: 940px;
+    }
+    @media (max-width:980px){
+      .tt-grid{ min-width: 780px; }
+    }
+    @media (max-width:480px){
+      .tt-grid{ min-width: 720px; }
     }
     .tt-corner{ height:44px; }
 
@@ -633,7 +682,6 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
 
-    /* Current hour outline (orange) */
     .tt-now{
       outline: 2px solid rgba(255, 152, 0, 0.95);
       outline-offset: -2px;
@@ -737,6 +785,7 @@
     .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
     .tt-tooltip .v{ color: #fff; text-align:right; }
 
+    /* Footer */
     .footer{
       margin-top: 18px;
       padding: 14px 0 4px;
@@ -757,6 +806,115 @@
     .footer a:hover{ opacity: 1; border-bottom-style: solid; }
     .footer .footerBy{ font-size: 13px; }
     .footer .footerSep{ opacity: .55; margin: 0 6px; }
+
+    /* =========================
+       six-seven emote (6 down, 7 up)
+       ========================= */
+    .ss{
+      display:inline-flex;
+      align-items: baseline;
+      gap: 1px;
+      position: relative;
+      will-change: transform, filter;
+      font-weight: 900;
+    }
+    .ss .s6, .ss .s7{ display:inline-block; will-change: transform; }
+    .ss.hot{
+      filter: drop-shadow(0 0 10px var(--hot)) drop-shadow(0 0 18px var(--hot2));
+    }
+    .ss.hot .s6{ animation: ssSix .8s ease-in-out 1; }
+    .ss.hot .s7{ animation: ssSeven .8s ease-in-out 1; }
+    @keyframes ssSix{
+      0%   { transform: translateY(0); }
+      25%  { transform: translateY(6px); }
+      50%  { transform: translateY(0); }
+      75%  { transform: translateY(6px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes ssSeven{
+      0%   { transform: translateY(0); }
+      25%  { transform: translateY(-6px); }
+      50%  { transform: translateY(0); }
+      75%  { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* =========================
+       CHECK-IN MODAL
+       ========================= */
+    .modalBack{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display:none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 18px;
+    }
+    .modal{
+      width: min(520px, 100%);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(20, 20, 26, 0.92);
+      color: #fff;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(12px);
+      padding: 14px;
+    }
+    .modalTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 10px;
+    }
+    .modalTitle{
+      font-weight: 1000;
+      font-size: 14px;
+      letter-spacing: .2px;
+      margin: 0;
+    }
+    .modalSub{
+      margin-top: 4px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.70);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .modalClose{
+      border:none;
+      background: transparent;
+      color: rgba(255,255,255,0.75);
+      font-weight: 1000;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 6px 8px;
+      border-radius: 10px;
+    }
+    .modalClose:hover{ background: rgba(255,255,255,0.06); }
+    .moods{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    @media (max-width:520px){
+      .moods{ grid-template-columns: 1fr 1fr; }
+    }
+    .moodBtn{
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px 10px;
+      cursor: pointer;
+      text-align:center;
+      font-weight: 1000;
+    }
+    .moodBtn:hover{ background: rgba(255,255,255,0.10); }
+    .moodEmoji{ font-size: 18px; display:block; margin-bottom: 6px; }
+    .moodTxt{ font-size: 12px; }
+
   </style>
 </head>
 
@@ -786,15 +944,6 @@
         </select>
       </div>
 
-      <div class="field">
-        <span>Mode</span>
-        <select id="modeSelect" aria-label="Mode">
-          <option value="normal">Normal</option>
-          <option value="nonchalant">Nonchalant Mode</option>
-          <option value="freaky">Freaky Mode</option>
-        </select>
-      </div>
-
       <div class="scaleRow">
         <span>Velikost UI</span>
         <input type="range" id="uiScaleRange" min="85" max="120" step="1" value="100" />
@@ -805,6 +954,7 @@
       <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
       <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události</span></label>
       <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Cáfa Tracker</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleSanity" checked /> <span>Zobrazit Sanity Meter</span></label>
 
       <p class="hint" id="statusHint">Status: OK</p>
     </div>
@@ -879,8 +1029,6 @@
       </div>
 
       <aside id="addonPanel" class="addonCol">
-        <div class="addonHead">Info Panel</div>
-
         <div class="block" id="eventsBlock">
           <div class="rowTitle">Události</div>
           <div id="eventsList" class="stackList">
@@ -894,6 +1042,35 @@
             <div class="trackerBadge" id="cafaBadge">Cáfa</div>
             <div class="trackerMain" id="cafaMain">Načítání…</div>
             <div class="trackerSub" id="cafaSub">—</div>
+          </div>
+        </div>
+
+        <div class="block" id="sanityBlock">
+          <div class="rowTitle">Sanity Meter</div>
+          <div class="sanityWrap">
+            <div class="sanityTop">
+              <div class="sanityPct" id="sanityPct">Sanity: —</div>
+              <div class="sanityPct" id="sanityMeta">—</div>
+            </div>
+
+            <div class="sanityGraph" aria-hidden="true">
+              <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+                <path id="sanityPathBg"
+                      d="M0,18 C60,18 120,18 180,18 C240,18 270,18 300,18"
+                      fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="6" />
+                <path id="sanityPath"
+                      d="M0,18 C60,18 120,18 180,18 C240,18 270,18 300,18"
+                      fill="none" stroke="rgba(255,152,0,0.85)" stroke-width="6" stroke-linecap="round" />
+              </svg>
+            </div>
+
+            <div class="sanityAlert" id="sanityAlert">BĚŽ SI KOUPIT KAKAJÍČKO</div>
+
+            <div class="sanityActions">
+              <button class="checkBtn" id="checkBtn" type="button">Doplnit check-in</button>
+              <button class="kakBtn" id="kakBtn" type="button">Už jsem si ho dal ☕️</button>
+              <div class="hint" id="sanityHint">Sanity padá jen po check-inu na hodinu (jinak 0).</div>
+            </div>
           </div>
         </div>
       </aside>
@@ -933,6 +1110,8 @@
       <div>
         <span>© 2026 All rights reserved</span>
         <span class="footerSep">•</span>
+        <span>Version 1.2.27</span>
+        <span class="footerSep">•</span>
         <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
       </div>
     </div>
@@ -940,9 +1119,26 @@
 
   <div class="tt-tooltip" id="ttTooltip" aria-hidden="true"></div>
 
+  <!-- Check-in modal -->
+  <div id="checkinBack" class="modalBack" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal">
+      <div class="modalTop">
+        <div>
+          <div class="modalTitle" id="checkinTitle">Check-in</div>
+          <div class="modalSub" id="checkinSub">—</div>
+        </div>
+        <button class="modalClose" id="checkinClose" type="button" aria-label="Zavřít">✕</button>
+      </div>
+
+      <div class="moods" id="moodButtons">
+        <!-- JS fills -->
+      </div>
+    </div>
+  </div>
+
 <script>
   /* =========================
-     API CONFIG (YOUR DOMAIN)
+     API CONFIG
      ========================= */
   const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
   const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
@@ -958,12 +1154,12 @@
     if (!el) return;
 
     const fallback = [
-      "Now with Cáfa Tracker!",
+      "Now with sanity checks!",
       "Suplování detected!",
       "Bakaláři moment",
-      "Touch grass after class",
-      "School grind never ends",
-      "Raw-Time supremacy"
+      "Raw-Time supremacy",
+      "Cáfa is watching",
+      "Touch grass after class"
     ];
 
     try{
@@ -975,35 +1171,6 @@
     }catch(e){
       el.textContent = fallback[Math.floor(Math.random()*fallback.length)];
     }
-  }
-
-  /* =========================
-     Mode (Nonchalant/Freaky) for title
-     ========================= */
-  function applyTitleMode(mode){
-    const titleEl = document.getElementById("pageTitle");
-    if (!titleEl) return;
-
-    if (mode === "nonchalant"){
-      titleEl.textContent = "Bakaláři, kdyby nebyly mid";
-    } else if (mode === "freaky"){
-      titleEl.textContent = "Kdy to utrpení skončí";
-    } else {
-      titleEl.textContent = "School Progress";
-    }
-
-    localStorage.setItem("sp_mode", mode);
-    const sel = document.getElementById("modeSelect");
-    if (sel) sel.value = mode;
-  }
-
-  function initModeSelector(){
-    const sel = document.getElementById("modeSelect");
-    if (!sel) return;
-
-    sel.addEventListener("change", () => applyTitleMode(sel.value));
-    const saved = localStorage.getItem("sp_mode") || "normal";
-    applyTitleMode(saved);
   }
 
   /* =========================
@@ -1034,12 +1201,23 @@
     const s = String(full || "").trim();
     if (!s) return "";
     if (SUBJECT_SHORT[s]) return SUBJECT_SHORT[s];
+
+    // combos like "RUJ / NEJ" -> "RUJ/NEJ"
+    if (s.includes("/")){
+      return s.split("/").map(x => x.trim()).filter(Boolean).map(part => {
+        if (SUBJECT_SHORT[part]) return SUBJECT_SHORT[part];
+        const noDia = part.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const keep = noDia.replace(/[^A-Za-z0-9]/g,"").slice(0,4).toUpperCase();
+        return keep || part.slice(0,4).toUpperCase();
+      }).join("/");
+    }
+
     const noDia = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     return noDia.replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || s.slice(0,3).toUpperCase();
   }
 
   /* =========================
-     TIMES
+     TIMES + LUNCH
      ========================= */
   const TIMES = [
     {start:"07:55", end:"08:40"},
@@ -1050,12 +1228,14 @@
     {start:"12:50", end:"13:35"},
     {start:"13:40", end:"14:25"},
   ];
+  const LUNCH = { start:"12:20", end:"12:50", label:"Obědová pauza" };
 
   function timeToMin(hhmm){
     const [h,m] = hhmm.split(":").map(Number);
     return h*60 + m;
   }
   const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
+  const LUNCH_MIN = { startMin: timeToMin(LUNCH.start), endMin: timeToMin(LUNCH.end) };
 
   /* =========================
      PROGRESS DATA
@@ -1088,6 +1268,22 @@
   const DIRECTOR_DAYS = [];
 
   /* =========================
+     SANITY CONFIG
+     ========================= */
+  const SANITY_BASE_DRAIN = 6;             // base drop per hour at mood=OK
+  const SANITY_POPUP_WINDOW_MIN = 5;       // popup appears within 5 minutes from hour start
+  const SANITY_KAK_BOOST = 30;             // +30%
+  const SANITY_KAK_MAX_PER_DAY = 1;        // 1× per day
+
+  const MOODS = [
+    { key:"cool",   emoji:"😎", label:"Pohoda", mult:0.6 },
+    { key:"ok",     emoji:"🙂", label:"Ok",     mult:1.0 },
+    { key:"meh",    emoji:"😐", label:"Meh",    mult:1.4 },
+    { key:"bad",    emoji:"😣", label:"Špatný", mult:1.9 },
+    { key:"cooked", emoji:"💀", label:"Cooked", mult:2.6 },
+  ];
+
+  /* =========================
      STATE
      ========================= */
   const state = {
@@ -1098,6 +1294,8 @@
 
     teacherDays: null,
     teacherSource: "loading",
+
+    sanity: null, // loaded from storage
   };
 
   /* =========================
@@ -1218,14 +1416,14 @@
     const addonPanel = $("addonPanel");
     const eventsBlock = $("eventsBlock");
     const cafaBlock = $("cafaBlock");
-    const addonHead = addonPanel.querySelector(".addonHead");
+    const sanityBlock = $("sanityBlock");
 
     const eventsVisible = !eventsBlock.classList.contains("hidden");
     const cafaVisible = !cafaBlock.classList.contains("hidden");
-    const anyVisible = eventsVisible || cafaVisible;
+    const sanityVisible = !sanityBlock.classList.contains("hidden");
 
+    const anyVisible = eventsVisible || cafaVisible || sanityVisible;
     addonPanel.classList.toggle("hidden", !anyVisible);
-    addonHead.classList.toggle("hidden", !anyVisible);
     scheduleSixSevenScan();
   }
 
@@ -1239,6 +1437,7 @@
     const toggleDaily = $("toggleDaily");
     const toggleEvents = $("toggleEvents");
     const toggleCafa = $("toggleCafa");
+    const toggleSanity = $("toggleSanity");
 
     toggleTT.addEventListener("change", () => {
       $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
@@ -1260,6 +1459,11 @@
       localStorage.setItem("sp_toggle_cafa", toggleCafa.checked ? "1" : "0");
       refreshAddonPanelVisibility();
     });
+    toggleSanity.addEventListener("change", () => {
+      $("sanityBlock").classList.toggle("hidden", !toggleSanity.checked);
+      localStorage.setItem("sp_toggle_sanity", toggleSanity.checked ? "1" : "0");
+      refreshAddonPanelVisibility();
+    });
 
     const savedTheme = localStorage.getItem("sp_theme") || "dark";
     applyTheme(savedTheme);
@@ -1270,22 +1474,25 @@
     const savedDaily = localStorage.getItem("sp_toggle_daily");
     const savedEvents = localStorage.getItem("sp_toggle_events");
     const savedCafa = localStorage.getItem("sp_toggle_cafa");
+    const savedSanity = localStorage.getItem("sp_toggle_sanity");
 
     if (savedTT !== null) toggleTT.checked = savedTT === "1";
     if (savedDaily !== null) toggleDaily.checked = savedDaily === "1";
     if (savedEvents !== null) toggleEvents.checked = savedEvents === "1";
     if (savedCafa !== null) toggleCafa.checked = savedCafa === "1";
+    if (savedSanity !== null) toggleSanity.checked = savedSanity === "1";
 
     $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
     $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
     $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
+    $("sanityBlock").classList.toggle("hidden", !toggleSanity.checked);
 
     refreshAddonPanelVisibility();
   }
 
   /* =========================
-     six seven detector + emote
+     six-seven detector + emote
      ========================= */
   let ssScanTimer = null;
 
@@ -1296,11 +1503,6 @@
     }, 60);
   }
 
-  // Wrap only these patterns:
-  // - 6/7 (with optional spaces)
-  // - 6.7 (optionally followed by .YYYY etc)
-  // - 67 (e.g. 2067)
-  // Keeps it sane (doesn't wrap every single '6' in 2026).
   function wrapSixSeven(root){
     if (!root) return;
 
@@ -1316,6 +1518,7 @@
         const p = node.parentNode;
         if (!p || SKIP_TAGS.has(p.nodeName)) return NodeFilter.FILTER_REJECT;
         if (p.closest && p.closest(".tt-tooltip")) return NodeFilter.FILTER_REJECT;
+        if (p.closest && p.closest(".ss")) return NodeFilter.FILTER_REJECT;
         if (!node.nodeValue || !node.nodeValue.match(/6\s*\/\s*7|6\.7|67/)) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
@@ -1331,10 +1534,7 @@
       for (const re of patterns){
         const nextParts = [];
         for (const part of parts){
-          if (part.isMatch){
-            nextParts.push(part);
-            continue;
-          }
+          if (part.isMatch){ nextParts.push(part); continue; }
           const s = part.text;
           let last = 0;
           let m;
@@ -1349,7 +1549,6 @@
         parts = nextParts;
       }
 
-      // If no match after processing, skip
       if (!parts.some(p => p.isMatch)) continue;
 
       const frag = document.createDocumentFragment();
@@ -1359,7 +1558,26 @@
         } else {
           const span = document.createElement("span");
           span.className = "ss";
-          span.textContent = p.text;
+
+          const txt = p.text;
+          const s6 = document.createElement("span"); s6.className = "s6"; s6.textContent = "6";
+          const s7 = document.createElement("span"); s7.className = "s7"; s7.textContent = "7";
+
+          if (txt.includes("/")){
+            span.appendChild(s6);
+            span.appendChild(document.createTextNode("/"));
+            span.appendChild(s7);
+          } else if (txt.startsWith("6.7")){
+            const rest = txt.slice(3); // after "6.7"
+            span.appendChild(s6);
+            span.appendChild(document.createTextNode("."));
+            span.appendChild(s7);
+            if (rest) span.appendChild(document.createTextNode(rest));
+          } else {
+            span.appendChild(s6);
+            span.appendChild(s7);
+          }
+
           frag.appendChild(span);
         }
       }
@@ -1372,37 +1590,7 @@
     const els = document.querySelectorAll(".ss");
     if (!els.length) return;
     els.forEach(el => el.classList.add("hot"));
-    setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1200);
-  }
-
-  /* =========================
-     Mode (Nonchalant/Freaky) for title
-     ========================= */
-  function applyTitleMode(mode){
-    const titleEl = document.getElementById("pageTitle");
-    if (!titleEl) return;
-
-    if (mode === "nonchalant"){
-      titleEl.textContent = "Bakaláři, kdyby nebyly mid";
-    } else if (mode === "freaky"){
-      titleEl.textContent = "Kdy to utrpení skončí";
-    } else {
-      titleEl.textContent = "School Progress";
-    }
-
-    localStorage.setItem("sp_mode", mode);
-    const sel = document.getElementById("modeSelect");
-    if (sel) sel.value = mode;
-    scheduleSixSevenScan();
-  }
-
-  function initModeSelector(){
-    const sel = document.getElementById("modeSelect");
-    if (!sel) return;
-
-    sel.addEventListener("change", () => applyTitleMode(sel.value));
-    const saved = localStorage.getItem("sp_mode") || "normal";
-    applyTitleMode(saved);
+    setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1000);
   }
 
   /* =========================
@@ -1501,7 +1689,6 @@
         const cell = document.createElement("div");
         cell.className = "tt-cell";
 
-        // current hour highlight
         const inThisHour = (todayKey === d.key && nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin);
         if (inThisHour) cell.classList.add("tt-now");
 
@@ -1647,20 +1834,45 @@
   }
 
   /* =========================
-     CAFA TRACKER
+     CAFA TRACKER (clean)
      ========================= */
+  function findCurrentLessonIndex(nowMin){
+    for (let i=0;i<7;i++){
+      const t = TIMES_MIN[i];
+      if (nowMin >= t.startMin && nowMin <= t.endMin) return i;
+    }
+    return null;
+  }
+  function findNextLessonIndex(dayArr, nowMin){
+    for (let i=0;i<7;i++){
+      if (TIMES_MIN[i].startMin > nowMin && dayArr[i] && dayArr[i].subj) return i;
+    }
+    return null;
+  }
+  function findLastLessonIndex(dayArr, nowMin){
+    for (let i=6;i>=0;i--){
+      if (TIMES_MIN[i].endMin < nowMin && dayArr[i] && dayArr[i].subj) return i;
+    }
+    return null;
+  }
+  function lessonCompact(l){
+    if (!l) return "—";
+    const cls = (l.class || "").replace(/\s+cel[aá]\s*$/i, "").trim();
+    const room = (l.room || "").trim();
+    return `${cls || "—"} • ${room || "—"}`;
+  }
   function updateCafaTracker(now){
     const badge = $("cafaBadge");
     const main = $("cafaMain");
     const sub = $("cafaSub");
 
     const dayKey = dayKeyFromDate(now);
-    const days = getTeacherDays();
     const src = state.teacherSource;
+    const days = getTeacherDays();
 
     if (!dayKey){
       badge.textContent = "Cáfa • off";
-      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      main.textContent = "Ve stínech 😎";
       sub.textContent = `Víkend • ${formatDateCZ(now)} • ${src}`;
       scheduleSixSevenScan();
       return;
@@ -1669,50 +1881,74 @@
     const nowMin = now.getHours()*60 + now.getMinutes();
     const arr = days[dayKey] || Array(7).fill(null);
 
-    let curIdx = null;
-    for (let i=0;i<7;i++){
-      const t = TIMES_MIN[i];
-      if (nowMin >= t.startMin && nowMin <= t.endMin){ curIdx=i; break; }
-    }
+    const lastExistingIdx = (() => {
+      for (let i=6;i>=0;i--) if (arr[i] && arr[i].subj) return i;
+      return null;
+    })();
 
-    if (curIdx === null){
-      badge.textContent = "Cáfa • gone";
-      main.textContent = "Cáfa se skrývá ve stínech 😎";
-      sub.textContent = `${dayLabelCz(dayKey)} • mimo hodiny • ${src}`;
+    if (lastExistingIdx !== null && nowMin > TIMES_MIN[lastExistingIdx].endMin){
+      badge.textContent = "Cáfa • off";
+      main.textContent = "Ve stínech 😎";
+      sub.textContent = `${dayLabelCz(dayKey)} • po škole • ${src}`;
       scheduleSixSevenScan();
       return;
     }
 
-    const l = arr[curIdx];
-    if (!l){
-      badge.textContent = "Cáfa • stealth";
-      main.textContent = "Cáfa se skrývá ve stínech 😎";
-      sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+    // Lunch
+    if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
+      const lastIdx = findLastLessonIndex(arr, nowMin);
+      const nextIdx = findNextLessonIndex(arr, nowMin);
+      badge.textContent = "Cáfa • lunch";
+      main.textContent = "Obědová pauza";
+      const lastTxt = lastIdx !== null ? `Naposledy: ${lessonCompact(arr[lastIdx])}` : "";
+      const nextTxt = nextIdx !== null ? `Další: ${lessonCompact(arr[nextIdx])} v ${TIMES[nextIdx].start}` : "";
+      sub.textContent = [lastTxt, nextTxt, src].filter(Boolean).join(" • ");
       scheduleSixSevenScan();
       return;
     }
 
-    badge.textContent = "Cáfa • live";
-    main.textContent = `Právě: ${shortSubj(l.subj)} • ${l.class || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
-    sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+    // Lesson
+    const curIdx = findCurrentLessonIndex(nowMin);
+    if (curIdx !== null){
+      const l = arr[curIdx];
+      if (l){
+        badge.textContent = "Cáfa • live";
+        main.textContent = `Teď: ${lessonCompact(l)}`;
+        sub.textContent = `Hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      } else {
+        badge.textContent = "Cáfa • stealth";
+        main.textContent = "Ve stínech 😎";
+        sub.textContent = `Hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      }
+      scheduleSixSevenScan();
+      return;
+    }
+
+    // Break
+    const lastIdx = findLastLessonIndex(arr, nowMin);
+    const nextIdx = findNextLessonIndex(arr, nowMin);
+    badge.textContent = "Cáfa • break";
+    main.textContent = "Přestávka";
+    const lastTxt = lastIdx !== null ? `Naposledy: ${lessonCompact(arr[lastIdx])}` : "";
+    const nextTxt = nextIdx !== null ? `Další: ${lessonCompact(arr[nextIdx])} v ${TIMES[nextIdx].start}` : "";
+    sub.textContent = [lastTxt, nextTxt, src].filter(Boolean).join(" • ") || src;
+
     scheduleSixSevenScan();
   }
 
   /* =========================
-     DAILY PROGRESS
+     DAILY PROGRESS (with lunch label)
      ========================= */
   function setDailyBadge(kind, text){
     const b=$("dailyBadge");
     b.className = "badge" + (kind ? (" "+kind) : "");
     b.textContent = text;
   }
-
   function fmtLesson(x){
     if (!x) return null;
     const room = x.room ? ` (${x.room})` : "";
     return `${shortSubj(x.subj)}${room}`;
   }
-
   function countTodayLessons(arr){
     let last = -1;
     for (let i=0;i<arr.length;i++){
@@ -1720,10 +1956,10 @@
     }
     return Math.max(last+1, 0) || 7;
   }
-
   function updateDaily(now){
     const dayKey = dayKeyFromDate(now);
     const days = getClassDays();
+    const nowMin = now.getHours()*60 + now.getMinutes();
 
     if (!dayKey){
       setDailyBadge("free","Volno");
@@ -1735,14 +1971,25 @@
       return;
     }
 
+    // Lunch
+    if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
+      setDailyBadge("live", "Oběd");
+      setText("dailyText", "Obědová pauza 🍽️");
+      setBar("daybar", 0);
+      setText("daylabel", `Oběd • ${LUNCH.start}–${LUNCH.end}`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      scheduleSixSevenScan();
+      return;
+    }
+
     const lessons = (days[dayKey] || []).slice(0, 7);
     const totalToday = countTodayLessons(lessons);
 
-    const nowMin = now.getHours()*60 + now.getMinutes();
+    const nowMin2 = now.getHours()*60 + now.getMinutes();
     const first = TIMES_MIN[0];
     const last = TIMES_MIN[totalToday-1] || TIMES_MIN[6];
 
-    if (nowMin > last.endMin){
+    if (nowMin2 > last.endMin){
       setDailyBadge("free","Volno");
       setText("dailyText","Volno 😎");
       setBar("daybar",100);
@@ -1752,7 +1999,7 @@
       return;
     }
 
-    if (nowMin < first.startMin){
+    if (nowMin2 < first.startMin){
       setDailyBadge("live","Dnes");
       const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
       setText("dailyText",`Za chvíli začne: ${next}`);
@@ -1768,8 +2015,8 @@
       const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
       const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
 
-      if (nowMin >= t.startMin && nowMin <= t.endMin){
-        const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
+      if (nowMin2 >= t.startMin && nowMin2 <= t.endMin){
+        const pct = ((nowMin2 - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
         setDailyBadge("live","Právě");
         setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
         setBar("daybar", pct);
@@ -1780,7 +2027,7 @@
       }
 
       const nt = TIMES_MIN[i+1];
-      if (nt && nowMin > t.endMin && nowMin < nt.startMin){
+      if (nt && nowMin2 > t.endMin && nowMin2 < nt.startMin){
         setDailyBadge("live","Pauza");
         setText("dailyText", `Následuje: ${next}`);
         setBar("daybar", 0);
@@ -1797,6 +2044,353 @@
     setText("daylabel","");
     setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
     scheduleSixSevenScan();
+  }
+
+  /* =========================
+     SANITY STORAGE
+     ========================= */
+  function todayKey(){
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  }
+  function sanityKey(){ return "sp_sanity_" + todayKey(); }
+
+  function loadSanity(){
+    try{
+      const raw = localStorage.getItem(sanityKey());
+      if (!raw) return {
+        base: 100,
+        checkins: {}, // {0:{mult, key, at}, 1:{...}}
+        kakUsed: 0,
+        lastPopupHour: null,
+        lastPopupAt: null,
+      };
+      const obj = JSON.parse(raw);
+      return {
+        base: Number(obj.base ?? 100),
+        checkins: obj.checkins || {},
+        kakUsed: Number(obj.kakUsed ?? 0),
+        lastPopupHour: obj.lastPopupHour ?? null,
+        lastPopupAt: obj.lastPopupAt ?? null,
+      };
+    }catch{
+      return { base:100, checkins:{}, kakUsed:0, lastPopupHour:null, lastPopupAt:null };
+    }
+  }
+  function saveSanity(){
+    localStorage.setItem(sanityKey(), JSON.stringify(state.sanity));
+  }
+
+  /* =========================
+     SANITY CORE (per-hour, only after check-in)
+     - if no check-in for an hour => delta=0
+     - if check-in happens late => catch-up automatically via progress p
+     - A: check-in after hour end => p=1 for that hour (full catch-up)
+     ========================= */
+  function getCurrentHourIndex(nowMin){
+    for (let i=0;i<7;i++){
+      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin) return i;
+    }
+    return null;
+  }
+
+  function hourProgress(nowMin, idx){
+    const start = TIMES_MIN[idx].startMin;
+    const end = TIMES_MIN[idx].endMin;
+    if (nowMin <= start) return 0;
+    if (nowMin >= end) return 1;
+    return (nowMin - start) / Math.max(1, (end - start));
+  }
+
+  function sanityDeltaForHour(idx){
+    const ci = state.sanity.checkins[String(idx)];
+    if (!ci) return 0;
+    return SANITY_BASE_DRAIN * Number(ci.mult || 1);
+  }
+
+  function computeSanityNow(now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return { sanity: state.sanity.base, note: "Víkend", inSchool:false, curIdx:null };
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const curIdx = getCurrentHourIndex(nowMin);
+
+    // sanity starts at base
+    let S = clamp(state.sanity.base, 0, 100);
+
+    // Apply finished hours fully if they have checkin
+    for (let i=0;i<7;i++){
+      const end = TIMES_MIN[i].endMin;
+      const start = TIMES_MIN[i].startMin;
+
+      if (nowMin > end){
+        // hour already ended => full delta
+        S = clamp(S - sanityDeltaForHour(i), 0, 100);
+      } else if (nowMin < start){
+        // hour not started yet => nothing
+      } else {
+        // current hour (or within its interval)
+        const delta = sanityDeltaForHour(i);
+        if (delta > 0){
+          const p = hourProgress(nowMin, i);
+          S = clamp(S - delta * p, 0, 100);
+        }
+        break;
+      }
+    }
+
+    // If during lunch or break, sanity stays as already computed (no extra drain).
+    return { sanity: S, inSchool:true, curIdx };
+  }
+
+  function renderSanityCurve(now){
+    // Build 8 points: start + after each hour.
+    // Hours without checkin: flat (no drop).
+    let S = clamp(state.sanity.base, 0, 100);
+    const pts = [S];
+
+    for (let i=0;i<7;i++){
+      S = clamp(S - sanityDeltaForHour(i), 0, 100);
+      pts.push(S);
+    }
+
+    // If currently inside an hour and checkin exists, replace the "after hour" point visually by partial,
+    // but keep the end point for curve feel? We'll instead draw a curve to current sanity at the end.
+    const { sanity: S_now } = computeSanityNow(now);
+
+    // Map points to svg coordinates
+    const x = (i) => (i/7)*300;
+    const y = (pct) => 10 + (1 - pct/100) * 70; // 10..80
+
+    // We'll draw a smooth-ish poly curve using cubic segments between points,
+    // but set last point to current sanity for "live" feel
+    const values = pts.slice();
+    values[values.length-1] = values[values.length-1]; // keep end value for structure
+
+    // Create a separate "live" path end at S_now
+    const liveValues = pts.slice();
+    // find current hour index area for live value positioning
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    let tPos = 0; // 0..7
+    let found = false;
+    for (let i=0;i<7;i++){
+      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){
+        tPos = i + hourProgress(nowMin, i);
+        found = true;
+        break;
+      }
+      if (nowMin > TIMES_MIN[i].endMin) tPos = i+1;
+    }
+    if (!found && nowMin < TIMES_MIN[0].startMin) tPos = 0;
+    if (!found && nowMin > TIMES_MIN[6].endMin) tPos = 7;
+
+    // We’ll build path with multiple segments up to 7 and then set a final live point
+    // at x(tPos) / y(S_now).
+    const liveX = (tPos/7)*300;
+    const liveY = y(S_now);
+
+    // Base points for curve anchors:
+    const anchors = pts.map((v,i)=>({x:x(i), y:y(v)}));
+
+    // Build d: start at 0
+    let d = `M${anchors[0].x},${anchors[0].y}`;
+    for (let i=1;i<anchors.length;i++){
+      const p0 = anchors[i-1];
+      const p1 = anchors[i];
+      const cx = (p0.x + p1.x)/2;
+      d += ` C${cx},${p0.y} ${cx},${p1.y} ${p1.x},${p1.y}`;
+    }
+
+    // Now overlay live path: same but end at live point with same smoothing
+    let dl = `M${anchors[0].x},${anchors[0].y}`;
+    for (let i=1;i<anchors.length;i++){
+      const p0 = anchors[i-1];
+      const p1 = anchors[i];
+      const cx = (p0.x + p1.x)/2;
+      dl += ` C${cx},${p0.y} ${cx},${p1.y} ${p1.x},${p1.y}`;
+    }
+    // Replace end to live if we're not after school end:
+    dl += ` L${liveX},${liveY}`;
+
+    $("sanityPath").setAttribute("d", dl);
+  }
+
+  function updateSanityUI(now){
+    const toggle = $("toggleSanity");
+    if (toggle && !toggle.checked) return;
+
+    const { sanity, curIdx, inSchool } = computeSanityNow(now);
+
+    // show "Doplnit check-in" if we are inside a lesson and missing checkin for that hour
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    const missing = (idx !== null) && !state.sanity.checkins[String(idx)];
+    $("checkBtn").style.display = (missing ? "inline-block" : "none");
+
+    $("sanityPct").textContent = `Sanity: ${sanity.toFixed(0)}%`;
+
+    let meta = "";
+    if (!inSchool){
+      meta = `Mimo školu`;
+    } else if (idx === null){
+      // break/lunch/outside lesson interval
+      meta = `Mimo hodinu • check-in čeká na další hodinu`;
+    } else {
+      meta = `Hodina ${idx+1}/7 • check-in ${missing ? "chybí" : "OK"}`;
+    }
+    $("sanityMeta").textContent = meta;
+
+    renderSanityCurve(now);
+
+    const alert = $("sanityAlert");
+    const btn = $("kakBtn");
+
+    const canKak = (state.sanity.kakUsed || 0) < SANITY_KAK_MAX_PER_DAY;
+
+    if (sanity <= 25 && canKak){
+      alert.style.display = "block";
+      btn.style.display = "inline-block";
+    } else {
+      alert.style.display = "none";
+      btn.style.display = "none";
+    }
+
+    scheduleSixSevenScan();
+  }
+
+  function useKakajicko(){
+    const { sanity } = computeSanityNow(new Date());
+    if (sanity > 25) return; // no need
+    if ((state.sanity.kakUsed || 0) >= SANITY_KAK_MAX_PER_DAY) return;
+
+    // boost base so future computation reflects +30 now
+    // We need to add boost to base, but we should preserve already incurred losses.
+    // So we add boost to base directly.
+    state.sanity.base = clamp((state.sanity.base ?? 100) + SANITY_KAK_BOOST, 0, 100);
+    state.sanity.kakUsed = (state.sanity.kakUsed ?? 0) + 1;
+
+    saveSanity();
+    updateSanityUI(new Date());
+  }
+
+  /* =========================
+     CHECK-IN MODAL (auto popup + catch-up)
+     ========================= */
+  function openModal(){
+    const back = $("checkinBack");
+    back.style.display = "flex";
+    back.setAttribute("aria-hidden","false");
+  }
+  function closeModal(){
+    const back = $("checkinBack");
+    back.style.display = "none";
+    back.setAttribute("aria-hidden","true");
+  }
+
+  function buildMoodButtons(){
+    const wrap = $("moodButtons");
+    wrap.innerHTML = "";
+    for (const m of MOODS){
+      const b = document.createElement("button");
+      b.className = "moodBtn";
+      b.type = "button";
+      b.innerHTML = `<span class="moodEmoji">${m.emoji}</span><span class="moodTxt">${m.label}</span>`;
+      b.addEventListener("click", () => {
+        applyCheckin(m.key);
+      });
+      wrap.appendChild(b);
+    }
+  }
+
+  function currentCheckinTarget(now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return null;
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    if (idx === null) return null;
+    return idx;
+  }
+
+  function applyCheckin(moodKey){
+    const now = new Date();
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = currentCheckinTarget(now);
+    if (idx === null){
+      closeModal();
+      updateSanityUI(now);
+      return;
+    }
+
+    const mood = MOODS.find(x => x.key === moodKey) || MOODS[1];
+
+    // store checkin for current hour
+    state.sanity.checkins[String(idx)] = {
+      key: mood.key,
+      mult: mood.mult,
+      at: now.toISOString()
+    };
+
+    // mark popup shown for this hour (avoid loops)
+    state.sanity.lastPopupHour = idx;
+    state.sanity.lastPopupAt = now.toISOString();
+
+    saveSanity();
+    closeModal();
+
+    // catch-up is automatic because compute uses progress within the hour
+    updateSanityUI(now);
+  }
+
+  function shouldAutoPopup(now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return false;
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    if (idx === null) return false;
+
+    // already checked in?
+    if (state.sanity.checkins[String(idx)]) return false;
+
+    // only within first X minutes from hour start
+    const start = TIMES_MIN[idx].startMin;
+    const diff = nowMin - start;
+    if (diff < 0 || diff > SANITY_POPUP_WINDOW_MIN) return false;
+
+    // avoid repeating popup if we already popped for this hour
+    if (state.sanity.lastPopupHour === idx){
+      // also ensure it's same day (stored in this day's sanity key anyway)
+      return false;
+    }
+
+    return true;
+  }
+
+  function updateCheckinTexts(now){
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    const dayKey = dayKeyFromDate(now);
+
+    if (idx === null){
+      $("checkinTitle").textContent = "Check-in";
+      $("checkinSub").textContent = `Mimo hodinu • vyber náladu až začne hodina`;
+      return;
+    }
+    $("checkinTitle").textContent = `Check-in • hodina ${idx+1}/7`;
+    $("checkinSub").textContent = `${dayLabelCz(dayKey)} • ${TIMES[idx].start}–${TIMES[idx].end} • (pozdní check-in = catch-up)`;
+  }
+
+  function maybeAutoPopup(){
+    const now = new Date();
+    if (!$("toggleSanity") || !$("toggleSanity").checked) return;
+
+    if (shouldAutoPopup(now)){
+      updateCheckinTexts(now);
+      openModal();
+      state.sanity.lastPopupHour = currentCheckinTarget(now);
+      state.sanity.lastPopupAt = now.toISOString();
+      saveSanity();
+    }
   }
 
   /* =========================
@@ -1894,7 +2488,7 @@
     renderEventsPanel();
     updateCafaTracker(new Date());
     updateDaily(new Date());
-    scheduleSixSevenScan();
+    updateSanityUI(new Date());
   }
 
   /* =========================
@@ -1905,15 +2499,39 @@
     updateProgressBars();
     if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
     updateCafaTracker(now);
-    // Timetable rerender to keep tt-now accurate (cheap enough)
+    updateSanityUI(now);
+
+    // keep timetable highlight accurate without full repaint too often:
+    // repaint only every tick (30s) ok
     renderTimetable();
+
+    // auto popup checkin
+    maybeAutoPopup();
   }
 
   function boot(){
     initSettings();
-    initModeSelector();
     loadMinecraftSplash();
 
+    // sanity load
+    state.sanity = loadSanity();
+
+    // modal setup
+    buildMoodButtons();
+    $("checkinClose").addEventListener("click", closeModal);
+    $("checkinBack").addEventListener("click", (e) => { if (e.target === $("checkinBack")) closeModal(); });
+
+    // manual check-in
+    $("checkBtn").addEventListener("click", () => {
+      const now = new Date();
+      updateCheckinTexts(now);
+      openModal();
+    });
+
+    // kakajicko
+    $("kakBtn").addEventListener("click", useKakajicko);
+
+    // theme + toggles from storage
     state.classSource = "loading";
     state.teacherSource = "loading";
     statusText();
@@ -1924,10 +2542,7 @@
 
     syncBackend();
 
-    // initial scan
     scheduleSixSevenScan();
-
-    // every 10s do "six seven" emote (only if there are matches)
     setInterval(triggerSixSevenEmote, 10_000);
 
     setInterval(tick, 30_000);
