@@ -501,21 +501,20 @@
     .stackList{ display:flex; flex-direction:column; gap:8px; }
 
     /* Události scroll box */
-    #eventsList{
+    #eventsList, #abList{
       max-height: 260px;
       overflow-y: auto;
       padding-right: 6px;
     }
-    #eventsList::-webkit-scrollbar{ width: 10px; }
-    #eventsList::-webkit-scrollbar-thumb{
+    #eventsList::-webkit-scrollbar, #abList::-webkit-scrollbar{ width: 10px; }
+    #eventsList::-webkit-scrollbar-thumb, #abList::-webkit-scrollbar-thumb{
       background: rgba(255,255,255,0.14);
       border-radius: 999px;
       border: 2px solid rgba(0,0,0,0);
       background-clip: padding-box;
     }
-    #eventsList::-webkit-scrollbar-track{ background: transparent; }
-
-    body.theme-battlecats #eventsList::-webkit-scrollbar-thumb{
+    body.theme-battlecats #eventsList::-webkit-scrollbar-thumb,
+    body.theme-battlecats #abList::-webkit-scrollbar-thumb{
       background: rgba(0,0,0,0.18);
     }
 
@@ -541,6 +540,16 @@
     .eventTitle{ font-weight:1000; font-size:13px; margin-bottom:4px; }
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
     .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
+
+    .abRow{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:baseline;
+    }
+    .abName{ font-weight:1000; }
+    .abVal{ font-weight:1000; color: var(--muted); }
+    .abMeta{ margin-top:4px; font-weight:900; font-size:11px; color: var(--muted); }
 
     /* Tracker */
     .trackerCard{
@@ -605,7 +614,6 @@
     .kakBtn:active{ transform: translateY(1px); }
 
     .checkBtn{
-      display:none;
       border:none;
       padding:10px 12px;
       border-radius:10px;
@@ -616,13 +624,31 @@
       border: 1px solid var(--border);
     }
 
+    /* Sanity history bar */
+    .sanityHistoryBar{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .sanityHistoryBar select{
+      flex: 1 1 140px;
+      min-width: 140px;
+    }
+    #sanityHistoryBox{
+      margin-top: 8px;
+      display:none;
+    }
+    .sanityOff{ display:none !important; }
+
     /* =========================
-       IG-like carousel (Events + Sanity)
+       IG-like carousel (Events + Sanity + Absence)
        ========================= */
     .igCarousel{
       position: relative;
       overflow: hidden;
       border-radius: 12px;
+      padding-bottom: 6px;
     }
     .igTrack{
       display: flex;
@@ -633,7 +659,9 @@
     .igSlide{
       width: 100%;
       flex: 0 0 100%;
+      padding: 10px 10px 18px; /* FIX corners */
     }
+
     .igDots{
       position: absolute;
       left: 0;
@@ -707,9 +735,6 @@
     }
     @media (max-width:980px){
       .tt-grid{ min-width: 780px; }
-    }
-    @media (max-width:480px){
-      .tt-grid{ min-width: 720px; }
     }
     .tt-corner{ height:44px; }
 
@@ -913,6 +938,81 @@
     }
 
     /* =========================
+       Status pill (settings) online/offline
+       ========================= */
+    .statusPill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      font-weight:1000;
+      font-size:12px;
+      background: rgba(255,255,255,0.04);
+    }
+    .statusDot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.35);
+    }
+    .statusOnline{
+      color: rgba(120,255,170,0.98);
+      border-color: rgba(120,255,170,0.35);
+      box-shadow: 0 0 18px rgba(0,255,170,0.25);
+    }
+    .statusOnline .statusDot{
+      background: rgba(0,255,170,0.95);
+      box-shadow: 0 0 14px rgba(0,255,170,0.55);
+    }
+    .statusOffline{
+      color: rgba(255,120,120,0.98);
+      border-color: rgba(255,120,120,0.35);
+      box-shadow: 0 0 18px rgba(255,80,80,0.25);
+    }
+    .statusOffline .statusDot{
+      background: rgba(255,80,80,0.95);
+      box-shadow: 0 0 14px rgba(255,80,80,0.55);
+    }
+
+    /* =========================
+       Timetable badge online/offline
+       ========================= */
+    .ttOnline{
+      color: rgba(120,255,170,0.98) !important;
+      border-color: rgba(120,255,170,0.35) !important;
+      box-shadow: 0 0 18px rgba(0,255,170,0.25);
+    }
+    .ttOnline::before{
+      content:"";
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      margin-right:8px;
+      background: rgba(0,255,170,0.95);
+      box-shadow: 0 0 14px rgba(0,255,170,0.55);
+      transform: translateY(1px);
+    }
+    .ttOffline{
+      color: rgba(255,120,120,0.98) !important;
+      border-color: rgba(255,120,120,0.35) !important;
+      box-shadow: 0 0 18px rgba(255,80,80,0.25);
+    }
+    .ttOffline::before{
+      content:"";
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      margin-right:8px;
+      background: rgba(255,80,80,0.95);
+      box-shadow: 0 0 14px rgba(255,80,80,0.55);
+      transform: translateY(1px);
+    }
+
+    /* =========================
        CHECK-IN MODAL
        ========================= */
     .modalBack{
@@ -987,7 +1087,6 @@
     .moodBtn:hover{ background: rgba(255,255,255,0.10); }
     .moodEmoji{ font-size: 18px; display:block; margin-bottom: 6px; }
     .moodTxt{ font-size: 12px; }
-
   </style>
 </head>
 
@@ -1035,10 +1134,13 @@
       <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
       <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
       <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Cáfa Tracker</span></label>
       <label class="toggle"><input type="checkbox" id="toggleSanity" checked /> <span>Zobrazit Sanity Meter</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Tracker</span></label>
 
-      <p class="hint" id="statusHint">Status: OK</p>
+      <div id="statusHint" class="statusPill">
+        <span class="statusDot"></span>
+        <span id="statusText">Status</span>
+      </div>
     </div>
 
     <div class="mainLayout">
@@ -1111,27 +1213,41 @@
       </div>
 
       <aside id="addonPanel" class="addonCol">
-
-        <!-- IG-style shared block -->
         <div class="block" id="infoCarouselBlock">
           <div class="rowTitle" id="infoCarouselTitle">Události</div>
 
           <div class="igCarousel" id="igCarousel">
             <div class="igTrack" id="igTrack">
-
-              <!-- Slide: Události -->
               <section class="igSlide" id="slideEvents" data-title="Události">
                 <div id="eventsList" class="stackList">
                   <div class="stackItem muted">Načítání…</div>
                 </div>
               </section>
 
-              <!-- Slide: Sanity -->
               <section class="igSlide" id="slideSanity" data-title="Sanity Meter">
                 <div class="sanityWrap">
                   <div class="sanityTop">
                     <div class="sanityPct" id="sanityPct">Sanity: —</div>
                     <div class="sanityPct" id="sanityMeta">—</div>
+                  </div>
+
+                  <div class="sanityHistoryBar">
+                    <select id="sanityDaySelect" aria-label="Sanity historie den"></select>
+                    <select id="sanityViewSelect" aria-label="Sanity historie pohled">
+                      <option value="day">Celý den</option>
+                      <option value="h0">Hodina 1</option>
+                      <option value="h1">Hodina 2</option>
+                      <option value="h2">Hodina 3</option>
+                      <option value="h3">Hodina 4</option>
+                      <option value="h4">Hodina 5</option>
+                      <option value="h5">Hodina 6</option>
+                      <option value="h6">Hodina 7</option>
+                    </select>
+                    <button class="checkBtn" id="sanityShowBtn" type="button">Zobrazit</button>
+                  </div>
+
+                  <div id="sanityHistoryBox" class="stackList">
+                    <div class="stackItem muted">Historie…</div>
                   </div>
 
                   <div class="sanityGraph" aria-hidden="true">
@@ -1155,6 +1271,12 @@
                 </div>
               </section>
 
+              <section class="igSlide" id="slideAbsence" data-title="Absence leaderboard">
+                <div class="stackList" id="abList">
+                  <div class="stackItem muted">Načítání…</div>
+                </div>
+                <p class="hint" id="abHint">Zdroj: LeaderboardAb.txt</p>
+              </section>
             </div>
 
             <div class="igDots" id="igDots" aria-hidden="true"></div>
@@ -1163,13 +1285,12 @@
 
         <div class="block" id="cafaBlock">
           <div class="rowTitle">Cáfa Tracker</div>
-          <div class="trackerCard">
-            <div class="trackerBadge" id="cafaBadge">Cáfa</div>
-            <div class="trackerMain" id="cafaMain">Načítání…</div>
-            <div class="trackerSub" id="cafaSub">—</div>
+          <div class="trackerCard" id="cafaCard">
+            <div class="trackerBadge">Cáfa</div>
+            <div class="trackerMain" id="cafaLine1">—</div>
+            <div class="trackerSub" id="cafaLine2">—</div>
           </div>
         </div>
-
       </aside>
     </div>
 
@@ -1190,7 +1311,7 @@
       <div class="tt-top">
         <div>
           <div class="rowTitle">Rozvrh</div>
-          <div class="tt-sub">DE3A • Týdenní přehled • fancy</div>
+          <div class="tt-sub">DE3A • Týdenní přehled</div>
         </div>
         <div class="tt-meta">
           <span class="tt-badge" id="ttUpdated">Aktualizováno: —</span>
@@ -1499,8 +1620,19 @@
     return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj));
   }
 
+  /* =========================
+     STATUS pill (settings)
+     ========================= */
   function statusText(){
-    $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Cáfa: ${state.teacherSource}`;
+    const wrap = $("statusHint");
+    const txt = $("statusText");
+    if (!wrap || !txt) return;
+
+    const online = (state.classSource === "Bakaláří") && (state.teacherSource === "Bakaláři");
+    wrap.classList.toggle("statusOnline", online);
+    wrap.classList.toggle("statusOffline", !online);
+
+    txt.textContent = online ? `Bakaláři ONLINE` : `LOCAL / OFFLINE`;
   }
 
   /* =========================
@@ -1548,8 +1680,8 @@
     const toggleTT = $("toggleTimetable");
     const toggleDaily = $("toggleDaily");
     const toggleEvents = $("toggleEvents");
-    const toggleCafa = $("toggleCafa");
     const toggleSanity = $("toggleSanity");
+    const toggleCafa = $("toggleCafa");
 
     toggleTT.addEventListener("change", () => {
       $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
@@ -1575,41 +1707,35 @@
       refreshAddonPanelVisibility();
     });
 
-    // load saved
     applyTheme(localStorage.getItem("sp_theme") || "dark");
     applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
     applyMode(localStorage.getItem("sp_mode") || "default");
+    $("modeSelect").value = localStorage.getItem("sp_mode") || "default";
 
     const savedTT = localStorage.getItem("sp_toggle_tt");
     const savedDaily = localStorage.getItem("sp_toggle_daily");
     const savedEvents = localStorage.getItem("sp_toggle_events");
-    const savedCafa = localStorage.getItem("sp_toggle_cafa");
     const savedSanity = localStorage.getItem("sp_toggle_sanity");
+    const savedCafa = localStorage.getItem("sp_toggle_cafa");
 
     if (savedTT !== null) toggleTT.checked = savedTT === "1";
     if (savedDaily !== null) toggleDaily.checked = savedDaily === "1";
     if (savedEvents !== null) toggleEvents.checked = savedEvents === "1";
-    if (savedCafa !== null) toggleCafa.checked = savedCafa === "1";
     if (savedSanity !== null) toggleSanity.checked = savedSanity === "1";
+    if (savedCafa !== null) toggleCafa.checked = savedCafa === "1";
 
     $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
     $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
 
-    // select values reflect current
-    $("modeSelect").value = localStorage.getItem("sp_mode") || "default";
-
     syncCarouselVisibility();
+    refreshAddonPanelVisibility();
   }
 
   /* =========================
-     IG Carousel logic
+     IG Carousel (Events + Sanity + Absence)
      ========================= */
-  let carousel = {
-    visible: [],       // ["events","sanity"]
-    index: 0,          // 0..visible.length-1
-    hideTimer: null,
-  };
+  let carousel = { visible: [], index: 0, hideTimer: null };
 
   function setCarouselIndex(i){
     const track = $("igTrack");
@@ -1620,12 +1746,11 @@
     carousel.index = Math.max(0, Math.min(max, i));
 
     track.style.transform = `translateX(-${carousel.index * 100}%)`;
-
     [...dots.querySelectorAll(".igDot")].forEach((d, n) => d.classList.toggle("isActive", n === carousel.index));
 
     const title = $("infoCarouselTitle");
     const key = carousel.visible[carousel.index] || "events";
-    title.textContent = (key === "sanity") ? "Sanity Meter" : "Události";
+    title.textContent = (key === "sanity") ? "Sanity Meter" : (key === "absence") ? "Absence leaderboard" : "Události";
 
     localStorage.setItem("sp_info_carousel", String(carousel.index));
   }
@@ -1645,7 +1770,7 @@
       b.className = "igDot" + (idx === carousel.index ? " isActive" : "");
       b.type = "button";
       b.dataset.i = String(idx);
-      b.setAttribute("aria-label", key === "sanity" ? "Sanity" : "Události");
+      b.setAttribute("aria-label", key);
       b.addEventListener("click", () => setCarouselIndex(idx));
       dots.appendChild(b);
     });
@@ -1655,23 +1780,22 @@
     const infoBlock = $("infoCarouselBlock");
     const slideEvents = $("slideEvents");
     const slideSanity = $("slideSanity");
-    const toggleEvents = $("toggleEvents");
-    const toggleSanity = $("toggleSanity");
+    const slideAbs = $("slideAbsence");
 
-    const showEvents = !!toggleEvents?.checked;
-    const showSanity = !!toggleSanity?.checked;
+    const showEvents = !!$("toggleEvents")?.checked;
+    const showSanity = !!$("toggleSanity")?.checked;
 
     slideEvents.classList.toggle("hidden", !showEvents);
     slideSanity.classList.toggle("hidden", !showSanity);
+    slideAbs.classList.remove("hidden"); // absence always on
 
     carousel.visible = [];
     if (showEvents) carousel.visible.push("events");
     if (showSanity) carousel.visible.push("sanity");
+    carousel.visible.push("absence");
 
-    // If both off, hide whole block
     infoBlock.classList.toggle("hidden", carousel.visible.length === 0);
 
-    // Adjust index to valid range
     const savedIdx = Number(localStorage.getItem("sp_info_carousel") || "0");
     carousel.index = isFinite(savedIdx) ? savedIdx : 0;
     if (carousel.index >= carousel.visible.length) carousel.index = 0;
@@ -1686,20 +1810,16 @@
     const track = $("igTrack");
     if (!block || !track) return;
 
-    // tap to show dots briefly on mobile
     block.addEventListener("click", () => {
       block.classList.add("showDots");
       if (carousel.hideTimer) clearTimeout(carousel.hideTimer);
       carousel.hideTimer = setTimeout(() => block.classList.remove("showDots"), 2200);
     });
 
-    // swipe
-    let x0 = null;
-    let y0 = null;
+    let x0 = null, y0 = null;
     track.addEventListener("touchstart", (e) => {
       const t = e.touches[0];
-      x0 = t.clientX;
-      y0 = t.clientY;
+      x0 = t.clientX; y0 = t.clientY;
     }, { passive:true });
 
     track.addEventListener("touchend", (e) => {
@@ -1868,7 +1988,7 @@
   }
 
   /* =========================
-     TIMETABLE RENDER
+     TIMETABLE RENDER + badge glow
      ========================= */
   function markForCell(dayKey, idx){
     return (state.classMarks || []).find(m => m.day===dayKey && m.idx===idx) || null;
@@ -1972,7 +2092,6 @@
         cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
         cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
         cell.addEventListener("mouseleave", () => hideTooltip());
-
         cell.addEventListener("click", (e) => {
           e.stopPropagation();
           const visible = tooltip.style.display === "block";
@@ -1984,7 +2103,14 @@
       }
     }
 
-    $("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
+    const tt = $("ttUpdated");
+    if (tt){
+      const online = (state.classSource === "Bakaláří");
+      tt.classList.toggle("ttOnline", online);
+      tt.classList.toggle("ttOffline", !online);
+      tt.textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${online ? "Bakaláři" : "Local"}`;
+    }
+
     scheduleSixSevenScan();
   }
 
@@ -1996,7 +2122,6 @@
     list.innerHTML = "";
 
     const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
-
     const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
     const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
 
@@ -2061,104 +2186,154 @@
   }
 
   /* =========================
-     CAFA TRACKER (clean)
+     ABSENCE leaderboard (LeaderboardAb.txt)
      ========================= */
-  function findCurrentLessonIndex(nowMin){
-    for (let i=0;i<7;i++){
-      const t = TIMES_MIN[i];
-      if (nowMin >= t.startMin && nowMin <= t.endMin) return i;
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  async function loadAbsenceLeaderboard(){
+    const box = $("abList");
+    const hint = $("abHint");
+    if (!box) return;
+
+    const fallback = () => {
+      box.innerHTML = `<div class="stackItem muted">LeaderboardAb.txt nenalezen / prázdný</div>`;
+      if (hint) hint.textContent = "Zdroj: LeaderboardAb.txt (fallback)";
+    };
+
+    try{
+      const res = await fetch("./LeaderboardAb.txt?ts=" + Date.now(), { cache:"no-store" });
+      if (!res.ok) return fallback();
+
+      const txt = await res.text();
+      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+      if (!lines.length) return fallback();
+
+      const rows = lines.map(line => {
+        const m = line.match(/^(.+?)(?:\s*[-:]\s*(\d+))?\s*$/);
+        return {
+          name: (m?.[1] || line).trim(),
+          val: m?.[2] ? Number(m[2]) : null,
+          raw: line
+        };
+      });
+
+      const hasNums = rows.some(r => typeof r.val === "number");
+      if (hasNums){
+        rows.sort((a,b) => (b.val ?? -Infinity) - (a.val ?? -Infinity));
+      }
+
+      box.innerHTML = "";
+      rows.forEach((r, idx) => {
+        const item = document.createElement("div");
+        item.className = "stackItem";
+        item.innerHTML = `
+          <div class="abRow">
+            <div class="abName">${idx+1}. ${escapeHtml(r.name)}</div>
+            <div class="abVal">${(typeof r.val === "number") ? r.val : ""}</div>
+          </div>
+          <div class="abMeta">${escapeHtml(r.raw)}</div>
+        `;
+        box.appendChild(item);
+      });
+
+      if (hint) hint.textContent = "Zdroj: LeaderboardAb.txt";
+      scheduleSixSevenScan();
+    }catch(e){
+      fallback();
     }
-    return null;
   }
-  function findNextLessonIndex(dayArr, nowMin){
-    for (let i=0;i<7;i++){
-      if (TIMES_MIN[i].startMin > nowMin && dayArr[i] && dayArr[i].subj) return i;
-    }
-    return null;
-  }
-  function findLastLessonIndex(dayArr, nowMin){
-    for (let i=6;i>=0;i--){
-      if (TIMES_MIN[i].endMin < nowMin && dayArr[i] && dayArr[i].subj) return i;
-    }
-    return null;
-  }
-  function lessonCompact(l){
-    if (!l) return "—";
-    const cls = (l.class || "").replace(/\s+cel[aá]\s*$/i, "").trim();
-    const room = (l.room || "").trim();
-    return `${cls || "—"} • ${room || "—"}`;
-  }
+
+  /* =========================
+     CAFA TRACKER (clean + hide after school)
+     ========================= */
   function updateCafaTracker(now){
-    const badge = $("cafaBadge");
-    const main = $("cafaMain");
-    const sub = $("cafaSub");
+    const block = $("cafaBlock");
+    const l1 = $("cafaLine1");
+    const l2 = $("cafaLine2");
+    if (!block || !l1 || !l2) return;
 
     const dayKey = dayKeyFromDate(now);
-    const src = state.teacherSource;
-    const days = getTeacherDays();
-
     if (!dayKey){
-      badge.textContent = "Cáfa • off";
-      main.textContent = "Ve stínech 😎";
-      sub.textContent = `Víkend • ${formatDateCZ(now)} • ${src}`;
-      scheduleSixSevenScan();
+      block.classList.add("hidden");
       return;
     }
 
     const nowMin = now.getHours()*60 + now.getMinutes();
+    const days = getTeacherDays();
     const arr = days[dayKey] || Array(7).fill(null);
 
-    const lastExistingIdx = (() => {
-      for (let i=6;i>=0;i--) if (arr[i] && arr[i].subj) return i;
-      return null;
-    })();
+    // poslední hodina dne podle rozvrhu učitele
+    let lastIdx = null;
+    for (let i=6;i>=0;i--){
+      if (arr[i] && arr[i].subj){ lastIdx = i; break; }
+    }
 
-    if (lastExistingIdx !== null && nowMin > TIMES_MIN[lastExistingIdx].endMin){
-      badge.textContent = "Cáfa • off";
-      main.textContent = "Ve stínech 😎";
-      sub.textContent = `${dayLabelCz(dayKey)} • po škole • ${src}`;
-      scheduleSixSevenScan();
+    if (lastIdx === null){
+      block.classList.add("hidden");
       return;
     }
 
-    // Lunch
+    if (nowMin > TIMES_MIN[lastIdx].endMin){
+      block.classList.add("hidden");
+      return;
+    }
+
+    block.classList.remove("hidden");
+
+    const compact = (L) => {
+      const cls = (L?.class || "").replace(/\s+cel[aá]\s*$/i, "").trim();
+      const room = (L?.room || "").trim();
+      return `${cls || "—"} • ${room || "—"}`;
+    };
+
+    // lunch
     if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
-      const lastIdx = findLastLessonIndex(arr, nowMin);
-      const nextIdx = findNextLessonIndex(arr, nowMin);
-      badge.textContent = "Cáfa • lunch";
-      main.textContent = "Obědová pauza";
-      const lastTxt = lastIdx !== null ? `Naposledy: ${lessonCompact(arr[lastIdx])}` : "";
-      const nextTxt = nextIdx !== null ? `Další: ${lessonCompact(arr[nextIdx])} v ${TIMES[nextIdx].start}` : "";
-      sub.textContent = [lastTxt, nextTxt, src].filter(Boolean).join(" • ");
-      scheduleSixSevenScan();
-      return;
-    }
-
-    // Lesson
-    const curIdx = findCurrentLessonIndex(nowMin);
-    if (curIdx !== null){
-      const l = arr[curIdx];
-      if (l){
-        badge.textContent = "Cáfa • live";
-        main.textContent = `Teď: ${lessonCompact(l)}`;
-        sub.textContent = `Hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      let lastSeenIdx = null;
+      for (let i=6;i>=0;i--){
+        if (TIMES_MIN[i].endMin < nowMin && arr[i] && arr[i].subj){ lastSeenIdx = i; break; }
+      }
+      if (lastSeenIdx !== null){
+        l1.textContent = `Naposledy: ${compact(arr[lastSeenIdx])}`;
+        l2.textContent = `Obědová pauza • další info po ${LUNCH.end}`;
       } else {
-        badge.textContent = "Cáfa • stealth";
-        main.textContent = "Ve stínech 😎";
-        sub.textContent = `Hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+        l1.textContent = `Obědová pauza`;
+        l2.textContent = `—`;
       }
       scheduleSixSevenScan();
       return;
     }
 
-    // Break
-    const lastIdx = findLastLessonIndex(arr, nowMin);
-    const nextIdx = findNextLessonIndex(arr, nowMin);
-    badge.textContent = "Cáfa • break";
-    main.textContent = "Přestávka";
-    const lastTxt = lastIdx !== null ? `Naposledy: ${lessonCompact(arr[lastIdx])}` : "";
-    const nextTxt = nextIdx !== null ? `Další: ${lessonCompact(arr[nextIdx])} v ${TIMES[nextIdx].start}` : "";
-    sub.textContent = [lastTxt, nextTxt, src].filter(Boolean).join(" • ") || src;
+    // current lesson
+    let curIdx = null;
+    for (let i=0;i<7;i++){
+      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){ curIdx = i; break; }
+    }
+
+    if (curIdx !== null && arr[curIdx]){
+      l1.textContent = compact(arr[curIdx]);
+      l2.textContent = `Hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
+      scheduleSixSevenScan();
+      return;
+    }
+
+    // break
+    let lastSeenIdx = null;
+    for (let i=6;i>=0;i--){
+      if (TIMES_MIN[i].endMin < nowMin && arr[i] && arr[i].subj){ lastSeenIdx = i; break; }
+    }
+    let nextIdx = null;
+    for (let i=0;i<7;i++){
+      if (TIMES_MIN[i].startMin > nowMin && arr[i] && arr[i].subj){ nextIdx = i; break; }
+    }
+
+    l1.textContent = lastSeenIdx !== null ? `Naposledy: ${compact(arr[lastSeenIdx])}` : `Naposledy: —`;
+    l2.textContent = nextIdx !== null
+      ? `Přestávka • Další: ${compact(arr[nextIdx])} • ${TIMES[nextIdx].start}`
+      : `Přestávka • Další: —`;
 
     scheduleSixSevenScan();
   }
@@ -2212,11 +2387,10 @@
     const lessons = (days[dayKey] || []).slice(0, 7);
     const totalToday = countTodayLessons(lessons);
 
-    const nowMin2 = now.getHours()*60 + now.getMinutes();
     const first = TIMES_MIN[0];
     const last = TIMES_MIN[totalToday-1] || TIMES_MIN[6];
 
-    if (nowMin2 > last.endMin){
+    if (nowMin > last.endMin){
       setDailyBadge("free","Volno");
       setText("dailyText","Volno 😎");
       setBar("daybar",100);
@@ -2226,7 +2400,7 @@
       return;
     }
 
-    if (nowMin2 < first.startMin){
+    if (nowMin < first.startMin){
       setDailyBadge("live","Dnes");
       const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
       setText("dailyText",`Za chvíli začne: ${next}`);
@@ -2242,8 +2416,8 @@
       const cur = fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
       const next = (i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
 
-      if (nowMin2 >= t.startMin && nowMin2 <= t.endMin){
-        const pct = ((nowMin2 - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
+      if (nowMin >= t.startMin && nowMin <= t.endMin){
+        const pct = ((nowMin - t.startMin) / Math.max(1,(t.endMin - t.startMin))) * 100;
         setDailyBadge("live","Právě");
         setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
         setBar("daybar", pct);
@@ -2254,7 +2428,7 @@
       }
 
       const nt = TIMES_MIN[i+1];
-      if (nt && nowMin2 > t.endMin && nowMin2 < nt.startMin){
+      if (nt && nowMin > t.endMin && nowMin < nt.startMin){
         setDailyBadge("live","Pauza");
         setText("dailyText", `Následuje: ${next}`);
         setBar("daybar", 0);
@@ -2271,295 +2445,6 @@
     setText("daylabel","");
     setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
     scheduleSixSevenScan();
-  }
-
-  /* =========================
-     SANITY STORAGE
-     ========================= */
-  function todayKey(){
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-  }
-  function sanityKey(){ return "sp_sanity_" + todayKey(); }
-
-  function loadSanity(){
-    try{
-      const raw = localStorage.getItem(sanityKey());
-      if (!raw) return {
-        base: 100,
-        checkins: {},
-        kakUsed: 0,
-        lastPopupHour: null,
-        lastPopupAt: null,
-      };
-      const obj = JSON.parse(raw);
-      return {
-        base: Number(obj.base ?? 100),
-        checkins: obj.checkins || {},
-        kakUsed: Number(obj.kakUsed ?? 0),
-        lastPopupHour: obj.lastPopupHour ?? null,
-        lastPopupAt: obj.lastPopupAt ?? null,
-      };
-    }catch{
-      return { base:100, checkins:{}, kakUsed:0, lastPopupHour:null, lastPopupAt:null };
-    }
-  }
-  function saveSanity(){
-    localStorage.setItem(sanityKey(), JSON.stringify(state.sanity));
-  }
-
-  /* =========================
-     SANITY CORE
-     ========================= */
-  function getCurrentHourIndex(nowMin){
-    for (let i=0;i<7;i++){
-      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin) return i;
-    }
-    return null;
-  }
-
-  function hourProgress(nowMin, idx){
-    const start = TIMES_MIN[idx].startMin;
-    const end = TIMES_MIN[idx].endMin;
-    if (nowMin <= start) return 0;
-    if (nowMin >= end) return 1;
-    return (nowMin - start) / Math.max(1, (end - start));
-  }
-
-  function sanityDeltaForHour(idx){
-    const ci = state.sanity.checkins[String(idx)];
-    if (!ci) return 0;
-    return SANITY_BASE_DRAIN * Number(ci.mult || 1);
-  }
-
-  function computeSanityNow(now){
-    const dayKey = dayKeyFromDate(now);
-    if (!dayKey) return { sanity: state.sanity.base, inSchool:false, curIdx:null };
-
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    const curIdx = getCurrentHourIndex(nowMin);
-
-    let S = clamp(state.sanity.base, 0, 100);
-
-    for (let i=0;i<7;i++){
-      const end = TIMES_MIN[i].endMin;
-      const start = TIMES_MIN[i].startMin;
-
-      if (nowMin > end){
-        S = clamp(S - sanityDeltaForHour(i), 0, 100);
-      } else if (nowMin < start){
-        // not started
-      } else {
-        const delta = sanityDeltaForHour(i);
-        if (delta > 0){
-          const p = hourProgress(nowMin, i);
-          S = clamp(S - delta * p, 0, 100);
-        }
-        break;
-      }
-    }
-    return { sanity: S, inSchool:true, curIdx };
-  }
-
-  function renderSanityCurve(now){
-    let S = clamp(state.sanity.base, 0, 100);
-    const pts = [S];
-    for (let i=0;i<7;i++){
-      S = clamp(S - sanityDeltaForHour(i), 0, 100);
-      pts.push(S);
-    }
-
-    const { sanity: S_now } = computeSanityNow(now);
-
-    const x = (i) => (i/7)*300;
-    const y = (pct) => 10 + (1 - pct/100) * 70;
-
-    const anchors = pts.map((v,i)=>({x:x(i), y:y(v)}));
-
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    let tPos = 0;
-    let found = false;
-    for (let i=0;i<7;i++){
-      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){
-        tPos = i + hourProgress(nowMin, i);
-        found = true;
-        break;
-      }
-      if (nowMin > TIMES_MIN[i].endMin) tPos = i+1;
-    }
-    if (!found && nowMin < TIMES_MIN[0].startMin) tPos = 0;
-    if (!found && nowMin > TIMES_MIN[6].endMin) tPos = 7;
-
-    const liveX = (tPos/7)*300;
-    const liveY = y(S_now);
-
-    let dl = `M${anchors[0].x},${anchors[0].y}`;
-    for (let i=1;i<anchors.length;i++){
-      const p0 = anchors[i-1];
-      const p1 = anchors[i];
-      const cx = (p0.x + p1.x)/2;
-      dl += ` C${cx},${p0.y} ${cx},${p1.y} ${p1.x},${p1.y}`;
-    }
-    dl += ` L${liveX},${liveY}`;
-
-    $("sanityPath").setAttribute("d", dl);
-  }
-
-  function updateSanityUI(now){
-    const toggle = $("toggleSanity");
-    if (toggle && !toggle.checked) return;
-
-    const { sanity } = computeSanityNow(now);
-
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    const idx = getCurrentHourIndex(nowMin);
-    const missing = (idx !== null) && !state.sanity.checkins[String(idx)];
-    $("checkBtn").style.display = (missing ? "inline-block" : "none");
-
-    $("sanityPct").textContent = `Sanity: ${sanity.toFixed(0)}%`;
-
-    let meta = "";
-    if (idx === null){
-      meta = `Mimo hodinu`;
-    } else {
-      meta = `Hodina ${idx+1}/7 • check-in ${missing ? "chybí" : "OK"}`;
-    }
-    $("sanityMeta").textContent = meta;
-
-    renderSanityCurve(now);
-
-    const alert = $("sanityAlert");
-    const btn = $("kakBtn");
-    const canKak = (state.sanity.kakUsed || 0) < SANITY_KAK_MAX_PER_DAY;
-
-    if (sanity <= 25 && canKak){
-      alert.style.display = "block";
-      btn.style.display = "inline-block";
-    } else {
-      alert.style.display = "none";
-      btn.style.display = "none";
-    }
-
-    scheduleSixSevenScan();
-  }
-
-  function useKakajicko(){
-    const { sanity } = computeSanityNow(new Date());
-    if (sanity > 25) return;
-    if ((state.sanity.kakUsed || 0) >= SANITY_KAK_MAX_PER_DAY) return;
-
-    state.sanity.base = clamp((state.sanity.base ?? 100) + SANITY_KAK_BOOST, 0, 100);
-    state.sanity.kakUsed = (state.sanity.kakUsed ?? 0) + 1;
-
-    saveSanity();
-    updateSanityUI(new Date());
-  }
-
-  /* =========================
-     CHECK-IN MODAL
-     ========================= */
-  function openModal(){
-    const back = $("checkinBack");
-    back.style.display = "flex";
-    back.setAttribute("aria-hidden","false");
-  }
-  function closeModal(){
-    const back = $("checkinBack");
-    back.style.display = "none";
-    back.setAttribute("aria-hidden","true");
-  }
-
-  function buildMoodButtons(){
-    const wrap = $("moodButtons");
-    wrap.innerHTML = "";
-    for (const m of MOODS){
-      const b = document.createElement("button");
-      b.className = "moodBtn";
-      b.type = "button";
-      b.innerHTML = `<span class="moodEmoji">${m.emoji}</span><span class="moodTxt">${m.label}</span>`;
-      b.addEventListener("click", () => applyCheckin(m.key));
-      wrap.appendChild(b);
-    }
-  }
-
-  function currentCheckinTarget(now){
-    const dayKey = dayKeyFromDate(now);
-    if (!dayKey) return null;
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    const idx = getCurrentHourIndex(nowMin);
-    if (idx === null) return null;
-    return idx;
-  }
-
-  function applyCheckin(moodKey){
-    const now = new Date();
-    const idx = currentCheckinTarget(now);
-    if (idx === null){
-      closeModal();
-      updateSanityUI(now);
-      return;
-    }
-
-    const mood = MOODS.find(x => x.key === moodKey) || MOODS[1];
-
-    state.sanity.checkins[String(idx)] = {
-      key: mood.key,
-      mult: mood.mult,
-      at: now.toISOString()
-    };
-
-    state.sanity.lastPopupHour = idx;
-    state.sanity.lastPopupAt = now.toISOString();
-
-    saveSanity();
-    closeModal();
-    updateSanityUI(now);
-  }
-
-  function shouldAutoPopup(now){
-    const dayKey = dayKeyFromDate(now);
-    if (!dayKey) return false;
-
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    const idx = getCurrentHourIndex(nowMin);
-    if (idx === null) return false;
-
-    if (state.sanity.checkins[String(idx)]) return false;
-
-    const start = TIMES_MIN[idx].startMin;
-    const diff = nowMin - start;
-    if (diff < 0 || diff > SANITY_POPUP_WINDOW_MIN) return false;
-
-    if (state.sanity.lastPopupHour === idx) return false;
-
-    return true;
-  }
-
-  function updateCheckinTexts(now){
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    const idx = getCurrentHourIndex(nowMin);
-    const dayKey = dayKeyFromDate(now);
-
-    if (idx === null){
-      $("checkinTitle").textContent = "Check-in";
-      $("checkinSub").textContent = `Mimo hodinu • vyber náladu až začne hodina`;
-      return;
-    }
-    $("checkinTitle").textContent = `Check-in • hodina ${idx+1}/7`;
-    $("checkinSub").textContent = `${dayLabelCz(dayKey)} • ${TIMES[idx].start}–${TIMES[idx].end} • (pozdní check-in = catch-up)`;
-  }
-
-  function maybeAutoPopup(){
-    const now = new Date();
-    if (!$("toggleSanity") || !$("toggleSanity").checked) return;
-
-    if (shouldAutoPopup(now)){
-      updateCheckinTexts(now);
-      openModal();
-      state.sanity.lastPopupHour = currentCheckinTarget(now);
-      state.sanity.lastPopupAt = now.toISOString();
-      saveSanity();
-    }
   }
 
   /* =========================
@@ -2661,13 +2546,16 @@
   }
 
   /* =========================
-     SANITY init
+     SANITY (live + history)
      ========================= */
-  function todayKey(){
+  function todayISO(){
     const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const da = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${da}`;
   }
-  function sanityKey(){ return "sp_sanity_" + todayKey(); }
+  function sanityKey(){ return "sp_sanity_" + todayISO(); }
 
   function loadSanity(){
     try{
@@ -2675,6 +2563,7 @@
       if (!raw) return {
         base: 100,
         checkins: {},
+        snapshots: {},
         kakUsed: 0,
         lastPopupHour: null,
         lastPopupAt: null,
@@ -2683,12 +2572,476 @@
       return {
         base: Number(obj.base ?? 100),
         checkins: obj.checkins || {},
+        snapshots: obj.snapshots || {},
         kakUsed: Number(obj.kakUsed ?? 0),
         lastPopupHour: obj.lastPopupHour ?? null,
         lastPopupAt: obj.lastPopupAt ?? null,
       };
     }catch{
-      return { base:100, checkins:{}, kakUsed:0, lastPopupHour:null, lastPopupAt:null };
+      return { base:100, checkins:{}, snapshots:{}, kakUsed:0, lastPopupHour:null, lastPopupAt:null };
+    }
+  }
+  function saveSanity(){
+    localStorage.setItem(sanityKey(), JSON.stringify(state.sanity));
+  }
+
+  function getCurrentHourIndex(nowMin){
+    for (let i=0;i<7;i++){
+      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin) return i;
+    }
+    return null;
+  }
+  function hourProgress(nowMin, idx){
+    const start = TIMES_MIN[idx].startMin;
+    const end = TIMES_MIN[idx].endMin;
+    if (nowMin <= start) return 0;
+    if (nowMin >= end) return 1;
+    return (nowMin - start) / Math.max(1, (end - start));
+  }
+  function sanityDeltaForHour(idx){
+    const ci = state.sanity.checkins[String(idx)];
+    if (!ci) return 0;
+    return SANITY_BASE_DRAIN * Number(ci.mult || 1);
+  }
+  function computeSanityNow(now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return { sanity: state.sanity.base, inSchool:false, curIdx:null };
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const curIdx = getCurrentHourIndex(nowMin);
+
+    let S = clamp(state.sanity.base, 0, 100);
+
+    for (let i=0;i<7;i++){
+      const end = TIMES_MIN[i].endMin;
+      const start = TIMES_MIN[i].startMin;
+
+      if (nowMin > end){
+        S = clamp(S - sanityDeltaForHour(i), 0, 100);
+      } else if (nowMin < start){
+        // not started
+      } else {
+        const delta = sanityDeltaForHour(i);
+        if (delta > 0){
+          const p = hourProgress(nowMin, i);
+          S = clamp(S - delta * p, 0, 100);
+        }
+        break;
+      }
+    }
+    return { sanity: S, inSchool:true, curIdx };
+  }
+
+  function renderSanityCurve(now){
+    let S = clamp(state.sanity.base, 0, 100);
+    const pts = [S];
+    for (let i=0;i<7;i++){
+      S = clamp(S - sanityDeltaForHour(i), 0, 100);
+      pts.push(S);
+    }
+    const { sanity: S_now } = computeSanityNow(now);
+
+    const x = (i) => (i/7)*300;
+    const y = (pct) => 10 + (1 - pct/100) * 70;
+
+    const anchors = pts.map((v,i)=>({x:x(i), y:y(v)}));
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    let tPos = 0;
+    let found = false;
+    for (let i=0;i<7;i++){
+      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){
+        tPos = i + hourProgress(nowMin, i);
+        found = true;
+        break;
+      }
+      if (nowMin > TIMES_MIN[i].endMin) tPos = i+1;
+    }
+    if (!found && nowMin < TIMES_MIN[0].startMin) tPos = 0;
+    if (!found && nowMin > TIMES_MIN[6].endMin) tPos = 7;
+
+    const liveX = (tPos/7)*300;
+    const liveY = y(S_now);
+
+    let dl = `M${anchors[0].x},${anchors[0].y}`;
+    for (let i=1;i<anchors.length;i++){
+      const p0 = anchors[i-1];
+      const p1 = anchors[i];
+      const cx = (p0.x + p1.x)/2;
+      dl += ` C${cx},${p0.y} ${cx},${p1.y} ${p1.x},${p1.y}`;
+    }
+    dl += ` L${liveX},${liveY}`;
+
+    $("sanityPath").setAttribute("d", dl);
+  }
+
+  function updateSanityUI(now){
+    const toggle = $("toggleSanity");
+    if (toggle && !toggle.checked) return;
+
+    const after16 = now.getHours() >= 16;
+    if (after16){
+      const graph = document.querySelector(".sanityGraph");
+      if (graph) graph.classList.add("sanityOff");
+      $("checkBtn").style.display = "none";
+      $("kakBtn").style.display = "none";
+      $("sanityAlert").style.display = "none";
+      $("sanityPct").textContent = "Mimo školu";
+      $("sanityMeta").textContent = "Živý režim vypnut • otevři historii";
+      $("sanityHistoryBox").style.display = "block";
+      return;
+    } else {
+      const graph = document.querySelector(".sanityGraph");
+      if (graph) graph.classList.remove("sanityOff");
+    }
+
+    const { sanity } = computeSanityNow(now);
+    $("sanityPct").textContent = `Sanity: ${sanity.toFixed(0)}%`;
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    const missing = (idx !== null) && !state.sanity.checkins[String(idx)];
+    $("checkBtn").style.display = (missing ? "inline-block" : "none");
+
+    $("sanityMeta").textContent = (idx === null) ? "Mimo hodinu" : `Hodina ${idx+1}/7 • check-in ${missing ? "chybí" : "OK"}`;
+
+    renderSanityCurve(now);
+
+    const canKak = (state.sanity.kakUsed || 0) < SANITY_KAK_MAX_PER_DAY;
+    if (sanity <= 25 && canKak){
+      $("sanityAlert").style.display = "block";
+      $("kakBtn").style.display = "inline-block";
+    } else {
+      $("sanityAlert").style.display = "none";
+      $("kakBtn").style.display = "none";
+    }
+
+    scheduleSixSevenScan();
+  }
+
+  function useKakajicko(){
+    const { sanity } = computeSanityNow(new Date());
+    if (sanity > 25) return;
+    if ((state.sanity.kakUsed || 0) >= SANITY_KAK_MAX_PER_DAY) return;
+
+    state.sanity.base = clamp((state.sanity.base ?? 100) + SANITY_KAK_BOOST, 0, 100);
+    state.sanity.kakUsed = (state.sanity.kakUsed ?? 0) + 1;
+
+    saveSanity();
+    updateSanityUI(new Date());
+  }
+
+  /* =========================
+     SANITY HISTORY (14 days)
+     ========================= */
+  const SANITY_KEEP_DAYS = 14;
+
+  function sanityKeyForDay(yyyy_mm_dd){
+    return "sp_sanity_" + yyyy_mm_dd;
+  }
+  function listSanityDays(){
+    const keys = Object.keys(localStorage);
+    const days = [];
+    for (const k of keys){
+      if (k.startsWith("sp_sanity_")){
+        const d = k.replace("sp_sanity_", "");
+        if (/^\d{4}-\d{2}-\d{2}$/.test(d)) days.push(d);
+      }
+    }
+    days.sort();
+    return days;
+  }
+  function pruneSanityHistory(){
+    const days = listSanityDays();
+    if (days.length <= SANITY_KEEP_DAYS) return;
+    const toDelete = days.slice(0, Math.max(0, days.length - SANITY_KEEP_DAYS));
+    for (const d of toDelete) localStorage.removeItem(sanityKeyForDay(d));
+  }
+  function loadSanityForDay(yyyy_mm_dd){
+    try{
+      const raw = localStorage.getItem(sanityKeyForDay(yyyy_mm_dd));
+      if (!raw) return null;
+      const obj = JSON.parse(raw);
+      obj.base = Number(obj.base ?? 100);
+      obj.checkins = obj.checkins || {};
+      obj.snapshots = obj.snapshots || {};
+      obj.kakUsed = Number(obj.kakUsed ?? 0);
+      return obj;
+    }catch{ return null; }
+  }
+
+  function refreshSanityDaySelect(){
+    const sel = $("sanityDaySelect");
+    if (!sel) return;
+
+    pruneSanityHistory();
+    const days = listSanityDays();
+    const today = todayISO();
+    const set = new Set(days);
+    set.add(today);
+    const sorted = [...set].sort().reverse();
+
+    sel.innerHTML = "";
+    for (const d of sorted){
+      const opt = document.createElement("option");
+      opt.value = d;
+
+      const dd = new Date(d + "T00:00:00");
+      const now = new Date();
+      const base = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+      const diffDays = Math.round((base - dd) / 86400000);
+
+      if (diffDays === 0) opt.textContent = `Dnes • ${d}`;
+      else if (diffDays === 1) opt.textContent = `Včera • ${d}`;
+      else opt.textContent = d;
+
+      sel.appendChild(opt);
+    }
+
+    const saved = localStorage.getItem("sp_sanity_hist_day") || today;
+    sel.value = sorted.includes(saved) ? saved : sorted[0];
+  }
+
+  function saveSnapshotForHourEnd(now){
+    if (!state.sanity) return;
+    if (!state.sanity.snapshots) state.sanity.snapshots = {};
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    for (let i=0;i<7;i++){
+      const endMin = TIMES_MIN[i].endMin;
+      if (nowMin >= endMin){
+        if (!state.sanity.snapshots[String(i)]){
+          const { sanity } = computeSanityNow(now);
+          state.sanity.snapshots[String(i)] = { t: now.toISOString(), s: Number(sanity.toFixed(2)) };
+          saveSanity();
+        }
+      }
+    }
+  }
+
+  function renderSanityHistoryDay(dayISO){
+    const box = $("sanityHistoryBox");
+    if (!box) return;
+
+    const obj = loadSanityForDay(dayISO);
+    box.style.display = "block";
+
+    if (!obj){
+      box.innerHTML = `<div class="stackItem muted">Žádná data pro ${dayISO}</div>`;
+      return;
+    }
+
+    const snaps = obj.snapshots || {};
+    const rows = [];
+    for (let i=0;i<7;i++){
+      const snap = snaps[String(i)];
+      const ci = obj.checkins?.[String(i)] || null;
+      const mood = ci ? (MOODS.find(m => m.key === ci.key) || null) : null;
+
+      rows.push({
+        idx: i,
+        sanity: snap ? snap.s : null,
+        moodEmoji: mood ? mood.emoji : "—",
+        moodLabel: mood ? mood.label : "bez check-in",
+        at: ci?.at ? new Date(ci.at) : null
+      });
+    }
+
+    box.innerHTML = "";
+    const head = document.createElement("div");
+    head.className = "stackItem";
+    head.innerHTML = `<div class="eventTitle">Historie • ${dayISO}</div>
+                      <div class="eventMeta">Hodina • Emoji • Stav • Sanity</div>`;
+    box.appendChild(head);
+
+    for (const r of rows){
+      const item = document.createElement("div");
+      item.className = "stackItem";
+      const sTxt = (typeof r.sanity === "number") ? `${r.sanity.toFixed(0)}%` : "—";
+      const atTxt = r.at ? `${String(r.at.getHours()).padStart(2,"0")}:${String(r.at.getMinutes()).padStart(2,"0")}` : "";
+      item.innerHTML = `
+        <div class="abRow">
+          <div class="abName">Hodina ${r.idx+1}/7</div>
+          <div class="abVal">${sTxt}</div>
+        </div>
+        <div class="abMeta">${r.moodEmoji} ${r.moodLabel}${atTxt ? " • "+atTxt : ""}</div>
+      `;
+      box.appendChild(item);
+    }
+    scheduleSixSevenScan();
+  }
+
+  function renderSanityHistoryHour(dayISO, hourIdx){
+    const box = $("sanityHistoryBox");
+    if (!box) return;
+
+    const obj = loadSanityForDay(dayISO);
+    box.style.display = "block";
+
+    if (!obj){
+      box.innerHTML = `<div class="stackItem muted">Žádná data pro ${dayISO}</div>`;
+      return;
+    }
+
+    const snap = obj.snapshots?.[String(hourIdx)] || null;
+    const ci = obj.checkins?.[String(hourIdx)] || null;
+    const mood = ci ? (MOODS.find(m => m.key === ci.key) || null) : null;
+
+    const moodEmoji = mood ? mood.emoji : "—";
+    const moodLabel = mood ? mood.label : "bez check-in";
+    const sanityTxt = snap ? `${Number(snap.s).toFixed(0)}%` : "—";
+    const ciAt = ci?.at ? new Date(ci.at) : null;
+    const ciAtTxt = ciAt ? `${String(ciAt.getHours()).padStart(2,"0")}:${String(ciAt.getMinutes()).padStart(2,"0")}` : "—";
+
+    box.innerHTML = `
+      <div class="stackItem">
+        <div class="eventTitle">${dayISO} • Hodina ${hourIdx+1}/7 (${TIMES[hourIdx].start}–${TIMES[hourIdx].end})</div>
+        <div class="eventMeta">${moodEmoji} ${moodLabel} • check-in: ${ciAtTxt} • sanity: ${sanityTxt}</div>
+      </div>
+    `;
+    scheduleSixSevenScan();
+  }
+
+  function showSanityHistoryFromUI(){
+    const daySel = $("sanityDaySelect");
+    const viewSel = $("sanityViewSelect");
+    if (!daySel || !viewSel) return;
+
+    const d = daySel.value;
+    const v = viewSel.value;
+
+    localStorage.setItem("sp_sanity_hist_day", d);
+    localStorage.setItem("sp_sanity_hist_view", v);
+
+    if (v === "day"){
+      renderSanityHistoryDay(d);
+    } else if (v.startsWith("h")){
+      const idx = Number(v.slice(1));
+      renderSanityHistoryHour(d, idx);
+    }
+  }
+
+  function initSanityHistoryUI(){
+    refreshSanityDaySelect();
+
+    const viewSel = $("sanityViewSelect");
+    const btn = $("sanityShowBtn");
+    const daySel = $("sanityDaySelect");
+
+    if (viewSel){
+      const savedView = localStorage.getItem("sp_sanity_hist_view") || "day";
+      viewSel.value = savedView;
+    }
+    if (daySel){
+      const savedDay = localStorage.getItem("sp_sanity_hist_day") || todayISO();
+      daySel.value = savedDay;
+      daySel.addEventListener("change", () => localStorage.setItem("sp_sanity_hist_day", daySel.value));
+    }
+    if (btn) btn.addEventListener("click", showSanityHistoryFromUI);
+
+    $("sanityHistoryBox").style.display = "none";
+  }
+
+  /* =========================
+     CHECK-IN MODAL
+     ========================= */
+  function openModal(){
+    const back = $("checkinBack");
+    back.style.display = "flex";
+    back.setAttribute("aria-hidden","false");
+  }
+  function closeModal(){
+    const back = $("checkinBack");
+    back.style.display = "none";
+    back.setAttribute("aria-hidden","true");
+  }
+
+  function buildMoodButtons(){
+    const wrap = $("moodButtons");
+    wrap.innerHTML = "";
+    for (const m of MOODS){
+      const b = document.createElement("button");
+      b.className = "moodBtn";
+      b.type = "button";
+      b.innerHTML = `<span class="moodEmoji">${m.emoji}</span><span class="moodTxt">${m.label}</span>`;
+      b.addEventListener("click", () => applyCheckin(m.key));
+      wrap.appendChild(b);
+    }
+  }
+
+  function currentCheckinTarget(now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return null;
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    if (idx === null) return null;
+    return idx;
+  }
+
+  function applyCheckin(moodKey){
+    const now = new Date();
+    const idx = currentCheckinTarget(now);
+    if (idx === null){
+      closeModal();
+      updateSanityUI(now);
+      return;
+    }
+
+    const mood = MOODS.find(x => x.key === moodKey) || MOODS[1];
+
+    state.sanity.checkins[String(idx)] = { key: mood.key, mult: mood.mult, at: now.toISOString() };
+    state.sanity.lastPopupHour = idx;
+    state.sanity.lastPopupAt = now.toISOString();
+
+    saveSanity();
+    closeModal();
+    updateSanityUI(now);
+  }
+
+  function shouldAutoPopup(now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return false;
+
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    if (idx === null) return false;
+
+    if (state.sanity.checkins[String(idx)]) return false;
+
+    const start = TIMES_MIN[idx].startMin;
+    const diff = nowMin - start;
+    if (diff < 0 || diff > SANITY_POPUP_WINDOW_MIN) return false;
+
+    if (state.sanity.lastPopupHour === idx) return false;
+
+    return true;
+  }
+
+  function updateCheckinTexts(now){
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const idx = getCurrentHourIndex(nowMin);
+    const dayKey = dayKeyFromDate(now);
+
+    if (idx === null){
+      $("checkinTitle").textContent = "Check-in";
+      $("checkinSub").textContent = `Mimo hodinu • vyber náladu až začne hodina`;
+      return;
+    }
+    $("checkinTitle").textContent = `Check-in • hodina ${idx+1}/7`;
+    $("checkinSub").textContent = `${dayLabelCz(dayKey)} • ${TIMES[idx].start}–${TIMES[idx].end} • (pozdní check-in = catch-up)`;
+  }
+
+  function maybeAutoPopup(){
+    const now = new Date();
+    if (!$("toggleSanity") || !$("toggleSanity").checked) return;
+    if (now.getHours() >= 16) return;
+
+    if (shouldAutoPopup(now)){
+      updateCheckinTexts(now);
+      openModal();
+      state.sanity.lastPopupHour = currentCheckinTarget(now);
+      state.sanity.lastPopupAt = now.toISOString();
+      saveSanity();
     }
   }
 
@@ -2702,16 +3055,19 @@
     updateCafaTracker(now);
     updateSanityUI(now);
 
-    renderTimetable();
+    saveSnapshotForHourEnd(now);
     maybeAutoPopup();
   }
 
   function boot(){
     initSettings();
     initCarouselInteractions();
+
     loadMinecraftSplash();
+    loadAbsenceLeaderboard();
 
     state.sanity = loadSanity();
+    initSanityHistoryUI();
 
     buildMoodButtons();
     $("checkinClose").addEventListener("click", closeModal);
@@ -2725,14 +3081,10 @@
 
     $("kakBtn").addEventListener("click", useKakajicko);
 
-    state.classSource = "loading";
-    state.teacherSource = "loading";
     statusText();
-
     renderTimetable();
     renderEventsPanel();
     tick();
-
     syncBackend();
 
     scheduleSixSevenScan();
