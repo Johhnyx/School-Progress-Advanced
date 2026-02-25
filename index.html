@@ -50,6 +50,9 @@
 
       --hot: rgba(255, 140, 0, 0.85);
       --hot2: rgba(255, 80, 0, 0.55);
+
+      /* Bakaláři blue */
+      --bakBlue: #00A2E2;
     }
 
     /* Dark theme */
@@ -245,13 +248,13 @@
         var(--bg);
       background-size: cover;
       background-position: center;
-      background-attachment: fixed; /* desktop ok */
+      background-attachment: fixed;
       transition: background .2s ease, color .2s ease;
     }
     @media (max-width:980px){
       body{
         padding:16px;
-        background-attachment: scroll; /* iOS fix */
+        background-attachment: scroll;
       }
     }
 
@@ -297,6 +300,11 @@
     body.theme-kasparnakart h1,
     body.theme-battlecats h1{
       text-shadow: 0 0 18px var(--glow);
+    }
+
+    .bakBlue{
+      color: var(--bakBlue);
+      text-shadow: 0 0 14px rgba(0,162,226,0.25);
     }
 
     .mcSplash{
@@ -487,7 +495,7 @@
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
-    /* ADDON (no "Info Panel" text) */
+    /* ADDON */
     .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
 
     .stackList{ display:flex; flex-direction:column; gap:8px; }
@@ -506,6 +514,10 @@
       background-clip: padding-box;
     }
     #eventsList::-webkit-scrollbar-track{ background: transparent; }
+
+    body.theme-battlecats #eventsList::-webkit-scrollbar-thumb{
+      background: rgba(0,0,0,0.18);
+    }
 
     .stackItem{
       border:1px solid var(--border);
@@ -602,6 +614,67 @@
       font-weight:1000;
       cursor:pointer;
       border: 1px solid var(--border);
+    }
+
+    /* =========================
+       IG-like carousel (Events + Sanity)
+       ========================= */
+    .igCarousel{
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .igTrack{
+      display: flex;
+      transform: translateX(0%);
+      transition: transform .22s ease;
+      width: 100%;
+    }
+    .igSlide{
+      width: 100%;
+      flex: 0 0 100%;
+    }
+    .igDots{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .18s ease, transform .18s ease;
+      pointer-events: none;
+    }
+    #infoCarouselBlock:hover .igDots{
+      opacity: 1;
+      transform: translateY(0px);
+      pointer-events: auto;
+    }
+    #infoCarouselBlock.showDots .igDots{
+      opacity: 1;
+      transform: translateY(0px);
+      pointer-events: auto;
+    }
+    .igDot{
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.18);
+      cursor: pointer;
+      padding: 0;
+    }
+    body.theme-battlecats .igDot{
+      border-color: rgba(0,0,0,0.18);
+      background: rgba(0,0,0,0.12);
+    }
+    .igDot.isActive{
+      background: rgba(255,255,255,0.55);
+    }
+    body.theme-battlecats .igDot.isActive{
+      background: rgba(0,0,0,0.55);
     }
 
     /* TIMETABLE */
@@ -944,6 +1017,15 @@
         </select>
       </div>
 
+      <div class="field">
+        <span>Mode</span>
+        <select id="modeSelect" aria-label="Mode">
+          <option value="default">Default</option>
+          <option value="nonchalant">Nonchalant</option>
+          <option value="freaky">Freaky</option>
+        </select>
+      </div>
+
       <div class="scaleRow">
         <span>Velikost UI</span>
         <input type="range" id="uiScaleRange" min="85" max="120" step="1" value="100" />
@@ -1029,10 +1111,53 @@
       </div>
 
       <aside id="addonPanel" class="addonCol">
-        <div class="block" id="eventsBlock">
-          <div class="rowTitle">Události</div>
-          <div id="eventsList" class="stackList">
-            <div class="stackItem muted">Načítání…</div>
+
+        <!-- IG-style shared block -->
+        <div class="block" id="infoCarouselBlock">
+          <div class="rowTitle" id="infoCarouselTitle">Události</div>
+
+          <div class="igCarousel" id="igCarousel">
+            <div class="igTrack" id="igTrack">
+
+              <!-- Slide: Události -->
+              <section class="igSlide" id="slideEvents" data-title="Události">
+                <div id="eventsList" class="stackList">
+                  <div class="stackItem muted">Načítání…</div>
+                </div>
+              </section>
+
+              <!-- Slide: Sanity -->
+              <section class="igSlide" id="slideSanity" data-title="Sanity Meter">
+                <div class="sanityWrap">
+                  <div class="sanityTop">
+                    <div class="sanityPct" id="sanityPct">Sanity: —</div>
+                    <div class="sanityPct" id="sanityMeta">—</div>
+                  </div>
+
+                  <div class="sanityGraph" aria-hidden="true">
+                    <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+                      <path id="sanityPathBg"
+                            d="M0,18 C60,18 120,18 180,18 C240,18 270,18 300,18"
+                            fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="6" />
+                      <path id="sanityPath"
+                            d="M0,18 C60,18 120,18 180,18 C240,18 270,18 300,18"
+                            fill="none" stroke="rgba(255,152,0,0.85)" stroke-width="6" stroke-linecap="round" />
+                    </svg>
+                  </div>
+
+                  <div class="sanityAlert" id="sanityAlert">BĚŽ SI KOUPIT KAKAJÍČKO</div>
+
+                  <div class="sanityActions">
+                    <button class="checkBtn" id="checkBtn" type="button">Doplnit check-in</button>
+                    <button class="kakBtn" id="kakBtn" type="button">Už jsem si ho dal ☕️</button>
+                    <div class="hint" id="sanityHint">Sanity padá jen po check-inu na hodinu (jinak 0).</div>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+
+            <div class="igDots" id="igDots" aria-hidden="true"></div>
           </div>
         </div>
 
@@ -1045,34 +1170,6 @@
           </div>
         </div>
 
-        <div class="block" id="sanityBlock">
-          <div class="rowTitle">Sanity Meter</div>
-          <div class="sanityWrap">
-            <div class="sanityTop">
-              <div class="sanityPct" id="sanityPct">Sanity: —</div>
-              <div class="sanityPct" id="sanityMeta">—</div>
-            </div>
-
-            <div class="sanityGraph" aria-hidden="true">
-              <svg viewBox="0 0 300 90" preserveAspectRatio="none">
-                <path id="sanityPathBg"
-                      d="M0,18 C60,18 120,18 180,18 C240,18 270,18 300,18"
-                      fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="6" />
-                <path id="sanityPath"
-                      d="M0,18 C60,18 120,18 180,18 C240,18 270,18 300,18"
-                      fill="none" stroke="rgba(255,152,0,0.85)" stroke-width="6" stroke-linecap="round" />
-              </svg>
-            </div>
-
-            <div class="sanityAlert" id="sanityAlert">BĚŽ SI KOUPIT KAKAJÍČKO</div>
-
-            <div class="sanityActions">
-              <button class="checkBtn" id="checkBtn" type="button">Doplnit check-in</button>
-              <button class="kakBtn" id="kakBtn" type="button">Už jsem si ho dal ☕️</button>
-              <div class="hint" id="sanityHint">Sanity padá jen po check-inu na hodinu (jinak 0).</div>
-            </div>
-          </div>
-        </div>
       </aside>
     </div>
 
@@ -1130,9 +1227,7 @@
         <button class="modalClose" id="checkinClose" type="button" aria-label="Zavřít">✕</button>
       </div>
 
-      <div class="moods" id="moodButtons">
-        <!-- JS fills -->
-      </div>
+      <div class="moods" id="moodButtons"></div>
     </div>
   </div>
 
@@ -1171,6 +1266,25 @@
     }catch(e){
       el.textContent = fallback[Math.floor(Math.random()*fallback.length)];
     }
+  }
+
+  /* =========================
+     MODE (title variants)
+     ========================= */
+  function applyMode(mode){
+    const title = document.getElementById("pageTitle");
+    if (!title) return;
+
+    if (mode === "nonchalant"){
+      title.innerHTML = `<span class="bakBlue">Bakaláři</span>, kdyby nebyly mid`;
+    } else if (mode === "freaky"){
+      title.textContent = `Kdy to utrpení skončí`;
+    } else {
+      title.textContent = `School Progress`;
+    }
+
+    localStorage.setItem("sp_mode", mode);
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1270,10 +1384,10 @@
   /* =========================
      SANITY CONFIG
      ========================= */
-  const SANITY_BASE_DRAIN = 6;             // base drop per hour at mood=OK
-  const SANITY_POPUP_WINDOW_MIN = 5;       // popup appears within 5 minutes from hour start
-  const SANITY_KAK_BOOST = 30;             // +30%
-  const SANITY_KAK_MAX_PER_DAY = 1;        // 1× per day
+  const SANITY_BASE_DRAIN = 6;
+  const SANITY_POPUP_WINDOW_MIN = 5;
+  const SANITY_KAK_BOOST = 30;
+  const SANITY_KAK_MAX_PER_DAY = 1;
 
   const MOODS = [
     { key:"cool",   emoji:"😎", label:"Pohoda", mult:0.6 },
@@ -1295,7 +1409,7 @@
     teacherDays: null,
     teacherSource: "loading",
 
-    sanity: null, // loaded from storage
+    sanity: null,
   };
 
   /* =========================
@@ -1414,16 +1528,13 @@
 
   function refreshAddonPanelVisibility(){
     const addonPanel = $("addonPanel");
-    const eventsBlock = $("eventsBlock");
+    const infoBlock = $("infoCarouselBlock");
     const cafaBlock = $("cafaBlock");
-    const sanityBlock = $("sanityBlock");
 
-    const eventsVisible = !eventsBlock.classList.contains("hidden");
+    const infoVisible = !infoBlock.classList.contains("hidden");
     const cafaVisible = !cafaBlock.classList.contains("hidden");
-    const sanityVisible = !sanityBlock.classList.contains("hidden");
 
-    const anyVisible = eventsVisible || cafaVisible || sanityVisible;
-    addonPanel.classList.toggle("hidden", !anyVisible);
+    addonPanel.classList.toggle("hidden", !(infoVisible || cafaVisible));
     scheduleSixSevenScan();
   }
 
@@ -1431,6 +1542,7 @@
     $("settingsBtn").addEventListener("click", () => $("settingsPanel").classList.toggle("hidden"));
 
     $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
+    $("modeSelect").addEventListener("change", () => applyMode($("modeSelect").value));
     $("uiScaleRange").addEventListener("input", () => applyUiScale($("uiScaleRange").value));
 
     const toggleTT = $("toggleTimetable");
@@ -1450,25 +1562,23 @@
       scheduleSixSevenScan();
     });
     toggleEvents.addEventListener("change", () => {
-      $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
       localStorage.setItem("sp_toggle_events", toggleEvents.checked ? "1" : "0");
-      refreshAddonPanelVisibility();
+      syncCarouselVisibility();
+    });
+    toggleSanity.addEventListener("change", () => {
+      localStorage.setItem("sp_toggle_sanity", toggleSanity.checked ? "1" : "0");
+      syncCarouselVisibility();
     });
     toggleCafa.addEventListener("change", () => {
       $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
       localStorage.setItem("sp_toggle_cafa", toggleCafa.checked ? "1" : "0");
       refreshAddonPanelVisibility();
     });
-    toggleSanity.addEventListener("change", () => {
-      $("sanityBlock").classList.toggle("hidden", !toggleSanity.checked);
-      localStorage.setItem("sp_toggle_sanity", toggleSanity.checked ? "1" : "0");
-      refreshAddonPanelVisibility();
-    });
 
-    const savedTheme = localStorage.getItem("sp_theme") || "dark";
-    applyTheme(savedTheme);
-
+    // load saved
+    applyTheme(localStorage.getItem("sp_theme") || "dark");
     applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
+    applyMode(localStorage.getItem("sp_mode") || "default");
 
     const savedTT = localStorage.getItem("sp_toggle_tt");
     const savedDaily = localStorage.getItem("sp_toggle_daily");
@@ -1484,11 +1594,128 @@
 
     $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
-    $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
     $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
-    $("sanityBlock").classList.toggle("hidden", !toggleSanity.checked);
 
+    // select values reflect current
+    $("modeSelect").value = localStorage.getItem("sp_mode") || "default";
+
+    syncCarouselVisibility();
+  }
+
+  /* =========================
+     IG Carousel logic
+     ========================= */
+  let carousel = {
+    visible: [],       // ["events","sanity"]
+    index: 0,          // 0..visible.length-1
+    hideTimer: null,
+  };
+
+  function setCarouselIndex(i){
+    const track = $("igTrack");
+    const dots = $("igDots");
+    if (!track || !dots) return;
+
+    const max = Math.max(0, carousel.visible.length - 1);
+    carousel.index = Math.max(0, Math.min(max, i));
+
+    track.style.transform = `translateX(-${carousel.index * 100}%)`;
+
+    [...dots.querySelectorAll(".igDot")].forEach((d, n) => d.classList.toggle("isActive", n === carousel.index));
+
+    const title = $("infoCarouselTitle");
+    const key = carousel.visible[carousel.index] || "events";
+    title.textContent = (key === "sanity") ? "Sanity Meter" : "Události";
+
+    localStorage.setItem("sp_info_carousel", String(carousel.index));
+  }
+
+  function rebuildCarouselDots(){
+    const dots = $("igDots");
+    dots.innerHTML = "";
+
+    if (carousel.visible.length <= 1){
+      dots.style.display = "none";
+      return;
+    }
+    dots.style.display = "flex";
+
+    carousel.visible.forEach((key, idx) => {
+      const b = document.createElement("button");
+      b.className = "igDot" + (idx === carousel.index ? " isActive" : "");
+      b.type = "button";
+      b.dataset.i = String(idx);
+      b.setAttribute("aria-label", key === "sanity" ? "Sanity" : "Události");
+      b.addEventListener("click", () => setCarouselIndex(idx));
+      dots.appendChild(b);
+    });
+  }
+
+  function syncCarouselVisibility(){
+    const infoBlock = $("infoCarouselBlock");
+    const slideEvents = $("slideEvents");
+    const slideSanity = $("slideSanity");
+    const toggleEvents = $("toggleEvents");
+    const toggleSanity = $("toggleSanity");
+
+    const showEvents = !!toggleEvents?.checked;
+    const showSanity = !!toggleSanity?.checked;
+
+    slideEvents.classList.toggle("hidden", !showEvents);
+    slideSanity.classList.toggle("hidden", !showSanity);
+
+    carousel.visible = [];
+    if (showEvents) carousel.visible.push("events");
+    if (showSanity) carousel.visible.push("sanity");
+
+    // If both off, hide whole block
+    infoBlock.classList.toggle("hidden", carousel.visible.length === 0);
+
+    // Adjust index to valid range
+    const savedIdx = Number(localStorage.getItem("sp_info_carousel") || "0");
+    carousel.index = isFinite(savedIdx) ? savedIdx : 0;
+    if (carousel.index >= carousel.visible.length) carousel.index = 0;
+
+    rebuildCarouselDots();
+    setCarouselIndex(carousel.index);
     refreshAddonPanelVisibility();
+  }
+
+  function initCarouselInteractions(){
+    const block = $("infoCarouselBlock");
+    const track = $("igTrack");
+    if (!block || !track) return;
+
+    // tap to show dots briefly on mobile
+    block.addEventListener("click", () => {
+      block.classList.add("showDots");
+      if (carousel.hideTimer) clearTimeout(carousel.hideTimer);
+      carousel.hideTimer = setTimeout(() => block.classList.remove("showDots"), 2200);
+    });
+
+    // swipe
+    let x0 = null;
+    let y0 = null;
+    track.addEventListener("touchstart", (e) => {
+      const t = e.touches[0];
+      x0 = t.clientX;
+      y0 = t.clientY;
+    }, { passive:true });
+
+    track.addEventListener("touchend", (e) => {
+      if (x0 === null || y0 === null) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - x0;
+      const dy = t.clientY - y0;
+      x0 = y0 = null;
+
+      if (Math.abs(dy) > Math.abs(dx)) return;
+      if (Math.abs(dx) < 35) return;
+      if (carousel.visible.length <= 1) return;
+
+      if (dx < 0) setCarouselIndex(carousel.index + 1);
+      else setCarouselIndex(carousel.index - 1);
+    }, { passive:true });
   }
 
   /* =========================
@@ -1568,7 +1795,7 @@
             span.appendChild(document.createTextNode("/"));
             span.appendChild(s7);
           } else if (txt.startsWith("6.7")){
-            const rest = txt.slice(3); // after "6.7"
+            const rest = txt.slice(3);
             span.appendChild(s6);
             span.appendChild(document.createTextNode("."));
             span.appendChild(s7);
@@ -2060,7 +2287,7 @@
       const raw = localStorage.getItem(sanityKey());
       if (!raw) return {
         base: 100,
-        checkins: {}, // {0:{mult, key, at}, 1:{...}}
+        checkins: {},
         kakUsed: 0,
         lastPopupHour: null,
         lastPopupAt: null,
@@ -2082,10 +2309,7 @@
   }
 
   /* =========================
-     SANITY CORE (per-hour, only after check-in)
-     - if no check-in for an hour => delta=0
-     - if check-in happens late => catch-up automatically via progress p
-     - A: check-in after hour end => p=1 for that hour (full catch-up)
+     SANITY CORE
      ========================= */
   function getCurrentHourIndex(nowMin){
     for (let i=0;i<7;i++){
@@ -2110,26 +2334,22 @@
 
   function computeSanityNow(now){
     const dayKey = dayKeyFromDate(now);
-    if (!dayKey) return { sanity: state.sanity.base, note: "Víkend", inSchool:false, curIdx:null };
+    if (!dayKey) return { sanity: state.sanity.base, inSchool:false, curIdx:null };
 
     const nowMin = now.getHours()*60 + now.getMinutes();
     const curIdx = getCurrentHourIndex(nowMin);
 
-    // sanity starts at base
     let S = clamp(state.sanity.base, 0, 100);
 
-    // Apply finished hours fully if they have checkin
     for (let i=0;i<7;i++){
       const end = TIMES_MIN[i].endMin;
       const start = TIMES_MIN[i].startMin;
 
       if (nowMin > end){
-        // hour already ended => full delta
         S = clamp(S - sanityDeltaForHour(i), 0, 100);
       } else if (nowMin < start){
-        // hour not started yet => nothing
+        // not started
       } else {
-        // current hour (or within its interval)
         const delta = sanityDeltaForHour(i);
         if (delta > 0){
           const p = hourProgress(nowMin, i);
@@ -2138,40 +2358,26 @@
         break;
       }
     }
-
-    // If during lunch or break, sanity stays as already computed (no extra drain).
     return { sanity: S, inSchool:true, curIdx };
   }
 
   function renderSanityCurve(now){
-    // Build 8 points: start + after each hour.
-    // Hours without checkin: flat (no drop).
     let S = clamp(state.sanity.base, 0, 100);
     const pts = [S];
-
     for (let i=0;i<7;i++){
       S = clamp(S - sanityDeltaForHour(i), 0, 100);
       pts.push(S);
     }
 
-    // If currently inside an hour and checkin exists, replace the "after hour" point visually by partial,
-    // but keep the end point for curve feel? We'll instead draw a curve to current sanity at the end.
     const { sanity: S_now } = computeSanityNow(now);
 
-    // Map points to svg coordinates
     const x = (i) => (i/7)*300;
-    const y = (pct) => 10 + (1 - pct/100) * 70; // 10..80
+    const y = (pct) => 10 + (1 - pct/100) * 70;
 
-    // We'll draw a smooth-ish poly curve using cubic segments between points,
-    // but set last point to current sanity for "live" feel
-    const values = pts.slice();
-    values[values.length-1] = values[values.length-1]; // keep end value for structure
+    const anchors = pts.map((v,i)=>({x:x(i), y:y(v)}));
 
-    // Create a separate "live" path end at S_now
-    const liveValues = pts.slice();
-    // find current hour index area for live value positioning
     const nowMin = now.getHours()*60 + now.getMinutes();
-    let tPos = 0; // 0..7
+    let tPos = 0;
     let found = false;
     for (let i=0;i<7;i++){
       if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){
@@ -2184,24 +2390,9 @@
     if (!found && nowMin < TIMES_MIN[0].startMin) tPos = 0;
     if (!found && nowMin > TIMES_MIN[6].endMin) tPos = 7;
 
-    // We’ll build path with multiple segments up to 7 and then set a final live point
-    // at x(tPos) / y(S_now).
     const liveX = (tPos/7)*300;
     const liveY = y(S_now);
 
-    // Base points for curve anchors:
-    const anchors = pts.map((v,i)=>({x:x(i), y:y(v)}));
-
-    // Build d: start at 0
-    let d = `M${anchors[0].x},${anchors[0].y}`;
-    for (let i=1;i<anchors.length;i++){
-      const p0 = anchors[i-1];
-      const p1 = anchors[i];
-      const cx = (p0.x + p1.x)/2;
-      d += ` C${cx},${p0.y} ${cx},${p1.y} ${p1.x},${p1.y}`;
-    }
-
-    // Now overlay live path: same but end at live point with same smoothing
     let dl = `M${anchors[0].x},${anchors[0].y}`;
     for (let i=1;i<anchors.length;i++){
       const p0 = anchors[i-1];
@@ -2209,7 +2400,6 @@
       const cx = (p0.x + p1.x)/2;
       dl += ` C${cx},${p0.y} ${cx},${p1.y} ${p1.x},${p1.y}`;
     }
-    // Replace end to live if we're not after school end:
     dl += ` L${liveX},${liveY}`;
 
     $("sanityPath").setAttribute("d", dl);
@@ -2219,9 +2409,8 @@
     const toggle = $("toggleSanity");
     if (toggle && !toggle.checked) return;
 
-    const { sanity, curIdx, inSchool } = computeSanityNow(now);
+    const { sanity } = computeSanityNow(now);
 
-    // show "Doplnit check-in" if we are inside a lesson and missing checkin for that hour
     const nowMin = now.getHours()*60 + now.getMinutes();
     const idx = getCurrentHourIndex(nowMin);
     const missing = (idx !== null) && !state.sanity.checkins[String(idx)];
@@ -2230,11 +2419,8 @@
     $("sanityPct").textContent = `Sanity: ${sanity.toFixed(0)}%`;
 
     let meta = "";
-    if (!inSchool){
-      meta = `Mimo školu`;
-    } else if (idx === null){
-      // break/lunch/outside lesson interval
-      meta = `Mimo hodinu • check-in čeká na další hodinu`;
+    if (idx === null){
+      meta = `Mimo hodinu`;
     } else {
       meta = `Hodina ${idx+1}/7 • check-in ${missing ? "chybí" : "OK"}`;
     }
@@ -2244,7 +2430,6 @@
 
     const alert = $("sanityAlert");
     const btn = $("kakBtn");
-
     const canKak = (state.sanity.kakUsed || 0) < SANITY_KAK_MAX_PER_DAY;
 
     if (sanity <= 25 && canKak){
@@ -2260,12 +2445,9 @@
 
   function useKakajicko(){
     const { sanity } = computeSanityNow(new Date());
-    if (sanity > 25) return; // no need
+    if (sanity > 25) return;
     if ((state.sanity.kakUsed || 0) >= SANITY_KAK_MAX_PER_DAY) return;
 
-    // boost base so future computation reflects +30 now
-    // We need to add boost to base, but we should preserve already incurred losses.
-    // So we add boost to base directly.
     state.sanity.base = clamp((state.sanity.base ?? 100) + SANITY_KAK_BOOST, 0, 100);
     state.sanity.kakUsed = (state.sanity.kakUsed ?? 0) + 1;
 
@@ -2274,7 +2456,7 @@
   }
 
   /* =========================
-     CHECK-IN MODAL (auto popup + catch-up)
+     CHECK-IN MODAL
      ========================= */
   function openModal(){
     const back = $("checkinBack");
@@ -2295,9 +2477,7 @@
       b.className = "moodBtn";
       b.type = "button";
       b.innerHTML = `<span class="moodEmoji">${m.emoji}</span><span class="moodTxt">${m.label}</span>`;
-      b.addEventListener("click", () => {
-        applyCheckin(m.key);
-      });
+      b.addEventListener("click", () => applyCheckin(m.key));
       wrap.appendChild(b);
     }
   }
@@ -2313,7 +2493,6 @@
 
   function applyCheckin(moodKey){
     const now = new Date();
-    const nowMin = now.getHours()*60 + now.getMinutes();
     const idx = currentCheckinTarget(now);
     if (idx === null){
       closeModal();
@@ -2323,21 +2502,17 @@
 
     const mood = MOODS.find(x => x.key === moodKey) || MOODS[1];
 
-    // store checkin for current hour
     state.sanity.checkins[String(idx)] = {
       key: mood.key,
       mult: mood.mult,
       at: now.toISOString()
     };
 
-    // mark popup shown for this hour (avoid loops)
     state.sanity.lastPopupHour = idx;
     state.sanity.lastPopupAt = now.toISOString();
 
     saveSanity();
     closeModal();
-
-    // catch-up is automatic because compute uses progress within the hour
     updateSanityUI(now);
   }
 
@@ -2349,19 +2524,13 @@
     const idx = getCurrentHourIndex(nowMin);
     if (idx === null) return false;
 
-    // already checked in?
     if (state.sanity.checkins[String(idx)]) return false;
 
-    // only within first X minutes from hour start
     const start = TIMES_MIN[idx].startMin;
     const diff = nowMin - start;
     if (diff < 0 || diff > SANITY_POPUP_WINDOW_MIN) return false;
 
-    // avoid repeating popup if we already popped for this hour
-    if (state.sanity.lastPopupHour === idx){
-      // also ensure it's same day (stored in this day's sanity key anyway)
-      return false;
-    }
+    if (state.sanity.lastPopupHour === idx) return false;
 
     return true;
   }
@@ -2492,6 +2661,38 @@
   }
 
   /* =========================
+     SANITY init
+     ========================= */
+  function todayKey(){
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  }
+  function sanityKey(){ return "sp_sanity_" + todayKey(); }
+
+  function loadSanity(){
+    try{
+      const raw = localStorage.getItem(sanityKey());
+      if (!raw) return {
+        base: 100,
+        checkins: {},
+        kakUsed: 0,
+        lastPopupHour: null,
+        lastPopupAt: null,
+      };
+      const obj = JSON.parse(raw);
+      return {
+        base: Number(obj.base ?? 100),
+        checkins: obj.checkins || {},
+        kakUsed: Number(obj.kakUsed ?? 0),
+        lastPopupHour: obj.lastPopupHour ?? null,
+        lastPopupAt: obj.lastPopupAt ?? null,
+      };
+    }catch{
+      return { base:100, checkins:{}, kakUsed:0, lastPopupHour:null, lastPopupAt:null };
+    }
+  }
+
+  /* =========================
      BOOT + LOOP
      ========================= */
   function tick(){
@@ -2501,37 +2702,29 @@
     updateCafaTracker(now);
     updateSanityUI(now);
 
-    // keep timetable highlight accurate without full repaint too often:
-    // repaint only every tick (30s) ok
     renderTimetable();
-
-    // auto popup checkin
     maybeAutoPopup();
   }
 
   function boot(){
     initSettings();
+    initCarouselInteractions();
     loadMinecraftSplash();
 
-    // sanity load
     state.sanity = loadSanity();
 
-    // modal setup
     buildMoodButtons();
     $("checkinClose").addEventListener("click", closeModal);
     $("checkinBack").addEventListener("click", (e) => { if (e.target === $("checkinBack")) closeModal(); });
 
-    // manual check-in
     $("checkBtn").addEventListener("click", () => {
       const now = new Date();
       updateCheckinTexts(now);
       openModal();
     });
 
-    // kakajicko
     $("kakBtn").addEventListener("click", useKakajicko);
 
-    // theme + toggles from storage
     state.classSource = "loading";
     state.teacherSource = "loading";
     statusText();
