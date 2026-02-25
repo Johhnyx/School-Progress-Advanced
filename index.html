@@ -366,12 +366,6 @@
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
     }
-    body.theme-loona .block,
-    body.theme-sobokill .block,
-    body.theme-kasparnakart .block,
-    body.theme-battlecats .block{
-      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
-    }
 
     .rowTitle{
       margin:0 0 10px 0;
@@ -497,10 +491,8 @@
 
     /* ADDON */
     .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
-
     .stackList{ display:flex; flex-direction:column; gap:8px; }
 
-    /* Události scroll box */
     #eventsList, #abList{
       max-height: 260px;
       overflow-y: auto;
@@ -541,12 +533,7 @@
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
     .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
 
-    .abRow{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:baseline;
-    }
+    .abRow{ display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
     .abName{ font-weight:1000; }
     .abVal{ font-weight:1000; color: var(--muted); }
     .abMeta{ margin-top:4px; font-weight:900; font-size:11px; color: var(--muted); }
@@ -624,7 +611,6 @@
       border: 1px solid var(--border);
     }
 
-    /* Sanity history bar */
     .sanityHistoryBar{
       display:flex;
       gap:8px;
@@ -635,14 +621,28 @@
       flex: 1 1 140px;
       min-width: 140px;
     }
+    /* IMPORTANT: history must scroll, not expand */
     #sanityHistoryBox{
       margin-top: 8px;
       display:none;
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+    #sanityHistoryBox::-webkit-scrollbar{ width: 10px; }
+    #sanityHistoryBox::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,0.14);
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+    body.theme-battlecats #sanityHistoryBox::-webkit-scrollbar-thumb{
+      background: rgba(0,0,0,0.18);
     }
     .sanityOff{ display:none !important; }
 
     /* =========================
-       IG-like carousel (Events + Sanity + Absence)
+       IG-like carousel
        ========================= */
     .igCarousel{
       position: relative;
@@ -659,7 +659,7 @@
     .igSlide{
       width: 100%;
       flex: 0 0 100%;
-      padding: 10px 10px 18px; /* FIX corners */
+      padding: 10px 10px 18px;
     }
 
     .igDots{
@@ -906,7 +906,7 @@
     .footer .footerSep{ opacity: .55; margin: 0 6px; }
 
     /* =========================
-       six-seven emote (6 down, 7 up)
+       six-seven emote
        ========================= */
     .ss{
       display:inline-flex;
@@ -938,7 +938,7 @@
     }
 
     /* =========================
-       Status pill (settings) online/offline
+       Status pill (settings)
        ========================= */
     .statusPill{
       display:inline-flex;
@@ -1139,7 +1139,7 @@
 
       <div id="statusHint" class="statusPill">
         <span class="statusDot"></span>
-        <span id="statusText">Status</span>
+        <span id="statusText">Status: OK</span>
       </div>
     </div>
 
@@ -1475,6 +1475,27 @@
   /* =========================
      PROGRESS DATA
      ========================= */
+  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+  function r(s,e){ return {s,e}; }
+  function toISO(d){
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,'0');
+    const da=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${da}`;
+  }
+  function formatDateCZ(d){
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const yy = d.getFullYear();
+    return `${dd}.${mm}.${yy}`;
+  }
+  function formatDateCZDateTime(d){
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mi = String(d.getMinutes()).padStart(2,"0");
+    return `${formatDateCZ(d)} ${hh}:${mi}`;
+  }
+
   const HS_START = localDate(2023, 9, 4);
   const HS_END   = localDateEnd(2027, 6, 30);
   const MATURITA_APPROX = localDateEnd(2027, 5, 1);
@@ -1501,71 +1522,6 @@
     r("2027-02-01","2027-02-07"),
   ];
   const DIRECTOR_DAYS = [];
-
-  /* =========================
-     SANITY CONFIG
-     ========================= */
-  const SANITY_BASE_DRAIN = 6;
-  const SANITY_POPUP_WINDOW_MIN = 5;
-  const SANITY_KAK_BOOST = 30;
-  const SANITY_KAK_MAX_PER_DAY = 1;
-
-  const MOODS = [
-    { key:"cool",   emoji:"😎", label:"Pohoda", mult:0.6 },
-    { key:"ok",     emoji:"🙂", label:"Ok",     mult:1.0 },
-    { key:"meh",    emoji:"😐", label:"Meh",    mult:1.4 },
-    { key:"bad",    emoji:"😣", label:"Špatný", mult:1.9 },
-    { key:"cooked", emoji:"💀", label:"Cooked", mult:2.6 },
-  ];
-
-  /* =========================
-     STATE
-     ========================= */
-  const state = {
-    classDays: null,
-    classMarks: [],
-    classEvents: [],
-    classSource: "loading",
-
-    teacherDays: null,
-    teacherSource: "loading",
-
-    sanity: null,
-  };
-
-  /* =========================
-     DOM helpers
-     ========================= */
-  const $ = (id) => document.getElementById(id);
-  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
-  const setBar = (id, pct, weekend=false) => {
-    const n = $(id); if (!n) return;
-    n.style.width = clamp(pct).toFixed(2) + "%";
-    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
-  };
-  const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
-
-  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
-  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
-  function r(s,e){ return {s,e}; }
-
-  function toISO(d){
-    const y=d.getFullYear();
-    const m=String(d.getMonth()+1).padStart(2,'0');
-    const da=String(d.getDate()).padStart(2,'0');
-    return `${y}-${m}-${da}`;
-  }
-  function formatDateCZ(d){
-    const dd = String(d.getDate()).padStart(2,"0");
-    const mm = String(d.getMonth()+1).padStart(2,"0");
-    const yy = d.getFullYear();
-    return `${dd}.${mm}.${yy}`;
-  }
-  function formatDateCZDateTime(d){
-    const hh = String(d.getHours()).padStart(2,"0");
-    const mi = String(d.getMinutes()).padStart(2,"0");
-    return `${formatDateCZ(d)} ${hh}:${mi}`;
-  }
 
   function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
   function isSchoolDay(d){
@@ -1621,18 +1577,48 @@
   }
 
   /* =========================
-     STATUS pill (settings)
+     STATE
+     ========================= */
+  const state = {
+    classDays: null,
+    classMarks: [],
+    classEvents: [],
+    classSource: "loading",
+
+    teacherDays: null,
+    teacherSource: "loading",
+
+    sanity: null,
+  };
+
+  /* =========================
+     DOM helpers
+     ========================= */
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+  const setBar = (id, pct, weekend=false) => {
+    const n = $(id); if (!n) return;
+    n.style.width = clamp(pct).toFixed(2) + "%";
+    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
+  };
+  const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
+
+  /* =========================
+     STATUS (settings) - NO ONLINE WORDING
      ========================= */
   function statusText(){
     const wrap = $("statusHint");
     const txt = $("statusText");
     if (!wrap || !txt) return;
 
-    const online = (state.classSource === "Bakaláří") && (state.teacherSource === "Bakaláři");
+    const timetableOk = (state.classSource === "Bakaláří");
+    const trackerOk = (state.teacherSource === "Bakaláři");
+
+    const online = timetableOk && trackerOk;
     wrap.classList.toggle("statusOnline", online);
     wrap.classList.toggle("statusOffline", !online);
 
-    txt.textContent = online ? `Bakaláři ONLINE` : `LOCAL / OFFLINE`;
+    txt.textContent = `Status: OK • Rozvrh: ${timetableOk ? "Bakaláří" : "Local"} • Tracker: ${trackerOk ? "Bakaláři" : "Local"}`;
   }
 
   /* =========================
@@ -1733,7 +1719,7 @@
   }
 
   /* =========================
-     IG Carousel (Events + Sanity + Absence)
+     IG Carousel
      ========================= */
   let carousel = { visible: [], index: 0, hideTimer: null };
 
@@ -1787,7 +1773,7 @@
 
     slideEvents.classList.toggle("hidden", !showEvents);
     slideSanity.classList.toggle("hidden", !showSanity);
-    slideAbs.classList.remove("hidden"); // absence always on
+    slideAbs.classList.remove("hidden");
 
     carousel.visible = [];
     if (showEvents) carousel.visible.push("events");
@@ -1852,13 +1838,8 @@
 
   function wrapSixSeven(root){
     if (!root) return;
-
     const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
-    const patterns = [
-      /6\s*\/\s*7/g,
-      /6\.7(?:\.\d{2,4})?/g,
-      /67/g
-    ];
+    const patterns = [/6\s*\/\s*7/g, /6\.7(?:\.\d{2,4})?/g, /67/g];
 
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node){
@@ -1883,8 +1864,7 @@
         for (const part of parts){
           if (part.isMatch){ nextParts.push(part); continue; }
           const s = part.text;
-          let last = 0;
-          let m;
+          let last = 0; let m;
           re.lastIndex = 0;
           while ((m = re.exec(s)) !== null){
             if (m.index > last) nextParts.push({ text: s.slice(last, m.index), isMatch:false });
@@ -1905,8 +1885,8 @@
         } else {
           const span = document.createElement("span");
           span.className = "ss";
-
           const txt = p.text;
+
           const s6 = document.createElement("span"); s6.className = "s6"; s6.textContent = "6";
           const s7 = document.createElement("span"); s7.className = "s7"; s7.textContent = "7";
 
@@ -1924,11 +1904,9 @@
             span.appendChild(s6);
             span.appendChild(s7);
           }
-
           frag.appendChild(span);
         }
       }
-
       textNode.parentNode.replaceChild(frag, textNode);
     }
   }
@@ -1938,41 +1916,6 @@
     if (!els.length) return;
     els.forEach(el => el.classList.add("hot"));
     setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1000);
-  }
-
-  /* =========================
-     TOOLTIP
-     ========================= */
-  const tooltip = $("ttTooltip");
-  function showTooltip(html, x, y){
-    tooltip.innerHTML = html;
-    tooltip.style.left = x + "px";
-    tooltip.style.top = y + "px";
-    tooltip.style.display = "block";
-    tooltip.setAttribute("aria-hidden", "false");
-  }
-  function moveTooltip(x, y){
-    tooltip.style.left = x + "px";
-    tooltip.style.top = y + "px";
-  }
-  function hideTooltip(){
-    tooltip.style.display = "none";
-    tooltip.setAttribute("aria-hidden", "true");
-  }
-  document.addEventListener("click", () => hideTooltip());
-
-  function tooltipHTML(data){
-    return `
-      <div class="t-title">${data.dayLabel} • ${data.dateLong} • Hodina ${data.hourIdx+1}/7 (${data.time})</div>
-      <div class="t-row"><div class="k">Třída</div><div class="v">${data.className || "-"}</div></div>
-      <div class="t-row"><div class="k">Předmět</div><div class="v">${data.subjFull || "-"}</div></div>
-      <div class="t-row"><div class="k">Učebna</div><div class="v">${data.room || "-"}</div></div>
-      <div class="t-row"><div class="k">Učitel</div><div class="v">${data.teacher || "-"}</div></div>
-      ${data.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${data.cls}</div></div>` : ``}
-      ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
-      ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
-      ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
-    `;
   }
 
   /* =========================
@@ -1988,10 +1931,171 @@
   }
 
   /* =========================
+     PROGRESS BARS
+     ========================= */
+  function updateProgressBars(){
+    const now = new Date();
+    const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
+
+    const dow = now.getDay();
+    const weekend = (dow===0 || dow===6);
+    const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
+    const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
+
+    setBar("rt-week", weekPct, weekend);
+    setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
+    setBar("raw-week", weekPct, false);
+    setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
+
+    const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
+    setBar("rt-month", monthPct);
+    setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
+
+    const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
+    const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
+    const monthRaw = rawPctBetween(mStart, mEnd, now);
+    setBar("raw-month", monthRaw);
+    setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
+
+    const yr = getSchoolYearRange(now);
+    const yearPct = calendarPctBetween(yr.start, yr.end, now);
+    setBar("rt-year", yearPct);
+    setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
+    const yearRaw = rawPctBetween(yr.start, yr.end, now);
+    setBar("raw-year", yearRaw);
+    setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
+
+    const totalPct = calendarPctBetween(HS_START, HS_END, now);
+    setBar("rt-total", totalPct);
+    setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
+    const totalRaw = rawPctBetween(HS_START, HS_END, now);
+    setBar("raw-total", totalRaw);
+    setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
+
+    const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
+    setText("rt-maturita-label", (daysUntil>=0)
+      ? `Real-Time: ~${daysUntil} dní`
+      : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
+    );
+
+    const rawDays = rawDaysUntil(MATURITA_APPROX, now);
+    setText("raw-maturita-label", (rawDays>=0)
+      ? `Raw-Time: ~${rawDays} školních dní`
+      : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
+    );
+
+    scheduleSixSevenScan();
+  }
+
+  /* =========================
+     EVENTS PANEL
+     ========================= */
+  function renderEventsPanel(){
+    const list = $("eventsList");
+    list.innerHTML = "";
+
+    const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
+    const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
+    const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
+
+    if (!evs.length && !marks.length){
+      const empty = document.createElement("div");
+      empty.className = "stackItem muted";
+      empty.textContent = "Žádné události (zatím)";
+      list.appendChild(empty);
+      scheduleSixSevenScan();
+      return;
+    }
+
+    const evSorted = [...evs].sort((a,b) => (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || String(a.begin||"").localeCompare(String(b.begin||"")));
+    for (const e of evSorted){
+      const item = document.createElement("div");
+      item.className = "stackItem event";
+
+      const title = document.createElement("div");
+      title.className = "eventTitle";
+      title.textContent = e.name || "Akce";
+
+      const meta = document.createElement("div");
+      meta.className = "eventMeta";
+      meta.textContent = `${e.dayText || dayLabelCz(e.dayKey) || "—"}${(e.begin && e.end) ? ` • ${e.begin}–${e.end}` : ""}`;
+
+      const desc = document.createElement("div");
+      desc.className = "eventDesc";
+      desc.textContent = e.info || "";
+
+      item.appendChild(title);
+      item.appendChild(meta);
+      if (e.info) item.appendChild(desc);
+      list.appendChild(item);
+    }
+
+    const markSorted = [...marks].sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || (a.idx-b.idx));
+    for (const ev of markSorted){
+      if (ev.type === "event") continue;
+
+      const item = document.createElement("div");
+      item.className = "stackItem " + (ev.type || "");
+
+      const title = document.createElement("div");
+      title.className = "eventTitle";
+      title.textContent = ev.type === "subst" ? "Suplování" : "Odpadlo";
+
+      const meta = document.createElement("div");
+      meta.className = "eventMeta";
+      meta.textContent = `${dayLabelCz(ev.day)} • hodina ${ev.idx+1}/7 • ${TIMES[ev.idx]?.start || ""}–${TIMES[ev.idx]?.end || ""}${ev.room ? " • "+ev.room : ""}`;
+
+      const desc = document.createElement("div");
+      desc.className = "eventDesc";
+      desc.textContent = ev.note || "";
+
+      item.appendChild(title);
+      item.appendChild(meta);
+      if (ev.note) item.appendChild(desc);
+      list.appendChild(item);
+    }
+
+    scheduleSixSevenScan();
+  }
+
+  /* =========================
      TIMETABLE RENDER + badge glow
      ========================= */
   function markForCell(dayKey, idx){
     return (state.classMarks || []).find(m => m.day===dayKey && m.idx===idx) || null;
+  }
+
+  const ttTooltip = document.getElementById("ttTooltip");
+  function showTooltip(html, x, y){
+    ttTooltip.innerHTML = html;
+    ttTooltip.style.left = x + "px";
+    ttTooltip.style.top = y + "px";
+    ttTooltip.style.display = "block";
+    ttTooltip.setAttribute("aria-hidden", "false");
+  }
+  function moveTooltip(x, y){
+    ttTooltip.style.left = x + "px";
+    ttTooltip.style.top = y + "px";
+  }
+  function hideTooltip(){
+    ttTooltip.style.display = "none";
+    ttTooltip.setAttribute("aria-hidden", "true");
+  }
+  document.addEventListener("click", () => hideTooltip());
+
+  function tooltipHTML(data){
+    return `
+      <div class="t-title">${data.dayLabel} • ${data.dateLong} • Hodina ${data.hourIdx+1}/7 (${data.time})</div>
+      <div class="t-row"><div class="k">Třída</div><div class="v">${data.className || "-"}</div></div>
+      <div class="t-row"><div class="k">Předmět</div><div class="v">${data.subjFull || "-"}</div></div>
+      <div class="t-row"><div class="k">Učebna</div><div class="v">${data.room || "-"}</div></div>
+      <div class="t-row"><div class="k">Učitel</div><div class="v">${data.teacher || "-"}</div></div>
+      ${data.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${data.cls}</div></div>` : ``}
+      ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
+      ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
+      ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
+    `;
   }
 
   function renderTimetable(){
@@ -2094,7 +2198,7 @@
         cell.addEventListener("mouseleave", () => hideTooltip());
         cell.addEventListener("click", (e) => {
           e.stopPropagation();
-          const visible = tooltip.style.display === "block";
+          const visible = ttTooltip.style.display === "block";
           if (visible) hideTooltip();
           else showTooltip(tooltipHTML(tdata), e.clientX || (window.innerWidth/2), e.clientY || (window.innerHeight/2));
         });
@@ -2115,231 +2219,7 @@
   }
 
   /* =========================
-     EVENTS PANEL
-     ========================= */
-  function renderEventsPanel(){
-    const list = $("eventsList");
-    list.innerHTML = "";
-
-    const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
-    const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
-    const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
-
-    if (!evs.length && !marks.length){
-      const empty = document.createElement("div");
-      empty.className = "stackItem muted";
-      empty.textContent = "Žádné události (zatím)";
-      list.appendChild(empty);
-      scheduleSixSevenScan();
-      return;
-    }
-
-    const evSorted = [...evs].sort((a,b) => (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || String(a.begin||"").localeCompare(String(b.begin||"")));
-    for (const e of evSorted){
-      const item = document.createElement("div");
-      item.className = "stackItem event";
-
-      const title = document.createElement("div");
-      title.className = "eventTitle";
-      title.textContent = e.name || "Akce";
-
-      const meta = document.createElement("div");
-      meta.className = "eventMeta";
-      meta.textContent = `${e.dayText || dayLabelCz(e.dayKey) || "—"}${(e.begin && e.end) ? ` • ${e.begin}–${e.end}` : ""}`;
-
-      const desc = document.createElement("div");
-      desc.className = "eventDesc";
-      desc.textContent = e.info || "";
-
-      item.appendChild(title);
-      item.appendChild(meta);
-      if (e.info) item.appendChild(desc);
-      list.appendChild(item);
-    }
-
-    const markSorted = [...marks].sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || (a.idx-b.idx));
-    for (const ev of markSorted){
-      if (ev.type === "event") continue;
-
-      const item = document.createElement("div");
-      item.className = "stackItem " + (ev.type || "");
-
-      const title = document.createElement("div");
-      title.className = "eventTitle";
-      title.textContent = ev.type === "subst" ? "Suplování" : "Odpadlo";
-
-      const meta = document.createElement("div");
-      meta.className = "eventMeta";
-      meta.textContent = `${dayLabelCz(ev.day)} • hodina ${ev.idx+1}/7 • ${TIMES[ev.idx]?.start || ""}–${TIMES[ev.idx]?.end || ""}${ev.room ? " • "+ev.room : ""}`;
-
-      const desc = document.createElement("div");
-      desc.className = "eventDesc";
-      desc.textContent = ev.note || "";
-
-      item.appendChild(title);
-      item.appendChild(meta);
-      if (ev.note) item.appendChild(desc);
-      list.appendChild(item);
-    }
-
-    scheduleSixSevenScan();
-  }
-
-  /* =========================
-     ABSENCE leaderboard (LeaderboardAb.txt)
-     ========================= */
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[c]));
-  }
-
-  async function loadAbsenceLeaderboard(){
-    const box = $("abList");
-    const hint = $("abHint");
-    if (!box) return;
-
-    const fallback = () => {
-      box.innerHTML = `<div class="stackItem muted">LeaderboardAb.txt nenalezen / prázdný</div>`;
-      if (hint) hint.textContent = "Zdroj: LeaderboardAb.txt (fallback)";
-    };
-
-    try{
-      const res = await fetch("./LeaderboardAb.txt?ts=" + Date.now(), { cache:"no-store" });
-      if (!res.ok) return fallback();
-
-      const txt = await res.text();
-      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-      if (!lines.length) return fallback();
-
-      const rows = lines.map(line => {
-        const m = line.match(/^(.+?)(?:\s*[-:]\s*(\d+))?\s*$/);
-        return {
-          name: (m?.[1] || line).trim(),
-          val: m?.[2] ? Number(m[2]) : null,
-          raw: line
-        };
-      });
-
-      const hasNums = rows.some(r => typeof r.val === "number");
-      if (hasNums){
-        rows.sort((a,b) => (b.val ?? -Infinity) - (a.val ?? -Infinity));
-      }
-
-      box.innerHTML = "";
-      rows.forEach((r, idx) => {
-        const item = document.createElement("div");
-        item.className = "stackItem";
-        item.innerHTML = `
-          <div class="abRow">
-            <div class="abName">${idx+1}. ${escapeHtml(r.name)}</div>
-            <div class="abVal">${(typeof r.val === "number") ? r.val : ""}</div>
-          </div>
-          <div class="abMeta">${escapeHtml(r.raw)}</div>
-        `;
-        box.appendChild(item);
-      });
-
-      if (hint) hint.textContent = "Zdroj: LeaderboardAb.txt";
-      scheduleSixSevenScan();
-    }catch(e){
-      fallback();
-    }
-  }
-
-  /* =========================
-     CAFA TRACKER (clean + hide after school)
-     ========================= */
-  function updateCafaTracker(now){
-    const block = $("cafaBlock");
-    const l1 = $("cafaLine1");
-    const l2 = $("cafaLine2");
-    if (!block || !l1 || !l2) return;
-
-    const dayKey = dayKeyFromDate(now);
-    if (!dayKey){
-      block.classList.add("hidden");
-      return;
-    }
-
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    const days = getTeacherDays();
-    const arr = days[dayKey] || Array(7).fill(null);
-
-    // poslední hodina dne podle rozvrhu učitele
-    let lastIdx = null;
-    for (let i=6;i>=0;i--){
-      if (arr[i] && arr[i].subj){ lastIdx = i; break; }
-    }
-
-    if (lastIdx === null){
-      block.classList.add("hidden");
-      return;
-    }
-
-    if (nowMin > TIMES_MIN[lastIdx].endMin){
-      block.classList.add("hidden");
-      return;
-    }
-
-    block.classList.remove("hidden");
-
-    const compact = (L) => {
-      const cls = (L?.class || "").replace(/\s+cel[aá]\s*$/i, "").trim();
-      const room = (L?.room || "").trim();
-      return `${cls || "—"} • ${room || "—"}`;
-    };
-
-    // lunch
-    if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
-      let lastSeenIdx = null;
-      for (let i=6;i>=0;i--){
-        if (TIMES_MIN[i].endMin < nowMin && arr[i] && arr[i].subj){ lastSeenIdx = i; break; }
-      }
-      if (lastSeenIdx !== null){
-        l1.textContent = `Naposledy: ${compact(arr[lastSeenIdx])}`;
-        l2.textContent = `Obědová pauza • další info po ${LUNCH.end}`;
-      } else {
-        l1.textContent = `Obědová pauza`;
-        l2.textContent = `—`;
-      }
-      scheduleSixSevenScan();
-      return;
-    }
-
-    // current lesson
-    let curIdx = null;
-    for (let i=0;i<7;i++){
-      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){ curIdx = i; break; }
-    }
-
-    if (curIdx !== null && arr[curIdx]){
-      l1.textContent = compact(arr[curIdx]);
-      l2.textContent = `Hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
-      scheduleSixSevenScan();
-      return;
-    }
-
-    // break
-    let lastSeenIdx = null;
-    for (let i=6;i>=0;i--){
-      if (TIMES_MIN[i].endMin < nowMin && arr[i] && arr[i].subj){ lastSeenIdx = i; break; }
-    }
-    let nextIdx = null;
-    for (let i=0;i<7;i++){
-      if (TIMES_MIN[i].startMin > nowMin && arr[i] && arr[i].subj){ nextIdx = i; break; }
-    }
-
-    l1.textContent = lastSeenIdx !== null ? `Naposledy: ${compact(arr[lastSeenIdx])}` : `Naposledy: —`;
-    l2.textContent = nextIdx !== null
-      ? `Přestávka • Další: ${compact(arr[nextIdx])} • ${TIMES[nextIdx].start}`
-      : `Přestávka • Další: —`;
-
-    scheduleSixSevenScan();
-  }
-
-  /* =========================
-     DAILY PROGRESS (with lunch label)
+     DAILY PROGRESS (with lunch)
      ========================= */
   function setDailyBadge(kind, text){
     const b=$("dailyBadge");
@@ -2373,7 +2253,6 @@
       return;
     }
 
-    // Lunch
     if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
       setDailyBadge("live", "Oběd");
       setText("dailyText", "Obědová pauza 🍽️");
@@ -2448,61 +2327,161 @@
   }
 
   /* =========================
-     PROGRESS BARS
+     Tracker (fixed & clean)
      ========================= */
-  function updateProgressBars(){
-    const now = new Date();
-    const timeInDay = now.getHours()/24 + now.getMinutes()/1440;
+  function updateCafaTracker(now){
+    const block = $("cafaBlock");
+    const l1 = $("cafaLine1");
+    const l2 = $("cafaLine2");
+    if (!block || !l1 || !l2) return;
 
-    const dow = now.getDay();
-    const weekend = (dow===0 || dow===6);
-    const workIndex = (dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
-    const weekPct = weekend ? 100 : ((workIndex + timeInDay)/5)*100;
+    const tgl = $("toggleCafa");
+    if (tgl && !tgl.checked){
+      block.classList.add("hidden");
+      return;
+    }
 
-    setBar("rt-week", weekPct, weekend);
-    setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
-    setBar("raw-week", weekPct, false);
-    setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
+    const dayKey = dayKeyFromDate(now);
+    const nowMin = now.getHours()*60 + now.getMinutes();
 
-    const dim = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-    const monthPct = ((now.getDate()-1 + timeInDay)/dim)*100;
-    setBar("rt-month", monthPct);
-    setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
+    // po 16:00 pryč (jak chceš)
+    if (!dayKey || now.getHours() >= 16){
+      block.classList.add("hidden");
+      return;
+    }
 
-    const mStart = localDate(now.getFullYear(), now.getMonth()+1, 1);
-    const mEnd   = localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
-    const monthRaw = rawPctBetween(mStart, mEnd, now);
-    setBar("raw-month", monthRaw);
-    setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
+    const days = getTeacherDays();
+    const arr = (days && days[dayKey]) ? days[dayKey].slice(0,7) : Array(7).fill(null);
+    const hasAny = arr.some(x => x && x.subj);
 
-    const yr = getSchoolYearRange(now);
-    const yearPct = calendarPctBetween(yr.start, yr.end, now);
-    setBar("rt-year", yearPct);
-    setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
-    const yearRaw = rawPctBetween(yr.start, yr.end, now);
-    setBar("raw-year", yearRaw);
-    setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
+    const compact = (L) => {
+      const cls = (L?.class || "").replace(/\s+cel[aá]\s*$/i, "").trim();
+      const room = (L?.room || "").trim();
+      return { cls: (cls || "—"), room: (room || "—") };
+    };
 
-    const totalPct = calendarPctBetween(HS_START, HS_END, now);
-    setBar("rt-total", totalPct);
-    setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
-    const totalRaw = rawPctBetween(HS_START, HS_END, now);
-    setBar("raw-total", totalRaw);
-    setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
+    // když nejsou data, nespadni – ukaž placeholder
+    if (!hasAny){
+      block.classList.remove("hidden");
+      l1.textContent = "— • —";
+      l2.textContent = `Dnes • ${state.teacherSource || "—"}`;
+      return;
+    }
 
-    const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
-    setText("rt-maturita-label", (daysUntil>=0)
-      ? `Real-Time: ~${daysUntil} dní`
-      : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
-    );
+    // najdi poslední učící hodinu -> po konci dne pryč
+    let lastIdx = null;
+    for (let i=6;i>=0;i--){
+      if (arr[i] && arr[i].subj){ lastIdx = i; break; }
+    }
+    if (lastIdx !== null && nowMin > TIMES_MIN[lastIdx].endMin){
+      block.classList.add("hidden");
+      return;
+    }
 
-    const rawDays = rawDaysUntil(MATURITA_APPROX, now);
-    setText("raw-maturita-label", (rawDays>=0)
-      ? `Raw-Time: ~${rawDays} školních dní`
-      : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
-    );
+    // Obědová pauza
+    if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
+      let lastSeenIdx = null;
+      for (let i=6;i>=0;i--){
+        if (TIMES_MIN[i].endMin < nowMin && arr[i] && arr[i].subj){ lastSeenIdx = i; break; }
+      }
+      if (lastSeenIdx !== null){
+        const c = compact(arr[lastSeenIdx]);
+        l1.textContent = `${c.cls} • ${c.room}`;
+        l2.textContent = `Obědová pauza • naposledy hodina ${lastSeenIdx+1}/7`;
+      } else {
+        l1.textContent = `— • —`;
+        l2.textContent = `Obědová pauza`;
+      }
+      return;
+    }
 
-    scheduleSixSevenScan();
+    // aktuální hodina
+    let curIdx = null;
+    for (let i=0;i<7;i++){
+      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){ curIdx=i; break; }
+    }
+
+    if (curIdx !== null && arr[curIdx]){
+      const c = compact(arr[curIdx]);
+      l1.textContent = `${c.cls} • ${c.room}`;
+      l2.textContent = `Hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
+      return;
+    }
+
+    // přestávka: naposledy + další
+    let lastSeenIdx = null;
+    for (let i=6;i>=0;i--){
+      if (TIMES_MIN[i].endMin < nowMin && arr[i] && arr[i].subj){ lastSeenIdx = i; break; }
+    }
+    let nextIdx = null;
+    for (let i=0;i<7;i++){
+      if (TIMES_MIN[i].startMin > nowMin && arr[i] && arr[i].subj){ nextIdx = i; break; }
+    }
+
+    const lastTxt = (lastSeenIdx !== null) ? compact(arr[lastSeenIdx]) : { cls:"—", room:"—" };
+    l1.textContent = `${lastTxt.cls} • ${lastTxt.room}`;
+
+    if (nextIdx !== null){
+      const nxt = compact(arr[nextIdx]);
+      l2.textContent = `Přestávka • další ${nxt.cls} • ${nxt.room} • ${TIMES[nextIdx].start}`;
+    } else {
+      l2.textContent = `Přestávka`;
+    }
+  }
+
+  /* =========================
+     Absence leaderboard
+     ========================= */
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+  async function loadAbsenceLeaderboard(){
+    const box = $("abList");
+    const hint = $("abHint");
+    if (!box) return;
+
+    const fallback = () => {
+      box.innerHTML = `<div class="stackItem muted">LeaderboardAb.txt nenalezen / prázdný</div>`;
+      if (hint) hint.textContent = "Zdroj: LeaderboardAb.txt (fallback)";
+    };
+
+    try{
+      const res = await fetch("./LeaderboardAb.txt?ts=" + Date.now(), { cache:"no-store" });
+      if (!res.ok) return fallback();
+
+      const txt = await res.text();
+      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+      if (!lines.length) return fallback();
+
+      const rows = lines.map(line => {
+        const m = line.match(/^(.+?)(?:\s*[-:]\s*(\d+))?\s*$/);
+        return { name: (m?.[1] || line).trim(), val: m?.[2] ? Number(m[2]) : null, raw: line };
+      });
+
+      const hasNums = rows.some(r => typeof r.val === "number");
+      if (hasNums) rows.sort((a,b) => (b.val ?? -Infinity) - (a.val ?? -Infinity));
+
+      box.innerHTML = "";
+      rows.forEach((r, idx) => {
+        const item = document.createElement("div");
+        item.className = "stackItem";
+        item.innerHTML = `
+          <div class="abRow">
+            <div class="abName">${idx+1}. ${escapeHtml(r.name)}</div>
+            <div class="abVal">${(typeof r.val === "number") ? r.val : ""}</div>
+          </div>
+          <div class="abMeta">${escapeHtml(r.raw)}</div>
+        `;
+        box.appendChild(item);
+      });
+
+      if (hint) hint.textContent = "Zdroj: LeaderboardAb.txt";
+      scheduleSixSevenScan();
+    }catch(e){
+      fallback();
+    }
   }
 
   /* =========================
@@ -2517,7 +2496,6 @@
       return { __error: String(err?.message || err) };
     }
   }
-
   async function syncBackend(){
     const c = await fetchJsonSafe(BACKEND_CLASS_API);
     if (!c.__error && c.ok && c.days && hasAnyLesson(c.days)){
@@ -2546,8 +2524,21 @@
   }
 
   /* =========================
-     SANITY (live + history)
+     SANITY
      ========================= */
+  const SANITY_BASE_DRAIN = 6;
+  const SANITY_POPUP_WINDOW_MIN = 5;
+  const SANITY_KAK_BOOST = 30;
+  const SANITY_KAK_MAX_PER_DAY = 1;
+
+  const MOODS = [
+    { key:"cool",   emoji:"😎", label:"Pohoda", mult:0.6 },
+    { key:"ok",     emoji:"🙂", label:"Ok",     mult:1.0 },
+    { key:"meh",    emoji:"😐", label:"Meh",    mult:1.4 },
+    { key:"bad",    emoji:"😣", label:"Špatný", mult:1.9 },
+    { key:"cooked", emoji:"💀", label:"Cooked", mult:2.6 },
+  ];
+
   function todayISO(){
     const d = new Date();
     const y = d.getFullYear();
@@ -2560,14 +2551,7 @@
   function loadSanity(){
     try{
       const raw = localStorage.getItem(sanityKey());
-      if (!raw) return {
-        base: 100,
-        checkins: {},
-        snapshots: {},
-        kakUsed: 0,
-        lastPopupHour: null,
-        lastPopupAt: null,
-      };
+      if (!raw) return { base:100, checkins:{}, snapshots:{}, kakUsed:0, lastPopupHour:null, lastPopupAt:null };
       const obj = JSON.parse(raw);
       return {
         base: Number(obj.base ?? 100),
@@ -2619,7 +2603,6 @@
       if (nowMin > end){
         S = clamp(S - sanityDeltaForHour(i), 0, 100);
       } else if (nowMin < start){
-        // not started
       } else {
         const delta = sanityDeltaForHour(i);
         if (delta > 0){
@@ -2643,7 +2626,6 @@
 
     const x = (i) => (i/7)*300;
     const y = (pct) => 10 + (1 - pct/100) * 70;
-
     const anchors = pts.map((v,i)=>({x:x(i), y:y(v)}));
 
     const nowMin = now.getHours()*60 + now.getMinutes();
@@ -2671,7 +2653,6 @@
       dl += ` C${cx},${p0.y} ${cx},${p1.y} ${p1.x},${p1.y}`;
     }
     dl += ` L${liveX},${liveY}`;
-
     $("sanityPath").setAttribute("d", dl);
   }
 
@@ -2679,8 +2660,8 @@
     const toggle = $("toggleSanity");
     if (toggle && !toggle.checked) return;
 
-    const after16 = now.getHours() >= 16;
-    if (after16){
+    // po 16:00 live pryč
+    if (now.getHours() >= 16){
       const graph = document.querySelector(".sanityGraph");
       if (graph) graph.classList.add("sanityOff");
       $("checkBtn").style.display = "none";
@@ -2702,7 +2683,6 @@
     const idx = getCurrentHourIndex(nowMin);
     const missing = (idx !== null) && !state.sanity.checkins[String(idx)];
     $("checkBtn").style.display = (missing ? "inline-block" : "none");
-
     $("sanityMeta").textContent = (idx === null) ? "Mimo hodinu" : `Hodina ${idx+1}/7 • check-in ${missing ? "chybí" : "OK"}`;
 
     renderSanityCurve(now);
@@ -2736,9 +2716,7 @@
      ========================= */
   const SANITY_KEEP_DAYS = 14;
 
-  function sanityKeyForDay(yyyy_mm_dd){
-    return "sp_sanity_" + yyyy_mm_dd;
-  }
+  function sanityKeyForDay(yyyy_mm_dd){ return "sp_sanity_" + yyyy_mm_dd; }
   function listSanityDays(){
     const keys = Object.keys(localStorage);
     const days = [];
@@ -2805,7 +2783,6 @@
   function saveSnapshotForHourEnd(now){
     if (!state.sanity) return;
     if (!state.sanity.snapshots) state.sanity.snapshots = {};
-
     const nowMin = now.getHours()*60 + now.getMinutes();
     for (let i=0;i<7;i++){
       const endMin = TIMES_MIN[i].endMin;
@@ -2822,10 +2799,9 @@
   function renderSanityHistoryDay(dayISO){
     const box = $("sanityHistoryBox");
     if (!box) return;
-
     const obj = loadSanityForDay(dayISO);
-    box.style.display = "block";
 
+    box.style.display = "block";
     if (!obj){
       box.innerHTML = `<div class="stackItem muted">Žádná data pro ${dayISO}</div>`;
       return;
@@ -2877,7 +2853,6 @@
 
     const obj = loadSanityForDay(dayISO);
     box.style.display = "block";
-
     if (!obj){
       box.innerHTML = `<div class="stackItem muted">Žádná data pro ${dayISO}</div>`;
       return;
@@ -2913,12 +2888,8 @@
     localStorage.setItem("sp_sanity_hist_day", d);
     localStorage.setItem("sp_sanity_hist_view", v);
 
-    if (v === "day"){
-      renderSanityHistoryDay(d);
-    } else if (v.startsWith("h")){
-      const idx = Number(v.slice(1));
-      renderSanityHistoryHour(d, idx);
-    }
+    if (v === "day") renderSanityHistoryDay(d);
+    else if (v.startsWith("h")) renderSanityHistoryHour(d, Number(v.slice(1)));
   }
 
   function initSanityHistoryUI(){
@@ -2988,7 +2959,6 @@
     }
 
     const mood = MOODS.find(x => x.key === moodKey) || MOODS[1];
-
     state.sanity.checkins[String(idx)] = { key: mood.key, mult: mood.mult, at: now.toISOString() };
     state.sanity.lastPopupHour = idx;
     state.sanity.lastPopupAt = now.toISOString();
@@ -3001,19 +2971,15 @@
   function shouldAutoPopup(now){
     const dayKey = dayKeyFromDate(now);
     if (!dayKey) return false;
-
     const nowMin = now.getHours()*60 + now.getMinutes();
     const idx = getCurrentHourIndex(nowMin);
     if (idx === null) return false;
-
     if (state.sanity.checkins[String(idx)]) return false;
 
     const start = TIMES_MIN[idx].startMin;
     const diff = nowMin - start;
-    if (diff < 0 || diff > SANITY_POPUP_WINDOW_MIN) return false;
-
+    if (diff < 0 || diff > 5) return false;
     if (state.sanity.lastPopupHour === idx) return false;
-
     return true;
   }
 
@@ -3028,14 +2994,13 @@
       return;
     }
     $("checkinTitle").textContent = `Check-in • hodina ${idx+1}/7`;
-    $("checkinSub").textContent = `${dayLabelCz(dayKey)} • ${TIMES[idx].start}–${TIMES[idx].end} • (pozdní check-in = catch-up)`;
+    $("checkinSub").textContent = `${dayLabelCz(dayKey)} • ${TIMES[idx].start}–${TIMES[idx].end}`;
   }
 
   function maybeAutoPopup(){
     const now = new Date();
     if (!$("toggleSanity") || !$("toggleSanity").checked) return;
     if (now.getHours() >= 16) return;
-
     if (shouldAutoPopup(now)){
       updateCheckinTexts(now);
       openModal();
@@ -3046,15 +3011,14 @@
   }
 
   /* =========================
-     BOOT + LOOP
+     BACKEND + LOOP
      ========================= */
-  function tick(){
+  async function tick(){
     const now = new Date();
     updateProgressBars();
     if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
     updateCafaTracker(now);
     updateSanityUI(now);
-
     saveSnapshotForHourEnd(now);
     maybeAutoPopup();
   }
@@ -3078,7 +3042,6 @@
       updateCheckinTexts(now);
       openModal();
     });
-
     $("kakBtn").addEventListener("click", useKakajicko);
 
     statusText();
@@ -3087,9 +3050,7 @@
     tick();
     syncBackend();
 
-    scheduleSixSevenScan();
     setInterval(triggerSixSevenEmote, 10_000);
-
     setInterval(tick, 30_000);
     setInterval(syncBackend, 5 * 60_000);
   }
