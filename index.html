@@ -29,7 +29,7 @@
 
       --border:#eee;
 
-      --accent:#ff2ea6;   /* used by dots + sliders */
+      --accent:#ff2ea6;
       --accent2:#ff5fd1;
       --glow: rgba(255,46,166,0.45);
 
@@ -266,7 +266,6 @@
       font-display: swap;
     }
     .titleWrap{
-      position: relative;
       margin: 0 0 14px 0;
       display:flex;
       flex-direction: column;
@@ -306,9 +305,6 @@
     @keyframes mcSplashPulse{
       from { transform: scale(0.95); opacity: 0.92; }
       to   { transform: scale(1.05); opacity: 1; }
-    }
-    @media (max-width:980px){
-      .mcSplash{ font-size: 10px; }
     }
 
     /* ===== six seven easter egg ===== */
@@ -358,13 +354,7 @@
       border: 1px solid var(--border);
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
-      min-width: 0;
-    }
-    body.theme-loona .block,
-    body.theme-sobokill .block,
-    body.theme-kasparnakart .block,
-    body.theme-battlecats .block{
-      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
+      min-width:0;
     }
 
     .rowTitle{
@@ -460,10 +450,10 @@
 
     .mainLayout{
       display:grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+      grid-template-columns: minmax(0, 1fr) 300px;
       gap:14px;
       align-items:start;
-      min-width: 0;
+      min-width:0;
     }
     @media (max-width:1180px){
       .mainLayout{ grid-template-columns: 1fr; }
@@ -489,79 +479,74 @@
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
-    /* ADDON */
+    /* ADDON: EXACTLY like old events box sizing */
     .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.98; width:300px; min-width:0; }
     @media (max-width:1180px){ .addonCol{ width:auto; } }
 
-    /* pager container */
-    .pagerTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
-      min-width: 0;
+    .addonPager{
+      position: relative;
+      min-width:0;
     }
-    .dots{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      user-select:none;
-      min-width: 0;
-    }
-    .dot{
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.22);
-      border: 1px solid var(--border);
-      opacity: .65;
-      cursor: pointer;
-      transition: transform .12s ease, opacity .12s ease, background .12s ease, box-shadow .12s ease;
-      flex: 0 0 auto;
-    }
-    body.theme-battlecats .dot{ background: rgba(0,0,0,0.15); }
-    .dot.active{
-      opacity: 1;
-      background: var(--accent);
-      border-color: rgba(255,255,255,0.18);
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.04), 0 0 16px rgba(255,255,255,0.10);
-      transform: scale(1.15);
-    }
-    .dot:hover{ opacity: 1; transform: scale(1.2); }
 
-    /* FIXED HEIGHT + SCROLL INSIDE (CRITICAL) */
-    .pagerViewport{
-      height: 420px;
-      overflow: hidden;
-      min-width: 0;
+    /* fixed viewport like you had */
+    .addonViewport{
+      height: 260px;        /* same feeling as old events max-height */
+      overflow: hidden;     /* NO EXPAND */
+      min-width:0;
     }
-    .pagerPages{
+
+    .addonPages{
       display:flex;
-      height: 100%;
-      width: 300%;
+      height:100%;
+      width:300%;
       transition: transform .25s ease;
-      min-width: 0;
+      min-width:0;
     }
-    .pagerPage{
+
+    .addonPage{
       width: calc(100% / 3);
-      height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
+      height:100%;
+      overflow-y:auto;
+      overflow-x:hidden;
       padding-right: 6px;
-      min-width: 0;
+      min-width:0;
     }
-    .pagerPage::-webkit-scrollbar{ width: 10px; }
-    .pagerPage::-webkit-scrollbar-thumb{
+
+    .addonPage::-webkit-scrollbar{ width: 10px; }
+    .addonPage::-webkit-scrollbar-thumb{
       background: rgba(255,255,255,0.14);
       border-radius: 999px;
       border: 2px solid rgba(0,0,0,0);
       background-clip: padding-box;
     }
-    body.theme-battlecats .pagerPage::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.18); }
+    body.theme-battlecats .addonPage::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.18); }
+
+    /* dots BOTTOM center */
+    .addonDots{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      padding-top:10px;
+      user-select:none;
+    }
+    .dot{
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.20);
+      border: 1px solid var(--border);
+      opacity: .7;
+      cursor: pointer;
+      transition: transform .12s ease, opacity .12s ease, background .12s ease, box-shadow .12s ease;
+    }
+    body.theme-battlecats .dot{ background: rgba(0,0,0,0.14); }
+    .dot.active{
+      opacity: 1;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(0,0,0,0.10);
+      transform: scale(1.15);
+    }
 
     .stackList{ display:flex; flex-direction:column; gap:8px; min-width:0; }
-
     .stackItem{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
@@ -609,7 +594,7 @@
     .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; overflow-wrap:anywhere; }
     .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; overflow-wrap:anywhere; }
 
-    /* Status chips (Bakalari vs Local glow) */
+    /* status chips */
     .statusChip{
       display:inline-block;
       padding:4px 9px;
@@ -705,8 +690,6 @@
       transform: translateY(-1px);
       box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
-
-    /* Current hour outline (orange) */
     .tt-now{
       outline: 2px solid rgba(255, 152, 0, 0.95);
       outline-offset: -2px;
@@ -754,16 +737,8 @@
       box-shadow: none;
     }
 
-    .tt-event{
-      border-color: var(--eventBorder);
-      background: var(--eventBg);
-      box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25);
-    }
-    .tt-subst{
-      border-color: var(--substBorder);
-      background: var(--substBg);
-      box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30);
-    }
+    .tt-event{ border-color: var(--eventBorder); background: var(--eventBg); }
+    .tt-subst{ border-color: var(--substBorder); background: var(--substBg); }
     .tt-cancel{
       border-color: var(--cancelBorder);
       background:
@@ -775,7 +750,6 @@
           rgba(0,0,0,0.00) 20px
         ),
         var(--cancelBg);
-      box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
     }
 
     /* Tooltip */
@@ -797,11 +771,7 @@
       display:none;
       pointer-events:none;
     }
-    .tt-tooltip .t-title{
-      font-size: 13px;
-      letter-spacing: .2px;
-      margin-bottom: 6px;
-    }
+    .tt-tooltip .t-title{ font-size: 13px; letter-spacing: .2px; margin-bottom: 6px; }
     .tt-tooltip .t-row{
       display:flex;
       justify-content:space-between;
@@ -834,25 +804,18 @@
     .footer .footerBy{ font-size: 13px; }
     .footer .footerSep{ opacity: .55; margin: 0 6px; }
 
-    /* Sanity UI */
+    /* Sanity curve */
     .sanityWrap{ display:flex; flex-direction:column; gap:10px; min-width:0; }
-    .sanityBarOuter{
-      height: 10px;
-      background: var(--linebg);
-      border-radius: 999px;
-      overflow:hidden;
-      border: 1px solid var(--border);
-    }
-    .sanityBarInner{
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, rgba(59,181,74,0.9), rgba(255,190,60,0.95), rgba(255,80,80,0.95));
-      transform-origin: left center;
-      transform: scaleX(1);
-      transition: transform .25s ease;
-    }
-    .sanityRow{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-weight:1000; }
+    .sanityTopRow{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-weight:1000; }
     .sanitySmall{ font-size:11px; color: var(--muted); font-weight:900; }
+    .sanitySvg{
+      width: 100%;
+      height: 120px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      overflow: hidden;
+    }
     .feelRow{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .feelBtn{
       border: 1px solid var(--border);
@@ -863,10 +826,12 @@
       font-weight:1000;
       color: var(--text);
     }
-    .feelBtn:hover{ transform: translateY(-1px); }
+    .feelBtn:disabled{
+      opacity: .45;
+      cursor:not-allowed;
+    }
     .kakaoBtn{
       display:none;
-      margin-top: 6px;
       border: none;
       background: rgba(255, 80, 80, 0.18);
       border: 1px solid rgba(255, 80, 80, 0.40);
@@ -879,11 +844,8 @@
     .kakaoBtn.show{ display:inline-block; }
     .warnRed{ color: #ff4b5c; font-weight:1000; }
 
-    /* Mobile polish */
     @media (max-width: 560px){
       .tt-grid{ min-width: 820px; }
-      .pagerViewport{ height: 360px; }
-      .addonCol{ width:auto; }
     }
   </style>
 </head>
@@ -931,7 +893,7 @@
 
       <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
       <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události/Sanity/Leaderboard</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleAddon" checked /> <span>Zobrazit Události/Sanity/Leaderboard</span></label>
       <label class="toggle"><input type="checkbox" id="toggleTracker" checked /> <span>Zobrazit Tracker</span></label>
 
       <p class="hint" id="statusHint">Status: OK</p>
@@ -1007,40 +969,35 @@
       </div>
 
       <aside id="addonPanel" class="addonCol">
-        <div class="block" id="addonPagerBlock">
-          <div class="pagerTop">
-            <div class="rowTitle" id="pagerTitle">Události</div>
-            <div class="dots">
-              <div class="dot active" id="dot0" title="Události"></div>
-              <div class="dot" id="dot1" title="Sanity"></div>
-              <div class="dot" id="dot2" title="Leaderboard"></div>
-            </div>
-          </div>
+        <!-- ADDON PAGER -->
+        <div class="block addonPager" id="addonBlock">
+          <div class="rowTitle" id="addonTitle">Události</div>
 
-          <div class="pagerViewport">
-            <div class="pagerPages" id="pagerPages" style="transform: translateX(0%);">
+          <div class="addonViewport">
+            <div class="addonPages" id="addonPages" style="transform: translateX(0%);">
 
               <!-- PAGE 0: EVENTS -->
-              <div class="pagerPage" id="pageEvents">
+              <div class="addonPage" id="pageEvents">
                 <div id="eventsList" class="stackList">
                   <div class="stackItem muted">Načítání…</div>
                 </div>
               </div>
 
               <!-- PAGE 1: SANITY -->
-              <div class="pagerPage" id="pageSanity">
+              <div class="addonPage" id="pageSanity">
                 <div class="sanityWrap">
-                  <div class="sanityRow">
+                  <div class="sanityTopRow">
                     <div>Sanity: <span id="sanityPct">100%</span></div>
-                    <div class="sanitySmall" id="sanityHint">—</div>
+                    <div class="sanitySmall" id="sanityState">—</div>
                   </div>
 
-                  <div class="sanityBarOuter">
-                    <div class="sanityBarInner" id="sanityBar"></div>
-                  </div>
+                  <svg class="sanitySvg" viewBox="0 0 300 120" preserveAspectRatio="none">
+                    <path id="sanityPath" d="" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" />
+                    <path id="sanityFill" d="" fill="rgba(255,255,255,0.04)" stroke="none"></path>
+                  </svg>
 
                   <div class="feelRow">
-                    <span class="sanitySmall">Jak se cítíš?</span>
+                    <span class="sanitySmall" id="feelHint">Zadávej na začátku hodiny</span>
                     <button class="feelBtn" data-feel="1">😄 1</button>
                     <button class="feelBtn" data-feel="2">🙂 2</button>
                     <button class="feelBtn" data-feel="3">😐 3</button>
@@ -1059,7 +1016,7 @@
               </div>
 
               <!-- PAGE 2: LEADERBOARD -->
-              <div class="pagerPage" id="pageLeader">
+              <div class="addonPage" id="pageLeader">
                 <div id="leaderList" class="stackList">
                   <div class="stackItem muted">Načítání…</div>
                 </div>
@@ -1067,8 +1024,15 @@
 
             </div>
           </div>
+
+          <div class="addonDots">
+            <div class="dot active" id="dot0" title="Události"></div>
+            <div class="dot" id="dot1" title="Sanity"></div>
+            <div class="dot" id="dot2" title="Leaderboard"></div>
+          </div>
         </div>
 
+        <!-- TRACKER -->
         <div class="block" id="trackerBlock">
           <div class="rowTitle">Tracker</div>
           <div class="trackerCard">
@@ -1164,8 +1128,7 @@
   /* =========================
      Mode title (Nonchalant/Freaky)
      ========================= */
-  const BAKALARI_BLUE = "#1E88E5"; // solid "bakalari blue" vibe
-
+  const BAKALARI_BLUE = "#1E88E5";
   function applyTitleMode(mode){
     const titleEl = document.getElementById("pageTitle");
     if (!titleEl) return;
@@ -1177,13 +1140,11 @@
     } else {
       titleEl.textContent = "School Progress";
     }
-
     localStorage.setItem("sp_mode", mode);
     const sel = document.getElementById("modeSelect");
     if (sel) sel.value = mode;
     scheduleSixSevenScan();
   }
-
   function initModeSelector(){
     const sel = document.getElementById("modeSelect");
     if (!sel) return;
@@ -1219,19 +1180,15 @@
     const s = String(full || "").trim();
     if (!s) return "";
     // preserve combos like "RUJ / NEJ" -> "RUJ/NEJ"
-    if (s.includes("/")){
-      return s.split("/").map(x => shortSubj(x)).filter(Boolean).join("/");
-    }
-    if (s.includes(" / ")){
-      return s.split(" / ").map(x => shortSubj(x)).filter(Boolean).join("/");
-    }
+    if (s.includes(" / ")) return s.split(" / ").map(x => shortSubj(x)).filter(Boolean).join("/");
+    if (s.includes("/")) return s.split("/").map(x => shortSubj(x)).filter(Boolean).join("/");
     if (SUBJECT_SHORT[s]) return SUBJECT_SHORT[s];
     const noDia = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     return noDia.replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || s.slice(0,3).toUpperCase();
   }
 
   /* =========================
-     TIMES
+     TIMES + LUNCH
      ========================= */
   const TIMES = [
     {start:"07:55", end:"08:40"},
@@ -1239,11 +1196,9 @@
     {start:"09:50", end:"10:35"},
     {start:"10:45", end:"11:30"},
     {start:"11:35", end:"12:20"},
-    {start:"12:50", end:"13:35"}, // after lunch
+    {start:"12:50", end:"13:35"},
     {start:"13:40", end:"14:25"},
   ];
-
-  // lunch pause fixed
   const LUNCH = { start:"12:20", end:"12:50" };
 
   function timeToMin(hhmm){
@@ -1431,28 +1386,24 @@
 
     const toggleTT = $("toggleTimetable");
     const toggleDaily = $("toggleDaily");
-    const toggleEvents = $("toggleEvents");
+    const toggleAddon = $("toggleAddon");
     const toggleTracker = $("toggleTracker");
 
     toggleTT.addEventListener("change", () => {
       $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
       localStorage.setItem("sp_toggle_tt", toggleTT.checked ? "1" : "0");
-      scheduleSixSevenScan();
     });
     toggleDaily.addEventListener("change", () => {
       $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
       localStorage.setItem("sp_toggle_daily", toggleDaily.checked ? "1" : "0");
-      scheduleSixSevenScan();
     });
-    toggleEvents.addEventListener("change", () => {
-      $("addonPagerBlock").classList.toggle("hidden", !toggleEvents.checked);
-      localStorage.setItem("sp_toggle_events", toggleEvents.checked ? "1" : "0");
-      scheduleSixSevenScan();
+    toggleAddon.addEventListener("change", () => {
+      $("addonBlock").classList.toggle("hidden", !toggleAddon.checked);
+      localStorage.setItem("sp_toggle_addon", toggleAddon.checked ? "1" : "0");
     });
     toggleTracker.addEventListener("change", () => {
       $("trackerBlock").classList.toggle("hidden", !toggleTracker.checked);
       localStorage.setItem("sp_toggle_tracker", toggleTracker.checked ? "1" : "0");
-      scheduleSixSevenScan();
     });
 
     applyTheme(localStorage.getItem("sp_theme") || "dark");
@@ -1460,36 +1411,33 @@
 
     const savedTT = localStorage.getItem("sp_toggle_tt");
     const savedDaily = localStorage.getItem("sp_toggle_daily");
-    const savedEvents = localStorage.getItem("sp_toggle_events");
+    const savedAddon = localStorage.getItem("sp_toggle_addon");
     const savedTracker = localStorage.getItem("sp_toggle_tracker");
 
     if (savedTT !== null) toggleTT.checked = savedTT === "1";
     if (savedDaily !== null) toggleDaily.checked = savedDaily === "1";
-    if (savedEvents !== null) toggleEvents.checked = savedEvents === "1";
+    if (savedAddon !== null) toggleAddon.checked = savedAddon === "1";
     if (savedTracker !== null) toggleTracker.checked = savedTracker === "1";
 
     $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
-    $("addonPagerBlock").classList.toggle("hidden", !toggleEvents.checked);
+    $("addonBlock").classList.toggle("hidden", !toggleAddon.checked);
     $("trackerBlock").classList.toggle("hidden", !toggleTracker.checked);
   }
 
   /* =========================
-     Pager (3 pages)
+     Pager
      ========================= */
   function setPager(idx){
     state.pagerIndex = idx;
-    const pages = $("pagerPages");
-    pages.style.transform = `translateX(${-100*idx/3}%)`;
-
     $("dot0").classList.toggle("active", idx===0);
     $("dot1").classList.toggle("active", idx===1);
     $("dot2").classList.toggle("active", idx===2);
 
-    $("pagerTitle").textContent = idx===0 ? "Události" : (idx===1 ? "Sanity" : "Leaderboard");
+    $("addonTitle").textContent = idx===0 ? "Události" : (idx===1 ? "Sanity" : "Leaderboard");
+    $("addonPages").style.transform = `translateX(${-100*idx/3}%)`;
     scheduleSixSevenScan();
   }
-
   function initPager(){
     $("dot0").addEventListener("click", () => setPager(0));
     $("dot1").addEventListener("click", () => setPager(1));
@@ -1501,7 +1449,6 @@
      six seven detector + emote
      ========================= */
   let ssScanTimer = null;
-
   function scheduleSixSevenScan(){
     if (ssScanTimer) clearTimeout(ssScanTimer);
     ssScanTimer = setTimeout(() => {
@@ -1511,13 +1458,8 @@
 
   function wrapSixSeven(root){
     if (!root) return;
-
     const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
-    const patterns = [
-      /6\s*\/\s*7/g,
-      /6\.7(?:\.\d{2,4})?/g,
-      /67/g
-    ];
+    const patterns = [/6\s*\/\s*7/g,/6\.7(?:\.\d{2,4})?/g,/67/g];
 
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node){
@@ -1541,8 +1483,7 @@
         for (const part of parts){
           if (part.isMatch){ nextParts.push(part); continue; }
           const s = part.text;
-          let last = 0;
-          let m;
+          let last = 0, m;
           re.lastIndex = 0;
           while ((m = re.exec(s)) !== null){
             if (m.index > last) nextParts.push({ text: s.slice(last, m.index), isMatch:false });
@@ -1567,7 +1508,6 @@
           frag.appendChild(span);
         }
       }
-
       textNode.parentNode.replaceChild(frag, textNode);
     }
   }
@@ -1751,7 +1691,6 @@
     list.innerHTML = "";
 
     const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
-
     const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
     const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
 
@@ -1760,7 +1699,6 @@
       empty.className = "stackItem muted";
       empty.textContent = "Žádné události (zatím)";
       list.appendChild(empty);
-      scheduleSixSevenScan();
       return;
     }
 
@@ -1811,16 +1749,31 @@
       if (ev.note) item.appendChild(desc);
       list.appendChild(item);
     }
-
-    scheduleSixSevenScan();
   }
 
   /* =========================
-     TRACKER (Cáfa)
+     TRACKER (Cáfa) — fixed & clean
      ========================= */
-  function isAfterSchool(now){
-    // hard rule: after 16:00 hide tracker content (requested)
-    return now.getHours() >= 16;
+  function currentLessonIndex(now){
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    for (let i=0;i<7;i++){
+      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin) return i;
+    }
+    return null;
+  }
+  function nextLessonIndex(now){
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    for (let i=0;i<7;i++){
+      if (nowMin < TIMES_MIN[i].startMin) return i;
+    }
+    return null;
+  }
+  function prevLessonIndex(now){
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    for (let i=6;i>=0;i--){
+      if (nowMin > TIMES_MIN[i].endMin) return i;
+    }
+    return null;
   }
 
   function updateCafaTracker(now){
@@ -1831,94 +1784,82 @@
     const dayKey = dayKeyFromDate(now);
     const days = getTeacherDays();
 
-    if (!dayKey || isAfterSchool(now)){
-      // hide info (clean)
-      main.textContent = "—";
-      sub.textContent = "";
+    // weekend
+    if (!dayKey){
       badge.textContent = "Cáfa";
-      scheduleSixSevenScan();
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `Víkend • ${formatDateCZ(now)}`;
       return;
     }
 
     const nowMin = now.getHours()*60 + now.getMinutes();
-    const arr = days[dayKey] || Array(7).fill(null);
 
-    // lunch special
+    // outside school time
+    const schoolStart = TIMES_MIN[0].startMin;
+    const schoolEnd   = TIMES_MIN[6].endMin;
+    if (nowMin < schoolStart || nowMin > schoolEnd){
+      badge.textContent = "Cáfa";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `${dayLabelCz(dayKey)} • mimo školu`;
+      return;
+    }
+
+    // lunch
     if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
-      const lastIdx = 4; // lesson 5 ends 12:20
-      const last = arr[lastIdx];
+      const arr = days[dayKey] || Array(7).fill(null);
+      const last = arr[4];
       const lastSeen = last ? `${shortSubj(last.subj)} • ${last.class || ""} (${last.room || "—"})` : "—";
       badge.textContent = "Cáfa";
       main.textContent = `Obědová pauza • naposledy: ${lastSeen}`;
-      sub.textContent = `${dayLabelCz(dayKey)} • ${LUNCH.start}–${LUNCH.end}`;
-      scheduleSixSevenScan();
+      sub.textContent = `${LUNCH.start}–${LUNCH.end}`;
       return;
     }
 
-    // determine if currently in a lesson
-    let curIdx = null;
-    for (let i=0;i<7;i++){
-      const t = TIMES_MIN[i];
-      if (nowMin >= t.startMin && nowMin <= t.endMin){ curIdx=i; break; }
-    }
+    const arr = days[dayKey] || Array(7).fill(null);
+    const curIdx = currentLessonIndex(now);
 
-    // break between lessons: show last seen + next
-    if (curIdx === null){
-      // find next lesson index
-      let nextIdx = null;
-      for (let i=0;i<7;i++){
-        if (nowMin < TIMES_MIN[i].startMin){ nextIdx = i; break; }
+    // during a lesson
+    if (curIdx !== null){
+      const l = arr[curIdx];
+      if (l){
+        badge.textContent = "Cáfa";
+        main.textContent = `${shortSubj(l.subj)} • ${l.class || ""} (${l.room || "—"})`.trim();
+        sub.textContent = `${dayLabelCz(dayKey)} • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
+      } else {
+        badge.textContent = "Cáfa";
+        main.textContent = "Cáfa se skrývá ve stínech 😎";
+        sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7`;
       }
-      // find previous index
-      let prevIdx = null;
-      for (let i=6;i>=0;i--){
-        if (nowMin > TIMES_MIN[i].endMin){ prevIdx = i; break; }
-      }
-
-      const prev = prevIdx !== null ? arr[prevIdx] : null;
-      const next = nextIdx !== null ? arr[nextIdx] : null;
-
-      const prevTxt = prev ? `${shortSubj(prev.subj)} • ${prev.class || ""} (${prev.room || "—"})` : "—";
-      const nextTxt = next ? `${shortSubj(next.subj)} • ${next.class || ""} (${next.room || "—"})` : "—";
-
-      badge.textContent = "Cáfa";
-      main.textContent = `Přestávka • naposledy: ${prevTxt}`;
-      sub.textContent = `Následuje: ${nextTxt}`;
-      scheduleSixSevenScan();
       return;
     }
 
-    // during lesson
-    const l = arr[curIdx];
-    if (!l){
-      badge.textContent = "Cáfa";
-      main.textContent = `Právě: —`;
-      sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
-      scheduleSixSevenScan();
-      return;
-    }
+    // break (between lessons)
+    const p = prevLessonIndex(now);
+    const n = nextLessonIndex(now);
+    const prev = (p !== null) ? arr[p] : null;
+    const next = (n !== null) ? arr[n] : null;
+
+    const prevTxt = prev ? `${shortSubj(prev.subj)} • ${prev.class || ""} (${prev.room || "—"})` : "—";
+    const nextTxt = next ? `${shortSubj(next.subj)} • ${next.class || ""} (${next.room || "—"})` : "—";
 
     badge.textContent = "Cáfa";
-    main.textContent = `Právě: ${shortSubj(l.subj)} • ${l.class || ""} (${l.room || "—"})`.trim();
-    sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
-    scheduleSixSevenScan();
+    main.textContent = `Přestávka • naposledy: ${prevTxt}`;
+    sub.textContent = `Následuje: ${nextTxt}`;
   }
 
   /* =========================
-     DAILY PROGRESS
+     DAILY PROGRESS (lunch label)
      ========================= */
   function setDailyBadge(kind, text){
     const b=$("dailyBadge");
     b.className = "badge" + (kind ? (" "+kind) : "");
     b.textContent = text;
   }
-
   function fmtLesson(x){
     if (!x) return null;
     const room = x.room ? ` (${x.room})` : "";
     return `${shortSubj(x.subj)}${room}`;
   }
-
   function countTodayLessons(arr){
     let last = -1;
     for (let i=0;i<arr.length;i++){
@@ -1937,7 +1878,6 @@
       setBar("daybar",100);
       setText("daylabel","");
       setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
-      scheduleSixSevenScan();
       return;
     }
 
@@ -1954,7 +1894,6 @@
       setBar("daybar",100);
       setText("daylabel","");
       setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      scheduleSixSevenScan();
       return;
     }
 
@@ -1965,7 +1904,6 @@
       setBar("daybar",0);
       setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
       setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      scheduleSixSevenScan();
       return;
     }
 
@@ -1976,7 +1914,6 @@
       setBar("daybar", 0);
       setText("daylabel", `${LUNCH.start}–${LUNCH.end}`);
       setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-      scheduleSixSevenScan();
       return;
     }
 
@@ -1992,7 +1929,6 @@
         setBar("daybar", pct);
         setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
         setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-        scheduleSixSevenScan();
         return;
       }
 
@@ -2003,7 +1939,6 @@
         setBar("daybar", 0);
         setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
         setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-        scheduleSixSevenScan();
         return;
       }
     }
@@ -2013,7 +1948,6 @@
     setBar("daybar",100);
     setText("daylabel","");
     setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
-    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -2070,8 +2004,6 @@
       ? `Raw-Time: ~${rawDays} školních dní`
       : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
     );
-
-    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -2111,10 +2043,7 @@
     renderEventsPanel();
     updateCafaTracker(new Date());
     updateDaily(new Date());
-
-    // sanity tick relies on schedule
-    sanityTick(new Date());
-    scheduleSixSevenScan();
+    sanityTick(new Date());   // keep sanity state consistent
   }
 
   /* =========================
@@ -2136,7 +2065,6 @@
         return;
       }
 
-      // show top 50, but scroll handles it
       lines.slice(0, 50).forEach((ln, i) => {
         const item = document.createElement("div");
         item.className = "stackItem";
@@ -2146,33 +2074,33 @@
     }catch(e){
       list.innerHTML = `<div class="stackItem muted">LeaderboardAb.txt nenalezen</div>`;
     }
-    scheduleSixSevenScan();
   }
 
   /* =========================
-     SANITY (simple, 14 days history)
+     SANITY (curve + 14 days + only in lesson)
      ========================= */
-  const SANITY_KEY = "sp_sanity_v1";
-  const SANITY_HIST_KEY = "sp_sanity_hist_v1";
+  const SANITY_KEY = "sp_sanity_v2";
+  const SANITY_HIST_KEY = "sp_sanity_hist_v2";
   const SANITY_MAX_DAYS = 14;
 
   function getSanityState(){
     try{
       const raw = localStorage.getItem(SANITY_KEY);
-      if (!raw) return { value: 100, lastTs: Date.now(), lastHourKey: "" };
+      if (!raw) return { value: 100, lastHourKey: "", lastHourAppliedProgress: 0 };
       const obj = JSON.parse(raw);
       return {
         value: Number(obj.value ?? 100),
-        lastTs: Number(obj.lastTs ?? Date.now()),
-        lastHourKey: String(obj.lastHourKey ?? "")
+        lastHourKey: String(obj.lastHourKey ?? ""),
+        lastHourAppliedProgress: Number(obj.lastHourAppliedProgress ?? 0),
       };
     }catch{
-      return { value: 100, lastTs: Date.now(), lastHourKey: "" };
+      return { value: 100, lastHourKey: "", lastHourAppliedProgress: 0 };
     }
   }
   function saveSanityState(s){
     localStorage.setItem(SANITY_KEY, JSON.stringify(s));
   }
+
   function getHist(){
     try{
       const raw = localStorage.getItem(SANITY_HIST_KEY);
@@ -2183,29 +2111,53 @@
   function saveHist(arr){
     localStorage.setItem(SANITY_HIST_KEY, JSON.stringify(arr));
   }
-
   function pruneHist(arr){
     const cutoff = Date.now() - SANITY_MAX_DAYS*24*60*60*1000;
     return arr.filter(x => (x && x.ts && x.ts >= cutoff));
   }
-
   function pushHist(entry){
     const arr = pruneHist(getHist());
     arr.unshift(entry);
     saveHist(arr.slice(0, 250));
     renderSanityHistory();
+    renderSanityCurve();
+  }
+
+  function currentHourKey(now){
+    const dayKey = dayKeyFromDate(now);
+    if (!dayKey) return "";
+    const idx = currentLessonIndex(now);
+    if (idx === null) return "";
+    return `${toISO(now)}_${idx+1}`;
+  }
+
+  function hourProgress(now){
+    const idx = currentLessonIndex(now);
+    if (idx === null) return null;
+    const nowMin = now.getHours()*60 + now.getMinutes();
+    const s = TIMES_MIN[idx].startMin;
+    const e = TIMES_MIN[idx].endMin;
+    const prog = clamp((nowMin - s) / Math.max(1,(e - s)) * 100, 0, 100);
+    return { idx, prog };
+  }
+
+  function isInLesson(now){
+    return currentLessonIndex(now) !== null;
+  }
+
+  function setSanityButtonsEnabled(enabled){
+    document.querySelectorAll(".feelBtn").forEach(b => b.disabled = !enabled);
+    const hint = $("feelHint");
+    hint.textContent = enabled ? "Zadej svůj stav (během hodiny)" : "Zadání je dostupné jen během hodiny";
   }
 
   function renderSanityUI(){
     const s = getSanityState();
     const v = clamp(s.value, 0, 100);
-
     $("sanityPct").textContent = `${v.toFixed(0)}%`;
-    $("sanityBar").style.transform = `scaleX(${v/100})`;
 
     const warn = $("sanityWarn");
     const btn = $("kakaoBtn");
-
     if (v <= 25){
       warn.innerHTML = `<span class="warnRed">BĚŽ SI KOUPIT KAKAJÍČKO ☕</span>`;
       btn.classList.add("show");
@@ -2226,7 +2178,7 @@
       return;
     }
 
-    arr.slice(0, 30).forEach(e => {
+    arr.slice(0, 20).forEach(e => {
       const item = document.createElement("div");
       item.className = "stackItem";
       const d = new Date(e.ts);
@@ -2235,63 +2187,111 @@
     });
   }
 
-  function hourKey(now){
-    // only count school lessons 1..7 by current time window
-    const dayKey = dayKeyFromDate(now);
-    if (!dayKey) return "";
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    for (let i=0;i<7;i++){
-      if (nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin){
-        return `${toISO(now)}_${i+1}`;
-      }
-    }
-    return "";
-  }
+  function renderSanityCurve(){
+    const path = $("sanityPath");
+    const fill = $("sanityFill");
 
-  function isInSchoolWindow(now){
-    const dayKey = dayKeyFromDate(now);
-    if (!dayKey) return false;
-    const nowMin = now.getHours()*60 + now.getMinutes();
-    // count lunch as school window too
-    if (nowMin >= TIMES_MIN[0].startMin && nowMin <= TIMES_MIN[6].endMin) return true;
-    return false;
-  }
-
-  function sanityTick(now){
-    // sanity decays only during school window
-    if (!isInSchoolWindow(now)) {
-      $("sanityHint").textContent = "mimo školu";
+    const arr = pruneHist(getHist()).slice().reverse(); // oldest -> newest
+    if (arr.length < 2){
+      path.setAttribute("d", "");
+      fill.setAttribute("d", "");
       return;
     }
 
+    // map last N points to 0..300 x 0..120
+    const N = Math.min(arr.length, 40);
+    const pts = arr.slice(-N);
+
+    const w = 300, h = 120;
+    const xStep = w / (N-1);
+
+    const toY = (val) => {
+      const v = clamp(Number(val)||0, 0, 100);
+      return h - (v/100)*h;
+    };
+
+    let d = "";
+    pts.forEach((p, i) => {
+      const x = i * xStep;
+      const y = toY(p.value);
+      d += (i===0) ? `M ${x.toFixed(2)} ${y.toFixed(2)}` : ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+    });
+
+    // fill under curve
+    const yLast = toY(pts[pts.length-1].value);
+    const dFill = `${d} L ${w} ${h} L 0 ${h} Z`;
+
+    path.setAttribute("d", d);
+    fill.setAttribute("d", dFill);
+  }
+
+  // decay model: falls naturally per whole hour, but if user clicks mid-hour -> catch-up
+  function sanityTick(now){
     const s = getSanityState();
-    const hk = hourKey(now);
 
-    // apply once per lesson hour
-    if (hk && hk !== s.lastHourKey){
-      // natural decay per lesson
-      const decay = 8; // base
-      s.value = clamp(s.value - decay, 0, 100);
-      s.lastHourKey = hk;
-      s.lastTs = Date.now();
-      saveSanityState(s);
-
-      pushHist({ ts: Date.now(), value: s.value, emoji: "🕒", note: `automatický decay (${hk.split("_")[1]}/7)` });
+    // status text
+    if (isInLesson(now)){
+      const hp = hourProgress(now);
+      $("sanityState").textContent = `hodina ${hp.idx+1}/7 • ${hp.prog.toFixed(0)}%`;
+      setSanityButtonsEnabled(true);
+    } else {
+      // lunch or breaks or outside
+      const nowMin = now.getHours()*60 + now.getMinutes();
+      if (nowMin >= LUNCH_MIN.startMin && nowMin < LUNCH_MIN.endMin){
+        $("sanityState").textContent = "obědová pauza";
+      } else {
+        $("sanityState").textContent = "mimo hodinu";
+      }
+      setSanityButtonsEnabled(false);
       renderSanityUI();
+      return;
     }
 
-    $("sanityHint").textContent = hk ? `hodina ${hk.split("_")[1]}/7` : "pauza";
+    const hk = currentHourKey(now);
+    const hp = hourProgress(now);
+    if (!hk || !hp) return;
+
+    // base decay per hour
+    const BASE_DECAY_PER_HOUR = 10; // can tweak
+    // catch-up: apply decay for progress since last applied in this hour
+    if (s.lastHourKey !== hk){
+      s.lastHourKey = hk;
+      s.lastHourAppliedProgress = 0;
+    }
+
+    const need = hp.prog - s.lastHourAppliedProgress;
+    if (need > 0.5){
+      const delta = (need/100) * BASE_DECAY_PER_HOUR;
+      s.value = clamp(s.value - delta, 0, 100);
+      s.lastHourAppliedProgress = hp.prog;
+      saveSanityState(s);
+
+      // log only sometimes to avoid spam
+      if (need >= 20){
+        pushHist({ ts: Date.now(), value: s.value, emoji: "🕒", note: `decay ${hp.idx+1}/7` });
+      }
+    }
+
+    renderSanityUI();
   }
 
   function applyFeeling(feel){
-    // feel 1..5 (1 good, 5 bad) -> affects immediate drop
+    const now = new Date();
+    if (!isInLesson(now)) return;
+
+    // ensure catch-up before applying feeling
+    sanityTick(now);
+
     const s = getSanityState();
     const f = Number(feel);
-    const drop = (f===1)? 0 : (f===2)? 3 : (f===3)? 7 : (f===4)? 12 : 18;
+
+    // worse => stronger extra drop
+    const extra = (f===1)? 0 : (f===2)? 3 : (f===3)? 7 : (f===4)? 12 : 18;
     const emoji = (f===1)?"😄":(f===2)?"🙂":(f===3)?"😐":(f===4)?"😵":"💀";
-    s.value = clamp(s.value - drop, 0, 100);
-    s.lastTs = Date.now();
+
+    s.value = clamp(s.value - extra, 0, 100);
     saveSanityState(s);
+
     pushHist({ ts: Date.now(), value: s.value, emoji, note: `feeling ${f}` });
     renderSanityUI();
   }
@@ -2299,15 +2299,15 @@
   function drinkKakao(){
     const s = getSanityState();
     s.value = clamp(s.value + 30, 0, 100);
-    s.lastTs = Date.now();
     saveSanityState(s);
-    pushHist({ ts: Date.now(), value: s.value, emoji: "☕", note: "kakajíčko +30%" });
+    pushHist({ ts: Date.now(), value: s.value, emoji:"☕", note:"kakajíčko +30%" });
     renderSanityUI();
   }
 
   function initSanity(){
     renderSanityUI();
     renderSanityHistory();
+    renderSanityCurve();
 
     document.querySelectorAll(".feelBtn").forEach(btn => {
       btn.addEventListener("click", () => applyFeeling(btn.getAttribute("data-feel")));
@@ -2316,22 +2316,8 @@
   }
 
   /* =========================
-     BOOT + LOOP
+     BOOT
      ========================= */
-  function tick(){
-    const now = new Date();
-    updateProgressBars();
-    if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
-    updateCafaTracker(now);
-
-    // keep timetable highlight current hour
-    renderTimetable();
-
-    // sanity
-    renderSanityUI();
-    sanityTick(now);
-  }
-
   function boot(){
     $("verSpan").textContent = VERSION;
 
@@ -2343,20 +2329,27 @@
     loadMinecraftSplash();
     loadLeaderboard();
 
-    state.classSource = "loading";
-    state.teacherSource = "loading";
     statusText();
-
     renderTimetable();
     renderEventsPanel();
-    tick();
+    updateDaily(new Date());
+    updateCafaTracker(new Date());
+    sanityTick(new Date());
 
     syncBackend();
 
     scheduleSixSevenScan();
     setInterval(triggerSixSevenEmote, 10_000);
 
-    setInterval(tick, 30_000);
+    setInterval(() => {
+      const now = new Date();
+      updateProgressBars();
+      if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
+      updateCafaTracker(now);
+      renderTimetable(); // keep current hour outline
+      sanityTick(now);
+    }, 30_000);
+
     setInterval(syncBackend, 5 * 60_000);
     setInterval(loadMinecraftSplash, 60 * 60_000);
     setInterval(loadLeaderboard, 10 * 60_000);
