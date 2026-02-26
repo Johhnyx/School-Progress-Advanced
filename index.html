@@ -29,7 +29,7 @@
 
       --border:#eee;
 
-      --accent:#ff2ea6;       /* (accent zůstává pro UI, dotActive řešíme zvlášť) */
+      --accent:#ff2ea6;
       --accent2:#ff5fd1;
       --glow: rgba(255,46,166,0.45);
 
@@ -48,8 +48,12 @@
 
       --uiScale: 1;
 
-      /* ✅ dots default */
-      --dotActive: #3bb54a;
+      /* dots in carousel */
+      --dotInactive: rgba(255,255,255,0.18);
+      --dotActive: var(--accent);
+
+      /* Bakaláři “blue” (best-effort, looks like their UI) */
+      --bakalariBlue:#2d8cff;
     }
 
     /* Dark theme */
@@ -74,8 +78,7 @@
       --ttSubjColor: rgba(235, 240, 250, 0.95);
       --ttSubjGlow: none;
 
-      /* ✅ dots dark */
-      --dotActive: #3bb54a;
+      --dotInactive: rgba(255,255,255,0.18);
     }
 
     /* Loona theme */
@@ -114,8 +117,7 @@
       --ttSubjColor: rgba(255, 107, 216, 0.98);
       --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
 
-      /* ✅ dots loona */
-      --dotActive: #ff2ea6;
+      --dotInactive: rgba(255, 107, 216, 0.22);
     }
 
     /* SOBOKILL theme */
@@ -154,8 +156,7 @@
       --ttSubjColor: rgba(241, 208, 122, 0.98);
       --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
 
-      /* ✅ dots sobokill */
-      --dotActive: #d4af37;
+      --dotInactive: rgba(241, 208, 122, 0.22);
     }
 
     /* KašpárnaKart™ theme (blue) */
@@ -194,8 +195,7 @@
       --ttSubjColor: rgba(230, 247, 255, 0.98);
       --ttSubjGlow: 0 0 14px rgba(0,153,255,0.25);
 
-      /* ✅ dots kasparnakart */
-      --dotActive: #0099ff;
+      --dotInactive: rgba(102,204,255,0.22);
     }
 
     /* Battle Cats theme */
@@ -234,8 +234,7 @@
       --ttSubjColor: rgba(26, 26, 26, 0.95);
       --ttSubjGlow: none;
 
-      /* ✅ dots battlecats */
-      --dotActive: #ffd84a;
+      --dotInactive: rgba(0,0,0,0.14);
     }
 
     /* =========================
@@ -258,7 +257,6 @@
       background-position: center;
       background-attachment: fixed;
       transition: background .2s ease, color .2s ease;
-      overflow-x: hidden; /* ✅ aby nikdy neutíkalo do strany */
     }
 
     .wrap{
@@ -271,7 +269,7 @@
     }
     @media (max-width:980px){
       .wrap{ transform:none; width:100%; }
-      body{ padding:16px; background-attachment: scroll; } /* ✅ mobile background fix */
+      body{ padding:16px; }
     }
 
     /* ===== Minecraft splash ===== */
@@ -281,13 +279,11 @@
       font-display: swap;
     }
     .titleWrap{
-      position: relative;
       margin: 0 0 14px 0;
       display:flex;
       flex-direction: column;
       justify-content:center;
       align-items:center;
-      max-width: 100%;
     }
     h1{
       margin:0;
@@ -295,8 +291,6 @@
       font-weight:900;
       letter-spacing:0.2px;
       text-shadow: 0 0 0 transparent;
-      max-width: 100%;
-      padding: 0 10px;
     }
     body.theme-loona h1,
     body.theme-sobokill h1,
@@ -305,13 +299,13 @@
       text-shadow: 0 0 18px var(--glow);
     }
 
+    .bakalariBlue{ color: var(--bakalariBlue); }
+
     .mcSplash{
       margin-top: 6px;
       text-align: center;
       color: #ffd43b;
-      text-shadow:
-        2px 2px 0 #4a3700,
-        0 0 10px rgba(255,212,59,.25);
+      text-shadow: 2px 2px 0 #4a3700;
       font-family: "Monocraft", monospace;
       font-size: 13px;
       line-height: 1.15;
@@ -377,13 +371,7 @@
       border: 1px solid var(--border);
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
-      max-width: 100%;
-    }
-    body.theme-loona .block,
-    body.theme-sobokill .block,
-    body.theme-kasparnakart .block,
-    body.theme-battlecats .block{
-      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
+      min-width:0;
     }
 
     .rowTitle{
@@ -420,7 +408,6 @@
       color: var(--text);
       font-weight:900;
       outline:none;
-      max-width: 100%;
     }
 
     .toggle{
@@ -441,6 +428,41 @@
     }
     .scaleRow input[type="range"]{ flex:1 1 240px; min-width:180px; }
     .scaleValue{ min-width:56px; text-align:right; color: var(--muted); font-weight:900; }
+
+    /* Source badges (green/red glow) */
+    .srcBadge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      font-weight:1000;
+      font-size:12px;
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+    }
+    .srcDot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(255,255,255,0.25);
+      box-shadow:none;
+    }
+    .srcBadge.good{
+      border-color: rgba(59,181,74,0.55);
+      box-shadow: 0 0 14px rgba(59,181,74,0.25);
+    }
+    .srcBadge.good .srcDot{
+      background: rgba(59,181,74,0.95);
+      box-shadow: 0 0 12px rgba(59,181,74,0.55);
+    }
+    .srcBadge.bad{
+      border-color: rgba(255,0,60,0.55);
+      box-shadow: 0 0 14px rgba(255,0,60,0.22);
+    }
+    .srcBadge.bad .srcDot{
+      background: rgba(255,0,60,0.95);
+      box-shadow: 0 0 12px rgba(255,0,60,0.55);
+    }
 
     .line{
       position:relative;
@@ -466,7 +488,6 @@
       grid-template-columns: 1fr 1fr;
       gap:14px;
       min-width:0;
-      max-width: 100%;
     }
     .colHead{
       text-align:center;
@@ -475,28 +496,21 @@
       margin:0 0 8px 0;
       font-size:13px;
       letter-spacing:0.3px;
-      user-select:none;
     }
     @media (max-width:980px){
       .grid2{ grid-template-columns: 1fr; }
     }
 
+    /* ✅ Layout locked: addon column is always the right “third column” */
     .mainLayout{
       display:grid;
-      grid-template-columns: minmax(0, 1fr) 300px;
+      grid-template-columns: minmax(0, 1fr) 320px;
       gap:14px;
       align-items:start;
-      max-width: 100%;
     }
     @media (max-width:1180px){
       .mainLayout{ grid-template-columns: 1fr; }
       .addonCol{ order:2; }
-    }
-
-    /* ✅ Addon alignment (spacer matches colHead height) */
-    .addonSpacer{
-      visibility:hidden;
-      margin:0 0 8px 0;
     }
 
     /* DAILY */
@@ -512,118 +526,61 @@
       background:var(--badge);
       font-weight:900;
       font-size:13px;
-      max-width: 100%;
     }
     .badge.live{ background:var(--badgeLive); }
     .badge.free{ background:var(--badgeFree); }
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
-    /* ADDON column */
-    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; min-width:0; }
+    /* ADDON (carousel) */
+    .addonCol{ display:flex; flex-direction:column; gap:12px; opacity:0.95; min-width:0; }
+    .addonCol .rowTitle{ font-size:16px; }
 
-    /* ===== Pager (Události / Sanity / Leaderboard) ===== */
-    .pager{
-      padding:14px 14px 10px;
+    .carouselBlock{
+      padding-bottom: 10px;
+      min-width:0;
     }
-    .pagerTop{
+    .carouselHeader{
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
       gap:10px;
-      margin-bottom:10px;
+      margin-bottom: 10px;
     }
-    .pagerTitle{
+    .carouselTitle{
       font-weight:1000;
       font-size:16px;
-      margin:0;
     }
-    .pagerBadges{
+    .carouselStatus{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
       justify-content:flex-end;
     }
-    .miniBadge{
-      padding:5px 9px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.06);
-      border:1px solid var(--border);
-      color: var(--muted);
-      font-weight:1000;
-      font-size:11px;
-      white-space:nowrap;
-      user-select:none;
-    }
 
-    .pagerViewport{
-      height: 320px;               /* ✅ pevná výška (nic se neroztahuje) */
+    /* Fixed inner height + internal scroll (prevents “roztahování”) */
+    .carouselViewport{
+      height: 300px;
       overflow: hidden;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      border:1px solid var(--border);
+      border-radius:12px;
       background: rgba(255,255,255,0.03);
       position: relative;
+      min-width:0;
     }
-    .pagerTrack{
-      height:100%;
-      width:300%;
-      display:flex;
-      transition: transform .25s ease;
-      will-change: transform;
+    .carouselPage{
+      position:absolute;
+      inset:0;
+      padding:12px;
+      overflow:auto;
+      display:none;
+      min-width:0;
     }
-    .page{
-      width: 100%;
-      height: 100%;
-      padding: 0;
-    }
-    .pageInner{
-      height:100%;
-      padding: 10px 10px 10px 10px;
-    }
+    .carouselPage.active{ display:block; }
 
-    /* ✅ scroll uvnitř, s paddingem aby rohy nestínily */
-    .pageScroll{
-      height:100%;
-      overflow-y:auto;
-      padding: 6px 8px 10px 2px;
-      box-sizing:border-box;
-    }
-    .pageScroll::-webkit-scrollbar{ width: 10px; }
-    .pageScroll::-webkit-scrollbar-thumb{
-      background: rgba(255,255,255,0.14);
-      border-radius: 999px;
-      border: 2px solid rgba(0,0,0,0);
-      background-clip: padding-box;
-    }
-    .pageScroll::-webkit-scrollbar-track{ background: transparent; }
+    .stackList{ display:flex; flex-direction:column; gap:8px; min-width:0; }
 
-    /* ✅ dots */
-    .pagerDots{
-      display:flex;
-      justify-content:center;
-      gap:8px;
-      margin-top:10px;
-      user-select:none;
-    }
-    .dot{
-      width:7px;
-      height:7px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.06);
-      opacity: 0.7;
-      cursor:pointer;
-      transition: transform .15s ease, opacity .15s ease, background .15s ease;
-    }
-    .dot:hover{ transform: scale(1.12); opacity: 1; }
-    .dot.active{
-      background: var(--dotActive);
-      opacity: 1;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.10), 0 0 18px rgba(255,255,255,0.06);
-    }
-
-    /* cards in lists */
-    .stackList{ display:flex; flex-direction:column; gap:8px; }
+    /* ✅ Events list: NO side overflow */
     .stackItem{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
@@ -631,8 +588,8 @@
       padding:10px;
       max-width:100%;
       overflow:hidden;
+      word-break: break-word;
     }
-    .stackItem *{ max-width:100%; overflow-wrap:anywhere; }
     .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
     .stackItem.event{
       border-color: var(--eventBorder);
@@ -650,12 +607,35 @@
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
     .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
 
-    /* Tracker */
+    /* pager dots (theme-based) */
+    .pager{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      margin-top: 10px;
+      user-select:none;
+    }
+    .dot{
+      width:7px; height:7px;
+      border-radius:999px;
+      background: var(--dotInactive);
+      transition: transform .12s ease, background .12s ease, opacity .12s ease;
+      opacity: .9;
+    }
+    .dot.active{
+      background: var(--dotActive);
+      transform: scale(1.2);
+      opacity: 1;
+      box-shadow: 0 0 10px color-mix(in srgb, var(--dotActive) 55%, transparent);
+    }
+
     .trackerCard{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
       border-radius:12px;
       padding:12px;
+      min-width:0;
     }
     .trackerBadge{
       display:inline-block;
@@ -741,7 +721,7 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
 
-    /* Current hour outline */
+    /* Current hour outline (orange) */
     .tt-now{
       outline: 2px solid rgba(255, 152, 0, 0.95);
       outline-offset: -2px;
@@ -766,6 +746,9 @@
       font-size: 22px;
       color: var(--ttSubjColor) !important;
       text-shadow: var(--ttSubjGlow);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
 
     .tt-teacher{
@@ -774,6 +757,9 @@
       font-size: 11px;
       margin-top: 8px;
       opacity: 0.95;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
 
     .tt-empty{
@@ -865,6 +851,12 @@
     .footer a:hover{ opacity: 1; border-bottom-style: solid; }
     .footer .footerBy{ font-size: 13px; }
     .footer .footerSep{ opacity: .55; margin: 0 6px; }
+
+    /* mobile: keep background stable */
+    @media (max-width:980px){
+      body{ background-attachment: scroll; }
+      .mainLayout{ grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
@@ -912,7 +904,16 @@
       <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
       <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
       <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události / Sanity / Leaderboard</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Cáfa Tracker</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Tracker</span></label>
+
+      <div class="field" style="justify-content:space-between;">
+        <span style="color:var(--muted);font-weight:1000;">Rozvrh</span>
+        <span id="srcBadgeClass" class="srcBadge"><span class="srcDot"></span><span id="srcTextClass">—</span></span>
+      </div>
+      <div class="field" style="justify-content:space-between;">
+        <span style="color:var(--muted);font-weight:1000;">Tracker</span>
+        <span id="srcBadgeTeacher" class="srcBadge"><span class="srcDot"></span><span id="srcTextTeacher">—</span></span>
+      </div>
 
       <p class="hint" id="statusHint">Status: OK</p>
     </div>
@@ -986,71 +987,44 @@
         </div>
       </div>
 
+      <!-- ✅ Right column -->
       <aside id="addonPanel" class="addonCol">
-        <!-- ✅ alignment with left .colHead -->
-        <div class="colHead addonSpacer" aria-hidden="true">.</div>
 
-        <!-- ✅ Pager block -->
-        <div class="block pager" id="pagerBlock">
-          <div class="pagerTop">
-            <div class="pagerTitle" id="pagerTitle">Události</div>
-            <div class="pagerBadges">
-              <span class="miniBadge" id="pagerBadge1">—</span>
-              <span class="miniBadge" id="pagerBadge2">—</span>
+        <!-- carousel -->
+        <div class="block carouselBlock" id="addonCarousel">
+          <div class="carouselHeader">
+            <div class="carouselTitle" id="carouselTitle">Události</div>
+            <div class="carouselStatus" id="carouselBadges">
+              <!-- filled by JS if needed -->
             </div>
           </div>
 
-          <div class="pagerViewport" id="pagerViewport">
-            <div class="pagerTrack" id="pagerTrack" style="transform: translateX(0%);">
-              <!-- Page 0: Events -->
-              <div class="page">
-                <div class="pageInner">
-                  <div class="pageScroll">
-                    <div id="eventsList" class="stackList">
-                      <div class="stackItem muted">Načítání…</div>
-                    </div>
-                  </div>
-                </div>
+          <div class="carouselViewport" id="carouselViewport">
+            <div class="carouselPage active" id="pageEvents">
+              <div class="stackList" id="eventsList">
+                <div class="stackItem muted">Načítání…</div>
               </div>
+            </div>
 
-              <!-- Page 1: Sanity -->
-              <div class="page">
-                <div class="pageInner">
-                  <div class="pageScroll">
-                    <div class="stackList">
-                      <div class="stackItem">
-                        <div class="eventTitle">Sanity Meter</div>
-                        <div class="eventMeta">UI připravené • live výpočet doplníme</div>
-                        <div class="eventDesc">
-                          Sanity padá až po check-in (jinak 0). Historie + kakajíčko později.
-                        </div>
-                      </div>
-                      <div class="stackItem muted">Zatím placeholder (aby layout držel).</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="carouselPage" id="pageSanity">
+              <div class="stackItem muted">Sanity Meter: UI připravené (logika zítra dle rovnice).</div>
+              <div class="hint">Zatím jen placeholder, aby layout byl stabilní.</div>
+            </div>
 
-              <!-- Page 2: Leaderboard -->
-              <div class="page">
-                <div class="pageInner">
-                  <div class="pageScroll">
-                    <div id="lbList" class="stackList">
-                      <div class="stackItem muted">Načítání leaderboardu…</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="carouselPage" id="pageLeaderboard">
+              <div class="stackItem muted">Absence leaderboard: placeholder (LeaderboardAb.txt).</div>
+              <div class="hint">Až dodáš soubor, napojíme fetch + render.</div>
             </div>
           </div>
 
-          <div class="pagerDots" id="pagerDots" aria-label="Info pages">
-            <div class="dot active" data-i="0" title="Události"></div>
-            <div class="dot" data-i="1" title="Sanity"></div>
-            <div class="dot" data-i="2" title="Leaderboard"></div>
+          <div class="pager" id="pagerDots" aria-label="Addon pager">
+            <div class="dot active" data-page="0" title="Události"></div>
+            <div class="dot" data-page="1" title="Sanity"></div>
+            <div class="dot" data-page="2" title="Leaderboard"></div>
           </div>
         </div>
 
+        <!-- tracker -->
         <div class="block" id="cafaBlock">
           <div class="rowTitle">Cáfa Tracker</div>
           <div class="trackerCard">
@@ -1059,6 +1033,7 @@
             <div class="trackerSub" id="cafaSub">—</div>
           </div>
         </div>
+
       </aside>
     </div>
 
@@ -1098,6 +1073,7 @@
         <span class="footerSep">•</span>
         <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
       </div>
+      <div style="opacity:.85;margin-top:6px;">Version 1.2.27</div>
     </div>
   </div>
 
@@ -1105,7 +1081,7 @@
 
 <script>
   /* =========================
-     API CONFIG (YOUR DOMAIN)
+     API CONFIG
      ========================= */
   const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
   const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
@@ -1141,15 +1117,14 @@
   }
 
   /* =========================
-     Mode (Nonchalant/Freaky) for title
+     Mode (Nonchalant/Freaky)
      ========================= */
   function applyTitleMode(mode){
     const titleEl = document.getElementById("pageTitle");
     if (!titleEl) return;
 
     if (mode === "nonchalant"){
-      titleEl.textContent = "Bakaláři, kdyby nebyly mid";
-      // (barvu bakaláři řešíte už dřív CSSem / případně spanem – nechávám beze změn)
+      titleEl.innerHTML = `<span class="bakalariBlue">Bakaláři</span>, kdyby nebyly mid`;
     } else if (mode === "freaky"){
       titleEl.textContent = "Kdy to utrpení skončí";
     } else {
@@ -1165,10 +1140,8 @@
   function initModeSelector(){
     const sel = document.getElementById("modeSelect");
     if (!sel) return;
-
     sel.addEventListener("change", () => applyTitleMode(sel.value));
-    const saved = localStorage.getItem("sp_mode") || "normal";
-    applyTitleMode(saved);
+    applyTitleMode(localStorage.getItem("sp_mode") || "normal");
   }
 
   /* =========================
@@ -1193,35 +1166,27 @@
     "Anglický jazyk":"ANJ",
     "Akce školy":"AŠK",
     "Akce skoly":"AŠK",
+    "ANJ1":"ANJ1",
+    "ANJ2":"ANJ2"
   };
 
-  function shortOne(full){
-    const s = String(full || "").trim();
-    if (!s) return "";
-    if (SUBJECT_SHORT[s]) return SUBJECT_SHORT[s];
-
-    // zachovej věci jako ANJ1, ANJ2 atd
-    const token = s.replace(/\s+/g,"").toUpperCase(); // ANJ1
-    if (/^[A-ZČŘŠŽĚÁÍÉÚŮŇ]{2,5}\d{1,2}$/.test(token)) return token;
-
-    const noDia = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const letters = noDia.replace(/[^A-Za-z]/g,"").toUpperCase();
-    return (letters.slice(0,3) || s.slice(0,3).toUpperCase());
+  function _shortOne(s){
+    const t = String(s||"").trim();
+    if (!t) return "";
+    if (SUBJECT_SHORT[t]) return SUBJECT_SHORT[t];
+    const noDia = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const letters = noDia.replace(/[^A-Za-z0-9]/g,"");
+    return letters.slice(0,3).toUpperCase() || t.slice(0,3).toUpperCase();
   }
 
-  // ✅ hlavní: umí RUJ / NEJ => RUJ/NEJ, ANJ1 / ANJ2 => ANJ1/ANJ2
+  // ✅ Handles "RUJ / NEJ", "ANJ1 / ANJ2" -> "RUJ/NEJ", "ANJ1/ANJ2"
   function shortSubj(full){
     const s = String(full || "").trim();
     if (!s) return "";
     if (s.includes("/")){
-      const parts = s.split("/").map(x => x.trim()).filter(Boolean);
-      return parts.map(shortOne).join("/");
+      return s.split("/").map(x => _shortOne(x)).filter(Boolean).join("/");
     }
-    if (s.includes(" / ")){
-      const parts = s.split(" / ").map(x => x.trim()).filter(Boolean);
-      return parts.map(shortOne).join("/");
-    }
-    return shortOne(s);
+    return _shortOne(s);
   }
 
   /* =========================
@@ -1373,8 +1338,19 @@
     return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj));
   }
 
+  function setSourceBadge(elBadge, elText, source){
+    // source is "Bakaláří" or "Lokální" or "loading"
+    if (!elBadge || !elText) return;
+    elText.textContent = source;
+    elBadge.classList.remove("good","bad");
+    if (source === "Bakaláří") elBadge.classList.add("good");
+    else if (source === "Lokální") elBadge.classList.add("bad");
+  }
+
   function statusText(){
-    $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Cáfa: ${state.teacherSource}`;
+    $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Tracker: ${state.teacherSource}`;
+    setSourceBadge($("srcBadgeClass"), $("srcTextClass"), state.classSource);
+    setSourceBadge($("srcBadgeTeacher"), $("srcTextTeacher"), state.teacherSource);
   }
 
   /* =========================
@@ -1389,7 +1365,6 @@
     localStorage.setItem("sp_theme", theme);
     const sel = $("themeSelect");
     if (sel) sel.value = theme;
-    scheduleSixSevenScan();
   }
 
   function applyUiScale(percent){
@@ -1401,22 +1376,8 @@
     scheduleSixSevenScan();
   }
 
-  function refreshAddonPanelVisibility(){
-    const addonPanel = $("addonPanel");
-    const pagerBlock = $("pagerBlock");
-    const cafaBlock = $("cafaBlock");
-
-    const pagerVisible = !pagerBlock.classList.contains("hidden");
-    const cafaVisible = !cafaBlock.classList.contains("hidden");
-    const anyVisible = pagerVisible || cafaVisible;
-
-    addonPanel.classList.toggle("hidden", !anyVisible);
-    scheduleSixSevenScan();
-  }
-
   function initSettings(){
     $("settingsBtn").addEventListener("click", () => $("settingsPanel").classList.toggle("hidden"));
-
     $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
     $("uiScaleRange").addEventListener("input", () => applyUiScale($("uiScaleRange").value));
 
@@ -1436,14 +1397,14 @@
       scheduleSixSevenScan();
     });
     toggleEvents.addEventListener("change", () => {
-      $("pagerBlock").classList.toggle("hidden", !toggleEvents.checked);
+      $("addonCarousel").classList.toggle("hidden", !toggleEvents.checked);
       localStorage.setItem("sp_toggle_events", toggleEvents.checked ? "1" : "0");
-      refreshAddonPanelVisibility();
+      scheduleSixSevenScan();
     });
     toggleCafa.addEventListener("change", () => {
       $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
       localStorage.setItem("sp_toggle_cafa", toggleCafa.checked ? "1" : "0");
-      refreshAddonPanelVisibility();
+      scheduleSixSevenScan();
     });
 
     const savedTheme = localStorage.getItem("sp_theme") || "dark";
@@ -1462,67 +1423,37 @@
 
     $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
-    $("pagerBlock").classList.toggle("hidden", !toggleEvents.checked);
+    $("addonCarousel").classList.toggle("hidden", !toggleEvents.checked);
     $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
-
-    refreshAddonPanelVisibility();
   }
 
   /* =========================
-     Pager logic
+     Carousel (3 pages)
      ========================= */
   const PAGES = [
-    { key:"events", title:"Události" },
-    { key:"sanity", title:"Sanity" },
-    { key:"lb",     title:"Leaderboard" },
+    {id:"pageEvents", title:"Události"},
+    {id:"pageSanity", title:"Sanity"},
+    {id:"pageLeaderboard", title:"Leaderboard"},
   ];
+  let curPage = 0;
 
-  function setPagerBadges(){
-    const b1 = $("pagerBadge1");
-    const b2 = $("pagerBadge2");
-    b1.textContent = `Rozvrh: ${state.classSource}`;
-    b2.textContent = `Dnes: ${formatDateCZ(new Date())}`;
-  }
+  function setPage(idx){
+    curPage = Math.max(0, Math.min(PAGES.length-1, idx));
+    for (let i=0;i<PAGES.length;i++){
+      const el = document.getElementById(PAGES[i].id);
+      if (el) el.classList.toggle("active", i===curPage);
+    }
+    const title = document.getElementById("carouselTitle");
+    if (title) title.textContent = PAGES[curPage].title;
 
-  function setPagerIndex(i){
-    const idx = Math.max(0, Math.min(2, Number(i) || 0));
-    localStorage.setItem("sp_pager_i", String(idx));
-    $("pagerTrack").style.transform = `translateX(${-idx*100}%)`;
-
-    const dots = $("pagerDots").querySelectorAll(".dot");
-    dots.forEach(d => d.classList.toggle("active", Number(d.dataset.i) === idx));
-    $("pagerTitle").textContent = PAGES[idx].title;
-    scheduleSixSevenScan();
+    const dots = document.querySelectorAll("#pagerDots .dot");
+    dots.forEach((d,i)=> d.classList.toggle("active", i===curPage));
   }
 
   function initPager(){
-    const saved = Number(localStorage.getItem("sp_pager_i") || 0);
-    setPagerIndex(saved);
-
-    $("pagerDots").addEventListener("click", (e) => {
-      const dot = e.target.closest(".dot");
-      if (!dot) return;
-      setPagerIndex(dot.dataset.i);
+    document.querySelectorAll("#pagerDots .dot").forEach(dot=>{
+      dot.addEventListener("click", ()=> setPage(Number(dot.dataset.page)));
     });
-
-    // simple swipe (optional, lightweight)
-    let startX = null;
-    $("pagerViewport").addEventListener("touchstart", (e) => {
-      if (!e.touches || !e.touches[0]) return;
-      startX = e.touches[0].clientX;
-    }, {passive:true});
-
-    $("pagerViewport").addEventListener("touchend", (e) => {
-      if (startX === null) return;
-      const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
-      const dx = endX - startX;
-      startX = null;
-      if (Math.abs(dx) < 40) return;
-
-      const cur = Number(localStorage.getItem("sp_pager_i") || 0);
-      if (dx < 0) setPagerIndex(cur + 1);
-      else setPagerIndex(cur - 1);
-    }, {passive:true});
   }
 
   /* =========================
@@ -1535,16 +1466,10 @@
       try { wrapSixSeven(document.querySelector(".wrap")); } catch {}
     }, 60);
   }
-
   function wrapSixSeven(root){
     if (!root) return;
-
     const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
-    const patterns = [
-      /6\s*\/\s*7/g,
-      /6\.7(?:\.\d{2,4})?/g,
-      /67/g
-    ];
+    const patterns = [/6\s*\/\s*7/g, /6\.7(?:\.\d{2,4})?/g, /67/g];
 
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node){
@@ -1568,8 +1493,7 @@
         for (const part of parts){
           if (part.isMatch){ nextParts.push(part); continue; }
           const s = part.text;
-          let last = 0;
-          let m;
+          let last = 0; let m;
           re.lastIndex = 0;
           while ((m = re.exec(s)) !== null){
             if (m.index > last) nextParts.push({ text: s.slice(last, m.index), isMatch:false });
@@ -1585,20 +1509,17 @@
 
       const frag = document.createDocumentFragment();
       for (const p of parts){
-        if (!p.isMatch){
-          frag.appendChild(document.createTextNode(p.text));
-        } else {
+        if (!p.isMatch) frag.appendChild(document.createTextNode(p.text));
+        else {
           const span = document.createElement("span");
           span.className = "ss";
           span.textContent = p.text;
           frag.appendChild(span);
         }
       }
-
       textNode.parentNode.replaceChild(frag, textNode);
     }
   }
-
   function triggerSixSevenEmote(){
     const els = document.querySelectorAll(".ss");
     if (!els.length) return;
@@ -1637,7 +1558,6 @@
       ${data.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${data.cls}</div></div>` : ``}
       ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
       ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
-      ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
     `;
   }
 
@@ -1751,14 +1671,12 @@
           teacher,
           cls,
           note,
-          type,
-          source: state.classSource
+          type
         };
 
         cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
         cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
         cell.addEventListener("mouseleave", () => hideTooltip());
-
         cell.addEventListener("click", (e) => {
           e.stopPropagation();
           const visible = tooltip.style.display === "block";
@@ -1770,19 +1688,19 @@
       }
     }
 
+    // ✅ keep this clean, no “Bakaláři” inside items, only here
     $("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
     scheduleSixSevenScan();
   }
 
   /* =========================
-     EVENTS PANEL (page 0)
+     EVENTS PANEL
      ========================= */
   function renderEventsPanel(){
     const list = $("eventsList");
     list.innerHTML = "";
 
     const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
-
     const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
     const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
 
@@ -1795,7 +1713,10 @@
       return;
     }
 
-    const evSorted = [...evs].sort((a,b) => (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || String(a.begin||"").localeCompare(String(b.begin||"")));
+    const evSorted = [...evs].sort((a,b) =>
+      (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || String(a.begin||"").localeCompare(String(b.begin||""))
+    );
+
     for (const e of evSorted){
       const item = document.createElement("div");
       item.className = "stackItem event";
@@ -1820,7 +1741,7 @@
 
     const markSorted = [...marks].sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || (a.idx-b.idx));
     for (const ev of markSorted){
-      if (ev.type === "event") continue; // no dup
+      if (ev.type === "event") continue;
 
       const item = document.createElement("div");
       item.className = "stackItem " + (ev.type || "");
@@ -1847,38 +1768,7 @@
   }
 
   /* =========================
-     Leaderboard (page 2)
-     ========================= */
-  async function loadLeaderboard(){
-    const box = $("lbList");
-    if (!box) return;
-
-    try{
-      const res = await fetch("./LeaderboardAb.txt?ts=" + Date.now(), { cache:"no-store" });
-      if (!res.ok) throw new Error("lb not found");
-      const txt = await res.text();
-      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(Boolean).filter(x => !x.startsWith("#"));
-
-      box.innerHTML = "";
-      if (!lines.length){
-        box.innerHTML = `<div class="stackItem muted">Leaderboard prázdný</div>`;
-        return;
-      }
-
-      for (const line of lines){
-        const item = document.createElement("div");
-        item.className = "stackItem";
-        item.innerHTML = `<div class="eventTitle">${line}</div>`;
-        box.appendChild(item);
-      }
-    }catch(e){
-      box.innerHTML = `<div class="stackItem muted">Leaderboard nelze načíst</div>`;
-    }
-    scheduleSixSevenScan();
-  }
-
-  /* =========================
-     CAFA TRACKER
+     CAFA TRACKER (minimal, no chaos)
      ========================= */
   function updateCafaTracker(now){
     const badge = $("cafaBadge");
@@ -1887,50 +1777,47 @@
 
     const dayKey = dayKeyFromDate(now);
     const days = getTeacherDays();
-    const src = state.teacherSource;
 
     if (!dayKey){
-      badge.textContent = "Cáfa";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
-      sub.textContent = `Víkend • ${formatDateCZ(now)} • ${src}`;
+      sub.textContent = `Víkend • ${formatDateCZ(now)}`;
       scheduleSixSevenScan();
       return;
     }
 
     const nowMin = now.getHours()*60 + now.getMinutes();
-    const arr = days[dayKey] || Array(7).fill(null);
-
     let curIdx = null;
     for (let i=0;i<7;i++){
       const t = TIMES_MIN[i];
       if (nowMin >= t.startMin && nowMin <= t.endMin){ curIdx=i; break; }
     }
-
     if (curIdx === null){
-      badge.textContent = "Cáfa";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
-      sub.textContent = `${dayLabelCz(dayKey)} • mimo hodiny • ${src}`;
+      sub.textContent = `${dayLabelCz(dayKey)} • mimo hodiny`;
       scheduleSixSevenScan();
       return;
     }
 
+    const arr = days[dayKey] || Array(7).fill(null);
     const l = arr[curIdx];
     if (!l){
-      badge.textContent = "Cáfa";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
-      sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
       scheduleSixSevenScan();
       return;
     }
 
-    badge.textContent = "Cáfa";
-    main.textContent = `${shortSubj(l.subj)} • ${l.room || ""} • ${l.class || ""}`.replace(/\s+/g," ").trim();
-    sub.textContent = `${dayLabelCz(dayKey)} • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+    // ✅ only: subj, room, class, time
+    const subj = shortSubj(l.subj);
+    const room = l.room ? ` • ${l.room}` : "";
+    const cls  = l.class ? ` • ${l.class}` : "";
+    main.textContent = `${subj}${room}${cls}`.trim();
+    sub.textContent = `${dayLabelCz(dayKey)} • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
     scheduleSixSevenScan();
   }
 
   /* =========================
-     DAILY PROGRESS
+     DAILY PROGRESS (unchanged)
      ========================= */
   function setDailyBadge(kind, text){
     const b=$("dailyBadge");
@@ -2107,7 +1994,7 @@
       state.classDays = c.days;
       state.classMarks = Array.isArray(c.marks) ? c.marks : [];
       state.classEvents = Array.isArray(c.events) ? c.events : [];
-      state.classSource = "Bakaláři";
+      state.classSource = "Bakaláří";
     } else {
       state.classSource = "Lokální";
     }
@@ -2115,13 +2002,12 @@
     const t = await fetchJsonSafe(BACKEND_TEACHER_API);
     if (!t.__error && t.ok && t.days && hasAnyLesson(t.days)){
       state.teacherDays = t.days;
-      state.teacherSource = "Bakaláři";
+      state.teacherSource = "Bakaláří";
     } else {
       state.teacherSource = "Lokální";
     }
 
     statusText();
-    setPagerBadges();
     renderTimetable();
     renderEventsPanel();
     updateCafaTracker(new Date());
@@ -2137,7 +2023,7 @@
     updateProgressBars();
     if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
     updateCafaTracker(now);
-    renderTimetable(); // keep tt-now accurate
+    renderTimetable(); // keeps tt-now accurate
   }
 
   function boot(){
@@ -2145,15 +2031,11 @@
     initModeSelector();
     initPager();
     loadMinecraftSplash();
-    loadLeaderboard();
 
-    state.classSource = "loading";
-    state.teacherSource = "loading";
     statusText();
-    setPagerBadges();
-
     renderTimetable();
     renderEventsPanel();
+    setPage(0);
     tick();
 
     syncBackend();
@@ -2163,7 +2045,6 @@
 
     setInterval(tick, 30_000);
     setInterval(syncBackend, 5 * 60_000);
-    setInterval(loadLeaderboard, 10 * 60_000);
   }
 
   document.addEventListener("DOMContentLoaded", boot);
