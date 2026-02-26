@@ -7,14 +7,6 @@
 
   <style>
     /* =========================
-       GLOBAL FIXES (no horizontal stretch)
-       ========================= */
-    html, body{
-      max-width: 100%;
-      overflow-x: hidden; /* ✅ nikdy neroztahuj do šířky */
-    }
-
-    /* =========================
        THEMES via CSS variables
        ========================= */
     body{
@@ -154,71 +146,84 @@
       --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
     }
 
-    /* KašpárnaKart™ (blue-ish) */
+    /* KašpárnaKart™ theme (blue) */
     body.theme-kasparnakart{
-      --bg:#071320;
-      --card: rgba(10, 22, 36, 0.86);
-      --text:#eaf4ff;
-      --muted:#9ec3e6;
-      --shadow: rgba(0,0,0,0.60);
-      --linebg: rgba(70, 170, 255, 0.22);
+      --bg:#061427;
+      --card: rgba(10, 24, 48, 0.82);
+      --text:#eaf3ff;
+      --muted:#a6c4e6;
+      --shadow: rgba(0,0,0,0.55);
+      --linebg: rgba(0, 153, 255, 0.18);
 
-      --btn:#2aa7ff;
-      --btnText:#05121d;
+      --btn:#0099ff;
+      --btnText:#061427;
 
-      --badge: rgba(42,167,255,0.16);
-      --badgeLive: rgba(0, 255, 170, 0.12);
+      --badge: rgba(0,153,255,0.16);
+      --badgeLive: rgba(0, 210, 255, 0.14);
       --badgeFree: rgba(255,190,60,0.16);
       --badgeErr: rgba(255,80,80,0.16);
 
-      --border: rgba(42,167,255,0.22);
+      --border: rgba(0,153,255,0.22);
 
-      --accent:#2aa7ff;
-      --accent2:#7fd0ff;
-      --glow: rgba(42,167,255,0.45);
+      --accent:#0099ff;
+      --accent2:#66ccff;
+      --glow: rgba(0,153,255,0.45);
 
       --bgImage: url("KasparnaKart.png");
-      --bgOverlay: linear-gradient(180deg, rgba(7,19,32,0.72), rgba(7,19,32,0.92));
+      --bgOverlay: linear-gradient(180deg, rgba(6,20,39,0.78), rgba(6,20,39,0.92));
 
-      --ttSubjColor: rgba(234,244,255,0.95);
-      --ttSubjGlow: 0 0 14px rgba(42,167,255,0.25);
+      --substBg: rgba(0, 153, 255, 0.20);
+      --substBorder: rgba(0, 153, 255, 0.50);
+      --cancelBg: rgba(255, 0, 60, 0.22);
+      --cancelBorder: rgba(255, 0, 60, 0.55);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(230, 247, 255, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(0,153,255,0.25);
     }
 
-    /* Battle Cats */
+    /* Battle Cats theme */
     body.theme-battlecats{
-      --bg:#0b0b0f;
-      --card: rgba(18, 18, 24, 0.86);
-      --text:#f7f7ff;
-      --muted:#c8c8da;
-      --shadow: rgba(0,0,0,0.62);
-      --linebg: rgba(255, 230, 130, 0.18);
+      --bg:#fbf1d8;
+      --card: rgba(255, 255, 255, 0.88);
+      --text:#1a1a1a;
+      --muted:#5b5142;
+      --shadow: rgba(0,0,0,0.12);
+      --linebg: rgba(0,0,0,0.12);
 
-      --btn:#ffe36a;
-      --btnText:#1a1a20;
+      --btn:#ffd84a;
+      --btnText:#1a1a1a;
 
-      --badge: rgba(255,227,106,0.16);
-      --badgeLive: rgba(0, 255, 170, 0.12);
-      --badgeFree: rgba(255,190,60,0.16);
+      --badge: rgba(0,0,0,0.06);
+      --badgeLive: rgba(59,181,74,0.14);
+      --badgeFree: rgba(255,190,60,0.18);
       --badgeErr: rgba(255,80,80,0.16);
 
-      --border: rgba(255,227,106,0.22);
+      --border: rgba(0,0,0,0.14);
 
-      --accent:#ffe36a;
-      --accent2:#ffffff;
-      --glow: rgba(255,227,106,0.40);
+      --accent:#ffd84a;
+      --accent2:#ffb000;
+      --glow: rgba(255,216,74,0.45);
 
       --bgImage: url("BattleCats.png");
-      --bgOverlay: linear-gradient(180deg, rgba(11,11,15,0.70), rgba(11,11,15,0.92));
+      --bgOverlay: linear-gradient(180deg, rgba(251,241,216,0.78), rgba(251,241,216,0.92));
 
-      --ttSubjColor: rgba(255,255,255,0.96);
-      --ttSubjGlow: 0 0 12px rgba(255,227,106,0.22);
+      --substBg: rgba(255, 80, 80, 0.16);
+      --substBorder: rgba(255, 80, 80, 0.40);
+      --cancelBg: rgba(255, 0, 60, 0.16);
+      --cancelBorder: rgba(255, 0, 60, 0.42);
+      --eventBg: rgba(59,181,74,0.18);
+      --eventBorder: rgba(59,181,74,0.45);
+
+      --ttSubjColor: rgba(26, 26, 26, 0.95);
+      --ttSubjGlow: none;
     }
 
     /* =========================
        BASE
        ========================= */
     *{ box-sizing:border-box; }
-
     body{
       font-family: Arial, sans-serif;
       margin:0;
@@ -244,41 +249,32 @@
       transform-origin: top center;
       width: calc(100% / var(--uiScale));
       transition: transform .15s ease;
-      min-width: 0;
     }
     @media (max-width:980px){
       .wrap{ transform:none; width:100%; }
       body{ padding:16px; }
-      body{ background-attachment: scroll; } /* ✅ mobile friendly */
     }
 
-    /* ✅ prevent any layout child from stretching horizontally */
-    .block, .mainLayout, .grid2, .addonCol, .tt-gridWrap, #infoCarouselBlock { min-width:0; }
-
-    /* Font (Monocraft in repo) */
+    /* ===== Minecraft splash (centered under title) ===== */
     @font-face{
       font-family: "Monocraft";
-      src: url("Monocraft.ttf") format("truetype");
+      src: url("./Monocraft.ttf") format("truetype");
       font-display: swap;
     }
-
     .titleWrap{
+      position: relative;
+      margin: 0 0 14px 0;
       display:flex;
-      flex-direction:column;
-      align-items:center;
+      flex-direction: column;
       justify-content:center;
-      gap:6px;
-      margin-bottom: 10px;
-      text-align:center;
-      min-width: 0;
+      align-items:center;
     }
-
     h1{
       margin:0;
+      text-align:center;
       font-weight:900;
       letter-spacing:0.2px;
       text-shadow: 0 0 0 transparent;
-      min-width: 0;
     }
     body.theme-loona h1,
     body.theme-sobokill h1,
@@ -287,22 +283,46 @@
       text-shadow: 0 0 18px var(--glow);
     }
 
-    /* Minecraft splash */
+    /* ✅ Minecraft splash: NO extra glow, only classic MC shadow + pulse */
     .mcSplash{
+      margin-top: 6px;
+      text-align: center;
+      color: #ffd43b;
+      text-shadow: 2px 2px 0 #4a3700; /* removed big glow */
       font-family: "Monocraft", monospace;
-      font-size: 14px;
-      font-weight: 900;
-      color: #ffe36a;
-      text-shadow: 0 0 10px rgba(255,180,0,0.55);
-      animation: mcPulse 1.15s ease-in-out infinite;
-      max-width: 95%;
-      overflow-wrap: anywhere;
-      word-break: break-word;
+      font-size: 13px;
+      line-height: 1.15;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      animation: mcSplashPulse .55s ease-in-out infinite alternate;
+      max-width: 92%;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
-    @keyframes mcPulse{
-      0%{ transform: scale(1); opacity: 0.85; }
-      50%{ transform: scale(1.06); opacity: 1; }
-      100%{ transform: scale(1); opacity: 0.85; }
+    @keyframes mcSplashPulse{
+      from { transform: scale(0.95); opacity: 0.92; }
+      to   { transform: scale(1.05); opacity: 1; }
+    }
+    @media (max-width:980px){
+      .mcSplash{ font-size: 10px; margin-top: 5px; }
+    }
+
+    /* ===== six seven easter egg ===== */
+    .ss{
+      display:inline-block;
+      position: relative;
+      will-change: transform, filter;
+    }
+    .ss.hot{
+      animation: ssBounce .55s ease-in-out 2;
+      filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 90, 0, 0.55));
+    }
+    @keyframes ssBounce{
+      0%   { transform: translateY(0); }
+      35%  { transform: translateY(-6px); }
+      70%  { transform: translateY(0); }
+      100% { transform: translateY(-2px); }
     }
 
     .topbar{
@@ -339,13 +359,18 @@
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
     }
+    body.theme-loona .block,
+    body.theme-sobokill .block,
+    body.theme-kasparnakart .block,
+    body.theme-battlecats .block{
+      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
+    }
 
     .rowTitle{
       margin:0 0 10px 0;
       font-size:18px;
       font-weight:900;
       color: var(--text);
-      min-width: 0;
     }
     body.theme-loona .rowTitle,
     body.theme-sobokill .rowTitle,
@@ -375,7 +400,6 @@
       color: var(--text);
       font-weight:900;
       outline:none;
-      min-width: 0;
     }
 
     .toggle{
@@ -396,35 +420,6 @@
     }
     .scaleRow input[type="range"]{ flex:1 1 240px; min-width:180px; }
     .scaleValue{ min-width:56px; text-align:right; color: var(--muted); font-weight:900; }
-
-    /* Status pill */
-    .statusPill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      font-weight:1000;
-      font-size:12px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      color: var(--muted);
-      user-select:none;
-    }
-    .statusDot{
-      width:8px; height:8px;
-      border-radius:999px;
-      background:#999;
-      box-shadow:none;
-    }
-    .statusDot.ok{
-      background:#34d399;
-      box-shadow:0 0 14px rgba(52,211,153,0.45);
-    }
-    .statusDot.bad{
-      background:#fb7185;
-      box-shadow:0 0 14px rgba(251,113,133,0.45);
-    }
 
     .line{
       position:relative;
@@ -480,7 +475,6 @@
       align-items:center;
       gap:12px;
       flex-wrap:wrap;
-      min-width:0;
     }
     .badge{
       padding:6px 10px;
@@ -492,14 +486,28 @@
     .badge.live{ background:var(--badgeLive); }
     .badge.free{ background:var(--badgeFree); }
     .badge.err{ background:var(--badgeErr); }
-    .dailyText{ font-weight:900; min-width:0; overflow-wrap:anywhere; }
+    .dailyText{ font-weight:900; }
 
     /* ADDON */
-    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; min-width:0; }
+    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
+    .addonHead{
+      text-align:center;
+      font-weight:900;
+      color:var(--muted);
+      margin:0 0 8px 0;
+      font-size:12px;
+      letter-spacing:0.35px;
+      text-transform:uppercase;
+      opacity:0.9;
+    }
+    .addonCol .rowTitle{ font-size:16px; }
 
-    .stackList{ display:flex; flex-direction:column; gap:8px; min-width:0; }
+    .stackList{ display:flex; flex-direction:column; gap:8px; }
 
-    /* ✅ Události: max ~3 položky a pak scroll uvnitř */
+    /* ✅ prevent overflow outside the block */
+    #eventsList{ min-width:0; }
+
+    /* Události: max ~3 položky a pak scroll uvnitř */
     #eventsList{
       max-height: 260px;
       overflow-y: auto;
@@ -519,10 +527,13 @@
       background: rgba(255,255,255,0.03);
       border-radius:10px;
       padding:10px;
-      min-width:0;
-      overflow-wrap:anywhere;
-      word-break:break-word;
+
+      /* ✅ fixes "items outside block" */
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
+
     .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
     .stackItem.event{
       border-color: var(--eventBorder);
@@ -545,7 +556,6 @@
       background: rgba(255,255,255,0.03);
       border-radius:12px;
       padding:12px;
-      min-width:0;
     }
     .trackerBadge{
       display:inline-block;
@@ -556,107 +566,8 @@
       font-size:11px;
       margin-bottom:8px;
     }
-    .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; overflow-wrap:anywhere; }
-    .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; overflow-wrap:anywhere; }
-
-    /* =========================
-       INFO CAROUSEL (IG-like)
-       ========================= */
-    .igCarousel{
-      position: relative;
-      overflow: hidden; /* ✅ důležité: nikdy neroztahuj block */
-      border-radius: 12px;
-      min-width:0;
-    }
-    .igSlides{
-      display:flex;
-      width: 300%;
-      transform: translateX(0%);
-      transition: transform .25s ease;
-      min-width:0;
-    }
-    .igSlide{
-      width: 100%;
-      flex: 0 0 100%;
-      min-width: 0;
-      /* ✅ pevná výška pro slide: ať celý panel neroste */
-      max-height: 320px;
-      overflow: hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    @media (max-width: 980px){
-      .igSlide{ max-height: 300px; }
-    }
-
-    .igDots{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      margin-top: 10px;
-      user-select:none;
-    }
-    .igDot{
-      width:8px; height:8px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.18);
-      border:1px solid rgba(255,255,255,0.10);
-      cursor:pointer;
-    }
-    .igDot.active{
-      background: rgba(255,255,255,0.55);
-    }
-
-    /* =========================
-       SANITY (FIXED HEIGHT like Events)
-       ========================= */
-    #slideSanity .sanityWrap{
-      height: 260px;          /* ✅ STEJNÉ jako Události */
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-      overflow:hidden;        /* ✅ vnitřek scrolluje, ne slide */
-    }
-    #slideSanity .sanityTop{
-      flex: 0 0 auto;
-    }
-    #sanityHistoryBox{
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow-y: auto;       /* ✅ scroll jen uvnitř */
-      display:none;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      border-radius: 10px;
-      padding: 10px;
-    }
-    #sanityHistoryBox::-webkit-scrollbar{ width: 10px; }
-    #sanityHistoryBox::-webkit-scrollbar-thumb{
-      background: rgba(255,255,255,0.14);
-      border-radius: 999px;
-      border: 2px solid rgba(0,0,0,0);
-      background-clip: padding-box;
-    }
-    #sanityHistoryBox::-webkit-scrollbar-track{ background: transparent; }
-
-    .sanityRow{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      min-width:0;
-    }
-    .sanityRow select{ flex: 1 1 160px; min-width: 160px; }
-    .sanityRow .btn{ flex: 0 0 auto; }
-
-    .sanityMsg{
-      margin-top: 8px;
-      font-weight: 900;
-      color: var(--muted);
-      font-size: 12px;
-      overflow-wrap:anywhere;
-    }
+    .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
+    .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
 
     /* TIMETABLE */
     .timetable .tt-top{
@@ -666,13 +577,10 @@
       gap:12px;
       margin-bottom:12px;
       flex-wrap: wrap;
-      min-width:0;
     }
     .tt-sub{ color: var(--muted); font-weight: 900; font-size: 12px; margin-top: 2px; }
     .tt-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display:inline-block;
       padding:6px 10px;
       border-radius:999px;
       border:1px solid var(--border);
@@ -680,21 +588,14 @@
       color: var(--muted);
       font-weight: 900;
       font-size: 12px;
-      max-width: 100%;
-      min-width:0;
     }
 
-    .tt-gridWrap{
-      overflow-x:auto; /* ✅ jen v rozvrhu, ne celá stránka */
-      max-width: 100%;
-      padding-bottom: 4px;
-      min-width:0;
-    }
+    .tt-gridWrap{ overflow:auto; padding-bottom: 4px; }
     .tt-grid{
       display:grid;
       grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
       gap:10px;
-      min-width: 940px; /* velký rozvrh -> scrolluje se uvnitř wrapu */
+      min-width: 940px;
     }
     .tt-corner{ height:44px; }
 
@@ -740,6 +641,13 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
 
+    /* Current hour outline (orange) */
+    .tt-now{
+      outline: 2px solid rgba(255, 152, 0, 0.95);
+      outline-offset: -2px;
+      box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.25) inset, 0 0 18px rgba(255, 152, 0, 0.35);
+    }
+
     .tt-topline{
       display:flex;
       justify-content:space-between;
@@ -749,7 +657,6 @@
       font-size: 11px;
       color: var(--muted);
       opacity: 0.95;
-      min-width:0;
     }
 
     .tt-subj{
@@ -759,7 +666,6 @@
       font-size: 22px;
       color: var(--ttSubjColor) !important;
       text-shadow: var(--ttSubjGlow);
-      overflow-wrap:anywhere;
     }
 
     .tt-teacher{
@@ -768,7 +674,6 @@
       font-size: 11px;
       margin-top: 8px;
       opacity: 0.95;
-      overflow-wrap:anywhere;
     }
 
     .tt-empty{
@@ -838,7 +743,7 @@
       margin-top: 6px;
     }
     .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
-    .tt-tooltip .v{ color: #fff; text-align:right; overflow-wrap:anywhere; }
+    .tt-tooltip .v{ color: #fff; text-align:right; }
 
     .footer{
       margin-top: 18px;
@@ -860,14 +765,19 @@
     .footer a:hover{ opacity: 1; border-bottom-style: solid; }
     .footer .footerBy{ font-size: 13px; }
     .footer .footerSep{ opacity: .55; margin: 0 6px; }
+
+    /* ✅ Bakaláři blue for Nonchalant Mode (only the word Bakaláři) */
+    .bakBlue{
+      color: #1E88E5;
+      font-weight: 1000;
+    }
   </style>
 </head>
 
 <body class="theme-dark">
   <div class="wrap">
-
     <div class="titleWrap">
-      <h1 id="mainTitle">School Progress</h1>
+      <h1 id="pageTitle">School Progress</h1>
       <div id="mcSplash" class="mcSplash">Loading splash…</div>
     </div>
 
@@ -894,8 +804,8 @@
         <span>Mode</span>
         <select id="modeSelect" aria-label="Mode">
           <option value="normal">Normal</option>
-          <option value="nonchalant">Nonchalant</option>
-          <option value="freaky">Freaky</option>
+          <option value="nonchalant">Nonchalant Mode</option>
+          <option value="freaky">Freaky Mode</option>
         </select>
       </div>
 
@@ -907,19 +817,10 @@
 
       <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
       <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleInfo" checked /> <span>Zobrazit Info panel</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleTracker" checked /> <span>Zobrazit Tracker</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Cáfa Tracker</span></label>
 
-      <div class="hint" id="statusHint">
-        <span class="statusPill">
-          <span id="stDotTT" class="statusDot"></span>
-          <span id="stTextTT">Rozvrh: —</span>
-        </span>
-        <span class="statusPill" style="margin-left:8px;">
-          <span id="stDotTR" class="statusDot"></span>
-          <span id="stTextTR">Tracker: —</span>
-        </span>
-      </div>
+      <p class="hint" id="statusHint">Status: OK</p>
     </div>
 
     <div class="mainLayout">
@@ -992,62 +893,17 @@
       </div>
 
       <aside id="addonPanel" class="addonCol">
-        <div class="block" id="infoCarouselBlock">
-          <div class="rowTitle">Info Panel</div>
+        <div class="addonHead">Info Panel</div>
 
-          <div class="igCarousel" id="igCarousel">
-            <div class="igSlides" id="igSlides">
-
-              <!-- SLIDE 1: Events -->
-              <div class="igSlide" id="slideEvents">
-                <div id="eventsList" class="stackList">
-                  <div class="stackItem muted">Načítání…</div>
-                </div>
-              </div>
-
-              <!-- SLIDE 2: Sanity -->
-              <div class="igSlide" id="slideSanity">
-                <div class="sanityWrap">
-                  <div class="sanityTop">
-                    <div class="sanityRow" style="margin-bottom:8px;">
-                      <select id="sanityDaySelect">
-                        <option value="today">Dnes</option>
-                      </select>
-                      <select id="sanityViewSelect">
-                        <option value="day">Celý den</option>
-                        <option value="hour">Po hodinách</option>
-                      </select>
-                      <button id="sanityShowBtn" class="btn" type="button">Zobrazit</button>
-                    </div>
-
-                    <div class="sanityMsg" id="sanityModeMsg">Sanity padá jen po check-in na hodinu (jinak 0).</div>
-                  </div>
-
-                  <div id="sanityHistoryBox">
-                    <div class="stackItem muted">Historie…</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- SLIDE 3: Absence leaderboard -->
-              <div class="igSlide" id="slideAbsence">
-                <div id="absenceBox" style="height:260px; overflow:auto; padding-right:6px;">
-                  <div class="stackItem muted">Načítání…</div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="igDots" id="igDots">
-            <div class="igDot active" data-i="0" title="Události"></div>
-            <div class="igDot" data-i="1" title="Sanity"></div>
-            <div class="igDot" data-i="2" title="Absence"></div>
+        <div class="block" id="eventsBlock">
+          <div class="rowTitle">Události</div>
+          <div id="eventsList" class="stackList">
+            <div class="stackItem muted">Načítání…</div>
           </div>
         </div>
 
         <div class="block" id="cafaBlock">
-          <div class="rowTitle">Tracker</div>
+          <div class="rowTitle">Cáfa Tracker</div>
           <div class="trackerCard">
             <div class="trackerBadge" id="cafaBadge">Cáfa</div>
             <div class="trackerMain" id="cafaMain">Načítání…</div>
@@ -1074,13 +930,10 @@
       <div class="tt-top">
         <div>
           <div class="rowTitle">Rozvrh</div>
-          <div class="tt-sub">DE3A • Týdenní přehled</div>
+          <div class="tt-sub">DE3A • Týdenní přehled • fancy</div>
         </div>
         <div class="tt-meta">
-          <span class="tt-badge" id="ttUpdated">
-            <span id="ttDot" class="statusDot"></span>
-            <span id="ttUpdatedText">Aktualizováno: —</span>
-          </span>
+          <span class="tt-badge" id="ttUpdated">Aktualizováno: —</span>
         </div>
       </div>
 
@@ -1096,7 +949,6 @@
         <span class="footerSep">•</span>
         <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
       </div>
-      <div>Version 1.2.27</div>
     </div>
   </div>
 
@@ -1104,13 +956,71 @@
 
 <script>
   /* =========================
-     API CONFIG
+     API CONFIG (YOUR DOMAIN)
      ========================= */
   const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
   const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
   const BACKEND_TEACHER_API = `${WORKER_BASE}/api/timetable?teacher=UV069&type=Actual`;
 
   const CLASS_NAME = "DE3A";
+
+  /* =========================
+     Minecraft splash
+     ========================= */
+  async function loadMinecraftSplash(){
+    const el = document.getElementById("mcSplash");
+    if (!el) return;
+
+    const fallback = [
+      "Now with Cáfa Tracker!",
+      "Suplování detected!",
+      "Bakaláři moment",
+      "Touch grass after class",
+      "School grind never ends",
+      "Raw-Time supremacy"
+    ];
+
+    try{
+      const res = await fetch("./MinecraftTextSource.txt?ts=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("source not found");
+      const txt = await res.text();
+      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(x => x && !x.startsWith("#"));
+      el.textContent = lines.length ? lines[Math.floor(Math.random()*lines.length)] : fallback[0];
+    }catch(e){
+      el.textContent = fallback[Math.floor(Math.random()*fallback.length)];
+    }
+  }
+
+  /* =========================
+     Mode (Nonchalant/Freaky) for title
+     - Nonchalant: "Bakaláři" in Bakalari blue
+     ========================= */
+  function applyTitleMode(mode){
+    const titleEl = document.getElementById("pageTitle");
+    if (!titleEl) return;
+
+    if (mode === "nonchalant"){
+      titleEl.innerHTML = `<span class="bakBlue">Bakaláři</span>, kdyby nebyly mid`;
+    } else if (mode === "freaky"){
+      titleEl.textContent = "Kdy to utrpení skončí";
+    } else {
+      titleEl.textContent = "School Progress";
+    }
+
+    localStorage.setItem("sp_mode", mode);
+    const sel = document.getElementById("modeSelect");
+    if (sel) sel.value = mode;
+    scheduleSixSevenScan();
+  }
+
+  function initModeSelector(){
+    const sel = document.getElementById("modeSelect");
+    if (!sel) return;
+
+    sel.addEventListener("change", () => applyTitleMode(sel.value));
+    const saved = localStorage.getItem("sp_mode") || "normal";
+    applyTitleMode(saved);
+  }
 
   /* =========================
      SUBJECT SHORT MAP
@@ -1140,12 +1050,6 @@
     const s = String(full || "").trim();
     if (!s) return "";
     if (SUBJECT_SHORT[s]) return SUBJECT_SHORT[s];
-
-    // Multi subject "RUJ / NEJ" -> "RUJ/NEJ"
-    if (s.includes("/")){
-      return s.split("/").map(x => x.trim()).map(x => SUBJECT_SHORT[x] || x.slice(0,3).toUpperCase()).join("/");
-    }
-
     const noDia = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     return noDia.replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || s.slice(0,3).toUpperCase();
   }
@@ -1210,8 +1114,6 @@
 
     teacherDays: null,
     teacherSource: "loading",
-
-    carouselIndex: 0
   };
 
   /* =========================
@@ -1301,27 +1203,17 @@
     return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj));
   }
 
-  function setStatusDots(){
-    const ttOk = state.classSource === "Bakaláři";
-    const trOk = state.teacherSource === "Bakaláři";
-
-    $("stDotTT").className = "statusDot " + (ttOk ? "ok":"bad");
-    $("stTextTT").textContent = "Rozvrh: " + state.classSource;
-
-    $("stDotTR").className = "statusDot " + (trOk ? "ok":"bad");
-    $("stTextTR").textContent = "Tracker: " + state.teacherSource;
-
-    $("ttDot").className = "statusDot " + (ttOk ? "ok":"bad");
+  function statusText(){
+    $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Cáfa: ${state.teacherSource}`;
   }
 
   /* =========================
-     THEME + SETTINGS + SCALE + MODE
+     THEME + SETTINGS + SCALE
      ========================= */
   function applyTheme(theme){
     const body = document.body;
     body.classList.remove(
-      "theme-light","theme-dark","theme-loona","theme-sobokill",
-      "theme-kasparnakart","theme-battlecats"
+      "theme-light","theme-dark","theme-loona","theme-sobokill","theme-kasparnakart","theme-battlecats"
     );
     body.classList.add("theme-" + theme);
     localStorage.setItem("sp_theme", theme);
@@ -1335,30 +1227,22 @@
     $("uiScaleRange").value = String(p);
     $("uiScaleValue").textContent = `${p}%`;
     localStorage.setItem("sp_ui_scale", String(p));
-  }
-
-  function applyMode(mode){
-    localStorage.setItem("sp_mode", mode);
-    $("modeSelect").value = mode;
-
-    const title = $("mainTitle");
-    if (mode === "nonchalant"){
-      title.textContent = "Bakaláři, kdyby nebyly mid";
-    } else if (mode === "freaky"){
-      title.textContent = "Kdy to utrpení skončí";
-    } else {
-      title.textContent = "School Progress";
-    }
+    scheduleSixSevenScan();
   }
 
   function refreshAddonPanelVisibility(){
     const addonPanel = $("addonPanel");
-    const infoBlock = $("infoCarouselBlock");
-    const trackerBlock = $("cafaBlock");
+    const eventsBlock = $("eventsBlock");
+    const cafaBlock = $("cafaBlock");
+    const addonHead = addonPanel.querySelector(".addonHead");
 
-    const infoVisible = !infoBlock.classList.contains("hidden");
-    const trackerVisible = !trackerBlock.classList.contains("hidden");
-    addonPanel.classList.toggle("hidden", !(infoVisible || trackerVisible));
+    const eventsVisible = !eventsBlock.classList.contains("hidden");
+    const cafaVisible = !cafaBlock.classList.contains("hidden");
+    const anyVisible = eventsVisible || cafaVisible;
+
+    addonPanel.classList.toggle("hidden", !anyVisible);
+    addonHead.classList.toggle("hidden", !anyVisible);
+    scheduleSixSevenScan();
   }
 
   function initSettings(){
@@ -1366,52 +1250,139 @@
 
     $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
     $("uiScaleRange").addEventListener("input", () => applyUiScale($("uiScaleRange").value));
-    $("modeSelect").addEventListener("change", () => applyMode($("modeSelect").value));
 
     const toggleTT = $("toggleTimetable");
     const toggleDaily = $("toggleDaily");
-    const toggleInfo = $("toggleInfo");
-    const toggleTracker = $("toggleTracker");
+    const toggleEvents = $("toggleEvents");
+    const toggleCafa = $("toggleCafa");
 
     toggleTT.addEventListener("change", () => {
       $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
       localStorage.setItem("sp_toggle_tt", toggleTT.checked ? "1" : "0");
+      scheduleSixSevenScan();
     });
     toggleDaily.addEventListener("change", () => {
       $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
       localStorage.setItem("sp_toggle_daily", toggleDaily.checked ? "1" : "0");
+      scheduleSixSevenScan();
     });
-    toggleInfo.addEventListener("change", () => {
-      $("infoCarouselBlock").classList.toggle("hidden", !toggleInfo.checked);
-      localStorage.setItem("sp_toggle_info", toggleInfo.checked ? "1" : "0");
+    toggleEvents.addEventListener("change", () => {
+      $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
+      localStorage.setItem("sp_toggle_events", toggleEvents.checked ? "1" : "0");
       refreshAddonPanelVisibility();
     });
-    toggleTracker.addEventListener("change", () => {
-      $("cafaBlock").classList.toggle("hidden", !toggleTracker.checked);
-      localStorage.setItem("sp_toggle_tracker", toggleTracker.checked ? "1" : "0");
+    toggleCafa.addEventListener("change", () => {
+      $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
+      localStorage.setItem("sp_toggle_cafa", toggleCafa.checked ? "1" : "0");
       refreshAddonPanelVisibility();
     });
 
-    applyTheme(localStorage.getItem("sp_theme") || "dark");
+    const savedTheme = localStorage.getItem("sp_theme") || "dark";
+    applyTheme(savedTheme);
+
     applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
-    applyMode(localStorage.getItem("sp_mode") || "normal");
 
     const savedTT = localStorage.getItem("sp_toggle_tt");
     const savedDaily = localStorage.getItem("sp_toggle_daily");
-    const savedInfo = localStorage.getItem("sp_toggle_info");
-    const savedTracker = localStorage.getItem("sp_toggle_tracker");
+    const savedEvents = localStorage.getItem("sp_toggle_events");
+    const savedCafa = localStorage.getItem("sp_toggle_cafa");
 
     if (savedTT !== null) toggleTT.checked = savedTT === "1";
     if (savedDaily !== null) toggleDaily.checked = savedDaily === "1";
-    if (savedInfo !== null) toggleInfo.checked = savedInfo === "1";
-    if (savedTracker !== null) toggleTracker.checked = savedTracker === "1";
+    if (savedEvents !== null) toggleEvents.checked = savedEvents === "1";
+    if (savedCafa !== null) toggleCafa.checked = savedCafa === "1";
 
     $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
-    $("infoCarouselBlock").classList.toggle("hidden", !toggleInfo.checked);
-    $("cafaBlock").classList.toggle("hidden", !toggleTracker.checked);
+    $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
+    $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
 
     refreshAddonPanelVisibility();
+  }
+
+  /* =========================
+     six seven detector + emote
+     ========================= */
+  let ssScanTimer = null;
+
+  function scheduleSixSevenScan(){
+    if (ssScanTimer) clearTimeout(ssScanTimer);
+    ssScanTimer = setTimeout(() => {
+      try { wrapSixSeven(document.querySelector(".wrap")); } catch {}
+    }, 60);
+  }
+
+  function wrapSixSeven(root){
+    if (!root) return;
+
+    const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
+    const patterns = [
+      /6\s*\/\s*7/g,
+      /6\.7(?:\.\d{2,4})?/g,
+      /67/g
+    ];
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const p = node.parentNode;
+        if (!p || SKIP_TAGS.has(p.nodeName)) return NodeFilter.FILTER_REJECT;
+        if (p.closest && p.closest(".tt-tooltip")) return NodeFilter.FILTER_REJECT;
+        if (!node.nodeValue || !node.nodeValue.match(/6\s*\/\s*7|6\.7|67/)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    for (const textNode of nodes){
+      const original = textNode.nodeValue;
+      let parts = [{ text: original, isMatch: false }];
+
+      for (const re of patterns){
+        const nextParts = [];
+        for (const part of parts){
+          if (part.isMatch){
+            nextParts.push(part);
+            continue;
+          }
+          const s = part.text;
+          let last = 0;
+          let m;
+          re.lastIndex = 0;
+          while ((m = re.exec(s)) !== null){
+            if (m.index > last) nextParts.push({ text: s.slice(last, m.index), isMatch:false });
+            nextParts.push({ text: m[0], isMatch:true });
+            last = m.index + m[0].length;
+          }
+          if (last < s.length) nextParts.push({ text: s.slice(last), isMatch:false });
+        }
+        parts = nextParts;
+      }
+
+      if (!parts.some(p => p.isMatch)) continue;
+
+      const frag = document.createDocumentFragment();
+      for (const p of parts){
+        if (!p.isMatch){
+          frag.appendChild(document.createTextNode(p.text));
+        } else {
+          const span = document.createElement("span");
+          span.className = "ss";
+          span.textContent = p.text;
+          frag.appendChild(span);
+        }
+      }
+
+      textNode.parentNode.replaceChild(frag, textNode);
+    }
+  }
+
+  function triggerSixSevenEmote(){
+    const els = document.querySelectorAll(".ss");
+    if (!els.length) return;
+    els.forEach(el => el.classList.add("hot"));
+    setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1200);
   }
 
   /* =========================
@@ -1445,42 +1416,8 @@
       ${data.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${data.cls}</div></div>` : ``}
       ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
       ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
+      ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
     `;
-  }
-
-  /* =========================
-     CAROUSEL
-     ========================= */
-  function setCarouselIndex(i){
-    const slides = $("igSlides");
-    const dots = Array.from(document.querySelectorAll(".igDot"));
-    const max = dots.length;
-    const idx = ((i % max) + max) % max;
-    state.carouselIndex = idx;
-    slides.style.transform = `translateX(${-idx*100}%)`;
-    dots.forEach((d, j) => d.classList.toggle("active", j === idx));
-  }
-  function initCarousel(){
-    document.querySelectorAll(".igDot").forEach(dot => {
-      dot.addEventListener("click", () => setCarouselIndex(Number(dot.dataset.i)));
-    });
-
-    // swipe support (basic)
-    let sx = null;
-    $("igCarousel").addEventListener("touchstart", (e) => {
-      sx = e.touches?.[0]?.clientX ?? null;
-    }, {passive:true});
-    $("igCarousel").addEventListener("touchend", (e) => {
-      if (sx == null) return;
-      const ex = e.changedTouches?.[0]?.clientX ?? sx;
-      const dx = ex - sx;
-      if (Math.abs(dx) > 40){
-        setCarouselIndex(state.carouselIndex + (dx < 0 ? 1 : -1));
-      }
-      sx = null;
-    }, {passive:true});
-
-    setCarouselIndex(0);
   }
 
   /* =========================
@@ -1507,6 +1444,10 @@
     const grid = $("ttGrid");
     grid.style.setProperty("--cols", TIMES.length);
     grid.innerHTML = "";
+
+    const now = new Date();
+    const todayKey = dayKeyFromDate(now);
+    const nowMin = now.getHours()*60 + now.getMinutes();
 
     const corner = document.createElement("div");
     corner.className = "tt-corner";
@@ -1540,6 +1481,9 @@
         const cell = document.createElement("div");
         cell.className = "tt-cell";
 
+        const inThisHour = (todayKey === d.key && nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin);
+        if (inThisHour) cell.classList.add("tt-now");
+
         if (!base && !mk){
           cell.classList.add("tt-empty");
           cell.textContent = "—";
@@ -1552,7 +1496,7 @@
         if (mk?.type === "subst") { cell.classList.add("tt-subst"); type = "Suplování"; }
         if (mk?.type === "cancel") { cell.classList.add("tt-cancel"); type = "Odpadlo"; }
 
-        const subjFull = base?.subj || (mk?.type==="event" ? "Akce školy" : "");
+        const subjFull = base?.subj || (mk?.type==="event" ? "Akce" : "");
         const subjShort = shortSubj(subjFull);
 
         const room = base?.room || mk?.room || "";
@@ -1575,7 +1519,6 @@
         teacherEl.textContent = teacher || "";
         cell.appendChild(teacherEl);
 
-        const now = new Date();
         const tdata = {
           dayLabel: d.label,
           dateLong: formatDateCZ(now),
@@ -1587,7 +1530,8 @@
           teacher,
           cls,
           note,
-          type
+          type,
+          source: state.classSource
         };
 
         cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
@@ -1605,7 +1549,8 @@
       }
     }
 
-    $("ttUpdatedText").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
+    $("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1625,6 +1570,7 @@
       empty.className = "stackItem muted";
       empty.textContent = "Žádné události (zatím)";
       list.appendChild(empty);
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1675,32 +1621,27 @@
       if (ev.note) item.appendChild(desc);
       list.appendChild(item);
     }
+
+    scheduleSixSevenScan();
   }
 
   /* =========================
-     TRACKER (clean output)
+     CAFA TRACKER
      ========================= */
-  function updateTracker(now){
+  function updateCafaTracker(now){
     const badge = $("cafaBadge");
     const main = $("cafaMain");
     const sub = $("cafaSub");
 
     const dayKey = dayKeyFromDate(now);
     const days = getTeacherDays();
-
-    // after 16:00 -> hide tracker (per your spec)
-    if (now.getHours() >= 16){
-      $("cafaBlock").classList.add("hidden");
-      refreshAddonPanelVisibility();
-      return;
-    } else {
-      if (($("toggleTracker")?.checked ?? true)) $("cafaBlock").classList.remove("hidden");
-      refreshAddonPanelVisibility();
-    }
+    const src = state.teacherSource;
 
     if (!dayKey){
-      main.textContent = "—";
-      sub.textContent = "";
+      badge.textContent = "Cáfa • off";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `Víkend • ${formatDateCZ(now)} • ${src}`;
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1713,27 +1654,27 @@
       if (nowMin >= t.startMin && nowMin <= t.endMin){ curIdx=i; break; }
     }
 
-    // outside lessons -> show nothing (clean)
     if (curIdx === null){
-      main.textContent = "—";
-      sub.textContent = "";
+      badge.textContent = "Cáfa • gone";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `${dayLabelCz(dayKey)} • mimo hodiny • ${src}`;
+      scheduleSixSevenScan();
       return;
     }
 
     const l = arr[curIdx];
     if (!l){
-      main.textContent = "—";
-      sub.textContent = `${dayLabelCz(dayKey)} • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
+      badge.textContent = "Cáfa • stealth";
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      scheduleSixSevenScan();
       return;
     }
 
-    // clean: subject + room + class + time
-    const subj = shortSubj(l.subj);
-    const room = l.room ? ` • ${l.room}` : "";
-    const cls  = l.class ? ` • ${l.class}` : "";
-    badge.textContent = "Cáfa";
-    main.textContent = `${subj}${room}${cls}`;
-    sub.textContent = `${dayLabelCz(dayKey)} • ${TIMES[curIdx].start}–${TIMES[curIdx].end}`;
+    badge.textContent = "Cáfa • live";
+    main.textContent = `Právě: ${shortSubj(l.subj)} • ${l.class || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
+    sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1769,6 +1710,7 @@
       setBar("daybar",100);
       setText("daylabel","");
       setText("dailyDebug", `Weekend • ${formatDateCZ(now)}`);
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1779,36 +1721,24 @@
     const first = TIMES_MIN[0];
     const last = TIMES_MIN[totalToday-1] || TIMES_MIN[6];
 
-    // after school
     if (nowMin > last.endMin){
       setDailyBadge("free","Volno");
       setText("dailyText","Volno 😎");
       setBar("daybar",100);
       setText("daylabel","");
-      setText("dailyDebug", `${dayLabelCz(dayKey)} • ${formatDateCZ(now)}`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      scheduleSixSevenScan();
       return;
     }
 
-    // before school
     if (nowMin < first.startMin){
       setDailyBadge("live","Dnes");
       const next = fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`;
       setText("dailyText",`Za chvíli začne: ${next}`);
       setBar("daybar",0);
       setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`);
-      setText("dailyDebug", `${dayLabelCz(dayKey)} • ${formatDateCZ(now)}`);
-      return;
-    }
-
-    // lunch break special: 12:20–12:50
-    const lunchStart = timeToMin("12:20");
-    const lunchEnd   = timeToMin("12:50");
-    if (nowMin > lunchStart && nowMin < lunchEnd){
-      setDailyBadge("live","Pauza");
-      setText("dailyText", `Obědová pauza 🍽️`);
-      setBar("daybar", 0);
-      setText("daylabel", `12:20–12:50`);
-      setText("dailyDebug", `${dayLabelCz(dayKey)} • ${formatDateCZ(now)}`);
+      setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+      scheduleSixSevenScan();
       return;
     }
 
@@ -1823,7 +1753,8 @@
         setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`);
         setBar("daybar", pct);
         setText("daylabel", `Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`);
-        setText("dailyDebug", `${dayLabelCz(dayKey)} • ${formatDateCZ(now)}`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        scheduleSixSevenScan();
         return;
       }
 
@@ -1833,10 +1764,18 @@
         setText("dailyText", `Následuje: ${next}`);
         setBar("daybar", 0);
         setText("daylabel", `Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`);
-        setText("dailyDebug", `${dayLabelCz(dayKey)} • ${formatDateCZ(now)}`);
+        setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+        scheduleSixSevenScan();
         return;
       }
     }
+
+    setDailyBadge("free","Volno");
+    setText("dailyText","Volno 😎");
+    setBar("daybar",100);
+    setText("daylabel","");
+    setText("dailyDebug", `${dayKey} • ${formatDateCZ(now)}`);
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1893,6 +1832,8 @@
       ? `Raw-Time: ~${rawDays} školních dní`
       : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
     );
+
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -1927,70 +1868,12 @@
       state.teacherSource = "Lokální";
     }
 
-    setStatusDots();
+    statusText();
     renderTimetable();
     renderEventsPanel();
-    updateTracker(new Date());
-  }
-
-  /* =========================
-     SANITY + ABSENCE (simple placeholders + no layout growth)
-     ========================= */
-  function initSanity(){
-    const btn = $("sanityShowBtn");
-    btn.addEventListener("click", () => {
-      const box = $("sanityHistoryBox");
-      box.style.display = "block"; // ✅ ok: scrolluje uvnitř, neroste slide
-      box.innerHTML = `
-        <div class="stackItem muted">Historie… (tady zůstane scroll)</div>
-        <div class="stackItem">• demo entry</div>
-        <div class="stackItem">• demo entry</div>
-        <div class="stackItem">• demo entry</div>
-        <div class="stackItem">• demo entry</div>
-        <div class="stackItem">• demo entry</div>
-      `;
-    });
-  }
-
-  async function loadAbsenceLeaderboard(){
-    try{
-      const res = await fetch("LeaderboardAb.txt", { cache:"no-store" });
-      const txt = await res.text();
-      const lines = txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
-
-      const box = $("absenceBox");
-      box.innerHTML = "";
-      if (!lines.length){
-        box.innerHTML = `<div class="stackItem muted">Prázdné</div>`;
-        return;
-      }
-      for (const l of lines){
-        const item = document.createElement("div");
-        item.className = "stackItem";
-        item.textContent = l;
-        box.appendChild(item);
-      }
-    } catch(e){
-      $("absenceBox").innerHTML = `<div class="stackItem muted">Nelze načíst LeaderboardAb.txt</div>`;
-    }
-  }
-
-  /* =========================
-     Minecraft splash text loader
-     ========================= */
-  async function loadMinecraftSplash(){
-    const el = $("mcSplash");
-    try{
-      const res = await fetch("MinecraftTextSource.txt", { cache:"no-store" });
-      const txt = await res.text();
-      const lines = txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
-      if (!lines.length) throw new Error("empty");
-      const pick = () => lines[Math.floor(Math.random()*lines.length)];
-      el.textContent = pick();
-      setInterval(() => { el.textContent = pick(); }, 12000);
-    } catch(e){
-      el.textContent = "Now with more suffering!";
-    }
+    updateCafaTracker(new Date());
+    updateDaily(new Date());
+    scheduleSixSevenScan();
   }
 
   /* =========================
@@ -2000,25 +1883,30 @@
     const now = new Date();
     updateProgressBars();
     if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
-    if (!$("toggleTracker") || $("toggleTracker").checked) updateTracker(now);
+    updateCafaTracker(now);
+
+    /* keep tt-now accurate without rerender spam:
+       only rerender timetable on tick (30s) */
+    renderTimetable();
   }
 
   function boot(){
     initSettings();
-    initCarousel();
-    initSanity();
-    loadAbsenceLeaderboard();
+    initModeSelector();
     loadMinecraftSplash();
 
     state.classSource = "loading";
     state.teacherSource = "loading";
-    setStatusDots();
+    statusText();
 
     renderTimetable();
     renderEventsPanel();
     tick();
 
     syncBackend();
+
+    scheduleSixSevenScan();
+    setInterval(triggerSixSevenEmote, 10_000);
 
     setInterval(tick, 30_000);
     setInterval(syncBackend, 5 * 60_000);
