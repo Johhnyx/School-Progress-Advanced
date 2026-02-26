@@ -283,12 +283,12 @@
       text-shadow: 0 0 18px var(--glow);
     }
 
-    /* ✅ Minecraft splash: NO extra glow, only classic MC shadow + pulse */
+    /* Minecraft splash: classic shadow + pulse */
     .mcSplash{
       margin-top: 6px;
       text-align: center;
       color: #ffd43b;
-      text-shadow: 2px 2px 0 #4a3700; /* removed big glow */
+      text-shadow: 2px 2px 0 #4a3700;
       font-family: "Monocraft", monospace;
       font-size: 13px;
       line-height: 1.15;
@@ -358,6 +358,7 @@
       border: 1px solid var(--border);
       box-shadow:0 2px 10px var(--shadow);
       backdrop-filter: blur(10px);
+      min-width: 0;
     }
     body.theme-loona .block,
     body.theme-sobokill .block,
@@ -488,52 +489,81 @@
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
-    /* ADDON */
-    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
-    .addonHead{
-      text-align:center;
-      font-weight:900;
-      color:var(--muted);
-      margin:0 0 8px 0;
-      font-size:12px;
-      letter-spacing:0.35px;
-      text-transform:uppercase;
-      opacity:0.9;
-    }
+    /* ADDON (column) */
+    .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; min-width:0; }
     .addonCol .rowTitle{ font-size:16px; }
 
-    .stackList{ display:flex; flex-direction:column; gap:8px; }
+    /* ===== Addon Pager (IG-style) ===== */
+    .pagerWrap{ position: relative; }
+    .pagerViewport{
+      overflow:hidden;
+      border-radius:12px;
+      min-width:0;
+    }
+    .pagerTrack{
+      display:flex;
+      width: 300%;
+      transform: translateX(0%);
+      transition: transform .25s ease;
+      will-change: transform;
+    }
+    .pagerPage{
+      width: 100%;
+      flex: 0 0 100%;
+      min-width:0;
+    }
 
-    /* ✅ prevent overflow outside the block */
-    #eventsList{ min-width:0; }
+    .pagerDots{
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      margin-top: 10px;
+      padding-bottom: 2px;
+      user-select:none;
+    }
+    .dot{
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.10);
+      opacity: .85;
+      cursor: pointer;
+    }
+    .dot.active{
+      background: var(--accent);
+      border-color: rgba(255,255,255,0.22);
+      opacity: 1;
+      box-shadow: 0 0 10px rgba(255,255,255,0.10);
+    }
 
-    /* Události: max ~3 položky a pak scroll uvnitř */
-    #eventsList{
+    /* Shared fixed height content area (NEVER expands layout) */
+    .fixedPanelBody{
       max-height: 260px;
       overflow-y: auto;
       padding-right: 6px;
+      min-width:0;
     }
-    #eventsList::-webkit-scrollbar{ width: 10px; }
-    #eventsList::-webkit-scrollbar-thumb{
+    .fixedPanelBody::-webkit-scrollbar{ width: 10px; }
+    .fixedPanelBody::-webkit-scrollbar-thumb{
       background: rgba(255,255,255,0.14);
       border-radius: 999px;
       border: 2px solid rgba(0,0,0,0);
       background-clip: padding-box;
     }
-    #eventsList::-webkit-scrollbar-track{ background: transparent; }
+    .fixedPanelBody::-webkit-scrollbar-track{ background: transparent; }
 
+    /* Events list items */
+    .stackList{ display:flex; flex-direction:column; gap:8px; min-width:0; }
     .stackItem{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
       border-radius:10px;
       padding:10px;
-
-      /* ✅ fixes "items outside block" */
-      min-width: 0;
-      overflow-wrap: anywhere;
-      word-break: break-word;
+      min-width:0;
+      overflow-wrap:anywhere;
+      word-break:break-word;
     }
-
     .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
     .stackItem.event{
       border-color: var(--eventBorder);
@@ -551,6 +581,7 @@
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
     .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
 
+    /* Tracker */
     .trackerCard{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
@@ -568,6 +599,57 @@
     }
     .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
     .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
+
+    /* Sanity placeholder UI */
+    .sanityRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      font-weight: 1000;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .sanityBox{
+      border:1px solid var(--border);
+      border-radius:12px;
+      background: rgba(255,255,255,0.03);
+      padding:10px;
+    }
+    .sanityTitle{
+      font-weight:1000;
+      margin-bottom:6px;
+    }
+    .sanityHint{
+      color:var(--muted);
+      font-weight:900;
+      font-size:11px;
+      line-height:1.35;
+    }
+
+    /* Leaderboard lines */
+    .lbRow{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:10px;
+      padding:10px;
+      font-weight: 900;
+      min-width:0;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
+    .lbName{ font-weight:1000; }
+    .lbVal{ color: var(--muted); text-align:right; }
 
     /* TIMETABLE */
     .timetable .tt-top{
@@ -641,7 +723,6 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
 
-    /* Current hour outline (orange) */
     .tt-now{
       outline: 2px solid rgba(255, 152, 0, 0.95);
       outline-offset: -2px;
@@ -766,7 +847,6 @@
     .footer .footerBy{ font-size: 13px; }
     .footer .footerSep{ opacity: .55; margin: 0 6px; }
 
-    /* ✅ Bakaláři blue for Nonchalant Mode (only the word Bakaláři) */
     .bakBlue{
       color: #1E88E5;
       font-weight: 1000;
@@ -817,7 +897,7 @@
 
       <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
       <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
-      <label class="toggle"><input type="checkbox" id="toggleEvents" checked /> <span>Zobrazit Události</span></label>
+      <label class="toggle"><input type="checkbox" id="toggleAddon" checked /> <span>Zobrazit Addon panel</span></label>
       <label class="toggle"><input type="checkbox" id="toggleCafa" checked /> <span>Zobrazit Cáfa Tracker</span></label>
 
       <p class="hint" id="statusHint">Status: OK</p>
@@ -892,16 +972,62 @@
         </div>
       </div>
 
+      <!-- ADDON COLUMN -->
       <aside id="addonPanel" class="addonCol">
-        <div class="addonHead">Info Panel</div>
+        <!-- 3-page carousel block -->
+        <div class="block pagerWrap" id="addonPager">
+          <div class="pagerViewport" id="pagerViewport">
+            <div class="pagerTrack" id="pagerTrack">
 
-        <div class="block" id="eventsBlock">
-          <div class="rowTitle">Události</div>
-          <div id="eventsList" class="stackList">
-            <div class="stackItem muted">Načítání…</div>
+              <!-- PAGE 1: Events -->
+              <section class="pagerPage">
+                <div class="rowTitle">Události</div>
+                <div class="fixedPanelBody">
+                  <div id="eventsList" class="stackList">
+                    <div class="stackItem muted">Načítání…</div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- PAGE 2: Sanity -->
+              <section class="pagerPage">
+                <div class="rowTitle">Sanity</div>
+                <div class="fixedPanelBody">
+                  <div class="sanityRow">
+                    <span class="pill" id="sanityModePill">Živý režim (zatím OFF)</span>
+                    <span class="pill" id="sanityHintPill">Historie ready</span>
+                  </div>
+                  <div class="sanityBox">
+                    <div class="sanityTitle">Sanity Meter</div>
+                    <div class="sanityHint">
+                      UI je připravené. Jakmile dodáš rovnici + check-in logiku,
+                      začne se to počítat (bez rozbití layoutu, jen scroll uvnitř).
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- PAGE 3: Leaderboard -->
+              <section class="pagerPage">
+                <div class="rowTitle">Leaderboard</div>
+                <div class="fixedPanelBody" id="lbBody">
+                  <div id="lbList" class="stackList">
+                    <div class="stackItem muted">Načítání…</div>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+
+          <div class="pagerDots" id="pagerDots" aria-label="Addon pages">
+            <div class="dot active" data-page="0" title="Události"></div>
+            <div class="dot" data-page="1" title="Sanity"></div>
+            <div class="dot" data-page="2" title="Leaderboard"></div>
           </div>
         </div>
 
+        <!-- Cafa tracker block (stays separate as you had) -->
         <div class="block" id="cafaBlock">
           <div class="rowTitle">Cáfa Tracker</div>
           <div class="trackerCard">
@@ -930,7 +1056,7 @@
       <div class="tt-top">
         <div>
           <div class="rowTitle">Rozvrh</div>
-          <div class="tt-sub">DE3A • Týdenní přehled • fancy</div>
+          <div class="tt-sub">DE3A • Týdenní přehled</div>
         </div>
         <div class="tt-meta">
           <span class="tt-badge" id="ttUpdated">Aktualizováno: —</span>
@@ -947,6 +1073,8 @@
       <div>
         <span>© 2026 All rights reserved</span>
         <span class="footerSep">•</span>
+        <span>Version 1.2.27</span>
+        <span class="footerSep">•</span>
         <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
       </div>
     </div>
@@ -956,7 +1084,7 @@
 
 <script>
   /* =========================
-     API CONFIG (YOUR DOMAIN)
+     API CONFIG
      ========================= */
   const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
   const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
@@ -992,8 +1120,7 @@
   }
 
   /* =========================
-     Mode (Nonchalant/Freaky) for title
-     - Nonchalant: "Bakaláři" in Bakalari blue
+     Mode title
      ========================= */
   function applyTitleMode(mode){
     const titleEl = document.getElementById("pageTitle");
@@ -1012,14 +1139,11 @@
     if (sel) sel.value = mode;
     scheduleSixSevenScan();
   }
-
   function initModeSelector(){
     const sel = document.getElementById("modeSelect");
     if (!sel) return;
-
     sel.addEventListener("change", () => applyTitleMode(sel.value));
-    const saved = localStorage.getItem("sp_mode") || "normal";
-    applyTitleMode(saved);
+    applyTitleMode(localStorage.getItem("sp_mode") || "normal");
   }
 
   /* =========================
@@ -1045,7 +1169,6 @@
     "Akce školy":"AŠK",
     "Akce skoly":"AŠK",
   };
-
   function shortSubj(full){
     const s = String(full || "").trim();
     if (!s) return "";
@@ -1066,16 +1189,16 @@
     {start:"12:50", end:"13:35"},
     {start:"13:40", end:"14:25"},
   ];
-
-  function timeToMin(hhmm){
-    const [h,m] = hhmm.split(":").map(Number);
-    return h*60 + m;
-  }
+  function timeToMin(hhmm){ const [h,m] = hhmm.split(":").map(Number); return h*60 + m; }
   const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
 
   /* =========================
-     PROGRESS DATA
+     PROGRESS DATA (unchanged)
      ========================= */
+  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+  function r(s,e){ return {s,e}; }
+
   const HS_START = localDate(2023, 9, 4);
   const HS_END   = localDateEnd(2027, 6, 30);
   const MATURITA_APPROX = localDateEnd(2027, 5, 1);
@@ -1103,35 +1226,6 @@
   ];
   const DIRECTOR_DAYS = [];
 
-  /* =========================
-     STATE
-     ========================= */
-  const state = {
-    classDays: null,
-    classMarks: [],
-    classEvents: [],
-    classSource: "loading",
-
-    teacherDays: null,
-    teacherSource: "loading",
-  };
-
-  /* =========================
-     DOM helpers
-     ========================= */
-  const $ = (id) => document.getElementById(id);
-  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
-  const setBar = (id, pct, weekend=false) => {
-    const n = $(id); if (!n) return;
-    n.style.width = clamp(pct).toFixed(2) + "%";
-    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
-  };
-  const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
-
-  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
-  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
-  function r(s,e){ return {s,e}; }
-
   function toISO(d){
     const y=d.getFullYear();
     const m=String(d.getMonth()+1).padStart(2,'0');
@@ -1149,7 +1243,6 @@
     const mi = String(d.getMinutes()).padStart(2,"0");
     return `${formatDateCZ(d)} ${hh}:${mi}`;
   }
-
   function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
   function isSchoolDay(d){
     const dow = d.getDay();
@@ -1203,6 +1296,31 @@
     return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj));
   }
 
+  /* =========================
+     STATE
+     ========================= */
+  const state = {
+    classDays: null,
+    classMarks: [],
+    classEvents: [],
+    classSource: "loading",
+
+    teacherDays: null,
+    teacherSource: "loading",
+  };
+
+  /* =========================
+     DOM helpers
+     ========================= */
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+  const setBar = (id, pct, weekend=false) => {
+    const n = $(id); if (!n) return;
+    n.style.width = clamp(pct).toFixed(2) + "%";
+    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
+  };
+  const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
+
   function statusText(){
     $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Cáfa: ${state.teacherSource}`;
   }
@@ -1230,18 +1348,20 @@
     scheduleSixSevenScan();
   }
 
-  function refreshAddonPanelVisibility(){
+  function refreshAddonVisibility(){
     const addonPanel = $("addonPanel");
-    const eventsBlock = $("eventsBlock");
+    const addonPager = $("addonPager");
     const cafaBlock = $("cafaBlock");
-    const addonHead = addonPanel.querySelector(".addonHead");
 
-    const eventsVisible = !eventsBlock.classList.contains("hidden");
-    const cafaVisible = !cafaBlock.classList.contains("hidden");
-    const anyVisible = eventsVisible || cafaVisible;
+    const addonOn = $("toggleAddon")?.checked ?? true;
+    addonPager.classList.toggle("hidden", !addonOn);
 
+    const cafaOn = $("toggleCafa")?.checked ?? true;
+    cafaBlock.classList.toggle("hidden", !cafaOn);
+
+    const anyVisible = addonOn || cafaOn;
     addonPanel.classList.toggle("hidden", !anyVisible);
-    addonHead.classList.toggle("hidden", !anyVisible);
+
     scheduleSixSevenScan();
   }
 
@@ -1253,7 +1373,7 @@
 
     const toggleTT = $("toggleTimetable");
     const toggleDaily = $("toggleDaily");
-    const toggleEvents = $("toggleEvents");
+    const toggleAddon = $("toggleAddon");
     const toggleCafa = $("toggleCafa");
 
     toggleTT.addEventListener("change", () => {
@@ -1266,62 +1386,101 @@
       localStorage.setItem("sp_toggle_daily", toggleDaily.checked ? "1" : "0");
       scheduleSixSevenScan();
     });
-    toggleEvents.addEventListener("change", () => {
-      $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
-      localStorage.setItem("sp_toggle_events", toggleEvents.checked ? "1" : "0");
-      refreshAddonPanelVisibility();
+    toggleAddon.addEventListener("change", () => {
+      localStorage.setItem("sp_toggle_addon", toggleAddon.checked ? "1" : "0");
+      refreshAddonVisibility();
     });
     toggleCafa.addEventListener("change", () => {
-      $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
       localStorage.setItem("sp_toggle_cafa", toggleCafa.checked ? "1" : "0");
-      refreshAddonPanelVisibility();
+      refreshAddonVisibility();
     });
 
-    const savedTheme = localStorage.getItem("sp_theme") || "dark";
-    applyTheme(savedTheme);
-
+    applyTheme(localStorage.getItem("sp_theme") || "dark");
     applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
 
     const savedTT = localStorage.getItem("sp_toggle_tt");
     const savedDaily = localStorage.getItem("sp_toggle_daily");
-    const savedEvents = localStorage.getItem("sp_toggle_events");
+    const savedAddon = localStorage.getItem("sp_toggle_addon");
     const savedCafa = localStorage.getItem("sp_toggle_cafa");
 
     if (savedTT !== null) toggleTT.checked = savedTT === "1";
     if (savedDaily !== null) toggleDaily.checked = savedDaily === "1";
-    if (savedEvents !== null) toggleEvents.checked = savedEvents === "1";
+    if (savedAddon !== null) toggleAddon.checked = savedAddon === "1";
     if (savedCafa !== null) toggleCafa.checked = savedCafa === "1";
 
     $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
     $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
-    $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
-    $("cafaBlock").classList.toggle("hidden", !toggleCafa.checked);
 
-    refreshAddonPanelVisibility();
+    refreshAddonVisibility();
   }
 
   /* =========================
-     six seven detector + emote
+     Addon pager logic (dots + swipe)
+     ========================= */
+  let pagerIndex = 0;
+  function setPager(i){
+    const track = $("pagerTrack");
+    const dots = $("pagerDots")?.querySelectorAll(".dot") || [];
+    pagerIndex = Math.max(0, Math.min(2, Number(i)||0));
+    track.style.transform = `translateX(-${pagerIndex*100}%)`;
+    dots.forEach(d => d.classList.toggle("active", Number(d.dataset.page) === pagerIndex));
+    localStorage.setItem("sp_pager", String(pagerIndex));
+    scheduleSixSevenScan();
+  }
+
+  function initPager(){
+    const saved = Number(localStorage.getItem("sp_pager") || "0");
+    setPager(saved);
+
+    $("pagerDots").addEventListener("click", (e) => {
+      const dot = e.target.closest(".dot");
+      if (!dot) return;
+      setPager(dot.dataset.page);
+    });
+
+    // Swipe on mobile
+    const viewport = $("pagerViewport");
+    let startX = 0, curX = 0, down = false;
+
+    const onDown = (x) => { down = true; startX = x; curX = x; };
+    const onMove = (x) => { if (!down) return; curX = x; };
+    const onUp = () => {
+      if (!down) return;
+      down = false;
+      const dx = curX - startX;
+      if (Math.abs(dx) < 35) return; // deadzone
+      if (dx < 0) setPager(pagerIndex + 1);
+      else setPager(pagerIndex - 1);
+    };
+
+    viewport.addEventListener("touchstart", (e) => onDown(e.touches[0].clientX), {passive:true});
+    viewport.addEventListener("touchmove", (e) => onMove(e.touches[0].clientX), {passive:true});
+    viewport.addEventListener("touchend", onUp);
+
+    // Mouse drag (optional)
+    viewport.addEventListener("mousedown", (e)=>{ onDown(e.clientX); });
+    window.addEventListener("mousemove", (e)=>{ onMove(e.clientX); });
+    window.addEventListener("mouseup", onUp);
+  }
+
+  /* =========================
+     six seven detector + emote (kept)
      ========================= */
   let ssScanTimer = null;
-
   function scheduleSixSevenScan(){
     if (ssScanTimer) clearTimeout(ssScanTimer);
     ssScanTimer = setTimeout(() => {
       try { wrapSixSeven(document.querySelector(".wrap")); } catch {}
     }, 60);
   }
-
   function wrapSixSeven(root){
     if (!root) return;
-
     const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
     const patterns = [
       /6\s*\/\s*7/g,
       /6\.7(?:\.\d{2,4})?/g,
       /67/g
     ];
-
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node){
         const p = node.parentNode;
@@ -1331,21 +1490,16 @@
         return NodeFilter.FILTER_ACCEPT;
       }
     });
-
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
 
     for (const textNode of nodes){
       const original = textNode.nodeValue;
       let parts = [{ text: original, isMatch: false }];
-
       for (const re of patterns){
         const nextParts = [];
         for (const part of parts){
-          if (part.isMatch){
-            nextParts.push(part);
-            continue;
-          }
+          if (part.isMatch){ nextParts.push(part); continue; }
           const s = part.text;
           let last = 0;
           let m;
@@ -1359,7 +1513,6 @@
         }
         parts = nextParts;
       }
-
       if (!parts.some(p => p.isMatch)) continue;
 
       const frag = document.createDocumentFragment();
@@ -1373,11 +1526,9 @@
           frag.appendChild(span);
         }
       }
-
       textNode.parentNode.replaceChild(frag, textNode);
     }
   }
-
   function triggerSixSevenEmote(){
     const els = document.querySelectorAll(".ss");
     if (!els.length) return;
@@ -1386,9 +1537,9 @@
   }
 
   /* =========================
-     TOOLTIP
+     Tooltip (kept)
      ========================= */
-  const tooltip = $("ttTooltip");
+  const tooltip = document.getElementById("ttTooltip");
   function showTooltip(html, x, y){
     tooltip.innerHTML = html;
     tooltip.style.left = x + "px";
@@ -1421,7 +1572,7 @@
   }
 
   /* =========================
-     DATA PICKERS
+     Data pickers
      ========================= */
   function getClassDays(){
     if (state.classDays && hasAnyLesson(state.classDays)) return state.classDays;
@@ -1433,7 +1584,7 @@
   }
 
   /* =========================
-     TIMETABLE RENDER
+     Timetable render
      ========================= */
   function markForCell(dayKey, idx){
     return (state.classMarks || []).find(m => m.day===dayKey && m.idx===idx) || null;
@@ -1554,7 +1705,7 @@
   }
 
   /* =========================
-     EVENTS PANEL
+     Events render (page 1)
      ========================= */
   function renderEventsPanel(){
     const list = $("eventsList");
@@ -1626,7 +1777,61 @@
   }
 
   /* =========================
-     CAFA TRACKER
+     Leaderboard (page 3)
+     reads ./LeaderboardAb.txt
+     ========================= */
+  async function loadLeaderboard(){
+    const list = $("lbList");
+    if (!list) return;
+    list.innerHTML = `<div class="stackItem muted">Načítání…</div>`;
+
+    try{
+      const res = await fetch("./LeaderboardAb.txt?ts=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("not found");
+      const txt = await res.text();
+      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(x => x && !x.startsWith("#"));
+
+      if (!lines.length){
+        list.innerHTML = `<div class="stackItem muted">Leaderboard je prázdný</div>`;
+        return;
+      }
+
+      // Parse: allow formats:
+      // - "Name - 12"
+      // - "Name: 12"
+      // - "Name 12"
+      const parsed = lines.map(line => {
+        let name = line, val = "";
+        const m1 = line.match(/^(.+?)\s*[-:]\s*(.+)$/);
+        if (m1){ name = m1[1].trim(); val = m1[2].trim(); return {name, val}; }
+        const m2 = line.match(/^(.+?)\s+(\d+)\s*$/);
+        if (m2){ name = m2[1].trim(); val = m2[2].trim(); return {name, val}; }
+        return {name: line, val: ""};
+      });
+
+      list.innerHTML = "";
+      parsed.slice(0, 50).forEach((r, idx) => {
+        const row = document.createElement("div");
+        row.className = "lbRow";
+        row.innerHTML = `<div class="lbName">${idx+1}. ${escapeHtml(r.name)}</div><div class="lbVal">${escapeHtml(r.val)}</div>`;
+        list.appendChild(row);
+      });
+
+    }catch(e){
+      list.innerHTML = `<div class="stackItem muted">LeaderboardAb.txt nenalezen</div>`;
+    } finally {
+      scheduleSixSevenScan();
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  /* =========================
+     Cafa tracker (kept as-is)
      ========================= */
   function updateCafaTracker(now){
     const badge = $("cafaBadge");
@@ -1638,7 +1843,7 @@
     const src = state.teacherSource;
 
     if (!dayKey){
-      badge.textContent = "Cáfa • off";
+      badge.textContent = "Cáfa";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
       sub.textContent = `Víkend • ${formatDateCZ(now)} • ${src}`;
       scheduleSixSevenScan();
@@ -1655,7 +1860,7 @@
     }
 
     if (curIdx === null){
-      badge.textContent = "Cáfa • gone";
+      badge.textContent = "Cáfa";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
       sub.textContent = `${dayLabelCz(dayKey)} • mimo hodiny • ${src}`;
       scheduleSixSevenScan();
@@ -1664,34 +1869,32 @@
 
     const l = arr[curIdx];
     if (!l){
-      badge.textContent = "Cáfa • stealth";
+      badge.textContent = "Cáfa";
       main.textContent = "Cáfa se skrývá ve stínech 😎";
       sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
       scheduleSixSevenScan();
       return;
     }
 
-    badge.textContent = "Cáfa • live";
-    main.textContent = `Právě: ${shortSubj(l.subj)} • ${l.class || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
-    sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+    badge.textContent = "Cáfa";
+    main.textContent = `${shortSubj(l.subj)} • ${l.room || ""} • ${l.class || ""}`.replace(/\s+/g," ").trim();
+    sub.textContent = `${dayLabelCz(dayKey)} • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
     scheduleSixSevenScan();
   }
 
   /* =========================
-     DAILY PROGRESS
+     Daily progress (kept)
      ========================= */
   function setDailyBadge(kind, text){
     const b=$("dailyBadge");
     b.className = "badge" + (kind ? (" "+kind) : "");
     b.textContent = text;
   }
-
   function fmtLesson(x){
     if (!x) return null;
     const room = x.room ? ` (${x.room})` : "";
     return `${shortSubj(x.subj)}${room}`;
   }
-
   function countTodayLessons(arr){
     let last = -1;
     for (let i=0;i<arr.length;i++){
@@ -1699,7 +1902,6 @@
     }
     return Math.max(last+1, 0) || 7;
   }
-
   function updateDaily(now){
     const dayKey = dayKeyFromDate(now);
     const days = getClassDays();
@@ -1779,7 +1981,7 @@
   }
 
   /* =========================
-     PROGRESS BARS
+     Progress bars (kept)
      ========================= */
   function updateProgressBars(){
     const now = new Date();
@@ -1837,7 +2039,7 @@
   }
 
   /* =========================
-     BACKEND SYNC
+     Backend sync
      ========================= */
   async function fetchJsonSafe(url){
     try{
@@ -1877,23 +2079,22 @@
   }
 
   /* =========================
-     BOOT + LOOP
+     Boot + loop
      ========================= */
   function tick(){
     const now = new Date();
     updateProgressBars();
     if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
     updateCafaTracker(now);
-
-    /* keep tt-now accurate without rerender spam:
-       only rerender timetable on tick (30s) */
     renderTimetable();
   }
 
   function boot(){
     initSettings();
     initModeSelector();
+    initPager();
     loadMinecraftSplash();
+    loadLeaderboard();
 
     state.classSource = "loading";
     state.teacherSource = "loading";
@@ -1910,6 +2111,7 @@
 
     setInterval(tick, 30_000);
     setInterval(syncBackend, 5 * 60_000);
+    setInterval(loadLeaderboard, 10 * 60_000);
   }
 
   document.addEventListener("DOMContentLoaded", boot);
