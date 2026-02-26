@@ -220,9 +220,6 @@
       --ttSubjGlow: none;
     }
 
-    /* =========================
-       BASE
-       ========================= */
     *{ box-sizing:border-box; }
     body{
       font-family: Arial, sans-serif;
@@ -255,7 +252,6 @@
       body{ padding:16px; }
     }
 
-    /* ===== Minecraft splash (centered under title) ===== */
     @font-face{
       font-family: "Monocraft";
       src: url("./Monocraft.ttf") format("truetype");
@@ -287,9 +283,7 @@
       margin-top: 6px;
       text-align: center;
       color: #ffd43b;
-      text-shadow:
-        2px 2px 0 #4a3700,
-        0 0 10px rgba(255,212,59,.25);
+      text-shadow: 2px 2px 0 #4a3700, 0 0 10px rgba(255,212,59,.25);
       font-family: "Monocraft", monospace;
       font-size: 13px;
       line-height: 1.15;
@@ -317,29 +311,19 @@
       position: relative;
       will-change: transform, filter;
     }
-    .ss .d{
-      display:inline-block;
-      will-change: transform, filter;
-    }
+    .ss .d{ display:inline-block; will-change: transform; }
     .ss.hot{
       filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 90, 0, 0.55));
     }
     .ss.hot .d6{ animation: ssUpDownA .55s ease-in-out 2; }
     .ss.hot .d7{ animation: ssUpDownB .55s ease-in-out 2; }
-
     @keyframes ssUpDownA{
-      0%   { transform: translateY(0); }
-      25%  { transform: translateY(-7px); }
-      50%  { transform: translateY(0); }
-      75%  { transform: translateY(7px); }
-      100% { transform: translateY(0); }
+      0%{transform:translateY(0)} 25%{transform:translateY(-7px)} 50%{transform:translateY(0)}
+      75%{transform:translateY(7px)} 100%{transform:translateY(0)}
     }
     @keyframes ssUpDownB{
-      0%   { transform: translateY(0); }
-      25%  { transform: translateY(7px); }
-      50%  { transform: translateY(0); }
-      75%  { transform: translateY(-7px); }
-      100% { transform: translateY(0); }
+      0%{transform:translateY(0)} 25%{transform:translateY(7px)} 50%{transform:translateY(0)}
+      75%{transform:translateY(-7px)} 100%{transform:translateY(0)}
     }
 
     .topbar{
@@ -419,306 +403,84 @@
       outline:none;
     }
 
-    .toggle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:8px 0;
-      font-weight:900;
-    }
-
-    .scaleRow{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:10px 0 6px;
-      font-weight:900;
-      flex-wrap:wrap;
-    }
+    .toggle{ display:flex; align-items:center; gap:10px; margin:8px 0; font-weight:900; }
+    .scaleRow{ display:flex; align-items:center; gap:10px; margin:10px 0 6px; font-weight:900; flex-wrap:wrap; }
     .scaleRow input[type="range"]{ flex:1 1 240px; min-width:180px; }
     .scaleValue{ min-width:56px; text-align:right; color: var(--muted); font-weight:900; }
 
-    .line{
-      position:relative;
-      width:100%;
-      height:3px;
-      background:var(--linebg);
-      border-radius:999px;
-      overflow:hidden;
-    }
-    .fill{
-      position:absolute;
-      left:0; top:0;
-      height:100%;
-      width:0%;
-      background:var(--green);
-      border-radius:999px;
-      transition: width 0.35s ease;
-    }
+    .line{ position:relative; width:100%; height:3px; background:var(--linebg); border-radius:999px; overflow:hidden; }
+    .fill{ position:absolute; left:0; top:0; height:100%; width:0%; background:var(--green); border-radius:999px; transition: width 0.35s ease; }
     .fill.weekend{ background:var(--orange); }
 
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      min-width:0;
-    }
-    .colHead{
-      text-align:center;
-      font-weight:900;
-      color:var(--muted);
-      margin:0 0 8px 0;
-      font-size:13px;
-      letter-spacing:0.3px;
-    }
-    @media (max-width:980px){
-      .grid2{ grid-template-columns: 1fr; }
-    }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; min-width:0; }
+    .colHead{ text-align:center; font-weight:900; color:var(--muted); margin:0 0 8px 0; font-size:13px; letter-spacing:0.3px; }
+    @media (max-width:980px){ .grid2{ grid-template-columns: 1fr; } }
 
-    .mainLayout{
-      display:grid;
-      grid-template-columns: minmax(0, 1fr) 300px;
-      gap:14px;
-      align-items:start;
-    }
-    @media (max-width:1180px){
-      .mainLayout{ grid-template-columns: 1fr; }
-      .addonCol{ order:2; }
-    }
+    .mainLayout{ display:grid; grid-template-columns: minmax(0, 1fr) 300px; gap:14px; align-items:start; }
+    @media (max-width:1180px){ .mainLayout{ grid-template-columns: 1fr; } .addonCol{ order:2; } }
 
-    /* DAILY */
-    .dailyRow{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .badge{
-      padding:6px 10px;
-      border-radius:999px;
-      background:var(--badge);
-      font-weight:900;
-      font-size:13px;
-    }
+    .dailyRow{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .badge{ padding:6px 10px; border-radius:999px; background:var(--badge); font-weight:900; font-size:13px; }
     .badge.live{ background:var(--badgeLive); }
     .badge.free{ background:var(--badgeFree); }
     .badge.err{ background:var(--badgeErr); }
     .dailyText{ font-weight:900; }
 
-    /* ADDON */
     .addonCol{ display:flex; flex-direction:column; gap:0; opacity:0.95; }
-    .addonHead{
-      text-align:center;
-      font-weight:900;
-      color:var(--muted);
-      margin:0 0 8px 0;
-      font-size:12px;
-      letter-spacing:0.35px;
-      text-transform:uppercase;
-      opacity:0.9;
-    }
+    .addonHead{ text-align:center; font-weight:900; color:var(--muted); margin:0 0 8px 0; font-size:12px; letter-spacing:0.35px; text-transform:uppercase; opacity:0.9; }
     .addonCol .rowTitle{ font-size:16px; }
 
     .stackList{ display:flex; flex-direction:column; gap:8px; }
-
-    /* Události: max ~3 položky a pak scroll uvnitř */
-    #eventsList{
-      max-height: 260px;
-      overflow-y: auto;
-      padding-right: 6px;
-    }
+    #eventsList{ max-height: 260px; overflow-y: auto; padding-right: 6px; }
     #eventsList::-webkit-scrollbar{ width: 10px; }
-    #eventsList::-webkit-scrollbar-thumb{
-      background: rgba(255,255,255,0.14);
-      border-radius: 999px;
-      border: 2px solid rgba(0,0,0,0);
-      background-clip: padding-box;
-    }
+    #eventsList::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.14); border-radius: 999px; border: 2px solid rgba(0,0,0,0); background-clip: padding-box; }
     #eventsList::-webkit-scrollbar-track{ background: transparent; }
 
-    .stackItem{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      border-radius:10px;
-      padding:10px;
-    }
+    .stackItem{ border:1px solid var(--border); background: rgba(255,255,255,0.03); border-radius:10px; padding:10px; }
     .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
-    .stackItem.event{
-      border-color: var(--eventBorder);
-      background: linear-gradient(180deg, rgba(59,181,74,0.10), rgba(59,181,74,0.04));
-    }
-    .stackItem.subst{
-      border-color: var(--substBorder);
-      background: linear-gradient(180deg, rgba(255,80,80,0.12), rgba(255,80,80,0.05));
-    }
-    .stackItem.cancel{
-      border-color: var(--cancelBorder);
-      background: linear-gradient(180deg, rgba(255,0,60,0.12), rgba(255,0,60,0.05));
-    }
+    .stackItem.event{ border-color: var(--eventBorder); background: linear-gradient(180deg, rgba(59,181,74,0.10), rgba(59,181,74,0.04)); }
+    .stackItem.subst{ border-color: var(--substBorder); background: linear-gradient(180deg, rgba(255,80,80,0.12), rgba(255,80,80,0.05)); }
+    .stackItem.cancel{ border-color: var(--cancelBorder); background: linear-gradient(180deg, rgba(255,0,60,0.12), rgba(255,0,60,0.05)); }
     .eventTitle{ font-weight:1000; font-size:13px; margin-bottom:4px; }
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); }
     .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; }
 
-    .trackerCard{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      border-radius:12px;
-      padding:12px;
-    }
-    .trackerBadge{
-      display:inline-block;
-      padding:5px 9px;
-      border-radius:999px;
-      background:var(--badge);
-      font-weight:1000;
-      font-size:11px;
-      margin-bottom:8px;
-    }
+    .trackerCard{ border:1px solid var(--border); background: rgba(255,255,255,0.03); border-radius:12px; padding:12px; }
+    .trackerBadge{ display:inline-block; padding:5px 9px; border-radius:999px; background:var(--badge); font-weight:1000; font-size:11px; margin-bottom:8px; }
     .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
     .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
 
-    /* TIMETABLE */
-    .timetable .tt-top{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:12px;
-      flex-wrap: wrap;
-    }
+    .timetable .tt-top{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap: wrap; }
     .tt-sub{ color: var(--muted); font-weight: 900; font-size: 12px; margin-top: 2px; }
-    .tt-badge{
-      display:inline-block;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.06);
-      color: var(--muted);
-      font-weight: 900;
-      font-size: 12px;
-    }
+    .tt-badge{ display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--muted); font-weight: 900; font-size: 12px; }
 
     .tt-gridWrap{ overflow:auto; padding-bottom: 4px; }
-    .tt-grid{
-      display:grid;
-      grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
-      gap:10px;
-      min-width: 940px;
-    }
+    .tt-grid{ display:grid; grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr)); gap:10px; min-width: 940px; }
     .tt-corner{ height:44px; }
 
-    .tt-h{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:10px;
-      background: rgba(255,255,255,0.04);
-      text-align:center;
-      font-weight: 900;
-    }
-    .tt-h span{
-      display:block;
-      font-size: 11px;
-      font-weight: 900;
-      color: var(--muted);
-      margin-top: 4px;
-    }
+    .tt-h{ border:1px solid var(--border); border-radius:12px; padding:10px; background: rgba(255,255,255,0.04); text-align:center; font-weight: 900; }
+    .tt-h span{ display:block; font-size: 11px; font-weight: 900; color: var(--muted); margin-top: 4px; }
 
-    .tt-day{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:10px 0;
-      text-align:center;
-      font-weight: 900;
-      color: var(--muted);
-      background: rgba(255,255,255,0.03);
-    }
+    .tt-day{ border:1px solid var(--border); border-radius:12px; padding:10px 0; text-align:center; font-weight: 900; color: var(--muted); background: rgba(255,255,255,0.03); }
 
-    .tt-cell{
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:10px;
-      background: rgba(255,255,255,0.04);
-      box-shadow: 0 2px 10px var(--shadow);
-      position: relative;
-      overflow: hidden;
-      min-height: 78px;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-    .tt-cell:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    }
+    .tt-cell{ border:1px solid var(--border); border-radius:14px; padding:10px; background: rgba(255,255,255,0.04); box-shadow: 0 2px 10px var(--shadow); position: relative; overflow: hidden; min-height: 78px; transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; }
+    .tt-cell:hover{ transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
 
-    /* Current hour outline (orange) */
-    .tt-now{
-      outline: 2px solid rgba(255, 152, 0, 0.95);
-      outline-offset: -2px;
-      box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.25) inset, 0 0 18px rgba(255, 152, 0, 0.35);
-    }
+    .tt-now{ outline: 2px solid rgba(255, 152, 0, 0.95); outline-offset: -2px; box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.25) inset, 0 0 18px rgba(255, 152, 0, 0.35); }
 
-    .tt-topline{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-      font-weight: 1000;
-      font-size: 11px;
-      color: var(--muted);
-      opacity: 0.95;
-    }
+    .tt-topline{ display:flex; justify-content:space-between; align-items:center; gap:8px; font-weight: 1000; font-size: 11px; color: var(--muted); opacity: 0.95; }
+    .tt-subj{ font-weight: 1000; letter-spacing: .2px; margin-top: 6px; font-size: 22px; color: var(--ttSubjColor) !important; text-shadow: var(--ttSubjGlow); }
+    .tt-teacher{ font-weight: 900; color: var(--muted); font-size: 11px; margin-top: 8px; opacity: 0.95; }
+    .tt-empty{ display:flex; align-items:center; justify-content:center; color: var(--muted); font-weight: 900; background: rgba(255,255,255,0.02); box-shadow: none; }
 
-    .tt-subj{
-      font-weight: 1000;
-      letter-spacing: .2px;
-      margin-top: 6px;
-      font-size: 22px;
-      color: var(--ttSubjColor) !important;
-      text-shadow: var(--ttSubjGlow);
-    }
-
-    .tt-teacher{
-      font-weight: 900;
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 8px;
-      opacity: 0.95;
-    }
-
-    .tt-empty{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color: var(--muted);
-      font-weight: 900;
-      background: rgba(255,255,255,0.02);
-      box-shadow: none;
-    }
-
-    .tt-event{
-      border-color: var(--eventBorder);
-      background: var(--eventBg);
-      box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25);
-    }
-    .tt-subst{
-      border-color: var(--substBorder);
-      background: var(--substBg);
-      box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30);
-    }
+    .tt-event{ border-color: var(--eventBorder); background: var(--eventBg); box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25); }
+    .tt-subst{ border-color: var(--substBorder); background: var(--substBg); box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30); }
     .tt-cancel{
       border-color: var(--cancelBorder);
-      background:
-        repeating-linear-gradient(
-          135deg,
-          rgba(255,255,255,0.14) 0px,
-          rgba(255,255,255,0.14) 10px,
-          rgba(0,0,0,0.00) 10px,
-          rgba(0,0,0,0.00) 20px
-        ),
-        var(--cancelBg);
+      background: repeating-linear-gradient(135deg, rgba(255,255,255,0.14) 0px, rgba(255,255,255,0.14) 10px, rgba(0,0,0,0.00) 10px, rgba(0,0,0,0.00) 20px), var(--cancelBg);
       box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
     }
 
-    /* Tooltip */
     .tt-tooltip{
       position: fixed;
       z-index: 9999;
@@ -737,19 +499,8 @@
       display:none;
       pointer-events:none;
     }
-    .tt-tooltip .t-title{
-      font-size: 13px;
-      letter-spacing: .2px;
-      margin-bottom: 6px;
-    }
-    .tt-tooltip .t-row{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      border-top: 1px solid rgba(255,255,255,0.10);
-      padding-top: 6px;
-      margin-top: 6px;
-    }
+    .tt-tooltip .t-title{ font-size: 13px; letter-spacing: .2px; margin-bottom: 6px; }
+    .tt-tooltip .t-row{ display:flex; justify-content:space-between; gap:10px; border-top: 1px solid rgba(255,255,255,0.10); padding-top: 6px; margin-top: 6px; }
     .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
     .tt-tooltip .v{ color: #fff; text-align:right; }
 
@@ -764,12 +515,7 @@
       user-select: none;
       line-height: 1.6;
     }
-    .footer a{
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(255,255,255,0.25);
-      opacity: 0.95;
-    }
+    .footer a{ color: inherit; text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,0.25); opacity: 0.95; }
     .footer a:hover{ opacity: 1; border-bottom-style: solid; }
     .footer .footerBy{ font-size: 13px; }
     .footer .footerSep{ opacity: .55; margin: 0 6px; }
@@ -830,67 +576,21 @@
         <div>
           <div class="colHead">Real-Time</div>
 
-          <div class="block">
-            <div class="rowTitle">Týden</div>
-            <div class="line"><div class="fill" id="rt-week"></div></div>
-            <p class="label" id="rt-week-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Měsíc</div>
-            <div class="line"><div class="fill" id="rt-month"></div></div>
-            <p class="label" id="rt-month-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Školní rok</div>
-            <div class="line"><div class="fill" id="rt-year"></div></div>
-            <p class="label" id="rt-year-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Celkem</div>
-            <div class="line"><div class="fill" id="rt-total"></div></div>
-            <p class="label" id="rt-total-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Maturita</div>
-            <p class="label" id="rt-maturita-label"></p>
-          </div>
+          <div class="block"><div class="rowTitle">Týden</div><div class="line"><div class="fill" id="rt-week"></div></div><p class="label" id="rt-week-label"></p></div>
+          <div class="block"><div class="rowTitle">Měsíc</div><div class="line"><div class="fill" id="rt-month"></div></div><p class="label" id="rt-month-label"></p></div>
+          <div class="block"><div class="rowTitle">Školní rok</div><div class="line"><div class="fill" id="rt-year"></div></div><p class="label" id="rt-year-label"></p></div>
+          <div class="block"><div class="rowTitle">Celkem</div><div class="line"><div class="fill" id="rt-total"></div></div><p class="label" id="rt-total-label"></p></div>
+          <div class="block"><div class="rowTitle">Maturita</div><p class="label" id="rt-maturita-label"></p></div>
         </div>
 
         <div>
           <div class="colHead">Raw-Time</div>
 
-          <div class="block">
-            <div class="rowTitle">Týden</div>
-            <div class="line"><div class="fill" id="raw-week"></div></div>
-            <p class="label" id="raw-week-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Měsíc</div>
-            <div class="line"><div class="fill" id="raw-month"></div></div>
-            <p class="label" id="raw-month-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Školní rok</div>
-            <div class="line"><div class="fill" id="raw-year"></div></div>
-            <p class="label" id="raw-year-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Celkem</div>
-            <div class="line"><div class="fill" id="raw-total"></div></div>
-            <p class="label" id="raw-total-label"></p>
-          </div>
-
-          <div class="block">
-            <div class="rowTitle">Maturita</div>
-            <p class="label" id="raw-maturita-label"></p>
-          </div>
+          <div class="block"><div class="rowTitle">Týden</div><div class="line"><div class="fill" id="raw-week"></div></div><p class="label" id="raw-week-label"></p></div>
+          <div class="block"><div class="rowTitle">Měsíc</div><div class="line"><div class="fill" id="raw-month"></div></div><p class="label" id="raw-month-label"></p></div>
+          <div class="block"><div class="rowTitle">Školní rok</div><div class="line"><div class="fill" id="raw-year"></div></div><p class="label" id="raw-year-label"></p></div>
+          <div class="block"><div class="rowTitle">Celkem</div><div class="line"><div class="fill" id="raw-total"></div></div><p class="label" id="raw-total-label"></p></div>
+          <div class="block"><div class="rowTitle">Maturita</div><p class="label" id="raw-maturita-label"></p></div>
         </div>
       </div>
 
@@ -921,9 +621,7 @@
         <div class="badge" id="dailyBadge">Rozvrh</div>
         <div class="dailyText" id="dailyText">—</div>
       </div>
-      <div class="line" style="margin-top:10px;">
-        <div class="fill" id="daybar"></div>
-      </div>
+      <div class="line" style="margin-top:10px;"><div class="fill" id="daybar"></div></div>
       <p class="label" id="daylabel"></p>
       <p class="hint" id="dailyDebug"></p>
     </div>
@@ -958,7 +656,7 @@
 
 <script>
   /* =========================
-     API CONFIG (YOUR DOMAIN)
+     API CONFIG
      ========================= */
   const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
   const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
@@ -994,7 +692,7 @@
   }
 
   /* =========================
-     Mode (Nonchalant/Freaky) for title
+     Mode for title
      ========================= */
   function applyTitleMode(mode){
     const titleEl = document.getElementById("pageTitle");
@@ -1048,9 +746,7 @@
   };
 
   /* ============================================================
-     ✅ CHANGE #1: shortSubj() umí ANJ1/ANJ2 (a RUJ/NEJ) korektně
-     - Pokud je to combo a obě části by vyšly stejně (ANJ/ANJ),
-       zkusíme to "zachránit" z class hintu (ANJ1 / ANJ2).
+     CHANGE #1: shortSubj(full, clsHint) – zachová ANJ1/ANJ2 (ne ANJ/ANJ)
      ============================================================ */
   function shortSubj(full, clsHint=""){
     const s = String(full || "").trim();
@@ -1073,14 +769,12 @@
     const shorts = parts.map(p => baseShort(p)).filter(Boolean);
     const uniq = [...new Set(shorts)];
 
+    // pokud to spadne na ANJ/ANJ, použijeme clsHint "ANJ1 / ANJ2"
     if (uniq.length === 1 && clsHint){
       const c = String(clsHint).trim();
       if (c.includes(" / ") || c.includes("/")){
         const cparts = c.includes(" / ") ? c.split(" / ") : c.split("/");
         const fixed = cparts.map(x => String(x).trim()).filter(Boolean);
-
-        // typicky: "ANJ1 / ANJ2" → fixed ["ANJ1","ANJ2"]
-        // chceme "ANJ1/ANJ2" (bez mezery)
         if (fixed.length >= 2 && fixed.every(x => x.toUpperCase().startsWith(uniq[0]))){
           return fixed.join("/");
         }
@@ -1102,16 +796,16 @@
     {start:"12:50", end:"13:35"},
     {start:"13:40", end:"14:25"},
   ];
-
-  function timeToMin(hhmm){
-    const [h,m] = hhmm.split(":").map(Number);
-    return h*60 + m;
-  }
+  function timeToMin(hhmm){ const [h,m] = hhmm.split(":").map(Number); return h*60 + m; }
   const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
 
   /* =========================
      PROGRESS DATA
      ========================= */
+  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+  function r(s,e){ return {s,e}; }
+
   const HS_START = localDate(2023, 9, 4);
   const HS_END   = localDateEnd(2027, 6, 30);
   const MATURITA_APPROX = localDateEnd(2027, 5, 1);
@@ -1147,13 +841,12 @@
     classMarks: [],
     classEvents: [],
     classSource: "loading",
-
     teacherDays: null,
     teacherSource: "loading",
   };
 
   /* =========================
-     DOM helpers
+     Helpers
      ========================= */
   const $ = (id) => document.getElementById(id);
   const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
@@ -1163,10 +856,6 @@
     weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
   };
   const setText = (id, txt) => { const n=$(id); if(n) n.textContent = txt; };
-
-  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
-  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
-  function r(s,e){ return {s,e}; }
 
   function toISO(d){
     const y=d.getFullYear();
@@ -1244,19 +933,16 @@
   }
 
   /* =========================
-     THEME + SETTINGS + SCALE
+     Theme + settings + scale
      ========================= */
   function applyTheme(theme){
     const body = document.body;
-    body.classList.remove(
-      "theme-light","theme-dark","theme-loona","theme-sobokill","theme-kasparnakart","theme-battlecats"
-    );
+    body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill","theme-kasparnakart","theme-battlecats");
     body.classList.add("theme-" + theme);
     localStorage.setItem("sp_theme", theme);
     const sel = $("themeSelect");
     if (sel) sel.value = theme;
   }
-
   function applyUiScale(percent){
     const p = Math.max(85, Math.min(120, Number(percent) || 100));
     document.body.style.setProperty("--uiScale", String(p / 100));
@@ -1265,17 +951,14 @@
     localStorage.setItem("sp_ui_scale", String(p));
     scheduleSixSevenScan();
   }
-
   function refreshAddonPanelVisibility(){
     const addonPanel = $("addonPanel");
     const eventsBlock = $("eventsBlock");
     const cafaBlock = $("cafaBlock");
     const addonHead = addonPanel.querySelector(".addonHead");
-
     const eventsVisible = !eventsBlock.classList.contains("hidden");
     const cafaVisible = !cafaBlock.classList.contains("hidden");
     const anyVisible = eventsVisible || cafaVisible;
-
     addonPanel.classList.toggle("hidden", !anyVisible);
     addonHead.classList.toggle("hidden", !anyVisible);
     scheduleSixSevenScan();
@@ -1295,12 +978,10 @@
     toggleTT.addEventListener("change", () => {
       $("timetableBlock").classList.toggle("hidden", !toggleTT.checked);
       localStorage.setItem("sp_toggle_tt", toggleTT.checked ? "1" : "0");
-      scheduleSixSevenScan();
     });
     toggleDaily.addEventListener("change", () => {
       $("dailyBlock").classList.toggle("hidden", !toggleDaily.checked);
       localStorage.setItem("sp_toggle_daily", toggleDaily.checked ? "1" : "0");
-      scheduleSixSevenScan();
     });
     toggleEvents.addEventListener("change", () => {
       $("eventsBlock").classList.toggle("hidden", !toggleEvents.checked);
@@ -1313,9 +994,7 @@
       refreshAddonPanelVisibility();
     });
 
-    const savedTheme = localStorage.getItem("sp_theme") || "dark";
-    applyTheme(savedTheme);
-
+    applyTheme(localStorage.getItem("sp_theme") || "dark");
     applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
 
     const savedTT = localStorage.getItem("sp_toggle_tt");
@@ -1337,10 +1016,7 @@
   }
 
   /* =========================
-     ✅ CHANGE #2: Sanity text labels (MEH etc.) – non-invasive
-     - Pokud máš někde na stránce sanity tlačítka .feelBtn[data-feel],
-       tak je automaticky přepíšeme z "1/2/3" na "VIBIN/OK/MEH/COOKED/DEAD".
-     - Nezasahuje to do layoutu, jen text.
+     CHANGE #2: Sanity labels (safe – only if exists)
      ========================= */
   function sanityLabel(feel){
     const f = Number(feel);
@@ -1361,130 +1037,7 @@
   }
 
   /* =========================
-     six seven detector + emote (HAND EMOTE)
-     ========================= */
-  let ssScanTimer = null;
-
-  function scheduleSixSevenScan(){
-    if (ssScanTimer) clearTimeout(ssScanTimer);
-    ssScanTimer = setTimeout(() => {
-      try { wrapSixSeven(document.querySelector(".wrap")); } catch {}
-    }, 60);
-  }
-
-  function wrapSixSeven(root){
-    if (!root) return;
-
-    const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
-    const patterns = [
-      /6\s*\/\s*7/g,
-      /6\.7(?:\.\d{2,4})?/g,
-      /67/g
-    ];
-
-    const makeSS = (txt) => {
-      const wrap = document.createElement("span");
-      wrap.className = "ss";
-
-      const clean = String(txt).replace(/\s+/g,"");
-      if (!clean.includes("6") || !clean.includes("7")) {
-        wrap.textContent = txt;
-        return wrap;
-      }
-
-      const s6 = document.createElement("span");
-      s6.className = "d d6";
-      s6.textContent = "6";
-
-      const mid = document.createElement("span");
-      mid.className = "d";
-      if (clean.includes("/")) mid.textContent = "/";
-      else if (clean.includes(".")) mid.textContent = ".";
-      else mid.textContent = "";
-
-      const s7 = document.createElement("span");
-      s7.className = "d d7";
-      s7.textContent = "7";
-
-      wrap.appendChild(s6);
-      if (mid.textContent) wrap.appendChild(mid);
-      wrap.appendChild(s7);
-      return wrap;
-    };
-
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode(node){
-        const p = node.parentNode;
-        if (!p || SKIP_TAGS.has(p.nodeName)) return NodeFilter.FILTER_REJECT;
-        if (p.closest && p.closest(".tt-tooltip")) return NodeFilter.FILTER_REJECT;
-        if (p.closest && p.closest(".mcSplash")) return NodeFilter.FILTER_REJECT; // keep splash clean
-        if (p.closest && p.closest(".ss")) return NodeFilter.FILTER_REJECT; // already wrapped
-        if (!node.nodeValue || !node.nodeValue.match(/6\s*\/\s*7|6\.7|67/)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
-      }
-    });
-
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-
-    for (const textNode of nodes){
-      const original = textNode.nodeValue;
-      let parts = [{ text: original, isMatch: false }];
-
-      for (const re of patterns){
-        const nextParts = [];
-        for (const part of parts){
-          if (part.isMatch){
-            nextParts.push(part);
-            continue;
-          }
-          const s = part.text;
-          let last = 0;
-          let m;
-          re.lastIndex = 0;
-          while ((m = re.exec(s)) !== null){
-            if (m.index > last) nextParts.push({ text: s.slice(last, m.index), isMatch:false });
-            nextParts.push({ text: m[0], isMatch:true });
-            last = m.index + m[0].length;
-          }
-          if (last < s.length) nextParts.push({ text: s.slice(last), isMatch:false });
-        }
-        parts = nextParts;
-      }
-
-      if (!parts.some(p => p.isMatch)) continue;
-
-      const frag = document.createDocumentFragment();
-      for (const p of parts){
-        if (!p.isMatch){
-          frag.appendChild(document.createTextNode(p.text));
-        } else {
-          frag.appendChild(makeSS(p.text));
-        }
-      }
-
-      textNode.parentNode.replaceChild(frag, textNode);
-    }
-  }
-
-  /* ============================================================
-     ✅ CHANGE #3: triggerSixSevenEmote() restart animace + hand emote
-     ============================================================ */
-  function triggerSixSevenEmote(){
-    const els = document.querySelectorAll(".ss");
-    if (!els.length) return;
-
-    els.forEach(el => {
-      el.classList.remove("hot");
-      void el.offsetWidth; // restart animation
-      el.classList.add("hot");
-    });
-
-    setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1200);
-  }
-
-  /* =========================
-     TOOLTIP
+     Tooltip
      ========================= */
   const tooltip = $("ttTooltip");
   function showTooltip(html, x, y){
@@ -1531,7 +1084,7 @@
   }
 
   /* =========================
-     TIMETABLE RENDER
+     Timetable render (ONLY when data changes)
      ========================= */
   function markForCell(dayKey, idx){
     return (state.classMarks || []).find(m => m.day===dayKey && m.idx===idx) || null;
@@ -1544,8 +1097,6 @@
     grid.innerHTML = "";
 
     const now = new Date();
-    const todayKey = dayKeyFromDate(now);
-    const nowMin = now.getHours()*60 + now.getMinutes();
 
     const corner = document.createElement("div");
     corner.className = "tt-corner";
@@ -1578,9 +1129,8 @@
 
         const cell = document.createElement("div");
         cell.className = "tt-cell";
-
-        const inThisHour = (todayKey === d.key && nowMin >= TIMES_MIN[i].startMin && nowMin <= TIMES_MIN[i].endMin);
-        if (inThisHour) cell.classList.add("tt-now");
+        cell.dataset.day = d.key;
+        cell.dataset.idx = String(i);
 
         if (!base && !mk){
           cell.classList.add("tt-empty");
@@ -1600,7 +1150,6 @@
         const cls = base?.class || "";
         const note = mk?.note || base?.note || "";
 
-        // ✅ uses cls hint so ANJ1/ANJ2 doesn't collapse
         const subjShort = shortSubj(subjFull, cls);
 
         const topline = document.createElement("div");
@@ -1636,7 +1185,6 @@
         cell.addEventListener("mouseenter", (e) => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
         cell.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
         cell.addEventListener("mouseleave", () => hideTooltip());
-
         cell.addEventListener("click", (e) => {
           e.stopPropagation();
           const visible = tooltip.style.display === "block";
@@ -1649,18 +1197,34 @@
     }
 
     $("ttUpdated").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
-    scheduleSixSevenScan();
+    updateTimetableNowHighlight();     // set orange outline correctly
+    scheduleSixSevenScan();            // wrap 6/7 etc once
+  }
+
+  // SAFE: just toggles .tt-now, no rerender
+  function updateTimetableNowHighlight(){
+    const now = new Date();
+    const todayKey = dayKeyFromDate(now);
+    const nowMin = now.getHours()*60 + now.getMinutes();
+
+    const cells = document.querySelectorAll("#ttGrid .tt-cell[data-day][data-idx]");
+    cells.forEach(cell => {
+      const day = cell.dataset.day;
+      const idx = Number(cell.dataset.idx);
+      const t = TIMES_MIN[idx];
+      const isNow = (todayKey === day && t && nowMin >= t.startMin && nowMin <= t.endMin);
+      cell.classList.toggle("tt-now", !!isNow);
+    });
   }
 
   /* =========================
-     EVENTS PANEL
+     Events panel
      ========================= */
   function renderEventsPanel(){
     const list = $("eventsList");
     list.innerHTML = "";
 
     const dayOrderMap = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
-
     const evs = Array.isArray(state.classEvents) ? state.classEvents : [];
     const marks = Array.isArray(state.classMarks) ? state.classMarks : [];
 
@@ -1725,7 +1289,7 @@
   }
 
   /* =========================
-     CAFA TRACKER
+     Cáfa tracker
      ========================= */
   function updateCafaTracker(now){
     const badge = $("cafaBadge");
@@ -1771,14 +1335,13 @@
     }
 
     badge.textContent = "Cáfa • live";
-    // ✅ uses cls hint so combos don't collapse (if any)
     main.textContent = `Právě: ${shortSubj(l.subj, l.class || "")} • ${l.class || ""} ${l.room ? "(" + l.room + ")" : ""}`.trim();
     sub.textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
     scheduleSixSevenScan();
   }
 
   /* =========================
-     DAILY PROGRESS
+     Daily progress
      ========================= */
   function setDailyBadge(kind, text){
     const b=$("dailyBadge");
@@ -1789,7 +1352,6 @@
   function fmtLesson(x){
     if (!x) return null;
     const room = x.room ? ` (${x.room})` : "";
-    // ✅ uses cls hint so ANJ1/ANJ2 etc survives
     return `${shortSubj(x.subj, x.class || "")}${room}`;
   }
 
@@ -1880,7 +1442,7 @@
   }
 
   /* =========================
-     PROGRESS BARS
+     Progress bars
      ========================= */
   function updateProgressBars(){
     const now = new Date();
@@ -1923,22 +1485,16 @@
     setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
 
     const daysUntil = Math.ceil((MATURITA_APPROX - now) / (1000*60*60*24));
-    setText("rt-maturita-label", (daysUntil>=0)
-      ? `Real-Time: ~${daysUntil} dní`
-      : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`
-    );
+    setText("rt-maturita-label", (daysUntil>=0) ? `Real-Time: ~${daysUntil} dní` : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`);
 
     const rawDays = rawDaysUntil(MATURITA_APPROX, now);
-    setText("raw-maturita-label", (rawDays>=0)
-      ? `Raw-Time: ~${rawDays} školních dní`
-      : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`
-    );
+    setText("raw-maturita-label", (rawDays>=0) ? `Raw-Time: ~${rawDays} školních dní` : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`);
 
     scheduleSixSevenScan();
   }
 
   /* =========================
-     BACKEND SYNC
+     Backend sync
      ========================= */
   async function fetchJsonSafe(url){
     try{
@@ -1978,14 +1534,129 @@
   }
 
   /* =========================
-     BOOT + LOOP
+     six-seven wrapper (idempotent) + emote
+     CHANGE #3
+     ========================= */
+  let ssScanTimer = null;
+
+  function scheduleSixSevenScan(){
+    if (ssScanTimer) clearTimeout(ssScanTimer);
+    ssScanTimer = setTimeout(() => {
+      try { wrapSixSeven(document.querySelector(".wrap")); } catch {}
+    }, 80);
+  }
+
+  function wrapSixSeven(root){
+    if (!root) return;
+
+    const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
+    const reHit = /6\s*\/\s*7|6\.7|67/;
+
+    const patterns = [
+      /6\s*\/\s*7/g,
+      /6\.7(?:\.\d{2,4})?/g,
+      /67/g
+    ];
+
+    const makeSS = (txt) => {
+      const wrap = document.createElement("span");
+      wrap.className = "ss";
+      wrap.setAttribute("data-ss", "1");
+
+      const clean = String(txt).replace(/\s+/g,"");
+      if (!clean.includes("6") || !clean.includes("7")) {
+        wrap.textContent = txt;
+        return wrap;
+      }
+
+      const s6 = document.createElement("span");
+      s6.className = "d d6";
+      s6.textContent = "6";
+
+      const mid = document.createElement("span");
+      mid.className = "d";
+      if (clean.includes("/")) mid.textContent = "/";
+      else if (clean.includes(".")) mid.textContent = ".";
+      else mid.textContent = "";
+
+      const s7 = document.createElement("span");
+      s7.className = "d d7";
+      s7.textContent = "7";
+
+      wrap.appendChild(s6);
+      if (mid.textContent) wrap.appendChild(mid);
+      wrap.appendChild(s7);
+      return wrap;
+    };
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const p = node.parentNode;
+        if (!p || SKIP_TAGS.has(p.nodeName)) return NodeFilter.FILTER_REJECT;
+        if (p.closest && p.closest(".tt-tooltip")) return NodeFilter.FILTER_REJECT;
+        if (p.closest && p.closest(".ss")) return NodeFilter.FILTER_REJECT; // already processed
+        if (!node.nodeValue || !reHit.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    for (const textNode of nodes){
+      const original = textNode.nodeValue;
+
+      let parts = [{ text: original, isMatch: false }];
+      for (const re of patterns){
+        const nextParts = [];
+        for (const part of parts){
+          if (part.isMatch){ nextParts.push(part); continue; }
+          const s = part.text;
+          let last = 0, m;
+          re.lastIndex = 0;
+          while ((m = re.exec(s)) !== null){
+            if (m.index > last) nextParts.push({ text: s.slice(last, m.index), isMatch:false });
+            nextParts.push({ text: m[0], isMatch:true });
+            last = m.index + m[0].length;
+          }
+          if (last < s.length) nextParts.push({ text: s.slice(last), isMatch:false });
+        }
+        parts = nextParts;
+      }
+
+      if (!parts.some(p => p.isMatch)) continue;
+
+      const frag = document.createDocumentFragment();
+      for (const p of parts){
+        if (!p.isMatch) frag.appendChild(document.createTextNode(p.text));
+        else frag.appendChild(makeSS(p.text));
+      }
+      textNode.parentNode.replaceChild(frag, textNode);
+    }
+  }
+
+  function triggerSixSevenEmote(){
+    const els = document.querySelectorAll(".ss[data-ss='1']");
+    if (!els.length) return;
+
+    els.forEach(el => {
+      el.classList.remove("hot");
+      void el.offsetWidth; // restart
+      el.classList.add("hot");
+    });
+
+    setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1200);
+  }
+
+  /* =========================
+     Tick + Boot
      ========================= */
   function tick(){
     const now = new Date();
     updateProgressBars();
     if (!$("toggleDaily") || $("toggleDaily").checked) updateDaily(now);
     updateCafaTracker(now);
-    renderTimetable(); // keep tt-now accurate
+    updateTimetableNowHighlight(); // ✅ no rerender
   }
 
   function boot(){
@@ -1993,7 +1664,7 @@
     initModeSelector();
     loadMinecraftSplash();
 
-    // ✅ Sanity buttons (if present on your page) → MEH etc.
+    // safe (only if sanity buttons exist)
     applySanityLabelsIfPresent();
 
     state.classSource = "loading";
@@ -2007,8 +1678,6 @@
     syncBackend();
 
     scheduleSixSevenScan();
-
-    // every 10s do "six seven" emote
     setInterval(triggerSixSevenEmote, 10_000);
 
     setInterval(tick, 30_000);
