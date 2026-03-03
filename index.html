@@ -6,40 +6,227 @@
   <title>School Progress</title>
 
   <style>
-    * { box-sizing: border-box; }
-
+    /* =========================
+       THEMES via CSS variables
+       ========================= */
     body{
-      --bg:#0f1115;
-      --card:#171a21;
-      --text:#e7e9ee;
-      --muted:#a6acb8;
-      --shadow: rgba(0,0,0,0.35);
-      --linebg:#2a2f3a;
+      --bg:#f4f4f4;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --shadow: rgba(0,0,0,0.06);
+      --linebg:#e0e0e0;
       --green:#3bb54a;
       --orange:#ff9800;
-      --btn:#e7e9ee;
-      --btnText:#111;
-      --badge:#232836;
-      --badgeLive:#1f3a2a;
-      --badgeFree:#3a311f;
-      --badgeErr:#3a1f23;
-      --border:#2a2f3a;
-      --accent:#7de38a;
-      --accent2:#3bb54a;
-      --glow: rgba(125,227,138,0.30);
+
+      --btn:#111;
+      --btnText:#fff;
+
+      --badge:#eee;
+      --badgeLive:#e8f5e9;
+      --badgeFree:#fff3cd;
+      --badgeErr:#fdecea;
+
+      --border:#eee;
+
+      --accent:#3bb54a;
+      --accent2:#2f9a3c;
+      --glow: rgba(59,181,74,0.35);
+
       --bakalariBlue:#1e88e5;
-      --bgImage:none;
-      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0));
+
+      --bgImage: none;
+      --bgOverlay: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0));
+
       --substBg: rgba(255, 80, 80, 0.18);
       --substBorder: rgba(255, 80, 80, 0.40);
       --cancelBg: rgba(255, 0, 60, 0.22);
       --cancelBorder: rgba(255, 0, 60, 0.55);
       --eventBg: rgba(59,181,74,0.22);
       --eventBorder: rgba(59,181,74,0.55);
-      --ttSubjColor: rgba(235, 240, 250, 0.95);
-      --ttSubjGlow:none;
-      --uiScale:1;
 
+      --ttSubjColor: rgba(20, 35, 60, 0.92);
+      --ttSubjGlow: none;
+
+      --uiScale: 1;
+    }
+
+    body.theme-dark{
+      --bg:#0f1115;
+      --card:#171a21;
+      --text:#e7e9ee;
+      --muted:#a6acb8;
+      --shadow: rgba(0,0,0,0.35);
+      --linebg:#2a2f3a;
+
+      --btn:#e7e9ee;
+      --btnText:#111;
+
+      --badge:#232836;
+      --badgeLive:#1f3a2a;
+      --badgeFree:#3a311f;
+      --badgeErr:#3a1f23;
+
+      --border:#2a2f3a;
+
+      --accent:#7de38a;
+      --accent2:#3bb54a;
+      --glow: rgba(125,227,138,0.30);
+
+      --ttSubjColor: rgba(235, 240, 250, 0.95);
+      --ttSubjGlow: none;
+    }
+
+    body.theme-loona{
+      --bg:#08060b;
+      --card: rgba(18, 12, 22, 0.78);
+      --text:#ffe9f6;
+      --muted:#d7a6c4;
+      --shadow: rgba(0,0,0,0.55);
+      --linebg: rgba(255, 70, 190, 0.18);
+
+      --btn:#ff2ea6;
+      --btnText:#120812;
+
+      --badge: rgba(255, 46, 166, 0.18);
+      --badgeLive: rgba(0, 255, 170, 0.12);
+      --badgeFree: rgba(255, 190, 60, 0.16);
+      --badgeErr: rgba(255, 80, 80, 0.16);
+
+      --border: rgba(255, 70, 190, 0.20);
+
+      --accent:#ff2ea6;
+      --accent2:#ff6bd8;
+      --glow: rgba(255,46,166,0.55);
+
+      --bgImage: url("loona.png");
+      --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
+
+      --substBg: rgba(255, 46, 166, 0.22);
+      --substBorder: rgba(255, 46, 166, 0.52);
+      --cancelBg: rgba(255, 0, 90, 0.28);
+      --cancelBorder: rgba(255, 0, 90, 0.62);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(255, 107, 216, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
+    }
+
+    body.theme-sobokill{
+      --bg:#070604;
+      --card: rgba(18, 14, 8, 0.82);
+      --text:#fff3dc;
+      --muted:#d2b98b;
+      --shadow: rgba(0,0,0,0.60);
+      --linebg: rgba(212, 175, 55, 0.18);
+
+      --btn:#d4af37;
+      --btnText:#1a1206;
+
+      --badge: rgba(212,175,55,0.16);
+      --badgeLive: rgba(0, 210, 160, 0.12);
+      --badgeFree: rgba(255,190,60,0.16);
+      --badgeErr: rgba(255,80,80,0.16);
+
+      --border: rgba(212,175,55,0.22);
+
+      --accent:#d4af37;
+      --accent2:#f1d07a;
+      --glow: rgba(212,175,55,0.40);
+
+      --bgImage: url("sobokill.png");
+      --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
+
+      --substBg: rgba(212, 175, 55, 0.22);
+      --substBorder: rgba(212, 175, 55, 0.50);
+      --cancelBg: rgba(255, 0, 60, 0.24);
+      --cancelBorder: rgba(255, 0, 60, 0.58);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(241, 208, 122, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
+    }
+
+    body.theme-kasparnakart{
+      --bg:#061427;
+      --card: rgba(10, 24, 48, 0.82);
+      --text:#eaf3ff;
+      --muted:#a6c4e6;
+      --shadow: rgba(0,0,0,0.55);
+      --linebg: rgba(0, 153, 255, 0.18);
+
+      --btn:#0099ff;
+      --btnText:#061427;
+
+      --badge: rgba(0,153,255,0.16);
+      --badgeLive: rgba(0, 210, 255, 0.14);
+      --badgeFree: rgba(255,190,60,0.16);
+      --badgeErr: rgba(255,80,80,0.16);
+
+      --border: rgba(0,153,255,0.22);
+
+      --accent:#0099ff;
+      --accent2:#66ccff;
+      --glow: rgba(0,153,255,0.45);
+
+      --bgImage: url("KasparnaKart.png");
+      --bgOverlay: linear-gradient(180deg, rgba(6,20,39,0.78), rgba(6,20,39,0.92));
+
+      --substBg: rgba(0, 153, 255, 0.20);
+      --substBorder: rgba(0, 153, 255, 0.50);
+      --cancelBg: rgba(255, 0, 60, 0.22);
+      --cancelBorder: rgba(255, 0, 60, 0.55);
+      --eventBg: rgba(59,181,74,0.20);
+      --eventBorder: rgba(59,181,74,0.55);
+
+      --ttSubjColor: rgba(230, 247, 255, 0.98);
+      --ttSubjGlow: 0 0 14px rgba(0,153,255,0.25);
+    }
+
+    body.theme-battlecats{
+      --bg:#fbf1d8;
+      --card: rgba(255, 255, 255, 0.88);
+      --text:#1a1a1a;
+      --muted:#5b5142;
+      --shadow: rgba(0,0,0,0.12);
+      --linebg: rgba(0,0,0,0.12);
+
+      --btn:#ffd84a;
+      --btnText:#1a1a1a;
+
+      --badge: rgba(0,0,0,0.06);
+      --badgeLive: rgba(59,181,74,0.14);
+      --badgeFree: rgba(255,190,60,0.18);
+      --badgeErr: rgba(255,80,80,0.16);
+
+      --border: rgba(0,0,0,0.14);
+
+      --accent:#ffd84a;
+      --accent2:#ffb000;
+      --glow: rgba(255,216,74,0.45);
+
+      --bgImage: url("BattleCats.png");
+      --bgOverlay: linear-gradient(180deg, rgba(251,241,216,0.78), rgba(251,241,216,0.92));
+
+      --substBg: rgba(255, 80, 80, 0.16);
+      --substBorder: rgba(255, 80, 80, 0.40);
+      --cancelBg: rgba(255, 0, 60, 0.16);
+      --cancelBorder: rgba(255, 0, 60, 0.42);
+      --eventBg: rgba(59,181,74,0.18);
+      --eventBorder: rgba(59,181,74,0.45);
+
+      --ttSubjColor: rgba(26, 26, 26, 0.95);
+      --ttSubjGlow: none;
+    }
+
+    /* =========================
+       BASE
+       ========================= */
+    *{ box-sizing:border-box; }
+
+    body{
       font-family: Arial, sans-serif;
       margin:0;
       padding:24px;
@@ -51,199 +238,825 @@
         radial-gradient(900px 600px at 85% 20%, rgba(255,95,209,0.12), transparent 60%),
         radial-gradient(1000px 650px at 30% 90%, rgba(212,175,55,0.10), transparent 60%),
         var(--bg);
-      background-size:cover;
-      background-position:center;
-      background-attachment:fixed;
-      transition:background .2s ease, color .2s ease;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: background .2s ease, color .2s ease;
     }
 
-    body.theme-light{
-      --bg:#f4f4f4;
-      --card:#ffffff;
-      --text:#222;
-      --muted:#666;
-      --shadow: rgba(0,0,0,0.06);
-      --linebg:#e0e0e0;
-      --btn:#111;
-      --btnText:#fff;
-      --badge:#eee;
-      --badgeLive:#e8f5e9;
-      --badgeFree:#fff3cd;
-      --badgeErr:#fdecea;
-      --border:#eee;
-      --accent:#3bb54a;
-      --accent2:#2f9a3c;
-      --glow: rgba(59,181,74,0.35);
-      --ttSubjColor: rgba(20, 35, 60, 0.92);
-      --ttSubjGlow:none;
-    }
-    body.theme-dark{}
-    body.theme-loona{
-      --bg:#08060b; --card: rgba(18, 12, 22, 0.78); --text:#ffe9f6; --muted:#d7a6c4; --shadow: rgba(0,0,0,0.55); --linebg: rgba(255, 70, 190, 0.18);
-      --btn:#ff2ea6; --btnText:#120812; --badge: rgba(255, 46, 166, 0.18); --badgeLive: rgba(0, 255, 170, 0.12); --badgeFree: rgba(255, 190, 60, 0.16); --badgeErr: rgba(255, 80, 80, 0.16);
-      --border: rgba(255, 70, 190, 0.20); --accent:#ff2ea6; --accent2:#ff6bd8; --glow: rgba(255,46,166,0.55); --bgImage: url("loona.png"); --bgOverlay: linear-gradient(180deg, rgba(8,6,11,0.78), rgba(8,6,11,0.92));
-      --substBg: rgba(255, 46, 166, 0.22); --substBorder: rgba(255, 46, 166, 0.52); --cancelBg: rgba(255, 0, 90, 0.28); --cancelBorder: rgba(255, 0, 90, 0.62);
-      --ttSubjColor: rgba(255, 107, 216, 0.98); --ttSubjGlow: 0 0 14px rgba(255, 46, 166, 0.35);
-    }
-    body.theme-sobokill{
-      --bg:#070604; --card: rgba(18, 14, 8, 0.82); --text:#fff3dc; --muted:#d2b98b; --shadow: rgba(0,0,0,0.60); --linebg: rgba(212, 175, 55, 0.18);
-      --btn:#d4af37; --btnText:#1a1206; --badge: rgba(212,175,55,0.16); --badgeLive: rgba(0, 210, 160, 0.12); --badgeFree: rgba(255,190,60,0.16); --badgeErr: rgba(255,80,80,0.16);
-      --border: rgba(212,175,55,0.22); --accent:#d4af37; --accent2:#f1d07a; --glow: rgba(212,175,55,0.40); --bgImage: url("sobokill.png"); --bgOverlay: linear-gradient(180deg, rgba(7,6,4,0.76), rgba(7,6,4,0.92));
-      --substBg: rgba(212, 175, 55, 0.22); --substBorder: rgba(212, 175, 55, 0.50); --ttSubjColor: rgba(241, 208, 122, 0.98); --ttSubjGlow: 0 0 14px rgba(212, 175, 55, 0.30);
-    }
-    body.theme-kasparnakart{
-      --bg:#061427; --card: rgba(10, 24, 48, 0.82); --text:#eaf3ff; --muted:#a6c4e6; --shadow: rgba(0,0,0,0.55); --linebg: rgba(0, 153, 255, 0.18);
-      --btn:#0099ff; --btnText:#061427; --badge: rgba(0,153,255,0.16); --badgeLive: rgba(0, 210, 255, 0.14); --badgeFree: rgba(255,190,60,0.16); --badgeErr: rgba(255,80,80,0.16);
-      --border: rgba(0,153,255,0.22); --accent:#0099ff; --accent2:#66ccff; --glow: rgba(0,153,255,0.45); --bgImage: url("KasparnaKart.png"); --bgOverlay: linear-gradient(180deg, rgba(6,20,39,0.78), rgba(6,20,39,0.92));
-      --substBg: rgba(0, 153, 255, 0.20); --substBorder: rgba(0, 153, 255, 0.50); --ttSubjColor: rgba(230, 247, 255, 0.98); --ttSubjGlow: 0 0 14px rgba(0,153,255,0.25);
-    }
-    body.theme-battlecats{
-      --bg:#fbf1d8; --card: rgba(255, 255, 255, 0.88); --text:#1a1a1a; --muted:#5b5142; --shadow: rgba(0,0,0,0.12); --linebg: rgba(0,0,0,0.12);
-      --btn:#ffd84a; --btnText:#1a1a1a; --badge: rgba(0,0,0,0.06); --badgeLive: rgba(59,181,74,0.14); --badgeFree: rgba(255,190,60,0.18); --badgeErr: rgba(255,80,80,0.16);
-      --border: rgba(0,0,0,0.14); --accent:#ffd84a; --accent2:#ffb000; --glow: rgba(255,216,74,0.45); --bgImage: url("BattleCats.png"); --bgOverlay: linear-gradient(180deg, rgba(251,241,216,0.78), rgba(251,241,216,0.92));
-      --ttSubjColor: rgba(26, 26, 26, 0.95); --ttSubjGlow:none;
+    .wrap{
+      max-width:1320px;
+      margin:0 auto;
+      transform: scale(var(--uiScale));
+      transform-origin: top center;
+      width: calc(100% / var(--uiScale));
+      transition: transform .15s ease;
     }
 
-    .wrap{ max-width:1320px; margin:0 auto; transform:scale(var(--uiScale)); transform-origin:top center; width:calc(100% / var(--uiScale)); transition:transform .15s ease; }
-    @media (max-width:980px){ .wrap{ transform:none; width:100%; } body{ padding:16px; background-attachment:scroll; } }
+    @media (max-width:980px){
+      .wrap{ transform:none; width:100%; }
+      body{ padding:16px; background-attachment: scroll; }
+    }
 
-    @font-face{ font-family:"Monocraft"; src:url("./Monocraft.ttf") format("truetype"); font-display:swap; }
-    .titleWrap{ position:relative; margin:0 0 14px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
-    h1{ margin:0; text-align:center; font-weight:900; letter-spacing:.2px; }
-    body.theme-loona h1, body.theme-sobokill h1, body.theme-kasparnakart h1, body.theme-battlecats h1{ text-shadow:0 0 18px var(--glow); }
-    .mcSplash{ margin-top:6px; text-align:center; color:#ffd43b; text-shadow:2px 2px 0 #4a3700; font-family:"Monocraft", monospace; font-size:13px; line-height:1.15; white-space:nowrap; pointer-events:none; user-select:none; animation:mcSplashPulse .55s ease-in-out infinite alternate; max-width:92%; overflow:hidden; text-overflow:ellipsis; }
-    @keyframes mcSplashPulse{ from { transform:scale(.95); opacity:.92; } to { transform:scale(1.05); opacity:1; } }
+    /* ===== Minecraft splash ===== */
+    @font-face{
+      font-family: "Monocraft";
+      src: url("./Monocraft.ttf") format("truetype");
+      font-display: swap;
+    }
 
-    .ss{ display:inline-flex; gap:2px; align-items:baseline; position:relative; will-change:transform, filter; }
+    .titleWrap{
+      position: relative;
+      margin: 0 0 14px 0;
+      display:flex;
+      flex-direction: column;
+      justify-content:center;
+      align-items:center;
+    }
+
+    h1{
+      margin:0;
+      text-align:center;
+      font-weight:900;
+      letter-spacing:0.2px;
+      text-shadow: 0 0 0 transparent;
+    }
+
+    body.theme-loona h1,
+    body.theme-sobokill h1,
+    body.theme-kasparnakart h1,
+    body.theme-battlecats h1{
+      text-shadow: 0 0 18px var(--glow);
+    }
+
+    .mcSplash{
+      margin-top: 6px;
+      text-align: center;
+      color: #ffd43b;
+      text-shadow: 2px 2px 0 #4a3700;
+      font-family: "Monocraft", monospace;
+      font-size: 13px;
+      line-height: 1.15;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      animation: mcSplashPulse .55s ease-in-out infinite alternate;
+      max-width: 92%;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes mcSplashPulse{
+      from { transform: scale(0.95); opacity: 0.92; }
+      to   { transform: scale(1.05); opacity: 1; }
+    }
+
+    @media (max-width:980px){
+      .mcSplash{ font-size: 10px; margin-top: 5px; }
+    }
+
+    /* ===== six seven easter egg ===== */
+    .ss{
+      display:inline-flex;
+      gap:2px;
+      align-items:baseline;
+      position:relative;
+      will-change:transform, filter;
+    }
+
     .ss .d{ display:inline-block; will-change:transform; }
-    .ss.hot{ filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 90, 0, 0.55)); }
-    .ss.hot .d6{ animation:ssUpDownA .55s ease-in-out 2; }
-    .ss.hot .d7{ animation:ssUpDownB .55s ease-in-out 2; }
-    @keyframes ssUpDownA{ 0%{transform:translateY(0)} 25%{transform:translateY(-7px)} 50%{transform:translateY(0)} 75%{transform:translateY(7px)} 100%{transform:translateY(0)} }
-    @keyframes ssUpDownB{ 0%{transform:translateY(0)} 25%{transform:translateY(7px)} 50%{transform:translateY(0)} 75%{transform:translateY(-7px)} 100%{transform:translateY(0)} }
 
-    .topbar{ display:flex; align-items:center; justify-content:flex-end; margin-bottom:12px; gap:10px; }
-    .btn{ border:none; padding:10px 12px; border-radius:10px; background:var(--btn); color:var(--btnText); font-weight:900; cursor:pointer; white-space:nowrap; }
-    body.theme-loona .btn, body.theme-sobokill .btn, body.theme-kasparnakart .btn, body.theme-battlecats .btn{ box-shadow:0 0 18px var(--glow); }
+    .ss.hot{
+      filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 90, 0, 0.55));
+    }
 
-    .block{ background:var(--card); padding:16px 16px 12px; border-radius:12px; margin:12px 0; border:1px solid var(--border); box-shadow:0 2px 10px var(--shadow); backdrop-filter:blur(10px); min-width:0; }
-    .rowTitle{ margin:0 0 10px; font-size:18px; font-weight:900; color:var(--text); }
-    body.theme-loona .rowTitle, body.theme-sobokill .rowTitle, body.theme-kasparnakart .rowTitle, body.theme-battlecats .rowTitle{ color:var(--accent2); }
-    .hint{ margin:10px 0 0; color:var(--muted); font-size:13px; line-height:1.35; font-weight:900; }
-    .label{ margin:10px 0 0; font-weight:900; }
+    .ss.hot .d6{ animation: ssUpDownA .55s ease-in-out 2; }
+    .ss.hot .d7{ animation: ssUpDownB .55s ease-in-out 2; }
+
+    @keyframes ssUpDownA{
+      0%{transform:translateY(0)}
+      25%{transform:translateY(-7px)}
+      50%{transform:translateY(0)}
+      75%{transform:translateY(7px)}
+      100%{transform:translateY(0)}
+    }
+
+    @keyframes ssUpDownB{
+      0%{transform:translateY(0)}
+      25%{transform:translateY(7px)}
+      50%{transform:translateY(0)}
+      75%{transform:translateY(-7px)}
+      100%{transform:translateY(0)}
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      margin-bottom:12px;
+      gap:10px;
+    }
+
+    .btn{
+      border:none;
+      padding:10px 12px;
+      border-radius:10px;
+      background:var(--btn);
+      color:var(--btnText);
+      font-weight:900;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow: 0 0 0 transparent;
+    }
+
+    body.theme-loona .btn,
+    body.theme-sobokill .btn,
+    body.theme-kasparnakart .btn,
+    body.theme-battlecats .btn{
+      box-shadow: 0 0 18px var(--glow);
+    }
+
+    .block{
+      background:var(--card);
+      padding:16px 16px 12px;
+      border-radius:12px;
+      margin:12px 0;
+      border: 1px solid var(--border);
+      box-shadow:0 2px 10px var(--shadow);
+      backdrop-filter: blur(10px);
+      min-width:0;
+    }
+
+    body.theme-loona .block,
+    body.theme-sobokill .block,
+    body.theme-kasparnakart .block,
+    body.theme-battlecats .block{
+      box-shadow: 0 6px 26px rgba(0,0,0,0.55), 0 0 0.5px rgba(255,255,255,0.05);
+    }
+
+    .rowTitle{
+      margin:0 0 10px 0;
+      font-size:18px;
+      font-weight:900;
+      color: var(--text);
+    }
+
+    body.theme-loona .rowTitle,
+    body.theme-sobokill .rowTitle,
+    body.theme-kasparnakart .rowTitle,
+    body.theme-battlecats .rowTitle{
+      color: var(--accent2);
+    }
+
+    .hint{ margin:10px 0 0 0; color:var(--muted); font-size:13px; line-height:1.35; font-weight:900; }
+    .label{ margin:10px 0 0 0; font-weight:900; }
     .hidden{ display:none !important; }
 
-    .field, .scaleRow{ display:flex; align-items:center; gap:10px; margin:10px 0 6px; font-weight:900; flex-wrap:wrap; }
-    select, input[type="range"]{ accent-color:var(--accent); }
-    select{ padding:8px 10px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text); font-weight:900; outline:none; }
-    .toggle{ display:flex; align-items:center; gap:10px; margin:8px 0; font-weight:900; }
-    .scaleRow input[type="range"]{ flex:1 1 240px; min-width:180px; }
-    .scaleValue{ min-width:56px; text-align:right; color:var(--muted); font-weight:900; }
+    .field{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:10px 0 6px;
+      font-weight:900;
+      flex-wrap: wrap;
+    }
 
-    .line{ position:relative; width:100%; height:3px; background:var(--linebg); border-radius:999px; overflow:hidden; }
-    .fill{ position:absolute; left:0; top:0; height:100%; width:0; background:var(--green); border-radius:999px; transition:width .35s ease; }
+    select, input[type="range"]{ accent-color: var(--accent); }
+
+    select{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-weight:900;
+      outline:none;
+    }
+
+    .toggle{ display:flex; align-items:center; gap:10px; margin:8px 0; font-weight:900; }
+
+    .scaleRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:10px 0 6px;
+      font-weight:900;
+      flex-wrap:wrap;
+    }
+
+    .scaleRow input[type="range"]{ flex:1 1 240px; min-width:180px; }
+
+    .scaleValue{ min-width:56px; text-align:right; color: var(--muted); font-weight:900; }
+
+    .line{
+      position:relative;
+      width:100%;
+      height:3px;
+      background:var(--linebg);
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .fill{
+      position:absolute;
+      left:0; top:0;
+      height:100%;
+      width:0%;
+      background:var(--green);
+      border-radius:999px;
+      transition: width 0.35s ease;
+    }
+
     .fill.weekend{ background:var(--orange); }
 
-    .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; min-width:0; }
-    .colHead{ text-align:center; font-weight:900; color:var(--muted); margin:0 0 8px; font-size:13px; letter-spacing:.3px; }
-    @media (max-width:980px){ .grid2{ grid-template-columns:1fr; } }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      min-width:0;
+    }
 
-    .mainLayout{ display:grid; grid-template-columns:minmax(0, 1fr) 320px; gap:14px; align-items:start; min-width:0; }
-    @media (max-width:1180px){ .mainLayout{ grid-template-columns:1fr; } .addonCol{ order:2; } }
+    .colHead{
+      text-align:center;
+      font-weight:900;
+      color:var(--muted);
+      margin:0 0 8px 0;
+      font-size:13px;
+      letter-spacing:0.3px;
+    }
 
+    @media (max-width:980px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
+    .mainLayout{
+      display:grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap:14px;
+      align-items:start;
+      min-width:0;
+    }
+
+    @media (max-width:1180px){
+      .mainLayout{ grid-template-columns: 1fr; }
+      .addonCol{ order:2; }
+    }
+
+    /* DAILY */
     .dailyRow{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-    .badge{ padding:6px 10px; border-radius:999px; background:var(--badge); font-weight:900; font-size:13px; }
+
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:900;
+      font-size:13px;
+    }
+
     .badge.live{ background:var(--badgeLive); }
     .badge.free{ background:var(--badgeFree); }
     .badge.err{ background:var(--badgeErr); }
+
     .dailyText{ font-weight:900; }
 
-    .statusPill{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); font-weight:1000; font-size:12px; background:rgba(255,255,255,.05); white-space:nowrap; }
-    .dot{ width:8px; height:8px; border-radius:999px; background:#aaa; flex:0 0 auto; }
-    .dot.ok{ background:rgba(59,181,74,.95); box-shadow:0 0 14px rgba(59,181,74,.55); }
-    .dot.bad{ background:rgba(255,0,60,.95); box-shadow:0 0 14px rgba(255,0,60,.55); }
-    .statusPill.ok{ border-color:rgba(59,181,74,.55); box-shadow:0 0 18px rgba(59,181,74,.22); }
-    .statusPill.ok span{ text-shadow:0 0 14px rgba(59,181,74,.35); }
-    .statusPill.bad{ border-color:rgba(255,0,60,.55); box-shadow:0 0 18px rgba(255,0,60,.22); }
-    .statusPill.bad span{ text-shadow:0 0 14px rgba(255,0,60,.35); }
+    /* SETTINGS STATUS */
+    .statusPill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border: 1px solid var(--border);
+      font-weight:1000;
+      font-size: 12px;
+      background: rgba(255,255,255,0.05);
+      white-space: nowrap;
+    }
 
-    .addonCol{ display:flex; flex-direction:column; gap:12px; opacity:.95; min-width:0; }
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background:#aaa;
+      box-shadow:none;
+      flex:0 0 auto;
+    }
+
+    .dot.ok{
+      background: rgba(59,181,74,0.95);
+      box-shadow: 0 0 14px rgba(59,181,74,0.55);
+    }
+
+    .dot.bad{
+      background: rgba(255,0,60,0.95);
+      box-shadow: 0 0 14px rgba(255,0,60,0.55);
+    }
+
+    .statusPill.ok{
+      border-color: rgba(59,181,74,0.55);
+      box-shadow: 0 0 18px rgba(59,181,74,0.22);
+    }
+
+    .statusPill.ok span{
+      text-shadow: 0 0 14px rgba(59,181,74,0.35);
+    }
+
+    .statusPill.bad{
+      border-color: rgba(255,0,60,0.55);
+      box-shadow: 0 0 18px rgba(255,0,60,0.22);
+    }
+
+    .statusPill.bad span{
+      text-shadow: 0 0 14px rgba(255,0,60,0.35);
+    }
+
+    /* INFO PANEL */
+    .addonCol{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      opacity:0.95;
+      min-width:0;
+    }
+
     .addonCard{ padding:12px 12px 10px; }
-    .addonTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
-    .addonTitle{ font-weight:1000; font-size:16px; margin:0; color:var(--accent2); }
-    .panelViewport{ position:relative; border:1px solid var(--border); border-radius:12px; padding:10px; background:rgba(255,255,255,.03); height:320px; overflow:hidden; }
-    .panelPages{ display:flex; width:100%; height:100%; transform:translateX(0); transition:transform .22s ease; }
-    .panelPage{ flex:0 0 100%; width:100%; height:100%; overflow:hidden; }
-    .panelInnerScroll{ height:100%; overflow:auto; padding-right:6px; }
-    .dots{ position:absolute; left:0; right:0; bottom:8px; display:flex; justify-content:center; gap:8px; }
-    .dotBtn{ width:7px; height:7px; border-radius:999px; background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.12); cursor:pointer; transition:transform .12s ease, background .12s ease, box-shadow .12s ease; }
-    .dotBtn.active{ background:var(--accent); box-shadow:0 0 16px var(--glow); transform:scale(1.15); }
 
+    .addonTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+      flex-wrap:wrap;
+    }
+
+    .addonTitle{
+      font-weight:1000;
+      font-size:16px;
+      margin:0;
+      color:var(--accent2);
+    }
+
+    .panelViewport{
+      position:relative;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 10px 26px;
+      background: rgba(255,255,255,0.03);
+      height:320px;
+      overflow:hidden;
+      isolation:isolate;
+    }
+
+    @media (max-width:1180px){
+      .panelViewport{ height:300px; }
+    }
+
+    .panelPages{
+      display:flex;
+      width:300%;
+      height:100%;
+      transform:translateX(0);
+      transition:transform .22s ease;
+      will-change:transform;
+    }
+
+    .panelPage{
+      flex:0 0 33.333333%;
+      width:33.333333%;
+      max-width:33.333333%;
+      height:100%;
+      overflow:hidden;
+      min-width:0;
+    }
+
+    .panelInnerScroll{
+      height:100%;
+      overflow:auto;
+      padding-right:6px;
+      padding-bottom:12px;
+      min-width:0;
+    }
+
+    .panelInnerScroll::-webkit-scrollbar{ width: 10px; }
+    .panelInnerScroll::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,0.14);
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+    .panelInnerScroll::-webkit-scrollbar-track{ background: transparent; }
+
+    .dots{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:8px;
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      z-index:2;
+    }
+
+    .dotBtn{
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.10);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease, opacity .12s ease;
+      opacity:.8;
+    }
+
+    .dotBtn.active{
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--glow);
+      transform: scale(1.1);
+      opacity:1;
+    }
+
+    /* EVENTS LIST */
     .stackList{ display:flex; flex-direction:column; gap:8px; min-width:0; }
-    .stackItem{ border:1px solid var(--border); background:rgba(255,255,255,.03); border-radius:10px; padding:10px; min-width:0; overflow:hidden; }
+
+    .stackItem{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:10px;
+      padding:10px;
+      min-width:0;
+      overflow:hidden;
+    }
+
     .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
-    .stackItem.event{ border-color:var(--eventBorder); background:linear-gradient(180deg, rgba(59,181,74,.10), rgba(59,181,74,.04)); }
-    .stackItem.subst{ border-color:var(--substBorder); background:linear-gradient(180deg, rgba(255,80,80,.12), rgba(255,80,80,.05)); }
-    .stackItem.cancel{ border-color:var(--cancelBorder); background:linear-gradient(180deg, rgba(255,0,60,.12), rgba(255,0,60,.05)); }
+
+    .stackItem.event{
+      border-color: var(--eventBorder);
+      background: linear-gradient(180deg, rgba(59,181,74,0.10), rgba(59,181,74,0.04));
+    }
+
+    .stackItem.subst{
+      border-color: var(--substBorder);
+      background: linear-gradient(180deg, rgba(255,80,80,0.12), rgba(255,80,80,0.05));
+    }
+
+    .stackItem.cancel{
+      border-color: var(--cancelBorder);
+      background: linear-gradient(180deg, rgba(255,0,60,0.12), rgba(255,0,60,0.05));
+    }
+
     .eventTitle{ font-weight:1000; font-size:13px; margin-bottom:4px; }
     .eventMeta{ font-weight:900; font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; word-break:break-word; }
+    .eventDesc{ margin-top:6px; font-size:11px; font-weight:900; color:var(--muted); line-height:1.35; word-break: break-word; }
 
+    /* SANITY */
     .sanityWrap{ display:flex; flex-direction:column; gap:10px; }
-    .sanityTopRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
-    .sanityMeterLabel{ font-weight:1000; color:var(--muted); font-size:12px; }
-    .sanityValue{ font-weight:1000; font-size:14px; }
-    .sanityCanvas{ width:100%; height:140px; border:1px solid var(--border); border-radius:10px; background:rgba(0,0,0,.05); display:block; }
-    body.theme-battlecats .sanityCanvas{ background:rgba(255,255,255,.7); }
-    .feelRow{ display:flex; gap:8px; flex-wrap:wrap; }
-    .feelBtn{ border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text); border-radius:10px; padding:8px 10px; font-weight:1000; cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; user-select:none; }
-    .feelBtn:hover{ transform:translateY(-1px); box-shadow:0 10px 22px rgba(0,0,0,.18); }
-    .kakaoRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding-top:2px; }
-    .kakaoWarn{ font-weight:1000; color:rgba(255,0,60,.95); text-shadow:0 0 12px rgba(255,0,60,.35); }
-    .kakaoBtn{ border:none; border-radius:10px; padding:10px 12px; background:rgba(255,190,60,.95); color:#1a1206; font-weight:1000; cursor:pointer; box-shadow:0 0 18px rgba(255,190,60,.25); display:none; }
+
+    .sanityTopRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .sanityMeterLabel{
+      font-weight:1000;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sanityValue{
+      font-weight:1000;
+      font-size: 14px;
+    }
+
+    .sanityCanvas{
+      width:100%;
+      height:140px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(0,0,0,0.05);
+      display:block;
+    }
+
+    body.theme-battlecats .sanityCanvas{ background: rgba(255,255,255,0.7); }
+
+    .feelRow{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .feelBtn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-radius: 10px;
+      padding:8px 10px;
+      font-weight:1000;
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease;
+      user-select:none;
+    }
+
+    .feelBtn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+    }
+
+    .kakaoRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      padding-top: 2px;
+    }
+
+    .kakaoWarn{
+      font-weight:1000;
+      color: rgba(255,0,60,0.95);
+      text-shadow: 0 0 12px rgba(255,0,60,0.35);
+    }
+
+    .kakaoBtn{
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      background: rgba(255,190,60,0.95);
+      color:#1a1206;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: 0 0 18px rgba(255,190,60,0.25);
+      display:none;
+    }
+
     .kakaoBtn.show{ display:inline-block; }
 
-    .lbRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; border:1px solid var(--border); background:rgba(255,255,255,.03); border-radius:10px; padding:10px; font-weight:1000; }
-    .lbName{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .lbVal{ color:var(--muted); }
+    /* LEADERBOARD */
+    .lbRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      padding:10px;
+      font-weight:1000;
+    }
 
-    .trackerCard{ border:1px solid var(--border); background:rgba(255,255,255,.03); border-radius:12px; padding:12px; }
-    .trackerBadge{ display:inline-block; padding:5px 9px; border-radius:999px; background:var(--badge); font-weight:1000; font-size:11px; margin-bottom:8px; }
+    .lbName{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .lbVal{ color: var(--muted); }
+
+    /* TRACKER */
+    .trackerCard{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius:12px;
+      padding:12px;
+      min-width:0;
+    }
+
+    .trackerBadge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      background:var(--badge);
+      font-weight:1000;
+      font-size:11px;
+      margin-bottom:8px;
+    }
+
     .trackerMain{ font-weight:1000; line-height:1.35; margin-bottom:6px; }
     .trackerSub{ color:var(--muted); font-weight:900; font-size:11px; line-height:1.35; }
 
-    .timetable .tt-top{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
-    .tt-sub{ color:var(--muted); font-weight:900; font-size:12px; margin-top:2px; }
-    .tt-badge{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--muted); font-weight:900; font-size:12px; white-space:nowrap; }
-    .tt-gridWrap{ overflow:auto; padding-bottom:4px; }
-    .tt-grid{ display:grid; grid-template-columns:48px repeat(var(--cols), minmax(120px, 1fr)); gap:10px; min-width:940px; }
+    /* TIMETABLE */
+    .timetable .tt-top{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap: wrap;
+    }
+
+    .tt-sub{ color: var(--muted); font-weight: 900; font-size: 12px; margin-top: 2px; }
+
+    .tt-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+      white-space:nowrap;
+    }
+
+    .tt-gridWrap{ overflow:auto; padding-bottom: 4px; }
+
+    .tt-grid{
+      display:grid;
+      grid-template-columns: 48px repeat(var(--cols), minmax(120px, 1fr));
+      gap:10px;
+      min-width: 940px;
+    }
+
     .tt-corner{ height:44px; }
-    .tt-h, .tt-day{ border:1px solid var(--border); border-radius:12px; padding:10px; background:rgba(255,255,255,.04); text-align:center; font-weight:900; }
-    .tt-h span{ display:block; font-size:11px; color:var(--muted); margin-top:4px; white-space:nowrap; }
-    .tt-day{ padding:10px 0; color:var(--muted); background:rgba(255,255,255,.03); }
-    .tt-cell{ border:1px solid var(--border); border-radius:14px; padding:10px; background:rgba(255,255,255,.04); box-shadow:0 2px 10px var(--shadow); position:relative; overflow:hidden; min-height:78px; transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease; }
-    .tt-cell:hover{ transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,0,0,.18); }
-    .tt-now{ outline:2px solid rgba(255, 152, 0, .95); outline-offset:-2px; box-shadow:0 0 0 1px rgba(255, 152, 0, .25) inset, 0 0 18px rgba(255, 152, 0, .35); }
-    .tt-topline{ display:flex; justify-content:space-between; align-items:center; gap:8px; font-weight:1000; font-size:11px; color:var(--muted); opacity:.95; }
-    .tt-subj{ font-weight:1000; letter-spacing:.2px; margin-top:6px; font-size:22px; color:var(--ttSubjColor) !important; text-shadow:var(--ttSubjGlow); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .tt-teacher{ font-weight:900; color:var(--muted); font-size:11px; margin-top:8px; opacity:.95; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .tt-empty{ display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:900; background:rgba(255,255,255,.02); box-shadow:none; }
-    .tt-event{ border-color:var(--eventBorder); background:var(--eventBg); box-shadow:0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,.25); }
-    .tt-subst{ border-color:var(--substBorder); background:var(--substBg); box-shadow:0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,.30); }
-    .tt-cancel{ border-color:var(--cancelBorder); background:repeating-linear-gradient(135deg, rgba(255,255,255,.14) 0, rgba(255,255,255,.14) 10px, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 20px), var(--cancelBg); box-shadow:0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,.28); }
 
-    .tt-tooltip{ position:fixed; z-index:9999; max-width:360px; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:rgba(20,20,26,.92); color:#fff; box-shadow:0 12px 40px rgba(0,0,0,.35); backdrop-filter:blur(10px); font-weight:900; font-size:12px; line-height:1.35; transform:translate(12px, 12px); display:none; pointer-events:none; }
-    .tt-tooltip .t-title{ font-size:13px; letter-spacing:.2px; margin-bottom:6px; }
-    .tt-tooltip .t-row{ display:flex; justify-content:space-between; gap:10px; border-top:1px solid rgba(255,255,255,.10); padding-top:6px; margin-top:6px; }
-    .tt-tooltip .k{ color:rgba(255,255,255,.70); }
-    .tt-tooltip .v{ color:#fff; text-align:right; }
+    .tt-h{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px;
+      background: rgba(255,255,255,0.04);
+      text-align:center;
+      font-weight: 900;
+    }
 
-    .footer{ margin-top:18px; padding:14px 0 4px; text-align:center; color:var(--muted); font-weight:900; font-size:12px; letter-spacing:.2px; user-select:none; line-height:1.6; }
-    .footer a{ color:inherit; text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.25); opacity:.95; }
-    .footer .footerBy{ font-size:13px; }
-    .footer .footerSep{ opacity:.55; margin:0 6px; }
+    .tt-h span{
+      display:block;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--muted);
+      margin-top: 4px;
+      white-space:nowrap;
+    }
+
+    .tt-day{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 0;
+      text-align:center;
+      font-weight: 900;
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .tt-cell{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px;
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 2px 10px var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 78px;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+
+    .tt-cell:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    }
+
+    .tt-now{
+      outline: 2px solid rgba(255, 152, 0, 0.95);
+      outline-offset: -2px;
+      box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.25) inset, 0 0 18px rgba(255, 152, 0, 0.35);
+    }
+
+    .tt-topline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      font-weight: 1000;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.95;
+    }
+
+    .tt-subj{
+      font-weight: 1000;
+      letter-spacing: .2px;
+      margin-top: 6px;
+      font-size: 22px;
+      color: var(--ttSubjColor) !important;
+      text-shadow: var(--ttSubjGlow);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .tt-teacher{
+      font-weight: 900;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+      opacity: 0.95;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .tt-empty{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--muted);
+      font-weight: 900;
+      background: rgba(255,255,255,0.02);
+      box-shadow: none;
+    }
+
+    .tt-event{
+      border-color: var(--eventBorder);
+      background: var(--eventBg);
+      box-shadow: 0 0 0 1px var(--eventBorder) inset, 0 0 18px rgba(59,181,74,0.25);
+    }
+
+    .tt-subst{
+      border-color: var(--substBorder);
+      background: var(--substBg);
+      box-shadow: 0 0 0 1px var(--substBorder) inset, 0 0 22px rgba(255,80,80,0.30);
+    }
+
+    .tt-cancel{
+      border-color: var(--cancelBorder);
+      background:
+        repeating-linear-gradient(
+          135deg,
+          rgba(255,255,255,0.14) 0px,
+          rgba(255,255,255,0.14) 10px,
+          rgba(0,0,0,0.00) 10px,
+          rgba(0,0,0,0.00) 20px
+        ),
+        var(--cancelBg);
+      box-shadow: 0 0 0 1px var(--cancelBorder) inset, 0 0 24px rgba(255,0,60,0.28);
+    }
+
+    /* Tooltip */
+    .tt-tooltip{
+      position: fixed;
+      z-index: 9999;
+      max-width: 360px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(20, 20, 26, 0.92);
+      color: #fff;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.35;
+      transform: translate(12px, 12px);
+      display:none;
+      pointer-events:none;
+    }
+
+    .tt-tooltip .t-title{
+      font-size: 13px;
+      letter-spacing: .2px;
+      margin-bottom: 6px;
+    }
+
+    .tt-tooltip .t-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      padding-top: 6px;
+      margin-top: 6px;
+    }
+
+    .tt-tooltip .k{ color: rgba(255,255,255,0.70); }
+    .tt-tooltip .v{ color: #fff; text-align:right; }
+
+    .footer{
+      margin-top: 18px;
+      padding: 14px 0 4px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .2px;
+      user-select: none;
+      line-height: 1.6;
+    }
+
+    .footer a{
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,0.25);
+      opacity: 0.95;
+    }
+
+    .footer a:hover{ opacity: 1; border-bottom-style: solid; }
+    .footer .footerBy{ font-size: 13px; }
+    .footer .footerSep{ opacity: .55; margin: 0 6px; }
+
+    @media (max-width:640px){
+      .mainLayout{ gap: 10px; }
+      .panelViewport{ height: 290px; }
+      .addonCol{ gap: 10px; }
+    }
   </style>
 </head>
+
 <body class="theme-dark">
   <div class="wrap">
     <div class="titleWrap">
@@ -257,6 +1070,7 @@
 
     <div id="settingsPanel" class="block hidden">
       <div class="rowTitle">Nastavení</div>
+
       <div class="field">
         <span>Theme</span>
         <select id="themeSelect" aria-label="Theme">
@@ -268,6 +1082,7 @@
           <option value="battlecats">Battle Cats</option>
         </select>
       </div>
+
       <div class="field">
         <span>Mode</span>
         <select id="modeSelect" aria-label="Mode">
@@ -276,19 +1091,29 @@
           <option value="freaky">Freaky Mode</option>
         </select>
       </div>
+
       <div class="scaleRow">
         <span>Velikost UI</span>
         <input type="range" id="uiScaleRange" min="85" max="120" step="1" value="100" />
         <span id="uiScaleValue" class="scaleValue">100%</span>
       </div>
+
       <label class="toggle"><input type="checkbox" id="toggleTimetable" checked /> <span>Zobrazit rozvrh</span></label>
       <label class="toggle"><input type="checkbox" id="toggleDaily" checked /> <span>Zobrazit denní progres</span></label>
       <label class="toggle"><input type="checkbox" id="toggleInfo" checked /> <span>Zobrazit Info Panel</span></label>
       <label class="toggle"><input type="checkbox" id="toggleTracker" checked /> <span>Zobrazit Tracker</span></label>
+
       <div class="hint" style="margin-top:10px;">
-        <span id="pillClass" class="statusPill"><span id="dotClass" class="dot"></span><span id="statusClass">Rozvrh: —</span></span>
-        <span id="pillTeacher" class="statusPill" style="margin-left:10px;"><span id="dotTeacher" class="dot"></span><span id="statusTeacher">Tracker: —</span></span>
+        <span id="pillClass" class="statusPill">
+          <span id="dotClass" class="dot"></span>
+          <span id="statusClass">Rozvrh: —</span>
+        </span>
+        <span id="pillTeacher" class="statusPill" style="margin-left:10px;">
+          <span id="dotTeacher" class="dot"></span>
+          <span id="statusTeacher">Tracker: —</span>
+        </span>
       </div>
+
       <p class="hint" id="statusHint" style="margin-top:10px;">Status: OK</p>
     </div>
 
@@ -296,19 +1121,68 @@
       <div class="grid2">
         <div>
           <div class="colHead">Real-Time</div>
-          <div class="block"><div class="rowTitle">Týden</div><div class="line"><div class="fill" id="rt-week"></div></div><p class="label" id="rt-week-label"></p></div>
-          <div class="block"><div class="rowTitle">Měsíc</div><div class="line"><div class="fill" id="rt-month"></div></div><p class="label" id="rt-month-label"></p></div>
-          <div class="block"><div class="rowTitle">Školní rok</div><div class="line"><div class="fill" id="rt-year"></div></div><p class="label" id="rt-year-label"></p></div>
-          <div class="block"><div class="rowTitle">Celkem</div><div class="line"><div class="fill" id="rt-total"></div></div><p class="label" id="rt-total-label"></p></div>
-          <div class="block"><div class="rowTitle">Maturita</div><p class="label" id="rt-maturita-label"></p></div>
+
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="rt-week"></div></div>
+            <p class="label" id="rt-week-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="rt-month"></div></div>
+            <p class="label" id="rt-month-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="rt-year"></div></div>
+            <p class="label" id="rt-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="rt-total"></div></div>
+            <p class="label" id="rt-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="rt-maturita-label"></p>
+          </div>
         </div>
+
         <div>
           <div class="colHead">Raw-Time</div>
-          <div class="block"><div class="rowTitle">Týden</div><div class="line"><div class="fill" id="raw-week"></div></div><p class="label" id="raw-week-label"></p></div>
-          <div class="block"><div class="rowTitle">Měsíc</div><div class="line"><div class="fill" id="raw-month"></div></div><p class="label" id="raw-month-label"></p></div>
-          <div class="block"><div class="rowTitle">Školní rok</div><div class="line"><div class="fill" id="raw-year"></div></div><p class="label" id="raw-year-label"></p></div>
-          <div class="block"><div class="rowTitle">Celkem</div><div class="line"><div class="fill" id="raw-total"></div></div><p class="label" id="raw-total-label"></p></div>
-          <div class="block"><div class="rowTitle">Maturita</div><p class="label" id="raw-maturita-label"></p></div>
+
+          <div class="block">
+            <div class="rowTitle">Týden</div>
+            <div class="line"><div class="fill" id="raw-week"></div></div>
+            <p class="label" id="raw-week-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Měsíc</div>
+            <div class="line"><div class="fill" id="raw-month"></div></div>
+            <p class="label" id="raw-month-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Školní rok</div>
+            <div class="line"><div class="fill" id="raw-year"></div></div>
+            <p class="label" id="raw-year-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Celkem</div>
+            <div class="line"><div class="fill" id="raw-total"></div></div>
+            <p class="label" id="raw-total-label"></p>
+          </div>
+
+          <div class="block">
+            <div class="rowTitle">Maturita</div>
+            <p class="label" id="raw-maturita-label"></p>
+          </div>
         </div>
       </div>
 
@@ -316,578 +1190,530 @@
         <div class="block addonCard" id="infoBlock">
           <div class="addonTop">
             <div class="addonTitle" id="infoTitle">Události</div>
-            <span id="pillInfo" class="statusPill"><span id="dotInfo" class="dot"></span><span id="infoSrc">—</span></span>
-          </div>
-          <div class="panelViewport">
-            <div class="panelPages" id="panelPages">
-              <div class="panelPage"><div class="panelInnerScroll"><div id="eventsList" class="stackList"><div class="stackItem muted">Načítání…</div></div></div></div>
-              <div class="panelPage"><div class="panelInnerScroll"><div class="sanityWrap"><div class="sanityTopRow"><div><div class="sanityMeterLabel">Sanity Meter</div><div class="sanityValue" id="sanityValue">—</div></div><div class="sanityMeterLabel" id="sanityMeta">—</div></div><canvas id="sanityCanvas" class="sanityCanvas"></canvas><div class="sanityMeterLabel">Jak se cítíš teď (jen během hodiny)?</div><div class="feelRow" id="feelRow"><button class="feelBtn" data-feel="1" type="button">😄 VIBIN</button><button class="feelBtn" data-feel="2" type="button">🙂 OK</button><button class="feelBtn" data-feel="3" type="button">😐 MEH</button><button class="feelBtn" data-feel="4" type="button">😵 COOKED</button></div><div class="kakaoRow"><div class="kakaoWarn" id="kakaoWarn" style="display:none;">BĚŽ SI KOUPIT KAKAJÍČKO</div><button class="kakaoBtn" id="kakaoBtn" type="button">Už jsem si ho dal ☕</button></div><div class="hint">Historie se ukládá do zařízení na 14 dní (emoji + label + sanity %). Mimo školu po 16:00 se živý režim skryje, zůstane jen historie.</div><div class="stackList" id="sanityHistory" style="margin-top:8px;"><div class="stackItem muted">Historie: načítání…</div></div></div></div></div>
-              <div class="panelPage"><div class="panelInnerScroll"><div class="stackList" id="lbList"><div class="stackItem muted">Načítání leaderboardu…</div></div><div class="hint" style="margin-top:10px;">Zdroj: <b>LeaderboardAb.txt</b> v GitHubu (ve stejné složce).</div></div></div>
+            <div class="addonPills">
+              <span id="pillInfo" class="statusPill">
+                <span id="dotInfo" class="dot"></span>
+                <span id="infoSrc">—</span>
+              </span>
             </div>
-            <div class="dots" id="dots"><div class="dotBtn active" data-page="0"></div><div class="dotBtn" data-page="1"></div><div class="dotBtn" data-page="2"></div></div>
+          </div>
+
+          <div class="panelViewport" id="panelViewport">
+            <div class="panelPages" id="panelPages">
+              <!-- Page 1 -->
+              <div class="panelPage">
+                <div class="panelInnerScroll">
+                  <div id="eventsList" class="stackList">
+                    <div class="stackItem muted">Načítání…</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Page 2 -->
+              <div class="panelPage">
+                <div class="panelInnerScroll">
+                  <div class="sanityWrap">
+                    <div class="sanityTopRow">
+                      <div>
+                        <div class="sanityMeterLabel">Sanity Meter</div>
+                        <div class="sanityValue" id="sanityValue">—</div>
+                      </div>
+                      <div class="sanityMeterLabel" id="sanityMeta">—</div>
+                    </div>
+
+                    <canvas id="sanityCanvas" class="sanityCanvas"></canvas>
+
+                    <div id="sanityLiveBlock">
+                      <div class="sanityMeterLabel">Jak se cítíš teď (jen během hodiny)?</div>
+                      <div class="feelRow" id="feelRow">
+                        <button class="feelBtn" data-feel="1" type="button">😄 VIBIN</button>
+                        <button class="feelBtn" data-feel="2" type="button">🙂 OK</button>
+                        <button class="feelBtn" data-feel="3" type="button">😐 MEH</button>
+                        <button class="feelBtn" data-feel="4" type="button">😵 COOKED</button>
+                      </div>
+
+                      <div class="kakaoRow">
+                        <div class="kakaoWarn" id="kakaoWarn" style="display:none;">BĚŽ SI KOUPIT KAKAJÍČKO</div>
+                        <button class="kakaoBtn" id="kakaoBtn" type="button">Už jsem si ho dal ☕</button>
+                      </div>
+                    </div>
+
+                    <div class="hint">
+                      Historie se ukládá do zařízení na 14 dní (emoji + label + sanity %).
+                      Mimo školu po 16:00 se živý režim skryje, zůstane jen historie.
+                    </div>
+
+                    <div class="stackList" id="sanityHistory" style="margin-top:8px;">
+                      <div class="stackItem muted">Historie: načítání…</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Page 3 -->
+              <div class="panelPage">
+                <div class="panelInnerScroll">
+                  <div class="stackList" id="lbList">
+                    <div class="stackItem muted">Načítání leaderboardu…</div>
+                  </div>
+                  <div class="hint" style="margin-top:10px;">
+                    Zdroj: <b>LeaderboardAb.txt</b> ve stejné složce.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dots" id="dots">
+              <div class="dotBtn active" data-page="0" title="Události"></div>
+              <div class="dotBtn" data-page="1" title="Sanity"></div>
+              <div class="dotBtn" data-page="2" title="Leaderboard"></div>
+            </div>
           </div>
         </div>
 
         <div class="block" id="cafaBlock">
           <div class="rowTitle">Cáfa Tracker</div>
-          <div class="trackerCard"><div class="trackerBadge" id="cafaBadge">Cáfa</div><div class="trackerMain" id="cafaMain">Načítání…</div><div class="trackerSub" id="cafaSub">—</div></div>
+          <div class="trackerCard">
+            <div class="trackerBadge" id="cafaBadge">Cáfa</div>
+            <div class="trackerMain" id="cafaMain">Načítání…</div>
+            <div class="trackerSub" id="cafaSub">—</div>
+          </div>
         </div>
       </aside>
     </div>
 
     <div id="dailyBlock" class="block">
       <div class="rowTitle">Denní progres</div>
-      <div class="dailyRow"><div class="badge" id="dailyBadge">Rozvrh</div><div class="dailyText" id="dailyText">—</div></div>
-      <div class="line" style="margin-top:10px;"><div class="fill" id="daybar"></div></div>
+      <div class="dailyRow">
+        <div class="badge" id="dailyBadge">Rozvrh</div>
+        <div class="dailyText" id="dailyText">—</div>
+      </div>
+      <div class="line" style="margin-top:10px;">
+        <div class="fill" id="daybar"></div>
+      </div>
       <p class="label" id="daylabel"></p>
       <p class="hint" id="dailyDebug"></p>
     </div>
 
     <div id="timetableBlock" class="block timetable">
       <div class="tt-top">
-        <div><div class="rowTitle">Rozvrh</div><div class="tt-sub" id="ttSub">DE3A • Týdenní přehled</div></div>
-        <div class="tt-meta"><span class="tt-badge statusPill" id="ttUpdated"><span id="dotTt" class="dot"></span><span id="ttUpdatedText">Aktualizováno: —</span></span></div>
+        <div>
+          <div class="rowTitle">Rozvrh</div>
+          <div class="tt-sub" id="ttSub">DE3A • Týdenní přehled</div>
+        </div>
+        <div class="tt-meta">
+          <span class="tt-badge statusPill" id="ttUpdated">
+            <span id="dotTt" class="dot"></span>
+            <span id="ttUpdatedText">Aktualizováno: —</span>
+          </span>
+        </div>
       </div>
-      <div class="tt-gridWrap"><div class="tt-grid" id="ttGrid" style="--cols: 7;"></div></div>
+
+      <div class="tt-gridWrap">
+        <div class="tt-grid" id="ttGrid" style="--cols: 7;"></div>
+      </div>
     </div>
 
     <div class="footer">
       <div class="footerBy">Created By Johnny Hotovost Corporation, LLC</div>
-      <div><span>© 2026 All rights reserved</span><span class="footerSep">•</span><span>Version <span id="verText">1.2.28</span></span><span class="footerSep">•</span><a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a></div>
+      <div>
+        <span>© 2026 All rights reserved</span>
+        <span class="footerSep">•</span>
+        <span>Version <span id="verText">1.2.29</span></span>
+        <span class="footerSep">•</span>
+        <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
+      </div>
     </div>
   </div>
 
   <div class="tt-tooltip" id="ttTooltip" aria-hidden="true"></div>
 
-  <script>
-    const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
-    const BACKEND_CLASS_API = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
-    const BACKEND_TEACHER_API = `${WORKER_BASE}/api/timetable?teacher=UV069&type=Actual`;
-    const CLASS_NAME = "DE3A";
-    const VERSION = "1.2.28";
+<script>
+  /* =========================
+     API CONFIG
+     ========================= */
+  const WORKER_BASE = "https://bakalariapi.janpilat-bp.workers.dev";
+  const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
+  const BACKEND_TEACHER_API = `${WORKER_BASE}/api/timetable?teacher=UV069&type=Actual`;
 
-    const $ = (id) => document.getElementById(id);
-    const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+  const CLASS_NAME = "DE3A";
+  const VERSION = "1.2.29";
 
-    const state = {
-      classDays: null,
-      classMarks: [],
-      classEvents: [],
-      classSource: "loading",
-      teacherDays: null,
-      teacherSource: "loading",
-      infoPage: 0,
-    };
+  /* =========================
+     SUBJECT SHORT MAP + combos
+     ========================= */
+  const SUBJECT_SHORT = {
+    "Matematika":"MAT",
+    "Český jazyk a literatura":"ČJL",
+    "Elektrotechnika":"ELT",
+    "Softwarové aplikace":"SWA",
+    "Počítačové sítě a komunikace":"PSK",
+    "Základní programové vybavení":"ZPG",
+    "Vývoj aplikací":"VYA",
+    "Výpočetní technika":"VYT",
+    "Ekonomie":"EKO",
+    "Občanská nauka":"OBN",
+    "Fyzika":"FYZ",
+    "Technické kreslení":"TEK",
+    "Tělesná výchova":"TV",
+    "Německý jazyk":"NEJ",
+    "Ruský jazyk":"RUJ",
+    "Anglický jazyk":"ANJ",
+    "Akce školy":"AŠK",
+    "Akce skoly":"AŠK",
+  };
 
-    const SUBJECT_SHORT = {
-      "Matematika":"MAT", "Český jazyk a literatura":"ČJL", "Elektrotechnika":"ELT", "Softwarové aplikace":"SWA", "Počítačové sítě a komunikace":"PSK", "Základní programové vybavení":"ZPG", "Vývoj aplikací":"VYA", "Výpočetní technika":"VYT", "Ekonomie":"EKO", "Občanská nauka":"OBN", "Fyzika":"FYZ", "Technické kreslení":"TEK", "Tělesná výchova":"TV", "Německý jazyk":"NEJ", "Ruský jazyk":"RUJ", "Anglický jazyk":"ANJ", "Akce školy":"AŠK", "Akce skoly":"AŠK"
-    };
+  function baseShort(one){
+    const x = String(one||"").trim();
+    if (!x) return "";
+    if (SUBJECT_SHORT[x]) return SUBJECT_SHORT[x];
+    const noDia = x.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return noDia.replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || x.slice(0,3).toUpperCase();
+  }
 
-    const TIMES = [
-      {start:"07:55", end:"08:40"}, {start:"08:50", end:"09:35"}, {start:"09:50", end:"10:35"},
-      {start:"10:45", end:"11:30"}, {start:"11:35", end:"12:20"}, {start:"12:50", end:"13:35"}, {start:"13:40", end:"14:25"}
+  function shortSubj(full, clsHint=""){
+    const s = String(full || "").trim();
+    if (!s) return "";
+
+    const split = s.includes(" / ") ? s.split(" / ") : (s.includes("/") ? s.split("/") : null);
+    if (!split) return baseShort(s);
+
+    const shorts = split.map(p => baseShort(p)).filter(Boolean);
+    const uniq = [...new Set(shorts)];
+
+    if (uniq.length === 1 && clsHint){
+      const c = String(clsHint).trim();
+      if (c.includes(" / ") || c.includes("/")){
+        const parts = c.includes(" / ") ? c.split(" / ") : c.split("/");
+        const fixed = parts.map(x => String(x).trim()).filter(Boolean);
+        if (fixed.length >= 2 && fixed.every(x => x.toUpperCase().startsWith(uniq[0]))){
+          return fixed.join("/");
+        }
+      }
+    }
+    return shorts.join("/");
+  }
+
+  /* =========================
+     TIMES
+     ========================= */
+  const TIMES = [
+    {start:"07:55", end:"08:40"},
+    {start:"08:50", end:"09:35"},
+    {start:"09:50", end:"10:35"},
+    {start:"10:45", end:"11:30"},
+    {start:"11:35", end:"12:20"},
+    {start:"12:50", end:"13:35"},
+    {start:"13:40", end:"14:25"},
+  ];
+
+  function timeToMin(hhmm){
+    const [h,m] = hhmm.split(":").map(Number);
+    return h*60 + m;
+  }
+
+  const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
+  const LUNCH_START = timeToMin("12:20");
+  const LUNCH_END   = timeToMin("12:50");
+
+  /* =========================
+     PROGRESS DATA
+     ========================= */
+  function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
+  function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
+  function r(s,e){ return {s,e}; }
+
+  const HS_START = localDate(2023, 9, 4);
+  const HS_END   = localDateEnd(2027, 6, 30);
+  const MATURITA_APPROX = localDateEnd(2027, 5, 1);
+
+  const BREAKS = [
+    r("2023-10-26","2023-10-27"),
+    r("2023-12-23","2024-01-02"),
+    r("2024-02-02","2024-02-02"),
+    r("2024-02-26","2024-03-03"),
+    r("2024-07-01","2024-08-31"),
+    r("2024-10-29","2024-10-30"),
+    r("2024-12-23","2025-01-03"),
+    r("2025-01-31","2025-01-31"),
+    r("2025-03-03","2025-03-09"),
+    r("2025-07-01","2025-08-31"),
+    r("2025-10-27","2025-10-29"),
+    r("2025-12-22","2026-01-02"),
+    r("2026-01-30","2026-01-30"),
+    r("2026-03-09","2026-03-15"),
+    r("2026-07-01","2026-08-31"),
+    r("2026-10-29","2026-10-30"),
+    r("2026-12-23","2027-01-03"),
+    r("2027-01-29","2027-01-29"),
+    r("2027-02-01","2027-02-07"),
+  ];
+
+  const DIRECTOR_DAYS = [];
+
+  /* =========================
+     STATE
+     ========================= */
+  const state = {
+    classDays: null,
+    classMarks: [],
+    classEvents: [],
+    classSource: "loading",
+
+    teacherDays: null,
+    teacherSource: "loading",
+
+    infoPage: 0,
+  };
+
+  /* =========================
+     DOM HELPERS
+     ========================= */
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
+
+  const setBar = (id, pct, weekend=false) => {
+    const n = $(id);
+    if (!n) return;
+    n.style.width = clamp(pct).toFixed(2) + "%";
+    weekend ? n.classList.add("weekend") : n.classList.remove("weekend");
+  };
+
+  const setText = (id, txt) => {
+    const n = $(id);
+    if (n) n.textContent = txt;
+  };
+
+  function toISO(d){
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,'0');
+    const da=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${da}`;
+  }
+
+  function formatDateCZ(d){
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const yy = d.getFullYear();
+    return `${dd}.${mm}.${yy}`;
+  }
+
+  function formatDateCZDateTime(d){
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mi = String(d.getMinutes()).padStart(2,"0");
+    return `${formatDateCZ(d)} ${hh}:${mi}`;
+  }
+
+  function inBreak(iso){ return BREAKS.some(x => iso>=x.s && iso<=x.e); }
+
+  function isSchoolDay(d){
+    const dow = d.getDay();
+    if (dow===0 || dow===6) return false;
+    const iso = toISO(d);
+    if (DIRECTOR_DAYS.includes(iso)) return false;
+    if (inBreak(iso)) return false;
+    return true;
+  }
+
+  function countSchoolDays(start, end){
+    const s = new Date(start); s.setHours(0,0,0,0);
+    const e = new Date(end);   e.setHours(23,59,59,999);
+    let c=0;
+    const cur = new Date(s);
+    while (cur <= e){
+      if (isSchoolDay(cur)) c++;
+      cur.setDate(cur.getDate()+1);
+    }
+    return c;
+  }
+
+  function calendarPctBetween(start, end, now){
+    const total = end - start;
+    if (total<=0) return 0;
+    const passed = Math.min(Math.max(now-start, 0), total);
+    return (passed/total)*100;
+  }
+
+  function rawPctBetween(start, end, now){
+    const total = countSchoolDays(start, end);
+    const clipped = now < start ? start : (now > end ? end : now);
+    const passed = countSchoolDays(start, clipped);
+    return total ? (passed/total)*100 : 0;
+  }
+
+  function rawDaysUntil(target, now){
+    const start = new Date(now); start.setHours(0,0,0,0);
+    const end = new Date(target); end.setHours(23,59,59,999);
+    if (end < start) return -countSchoolDays(end, start);
+    return countSchoolDays(start, end);
+  }
+
+  function getSchoolYearRange(now){
+    const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1;
+    return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) };
+  }
+
+  function dayKeyFromDate(d){
+    const dow = d.getDay();
+    return (dow===1)?"Mon":(dow===2)?"Tue":(dow===3)?"Wed":(dow===4)?"Thu":(dow===5)?"Fri":null;
+  }
+
+  function dayLabelCz(dayKey){
+    return ({Mon:"Po", Tue:"Út", Wed:"St", Thu:"Čt", Fri:"Pá"})[dayKey] || dayKey || "—";
+  }
+
+  function hasAnyLesson(days){
+    return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj));
+  }
+
+  function getNextDateForDayKey(dayKey, baseDate = new Date()){
+    const map = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
+    const target = map[dayKey];
+    if (!target) return null;
+    const d = new Date(baseDate);
+    d.setHours(0,0,0,0);
+    const diff = target - d.getDay();
+    d.setDate(d.getDate() + diff);
+    return d;
+  }
+
+  function escapeHtml(s){
+    return String(s||"")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;");
+  }
+
+  /* =========================
+     MINECRAFT SPLASH
+     ========================= */
+  async function loadMinecraftSplash(){
+    const el = $("mcSplash");
+    if (!el) return;
+
+    const fallback = [
+      "Now with Cáfa Tracker!",
+      "Suplování detected!",
+      "Bakaláři moment",
+      "Touch grass after class",
+      "School grind never ends",
+      "Raw-Time supremacy"
     ];
-    const timeToMin = (hhmm) => { const [h,m] = hhmm.split(":").map(Number); return h*60+m; };
-    const TIMES_MIN = TIMES.map(t => ({ startMin: timeToMin(t.start), endMin: timeToMin(t.end) }));
-    const LUNCH_START = timeToMin("12:20");
-    const LUNCH_END = timeToMin("12:50");
 
-    function localDate(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(0,0,0,0); return dt; }
-    function localDateEnd(y,m,d){ const dt=new Date(y,m-1,d); dt.setHours(23,59,59,999); return dt; }
-    const HS_START = localDate(2023,9,4);
-    const HS_END = localDateEnd(2027,6,30);
-    const MATURITA_APPROX = localDateEnd(2027,5,1);
-    const BREAKS = [
-      ["2023-10-26","2023-10-27"],["2023-12-23","2024-01-02"],["2024-02-02","2024-02-02"],["2024-02-26","2024-03-03"],["2024-07-01","2024-08-31"],
-      ["2024-10-29","2024-10-30"],["2024-12-23","2025-01-03"],["2025-01-31","2025-01-31"],["2025-03-03","2025-03-09"],["2025-07-01","2025-08-31"],
-      ["2025-10-27","2025-10-29"],["2025-12-22","2026-01-02"],["2026-01-30","2026-01-30"],["2026-03-09","2026-03-15"],["2026-07-01","2026-08-31"],
-      ["2026-10-29","2026-10-30"],["2026-12-23","2027-01-03"],["2027-01-29","2027-01-29"],["2027-02-01","2027-02-07"]
-    ].map(([s,e]) => ({s,e}));
+    try{
+      const res = await fetch("./MinecraftTextSource.txt?ts=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("source not found");
+      const txt = await res.text();
+      const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(x => x && !x.startsWith("#"));
+      el.textContent = lines.length ? lines[Math.floor(Math.random()*lines.length)] : fallback[0];
+    }catch(e){
+      el.textContent = fallback[Math.floor(Math.random()*fallback.length)];
+    }
+  }
 
-    const SANITY_KEY = "sp_sanity_log_v1";
-    const SANITY_BASE = 100;
-    const SANITY_PILL_BOOST = 30;
+  /* =========================
+     TITLE MODE
+     ========================= */
+  function applyTitleMode(mode){
+    const titleEl = $("pageTitle");
+    if (!titleEl) return;
 
-    function setBar(id, pct, weekend=false){ const n=$(id); if (!n) return; n.style.width = clamp(pct).toFixed(2) + "%"; n.classList.toggle("weekend", !!weekend); }
-    function setText(id, txt){ const n=$(id); if (n) n.textContent = txt; }
-    function toISO(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-    function formatDateCZ(d){ return `${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${d.getFullYear()}`; }
-    function formatDateCZDateTime(d){ return `${formatDateCZ(d)} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`; }
-    function dayKeyFromDate(d){ return ({1:"Mon",2:"Tue",3:"Wed",4:"Thu",5:"Fri"})[d.getDay()] || null; }
-    function dayLabelCz(dayKey){ return ({Mon:"Po", Tue:"Út", Wed:"St", Thu:"Čt", Fri:"Pá"})[dayKey] || "—"; }
-    function hasAnyLesson(days){ return Object.values(days || {}).some(arr => Array.isArray(arr) && arr.some(x => x && x.subj)); }
-    function inBreak(iso){ return BREAKS.some(x => iso >= x.s && iso <= x.e); }
-    function isSchoolDay(d){ const dow=d.getDay(); if (dow===0 || dow===6) return false; return !inBreak(toISO(d)); }
-    function countSchoolDays(start, end){ const s=new Date(start); s.setHours(0,0,0,0); const e=new Date(end); e.setHours(23,59,59,999); let c=0; const cur=new Date(s); while (cur<=e){ if (isSchoolDay(cur)) c++; cur.setDate(cur.getDate()+1); } return c; }
-    function calendarPctBetween(start, end, now){ const total=end-start; if (total<=0) return 0; return (Math.min(Math.max(now-start,0), total)/total)*100; }
-    function rawPctBetween(start, end, now){ const total=countSchoolDays(start, end); const clipped=now < start ? start : (now > end ? end : now); const passed=countSchoolDays(start, clipped); return total ? (passed/total)*100 : 0; }
-    function rawDaysUntil(target, now){ const start=new Date(now); start.setHours(0,0,0,0); const end=new Date(target); end.setHours(23,59,59,999); if (end<start) return -countSchoolDays(end,start); return countSchoolDays(start,end); }
-    function getSchoolYearRange(now){ const y = (now.getMonth()>=8) ? now.getFullYear() : now.getFullYear()-1; return { start: localDate(y,9,1), end: localDateEnd(y+1,6,30) }; }
-
-    function baseShort(one){ const x=String(one||"").trim(); if (!x) return ""; if (SUBJECT_SHORT[x]) return SUBJECT_SHORT[x]; const noDia=x.normalize("NFD").replace(/[\u0300-\u036f]/g,""); return noDia.replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || x.slice(0,3).toUpperCase(); }
-    function shortSubj(full, clsHint=""){
-      const s=String(full||"").trim();
-      if (!s) return "";
-      const split = s.includes(" / ") ? s.split(" / ") : (s.includes("/") ? s.split("/") : null);
-      if (!split) return baseShort(s);
-      const shorts=split.map(p => baseShort(p)).filter(Boolean);
-      const uniq=[...new Set(shorts)];
-      if (uniq.length===1 && clsHint){
-        const c=String(clsHint).trim();
-        if (c.includes(" / ") || c.includes("/")){
-          const fixed=(c.includes(" / ") ? c.split(" / ") : c.split("/")).map(x => String(x).trim()).filter(Boolean);
-          if (fixed.length>=2 && fixed.every(x => x.toUpperCase().startsWith(uniq[0]))) return fixed.join("/");
-        }
-      }
-      return shorts.join("/");
+    if (mode === "nonchalant"){
+      const blue = getComputedStyle(document.body).getPropertyValue("--bakalariBlue").trim() || "#1e88e5";
+      titleEl.innerHTML = `<span style="color:${blue};">Bakaláři</span>, kdyby nebyly mid`;
+    } else if (mode === "freaky"){
+      titleEl.textContent = "Kdy to utrpení skončí";
+    } else {
+      titleEl.textContent = "School Progress";
     }
 
-    async function loadMinecraftSplash(){
-      const el=$("mcSplash");
-      if (!el) return;
-      const fallback=["Now with Cáfa Tracker!","Suplování detected!","Bakaláři moment","Touch grass after class","School grind never ends","Raw-Time supremacy"];
-      try{
-        const res=await fetch("./MinecraftTextSource.txt?ts="+Date.now(), { cache:"no-store" });
-        if (!res.ok) throw new Error();
-        const txt=await res.text();
-        const lines=txt.split(/\r?\n/).map(x => x.trim()).filter(x => x && !x.startsWith("#"));
-        el.textContent = lines.length ? lines[Math.floor(Math.random()*lines.length)] : fallback[0];
-      }catch{ el.textContent = fallback[Math.floor(Math.random()*fallback.length)]; }
-    }
+    localStorage.setItem("sp_mode", mode);
+    const sel = $("modeSelect");
+    if (sel) sel.value = mode;
+    scheduleSixSevenScan();
+  }
 
-    function applyTitleMode(mode){
-      const titleEl=$("pageTitle");
-      if (mode === "nonchalant"){
-        const blue = getComputedStyle(document.body).getPropertyValue("--bakalariBlue").trim() || "#1e88e5";
-        titleEl.innerHTML = `<span style="color:${blue};">Bakaláři</span>, kdyby nebyly mid`;
-      } else if (mode === "freaky") titleEl.textContent = "Kdy to utrpení skončí";
-      else titleEl.textContent = "School Progress";
-      localStorage.setItem("sp_mode", mode);
-      $("modeSelect").value = mode;
-      scheduleSixSevenScan();
-    }
+  function initModeSelector(){
+    const sel = $("modeSelect");
+    if (!sel) return;
 
-    function applyTheme(theme){
-      document.body.className = `theme-${theme}`;
-      localStorage.setItem("sp_theme", theme);
-      $("themeSelect").value = theme;
-      drawSanity(new Date());
-    }
+    sel.addEventListener("change", () => applyTitleMode(sel.value));
+    const saved = localStorage.getItem("sp_mode") || "normal";
+    applyTitleMode(saved);
+  }
 
-    function applyUiScale(percent){
-      const p=Math.max(85, Math.min(120, Number(percent)||100));
-      document.body.style.setProperty("--uiScale", String(p/100));
-      $("uiScaleRange").value=String(p);
-      $("uiScaleValue").textContent=`${p}%`;
-      localStorage.setItem("sp_ui_scale", String(p));
-      scheduleSixSevenScan();
-    }
+  /* =========================
+     SETTINGS + THEME + SCALE
+     ========================= */
+  function applyTheme(theme){
+    const body = document.body;
+    body.classList.remove("theme-light","theme-dark","theme-loona","theme-sobokill","theme-kasparnakart","theme-battlecats");
+    body.classList.add("theme-" + theme);
+    localStorage.setItem("sp_theme", theme);
 
-    function setInfoPanelVisible(){
-      const showInfo=$("toggleInfo").checked;
-      const showTracker=$("toggleTracker").checked;
-      $("infoBlock").classList.toggle("hidden", !showInfo);
-      $("cafaBlock").classList.toggle("hidden", !showTracker);
-      $("addonPanel").classList.toggle("hidden", !(showInfo || showTracker));
-    }
+    const sel = $("themeSelect");
+    if (sel) sel.value = theme;
 
-    function setInfoPage(pageIdx){
-      state.infoPage = Math.max(0, Math.min(2, Number(pageIdx)||0));
-      $("panelPages").style.transform = `translateX(${-state.infoPage*100}%)`;
-      $("infoTitle").textContent = ["Události","Sanity","Leaderboard"][state.infoPage];
-      document.querySelectorAll(".dotBtn").forEach(btn => btn.classList.toggle("active", Number(btn.dataset.page)===state.infoPage));
-      localStorage.setItem("sp_info_page", String(state.infoPage));
-      scheduleSixSevenScan();
-    }
+    drawSanity(new Date());
+  }
 
-    function getClassDays(){ return state.classDays && hasAnyLesson(state.classDays) ? state.classDays : { Mon:Array(7).fill(null), Tue:Array(7).fill(null), Wed:Array(7).fill(null), Thu:Array(7).fill(null), Fri:Array(7).fill(null) }; }
-    function getTeacherDays(){ return state.teacherDays && hasAnyLesson(state.teacherDays) ? state.teacherDays : { Mon:Array(7).fill(null), Tue:Array(7).fill(null), Wed:Array(7).fill(null), Thu:Array(7).fill(null), Fri:Array(7).fill(null) }; }
+  function applyUiScale(percent){
+    const p = Math.max(85, Math.min(120, Number(percent) || 100));
+    document.body.style.setProperty("--uiScale", String(p / 100));
+    $("uiScaleRange").value = String(p);
+    $("uiScaleValue").textContent = `${p}%`;
+    localStorage.setItem("sp_ui_scale", String(p));
+    scheduleSixSevenScan();
+  }
 
-    function setOnlinePills(){
-      const okClass = state.classSource === "Bakaláří";
-      const okTeacher = state.teacherSource === "Bakaláří";
-      $("dotClass").className = "dot " + (okClass ? "ok" : "bad");
-      $("dotTeacher").className = "dot " + (okTeacher ? "ok" : "bad");
-      $("statusClass").textContent = "Rozvrh: " + state.classSource;
-      $("statusTeacher").textContent = "Tracker: " + state.teacherSource;
-      $("pillClass").className = "statusPill " + (okClass ? "ok" : "bad");
-      $("pillTeacher").className = "statusPill " + (okTeacher ? "ok" : "bad");
-      $("dotTt").className = "dot " + (okClass ? "ok" : "bad");
-      $("ttUpdated").className = "tt-badge statusPill " + (okClass ? "ok" : "bad");
-      $("dotInfo").className = "dot " + (okClass ? "ok" : "bad");
-      $("pillInfo").className = "statusPill " + (okClass ? "ok" : "bad");
-      $("infoSrc").textContent = okClass ? "Bakaláří" : "Local";
-    }
-    function statusText(){ $("statusHint").textContent = `Status: OK • Rozvrh: ${state.classSource} • Tracker: ${state.teacherSource}`; setOnlinePills(); }
+  function setInfoPanelVisible(){
+    const showInfo = $("toggleInfo").checked;
+    $("infoBlock").classList.toggle("hidden", !showInfo);
 
-    const tooltip = $("ttTooltip");
-    function showTooltip(html, x, y){ tooltip.innerHTML=html; tooltip.style.left=x+"px"; tooltip.style.top=y+"px"; tooltip.style.display="block"; }
-    function moveTooltip(x,y){ tooltip.style.left=x+"px"; tooltip.style.top=y+"px"; }
-    function hideTooltip(){ tooltip.style.display="none"; }
-    document.addEventListener("click", hideTooltip);
+    const showTracker = $("toggleTracker").checked;
+    $("cafaBlock").classList.toggle("hidden", !showTracker);
 
-    function getNextDateForDayKey(dayKey, baseDate = new Date()){
-      const map = {Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
-      const target = map[dayKey];
-      if (!target) return null;
-      const d = new Date(baseDate);
-      d.setHours(0,0,0,0);
-      const diff = target - d.getDay();
-      d.setDate(d.getDate() + diff);
-      return d;
-    }
+    const any = showInfo || showTracker;
+    $("addonPanel").classList.toggle("hidden", !any);
+  }
 
-    function tooltipHTML(data){
-      return `
-        <div class="t-title">${data.dayLabel} • ${data.dateLong} • Hodina ${data.hourIdx+1}/7 (${data.time})</div>
-        <div class="t-row"><div class="k">Třída</div><div class="v">${data.className || "-"}</div></div>
-        <div class="t-row"><div class="k">Předmět</div><div class="v">${data.subjFull || "-"}</div></div>
-        <div class="t-row"><div class="k">Učebna</div><div class="v">${data.room || "-"}</div></div>
-        <div class="t-row"><div class="k">Učitel</div><div class="v">${data.teacher || "-"}</div></div>
-        ${data.cls ? `<div class="t-row"><div class="k">Skupina</div><div class="v">${data.cls}</div></div>` : ``}
-        ${data.type ? `<div class="t-row"><div class="k">Typ</div><div class="v">${data.type}</div></div>` : ``}
-        ${data.note ? `<div class="t-row"><div class="k">Popis</div><div class="v">${data.note}</div></div>` : ``}
-        ${data.source ? `<div class="t-row"><div class="k">Zdroj</div><div class="v">${data.source}</div></div>` : ``}
-      `;
-    }
+  function initSettings(){
+    $("settingsBtn").addEventListener("click", () => $("settingsPanel").classList.toggle("hidden"));
 
-    function markForCell(dayKey, idx){ return (state.classMarks || []).find(m => m.day===dayKey && m.idx===idx) || null; }
+    $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
+    $("uiScaleRange").addEventListener("input", () => applyUiScale($("uiScaleRange").value));
 
-    function renderTimetable(){
-      const days=getClassDays();
-      const grid=$("ttGrid");
-      grid.style.setProperty("--cols", TIMES.length);
-      grid.innerHTML = "";
-
-      const corner=document.createElement("div"); corner.className="tt-corner"; grid.appendChild(corner);
-      TIMES.forEach((t,i) => { const h=document.createElement("div"); h.className="tt-h"; h.innerHTML=`${i+1}<br><span>${t.start}–${t.end}</span>`; grid.appendChild(h); });
-
-      const dayOrder=[{key:"Mon",label:"Po"},{key:"Tue",label:"Út"},{key:"Wed",label:"St"},{key:"Thu",label:"Čt"},{key:"Fri",label:"Pá"}];
-      for (const d of dayOrder){
-        const dayCell=document.createElement("div"); dayCell.className="tt-day"; dayCell.textContent=d.label; grid.appendChild(dayCell);
-        for (let i=0;i<TIMES.length;i++){
-          const base = days[d.key]?.[i] || null;
-          const mk = markForCell(d.key, i);
-          const cell=document.createElement("div"); cell.className="tt-cell"; cell.dataset.day=d.key; cell.dataset.idx=String(i);
-          if (!base && !mk){ cell.classList.add("tt-empty"); cell.textContent="—"; grid.appendChild(cell); continue; }
-
-          let type="";
-          if (mk?.type === "event") { cell.classList.add("tt-event"); type="Akce"; }
-          if (mk?.type === "subst") { cell.classList.add("tt-subst"); type="Suplování"; }
-          if (mk?.type === "cancel") { cell.classList.add("tt-cancel"); type="Odpadlo"; }
-
-          const subjFull = base?.subj || (mk?.type === "event" ? "Akce" : "");
-          const room = base?.room || mk?.room || "";
-          const teacher = base?.teacher || "";
-          const cls = base?.class || "";
-          const note = mk?.note || base?.note || "";
-          const subjShort = shortSubj(subjFull, cls);
-
-          const topline=document.createElement("div"); topline.className="tt-topline"; topline.innerHTML=`<span class="cls">${CLASS_NAME}</span><span class="room">${room || ""}</span>`; cell.appendChild(topline);
-          const subjEl=document.createElement("div"); subjEl.className="tt-subj"; subjEl.textContent=subjShort || "—"; cell.appendChild(subjEl);
-          const teacherEl=document.createElement("div"); teacherEl.className="tt-teacher"; teacherEl.textContent=teacher || ""; cell.appendChild(teacherEl);
-
-          const realDate = getNextDateForDayKey(d.key, new Date());
-          const tdata = { dayLabel:d.label, dateLong: realDate ? formatDateCZ(realDate) : "—", hourIdx:i, time:`${TIMES[i].start}–${TIMES[i].end}`, className:CLASS_NAME, subjFull, room, teacher, cls, note, type, source:state.classSource };
-          cell.addEventListener("mouseenter", e => showTooltip(tooltipHTML(tdata), e.clientX, e.clientY));
-          cell.addEventListener("mousemove", e => moveTooltip(e.clientX, e.clientY));
-          cell.addEventListener("mouseleave", hideTooltip);
-          cell.addEventListener("click", e => { e.stopPropagation(); tooltip.style.display === "block" ? hideTooltip() : showTooltip(tooltipHTML(tdata), e.clientX || innerWidth/2, e.clientY || innerHeight/2); });
-
-          grid.appendChild(cell);
-        }
-      }
-      $("ttUpdatedText").textContent = `Aktualizováno: ${formatDateCZDateTime(new Date())} • ${state.classSource}`;
-      updateTimetableNowHighlight();
-      scheduleSixSevenScan();
-    }
-
-    function updateTimetableNowHighlight(){
-      const now=new Date();
-      const todayKey=dayKeyFromDate(now);
-      const nowMin=now.getHours()*60 + now.getMinutes();
-      document.querySelectorAll("#ttGrid .tt-cell[data-day][data-idx]").forEach(cell => {
-        const idx=Number(cell.dataset.idx);
-        const t=TIMES_MIN[idx];
-        cell.classList.toggle("tt-now", !!(todayKey === cell.dataset.day && t && nowMin >= t.startMin && nowMin <= t.endMin));
-      });
-    }
-
-    function dedupeByKey(items, keyFn){ const seen=new Set(); return items.filter(item => { const key=keyFn(item); if (seen.has(key)) return false; seen.add(key); return true; }); }
-    function renderEventsPanel(){
-      const list=$("eventsList"); list.innerHTML="";
-      const dayOrderMap={Mon:1, Tue:2, Wed:3, Thu:4, Fri:5};
-      const evs = dedupeByKey(Array.isArray(state.classEvents) ? state.classEvents : [], e => `${e.dayKey}|${e.name}|${e.begin}|${e.end}|${e.info}`)
-        .sort((a,b) => (dayOrderMap[a.dayKey]-dayOrderMap[b.dayKey]) || String(a.begin||"").localeCompare(String(b.begin||"")));
-      const marks = dedupeByKey(Array.isArray(state.classMarks) ? state.classMarks : [], m => `${m.day}|${m.idx}|${m.type}|${m.note}|${m.room}`)
-        .sort((a,b) => (dayOrderMap[a.day]-dayOrderMap[b.day]) || (a.idx-b.idx));
-
-      if (!evs.length && !marks.length){ list.innerHTML = `<div class="stackItem muted">Žádné události (zatím)</div>`; scheduleSixSevenScan(); return; }
-
-      for (const e of evs){
-        const item=document.createElement("div"); item.className="stackItem event";
-        item.innerHTML = `<div class="eventTitle">${escapeHtml(e.name || "Akce")}</div><div class="eventMeta">${escapeHtml(e.dayText || dayLabelCz(e.dayKey) || "—")}${(e.begin && e.end) ? ` • ${escapeHtml(e.begin)}–${escapeHtml(e.end)}` : ""}</div>${e.info ? `<div class="eventDesc">${escapeHtml(e.info)}</div>` : ""}`;
-        list.appendChild(item);
-      }
-
-      for (const ev of marks){
-        if (ev.type === "event") continue;
-        const item=document.createElement("div"); item.className=`stackItem ${ev.type || ""}`;
-        const title = ev.type === "subst" ? "Suplování" : "Odpadlo";
-        item.innerHTML = `<div class="eventTitle">${title}</div><div class="eventMeta">${dayLabelCz(ev.day)} • hodina ${ev.idx+1}/7 • ${TIMES[ev.idx]?.start || ""}–${TIMES[ev.idx]?.end || ""}${ev.room ? ` • ${escapeHtml(ev.room)}` : ""}</div>${ev.note ? `<div class="eventDesc">${escapeHtml(ev.note)}</div>` : ""}`;
-        list.appendChild(item);
-      }
-      scheduleSixSevenScan();
-    }
-
-    function countTodayLessons(arr){ let last=-1; for (let i=0;i<arr.length;i++) if (arr[i]?.subj) last=i; return last >= 0 ? last+1 : 0; }
-    function fmtLesson(x){ if (!x) return null; return `${shortSubj(x.subj, x.class || "")}${x.room ? ` (${x.room})` : ""}`; }
-    function setDailyBadge(kind, text){ const b=$("dailyBadge"); b.className = "badge" + (kind ? ` ${kind}` : ""); b.textContent = text; }
-
-    function updateDaily(now){
-      const dayKey=dayKeyFromDate(now);
-      const days=getClassDays();
-      const nowMin=now.getHours()*60 + now.getMinutes();
-      if (!dayKey){ setDailyBadge("free","Volno"); setText("dailyText","Volno 😎"); setBar("daybar",100); setText("daylabel",""); setText("dailyDebug",`Weekend • ${formatDateCZ(now)}`); return; }
-      if (nowMin >= LUNCH_START && nowMin < LUNCH_END){ setDailyBadge("live","Oběd"); setText("dailyText","Obědová pauza 🍽️"); setBar("daybar",0); setText("daylabel","12:20–12:50"); setText("dailyDebug",`${dayKey} • ${formatDateCZ(now)}`); return; }
-
-      const lessons=(days[dayKey] || []).slice(0,7);
-      const totalToday=countTodayLessons(lessons);
-      if (totalToday === 0){ setDailyBadge("free","Volno"); setText("dailyText","Dnes bez výuky 😎"); setBar("daybar",100); setText("daylabel",""); setText("dailyDebug",`${dayKey} • ${formatDateCZ(now)}`); return; }
-
-      const first=TIMES_MIN[0];
-      const last=TIMES_MIN[totalToday-1];
-      if (nowMin > last.endMin){ setDailyBadge("free","Volno"); setText("dailyText","Volno 😎"); setBar("daybar",100); setText("daylabel",""); setText("dailyDebug",`${dayKey} • ${formatDateCZ(now)}`); return; }
-      if (nowMin < first.startMin){ const next=fmtLesson(lessons[0]) || `Hodina 1/${totalToday}`; setDailyBadge("live","Dnes"); setText("dailyText",`Za chvíli začne: ${next}`); setBar("daybar",0); setText("daylabel",`Hodina 1/${totalToday} • start v ${TIMES[0].start}`); setText("dailyDebug",`${dayKey} • ${formatDateCZ(now)}`); return; }
-
-      for (let i=0;i<totalToday;i++){
-        const t=TIMES_MIN[i];
-        const cur=fmtLesson(lessons[i]) || `Hodina ${i+1}/${totalToday}`;
-        const next=(i+1<totalToday) ? (fmtLesson(lessons[i+1]) || `Hodina ${i+2}/${totalToday}`) : null;
-        if (nowMin >= t.startMin && nowMin <= t.endMin){
-          const pct=((nowMin - t.startMin)/Math.max(1, (t.endMin - t.startMin))) * 100;
-          setDailyBadge("live","Právě"); setText("dailyText", next ? `Právě: ${cur} • Další: ${next}` : `Právě: ${cur}`); setBar("daybar",pct); setText("daylabel",`Hodina ${i+1}/${totalToday} • ${TIMES[i].start}–${TIMES[i].end} • ${pct.toFixed(0)}%`); setText("dailyDebug",`${dayKey} • ${formatDateCZ(now)}`); return;
-        }
-        const nt=TIMES_MIN[i+1];
-        if (nt && nowMin > t.endMin && nowMin < nt.startMin){ setDailyBadge("live","Pauza"); setText("dailyText",`Následuje: ${next}`); setBar("daybar",0); setText("daylabel",`Další hodina ${i+2}/${totalToday} v ${TIMES[i+1].start}`); setText("dailyDebug",`${dayKey} • ${formatDateCZ(now)}`); return; }
-      }
-    }
-
-    function updateCafaTracker(now){
-      const dayKey=dayKeyFromDate(now);
-      const days=getTeacherDays();
-      const src=state.teacherSource;
-      const nowMin=now.getHours()*60 + now.getMinutes();
-      if (now.getHours() >= 16 || !dayKey){ $("cafaMain").textContent = "Cáfa se skrývá ve stínech 😎"; $("cafaSub").textContent = `${!dayKey ? "Víkend" : formatDateCZ(now)} • ${src}`; return; }
-      const arr=days[dayKey] || Array(7).fill(null);
-      if (nowMin >= LUNCH_START && nowMin < LUNCH_END){
-        let lastIdx=null; for (let i=0;i<7;i++) if (TIMES_MIN[i].endMin <= nowMin) lastIdx=i;
-        const last=(lastIdx !== null) ? arr[lastIdx] : null;
-        $("cafaMain").textContent = "Obědová pauza 🍽️";
-        $("cafaSub").textContent = last ? `Naposledy: ${shortSubj(last.subj, last.class||"")} • ${last.room||"—"} • ${last.class||"—"} • ${src}` : `${dayLabelCz(dayKey)} • ${src}`;
-        return;
-      }
-      let curIdx=null; for (let i=0;i<7;i++){ const t=TIMES_MIN[i]; if (nowMin >= t.startMin && nowMin <= t.endMin){ curIdx=i; break; } }
-      if (curIdx === null || !arr[curIdx]){ $("cafaMain").textContent = "Cáfa se skrývá ve stínech 😎"; $("cafaSub").textContent = `${dayLabelCz(dayKey)} • ${curIdx===null ? "mimo hodiny" : `hodina ${curIdx+1}/7`} • ${src}`; return; }
-      const l=arr[curIdx];
-      $("cafaMain").textContent = `${shortSubj(l.subj, l.class||"")} • ${l.room || "—"} • ${l.class || "—"}`;
-      $("cafaSub").textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
-    }
-
-    function updateProgressBars(){
-      const now=new Date();
-      const timeInDay=now.getHours()/24 + now.getMinutes()/1440;
-      const dow=now.getDay();
-      const weekend=(dow===0 || dow===6);
-      const workIndex=(dow===1)?0:(dow===2)?1:(dow===3)?2:(dow===4)?3:(dow===5)?4:4;
-      const weekPct=weekend ? 100 : ((workIndex + timeInDay)/5)*100;
-      setBar("rt-week", weekPct, weekend); setText("rt-week-label", weekend ? "Weekend 😎" : `Týden: ${weekPct.toFixed(1)}%`);
-      setBar("raw-week", weekPct); setText("raw-week-label", `Týden: ${weekPct.toFixed(1)}%`);
-
-      const dim=new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-      const monthPct=((now.getDate()-1 + timeInDay)/dim)*100;
-      setBar("rt-month", monthPct); setText("rt-month-label", `Měsíc: ${monthPct.toFixed(1)}%`);
-      const mStart=localDate(now.getFullYear(), now.getMonth()+1, 1);
-      const mEnd=localDateEnd(now.getFullYear(), now.getMonth()+1, dim);
-      const monthRaw=rawPctBetween(mStart, mEnd, now);
-      setBar("raw-month", monthRaw); setText("raw-month-label", `Měsíc: ${monthRaw.toFixed(1)}%`);
-
-      const yr=getSchoolYearRange(now);
-      const yearPct=calendarPctBetween(yr.start, yr.end, now);
-      const yearRaw=rawPctBetween(yr.start, yr.end, now);
-      setBar("rt-year", yearPct); setText("rt-year-label", `Školní rok: ${yearPct.toFixed(1)}%`);
-      setBar("raw-year", yearRaw); setText("raw-year-label", `Školní rok: ${yearRaw.toFixed(1)}%`);
-
-      const totalPct=calendarPctBetween(HS_START, HS_END, now);
-      const totalRaw=rawPctBetween(HS_START, HS_END, now);
-      setBar("rt-total", totalPct); setText("rt-total-label", `Celkem: ${totalPct.toFixed(1)}%`);
-      setBar("raw-total", totalRaw); setText("raw-total-label", `Celkem: ${totalRaw.toFixed(1)}%`);
-
-      const daysUntil=Math.ceil((MATURITA_APPROX - now)/(1000*60*60*24));
-      const rawDays=rawDaysUntil(MATURITA_APPROX, now);
-      setText("rt-maturita-label", daysUntil>=0 ? `Real-Time: ~${daysUntil} dní` : `Real-Time: hotovo (${Math.abs(daysUntil)} dní zpět)`);
-      setText("raw-maturita-label", rawDays>=0 ? `Raw-Time: ~${rawDays} školních dní` : `Raw-Time: hotovo (${Math.abs(rawDays)} školních dní zpět)`);
-      scheduleSixSevenScan();
-    }
-
-    async function fetchJsonSafe(url){ try{ const res=await fetch(url, { cache:"no-store" }); if (!res.ok) throw new Error(`HTTP ${res.status}`); return await res.json(); }catch(err){ return { __error:String(err?.message || err) }; } }
-    async function syncBackend(){
-      const c=await fetchJsonSafe(BACKEND_CLASS_API);
-      if (!c.__error && c.ok && c.days && hasAnyLesson(c.days)){ state.classDays=c.days; state.classMarks=Array.isArray(c.marks) ? c.marks : []; state.classEvents=Array.isArray(c.events) ? c.events : []; state.classSource="Bakaláří"; }
-      else state.classSource="Lokální";
-      const t=await fetchJsonSafe(BACKEND_TEACHER_API);
-      if (!t.__error && t.ok && t.days && hasAnyLesson(t.days)){ state.teacherDays=t.days; state.teacherSource="Bakaláří"; }
-      else state.teacherSource="Lokální";
-      statusText(); renderTimetable(); renderEventsPanel(); updateCafaTracker(new Date()); updateDaily(new Date()); sanityTick(new Date());
-    }
-
-    let ssScanTimer=null;
-    function scheduleSixSevenScan(){ if (ssScanTimer) clearTimeout(ssScanTimer); ssScanTimer=setTimeout(() => { try{ wrapSixSeven(document.querySelector(".wrap")); }catch{} }, 80); }
-    function wrapSixSeven(root){
-      if (!root) return;
-      const SKIP_TAGS = new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
-      const reHit = /6\s*\/\s*7|6\.7|67/;
-      const patterns = [/6\s*\/\s*7/g, /6\.7(?:\.\d{2,4})?/g, /67/g];
-      const makeSS = (txt) => { const wrap=document.createElement("span"); wrap.className="ss"; wrap.dataset.ss="1"; const clean=String(txt).replace(/\s+/g,""); const s6=document.createElement("span"); s6.className="d d6"; s6.textContent="6"; const mid=document.createElement("span"); mid.className="d"; mid.textContent = clean.includes("/") ? "/" : (clean.includes(".") ? "." : ""); const s7=document.createElement("span"); s7.className="d d7"; s7.textContent="7"; wrap.append(s6); if (mid.textContent) wrap.append(mid); wrap.append(s7); return wrap; };
-      const walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode(node){ const p=node.parentNode; if (!p || SKIP_TAGS.has(p.nodeName)) return NodeFilter.FILTER_REJECT; if (p.closest?.(".tt-tooltip") || p.closest?.(".ss")) return NodeFilter.FILTER_REJECT; if (!node.nodeValue || !reHit.test(node.nodeValue)) return NodeFilter.FILTER_REJECT; return NodeFilter.FILTER_ACCEPT; } });
-      const nodes=[]; while (walker.nextNode()) nodes.push(walker.currentNode);
-      for (const textNode of nodes){
-        let parts=[{ text:textNode.nodeValue, isMatch:false }];
-        for (const re of patterns){
-          const nextParts=[];
-          for (const part of parts){
-            if (part.isMatch){ nextParts.push(part); continue; }
-            const s=part.text; let last=0, m; re.lastIndex=0;
-            while ((m=re.exec(s)) !== null){ if (m.index > last) nextParts.push({ text:s.slice(last, m.index), isMatch:false }); nextParts.push({ text:m[0], isMatch:true }); last=m.index + m[0].length; }
-            if (last < s.length) nextParts.push({ text:s.slice(last), isMatch:false });
-          }
-          parts=nextParts;
-        }
-        if (!parts.some(p => p.isMatch)) continue;
-        const frag=document.createDocumentFragment();
-        for (const p of parts) frag.appendChild(p.isMatch ? makeSS(p.text) : document.createTextNode(p.text));
-        textNode.parentNode.replaceChild(frag, textNode);
-      }
-    }
-    function triggerSixSevenEmote(){ const els=document.querySelectorAll(".ss[data-ss='1']"); els.forEach(el => { el.classList.remove("hot"); void el.offsetWidth; el.classList.add("hot"); }); setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1200); }
-
-    function sanityDecayPerMinute(feel){ return feel===1 ? .06 : feel===2 ? .10 : feel===3 ? .16 : .24; }
-    function sanityLabel(feel){ return feel===1 ? { emoji:"😄", text:"VIBIN" } : feel===2 ? { emoji:"🙂", text:"OK" } : feel===3 ? { emoji:"😐", text:"MEH" } : { emoji:"😵", text:"COOKED" }; }
-    function loadSanityLog(){ try{ const raw=localStorage.getItem(SANITY_KEY); const arr=raw ? JSON.parse(raw) : []; return Array.isArray(arr) ? arr : []; }catch{ return []; } }
-    function saveSanityLog(arr){ localStorage.setItem(SANITY_KEY, JSON.stringify(arr)); }
-    function pruneSanityLog(arr){ const cutoff=Date.now()-14*24*60*60*1000; return arr.filter(x => x && x.t >= cutoff); }
-    function getCurrentSchoolHourIndex(now){ const dayKey=dayKeyFromDate(now); if (!dayKey) return null; const nowMin=now.getHours()*60 + now.getMinutes(); if (nowMin >= LUNCH_START && nowMin < LUNCH_END) return "lunch"; for (let i=0;i<7;i++){ const t=TIMES_MIN[i]; if (nowMin >= t.startMin && nowMin <= t.endMin) return i; } return null; }
-    function isLiveSanityAllowed(now){ if (now.getHours() >= 16) return false; const idx=getCurrentSchoolHourIndex(now); return idx !== null && idx !== "lunch"; }
-    function ensureSanityCanvasSize(){ const canvas=$("sanityCanvas"); const rect=canvas.getBoundingClientRect(); const dpr=Math.max(1, window.devicePixelRatio || 1); canvas.width=Math.max(300, Math.floor(rect.width * dpr)); canvas.height=Math.max(140, Math.floor(rect.height * dpr)); const ctx=canvas.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); }
-    function computeSanitySeries(now){
-      const log=pruneSanityLog(loadSanityLog());
-      const dayISO=formatDateCZ(now);
-      const start=new Date(now); start.setHours(7,55,0,0);
-      const end=new Date(now); end.setHours(16,0,0,0);
-      let sanity=SANITY_BASE, feel=2, ptr=0;
-      const itemsToday=log.filter(x => formatDateCZ(new Date(x.t)) === dayISO).sort((a,b)=>a.t-b.t);
-      const points=[]; const stepMs=2*60*1000;
-      for (let t=start.getTime(); t <= Math.min(end.getTime(), now.getTime()); t += stepMs){
-        while (ptr < itemsToday.length && itemsToday[ptr].t <= t){ const it=itemsToday[ptr]; if (it.type === "feel") feel=it.feel || feel; if (it.type === "kakao") sanity=Math.min(100, sanity + (it.boost || SANITY_PILL_BOOST)); ptr++; }
-        sanity=Math.max(0, sanity - sanityDecayPerMinute(feel) * (stepMs/60000));
-        points.push({ t, sanity, feel });
-      }
-      return { points, lastSanity: points.at(-1)?.sanity ?? sanity, lastFeel: points.at(-1)?.feel ?? feel };
-    }
-    function drawSanity(now){
-      const canvas=$("sanityCanvas"); const ctx=canvas.getContext("2d"); const rect=canvas.getBoundingClientRect();
-      ctx.clearRect(0,0,rect.width,rect.height); ctx.fillStyle="rgba(0,0,0,0.06)"; ctx.fillRect(0,0,rect.width,rect.height);
-      const { points, lastSanity, lastFeel } = computeSanitySeries(now);
-      ctx.strokeStyle="rgba(255,255,255,0.10)"; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(8,8); ctx.lineTo(8,rect.height-8); ctx.lineTo(rect.width-8, rect.height-8); ctx.stroke();
-      const accent=getComputedStyle(document.body).getPropertyValue("--accent").trim() || "#3bb54a";
-      ctx.strokeStyle=accent; ctx.lineWidth=2;
-      const maxX=rect.width-16, maxY=rect.height-16;
-      const toX=(i) => 8 + (i/Math.max(1, points.length-1)) * maxX;
-      const toY=(s) => 8 + (1 - s/100) * maxY;
-      if (points.length){ ctx.beginPath(); ctx.moveTo(toX(0), toY(points[0].sanity)); for (let i=1;i<points.length;i++) ctx.lineTo(toX(i), toY(points[i].sanity)); ctx.stroke(); ctx.fillStyle="rgba(255,152,0,0.95)"; ctx.beginPath(); ctx.arc(toX(points.length-1), toY(points.at(-1).sanity), 4, 0, Math.PI*2); ctx.fill(); }
-      const feel=sanityLabel(lastFeel);
-      $("sanityValue").textContent = `${Math.round(lastSanity)}% • ${feel.emoji} ${feel.text}`;
-      const live=isLiveSanityAllowed(now);
-      $("sanityMeta").textContent = live ? "LIVE (běží během hodiny)" : "MIMO ŠKOLU (jen historie)";
-      $("kakaoWarn").style.display = live && lastSanity <= 25 ? "block" : "none";
-      $("kakaoBtn").classList.toggle("show", live && lastSanity <= 25);
-    }
-    function renderSanityHistory(){
-      const box=$("sanityHistory"); const log=pruneSanityLog(loadSanityLog()).sort((a,b)=>b.t-a.t);
-      if (!log.length){ box.innerHTML = `<div class="stackItem muted">Žádná historie (zatím)</div>`; return; }
-      box.innerHTML = "";
-      for (const it of log.slice(0,20)){
-        const d=new Date(it.t); const t=`${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`; const dd=formatDateCZ(d);
-        const row=document.createElement("div"); row.className="stackItem";
-        if (it.type === "feel"){ const lab=sanityLabel(it.feel || 3); row.innerHTML = `<div class="eventTitle">${lab.emoji} ${lab.text}</div><div class="eventMeta">${dd} • ${t} • hodina ${String((it.hourIdx||0)+1)}/7</div><div class="eventDesc">Sanity: ${Math.round(it.sanityAt ?? 0)}%</div>`; }
-        else if (it.type === "kakao") row.innerHTML = `<div class="eventTitle">☕ Kakajíčko</div><div class="eventMeta">${dd} • ${t}</div><div class="eventDesc">+${it.boost || SANITY_PILL_BOOST}% sanity</div>`;
-        else row.innerHTML = `<div class="eventTitle">Záznam</div><div class="eventMeta">${dd} • ${t}</div>`;
-        box.appendChild(row);
-      }
-    }
-    function writeSanityFeel(feel, now){ if (!isLiveSanityAllowed(now)) return; const idx=getCurrentSchoolHourIndex(now); if (typeof idx !== "number") return; const { lastSanity } = computeSanitySeries(now); const lab=sanityLabel(feel); const log=pruneSanityLog(loadSanityLog().concat([{ t:now.getTime(), type:"feel", feel, hourIdx:idx, label:`${lab.emoji} ${lab.text}`, sanityAt:lastSanity }])); saveSanityLog(log); sanityTick(now); }
-    function writeKakao(now){ if (!isLiveSanityAllowed(now)) return; const log=pruneSanityLog(loadSanityLog().concat([{ t:now.getTime(), type:"kakao", boost:SANITY_PILL_BOOST }])); saveSanityLog(log); sanityTick(now); }
-    function sanityTick(now){ ensureSanityCanvasSize(); drawSanity(now); renderSanityHistory(); scheduleSixSevenScan(); }
-
-    function escapeHtml(s){ return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
-    async function loadLeaderboard(){
-      const box=$("lbList");
-      try{
-        const res=await fetch("./LeaderboardAb.txt?ts=" + Date.now(), { cache:"no-store" });
-        if (!res.ok) throw new Error();
-        const txt=await res.text();
-        const lines=txt.split(/\r?\n/).map(x => x.trim()).filter(Boolean).filter(x => !x.startsWith("#"));
-        if (!lines.length){ box.innerHTML = `<div class="stackItem muted">Leaderboard prázdný</div>`; return; }
-        box.innerHTML = "";
-        for (const line of lines){
-          let name="", val="";
-          if (line.includes(" - ")) [name,val] = line.split(" - ");
-          else if (line.includes(":")) [name,val] = line.split(":");
-          else if (line.includes(",")) [name,val] = line.split(",");
-          else name = line;
-          const div=document.createElement("div"); div.className="lbRow"; div.innerHTML = `<div class="lbName">${escapeHtml(name.trim())}</div><div class="lbVal">${escapeHtml((val||"").trim())}</div>`; box.appendChild(div);
-        }
-      }catch{ box.innerHTML = `<div class="stackItem muted">Nepovedlo se načíst LeaderboardAb.txt</div>`; }
-    }
-
-    async function fetchAndApply(){ await syncBackend(); await loadLeaderboard(); }
-
-    function initSettings(){
-      $("settingsBtn").addEventListener("click", () => $("settingsPanel").classList.toggle("hidden"));
-      $("themeSelect").addEventListener("change", () => applyTheme($("themeSelect").value));
-      $("modeSelect").addEventListener("change", () => applyTitleMode($("modeSelect").value));
-      $("uiScaleRange").addEventListener("input", () => applyUiScale($("uiScaleRange").value));
-      $("toggleTimetable").addEventListener("change", () => { $("timetableBlock").classList.toggle("hidden", !$("toggleTimetable").checked); localStorage.setItem("sp_toggle_tt", $("toggleTimetable").checked ? "1" : "0"); scheduleSixSevenScan(); });
-      $("toggleDaily").addEventListener("change", () => { $("dailyBlock").classList.toggle("hidden", !$("toggleDaily").checked); localStorage.setItem("sp_toggle_daily", $("toggleDaily").checked ? "1" : "0"); scheduleSixSevenScan(); });
-      $("toggleInfo").addEventListener("change", () => { localStorage.setItem("sp_toggle_info", $("toggleInfo").checked ? "1" : "0"); setInfoPanelVisible(); scheduleSixSevenScan(); });
-      $("toggleTracker").addEventListener("change", () => { localStorage.setItem("sp_toggle_tracker", $("toggleTracker").checked ? "1" : "0"); setInfoPanelVisible(); scheduleSixSevenScan(); });
-
-      applyTheme(localStorage.getItem("sp_theme") || "dark");
-      applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
-      applyTitleMode(localStorage.getItem("sp_mode") || "normal");
-      const savedTT=localStorage.getItem("sp_toggle_tt"); if (savedTT !== null) $("toggleTimetable").checked = savedTT === "1";
-      const savedDaily=localStorage.getItem("sp_toggle_daily"); if (savedDaily !== null) $("toggleDaily").checked = savedDaily === "1";
-      const savedInfo=localStorage.getItem("sp_toggle_info"); if (savedInfo !== null) $("toggleInfo").checked = savedInfo === "1";
-      const savedTracker=localStorage.getItem("sp_toggle_tracker"); if (savedTracker !== null) $("toggleTracker").checked = savedTracker === "1";
+    $("toggleTimetable").addEventListener("change", () => {
       $("timetableBlock").classList.toggle("hidden", !$("toggleTimetable").checked);
+      localStorage.setItem("sp_toggle_tt", $("toggleTimetable").checked ? "1" : "0");
+      scheduleSixSevenScan();
+    });
+
+    $("toggleDaily").addEventListener("change", () => {
       $("dailyBlock").classList.toggle("hidden", !$("toggleDaily").checked);
+      localStorage.setItem("sp_toggle_daily", $("toggleDaily").checked ? "1" : "0");
+      scheduleSixSevenScan();
+    });
+
+    $("toggleInfo").addEventListener("change", () => {
+      localStorage.setItem("sp_toggle_info", $("toggleInfo").checked ? "1" : "0");
       setInfoPanelVisible();
-    }
+      scheduleSixSevenScan();
+    });
 
-    function initInfoPanel(){ const saved=localStorage.getItem("sp_info_page"); if (saved !== null) state.infoPage = Number(saved)||0; $("dots").addEventListener("click", e => { const t=e.target; if (t?.classList.contains("dotBtn")) setInfoPage(t.dataset.page); }); setInfoPage(state.infoPage); }
-    function initSanity(){ ensureSanityCanvasSize(); window.addEventListener("resize", () => sanityTick(new Date())); $("feelRow").addEventListener("click", e => { const b=e.target; if (b?.classList.contains("feelBtn")) writeSanityFeel(Number(b.dataset.feel), new Date()); }); $("kakaoBtn").addEventListener("click", () => writeKakao(new Date())); }
+    $("toggleTracker").addEventListener("change", () => {
+      localStorage.setItem("sp_toggle_tracker", $("toggleTracker").checked ? "1" : "0");
+      setInfoPanelVisible();
+      scheduleSixSevenScan();
+    });
 
-    function tick(){ const now=new Date(); updateProgressBars(); if ($("toggleDaily").checked) updateDaily(now); if ($("toggleTracker").checked) updateCafaTracker(now); updateTimetableNowHighlight(); sanityTick(now); }
+    applyTheme(localStorage.getItem("sp_theme") || "dark");
+    applyUiScale(localStorage.getItem("sp_ui_scale") || 100);
 
-    function boot(){
-      $("verText").textContent = VERSION;
-      initSettings(); initInfoPanel(); initSanity(); loadMinecraftSplash();
-      state.classSource = "loading"; state.teacherSource = "loading"; statusText();
-      renderTimetable(); renderEventsPanel(); loadLeaderboard(); tick(); fetchAndApply();
-      scheduleSixSevenScan(); setInterval(triggerSixSevenEmote, 10000); setInterval(tick, 30000); setInterval(fetchAndApply, 5*60*1000);
-    }
+    const savedTT = localStorage.getItem("sp_toggle_tt");
+    const savedDaily = localStorage.getItem("sp_toggle_daily");
+    const savedInfo = localStorage.getItem("sp_toggle_info");
+    const savedTracker = localStorage.getItem("sp_toggle_tracker");
 
-    document.addEventListener("DOMContentLoaded", boot);
-  </script>
-</body>
-</html>
+    if (savedTT !== null) $("toggleTimetable").checked = savedTT === "1";
+    if (savedDaily !== null) $("toggleDaily").checked = savedDaily === "
