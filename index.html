@@ -1561,7 +1561,7 @@
         } else if (next){
           sub.textContent = `Další: ${formatTrackerLesson(next.lesson)} • ${TIMES[next.idx].start} • ${src}`;
         } else {
-          sub.textContent = `${dayLabelCz(dayKey)} • ještě ve škole • ${src}`;
+          sub.textContent = `${dayLabelCz(dayKey)} • Ve Škole • ${src}`;
         }
 
         scheduleSixSevenScan();
@@ -1569,7 +1569,7 @@
       }
 
       main.textContent = "Cáfa se skrývá ve stínech 😎";
-      sub.textContent = `${dayLabelCz(dayKey)} • dnes už mimo školu • ${src}`;
+      sub.textContent = `${dayLabelCz(dayKey)} • Mimo Školu • ${src}`;
       scheduleSixSevenScan();
     }
 
