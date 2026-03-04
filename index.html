@@ -320,7 +320,7 @@
     .stackItem.muted{ color:var(--muted); font-weight:900; text-align:center; }
     .stackItem.event{
       border-color: var(--eventBorder);
-      background: linear-gradient(180deg, rgba(59,181,74,.10), rgba(59,181,74,.04));
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
     }
     .stackItem.subst{
       border-color: var(--substBorder);
@@ -340,14 +340,22 @@
       line-height:1.35; word-break:break-word;
     }
 
-    .sanityWrap{ display:flex; flex-direction:column; gap:10px; }
+    .sanityWrap{ display:flex; flex-direction:column; gap:14px; }
     .sanityTopRow{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:2px;
     }
     .sanityMeterLabel{ font-weight:1000; color:var(--muted); font-size:12px; }
     .sanityValue{ font-weight:1000; font-size:14px; }
 
-    .sanityModeRow{ display:flex; gap:8px; flex-wrap:wrap; }
+    #sanityLiveZone{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .sanityModeRow{
+      display:flex; gap:8px; flex-wrap:wrap; margin-top:2px; margin-bottom:12px;
+    }
     .modeBtn{
       border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);
       border-radius:10px; padding:8px 10px; font-weight:1000; cursor:pointer;
@@ -359,8 +367,13 @@
     }
 
     .sanityCanvas{
-      width:100%; height:160px; border:1px solid var(--border); border-radius:10px;
-      background: rgba(0,0,0,.05); display:block;
+      width:100%;
+      height:160px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background: rgba(0,0,0,.05);
+      display:block;
+      margin-bottom:14px;
     }
     body.theme-battlecats .sanityCanvas{ background: rgba(255,255,255,.7); }
 
@@ -372,9 +385,10 @@
       color:var(--muted);
       font-weight:1000;
       background: rgba(255,255,255,.03);
+      margin-bottom:14px;
     }
 
-    .feelRow{ display:flex; gap:8px; flex-wrap:wrap; }
+    .feelRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:2px; }
     .feelBtn{
       border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);
       border-radius:10px; padding:8px 10px; font-weight:1000; cursor:pointer;
@@ -402,7 +416,7 @@
 
     .kakaoRow{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
-      flex-wrap:wrap; padding-top:2px;
+      flex-wrap:wrap; padding-top:6px;
     }
     .kakaoWarn{
       font-weight:1000; color: rgba(255,0,60,.95);
@@ -763,7 +777,7 @@
       <div>
         <span>© 2026 All rights reserved</span>
         <span class="footerSep">•</span>
-        <span>Version <span id="verText">1.4.00</span></span>
+        <span>Version <span id="verText">1.4.20</span></span>
         <span class="footerSep">•</span>
         <a href="https://ko-fi.com/johnny74802" target="_blank" rel="noopener noreferrer">Support on Ko-fi</a>
       </div>
@@ -777,7 +791,7 @@
     const BACKEND_CLASS_API   = `${WORKER_BASE}/api/timetable?class=5A&type=Actual`;
     const BACKEND_TEACHER_API = `${WORKER_BASE}/api/timetable?teacher=UV069&type=Actual`;
     const CLASS_NAME = "DE3A";
-    const VERSION = "1.4.00";
+    const VERSION = "1.4.20";
 
     const $ = (id) => document.getElementById(id);
     const clamp = (x, a=0, b=100) => Math.max(a, Math.min(b, x));
@@ -1407,46 +1421,156 @@
       setText("dailyDebug",`${dayKey} • ${formatDateCZ(now)}`);
     }
 
+    function normalizeTrackerClass(raw){
+      const s = String(raw || "").trim().toUpperCase();
+      if (!s) return "";
+      if (/^(DE\d[A-Z]|[1-9][A-Z]|[1-9][A-Z]{1,2}|IT\d[A-Z]?|[A-Z]{1,3}\d[A-Z]?)$/.test(s)) return s;
+      return "";
+    }
+
+    function normalizeTrackerRoom(raw){
+      const s = String(raw || "").trim();
+      return s || "";
+    }
+
+    function normalizeTrackerSubject(rawSubj, rawClass){
+      return shortSubj(rawSubj || "", rawClass || "");
+    }
+
+    function formatTrackerLesson(lesson){
+      if (!lesson) return "";
+      const cls = normalizeTrackerClass(lesson.class || "");
+      const subj = normalizeTrackerSubject(lesson.subj || "", cls);
+      const room = normalizeTrackerRoom(lesson.room || "");
+
+      const left = [cls, subj].filter(Boolean).join(" ").trim();
+      if (left && room) return `${left} (${room})`;
+      if (left) return left;
+      if (subj && room) return `${subj} (${room})`;
+      if (subj) return subj;
+      if (room) return `(${room})`;
+      return "Neznámá lokace";
+    }
+
+    function getTeacherDayBounds(arr){
+      let firstIdx = null;
+      let lastIdx = null;
+      for (let i=0;i<arr.length;i++){
+        if (arr[i] && arr[i].subj){
+          if (firstIdx === null) firstIdx = i;
+          lastIdx = i;
+        }
+      }
+      return { firstIdx, lastIdx };
+    }
+
+    function getLastTeacherLessonBefore(arr, nowMin){
+      let found = null;
+      for (let i=0;i<arr.length;i++){
+        if (!arr[i] || !arr[i].subj) continue;
+        if (TIMES_MIN[i].endMin <= nowMin) found = { lesson: arr[i], idx: i };
+      }
+      return found;
+    }
+
+    function getNextTeacherLessonAfter(arr, nowMin){
+      for (let i=0;i<arr.length;i++){
+        if (!arr[i] || !arr[i].subj) continue;
+        if (TIMES_MIN[i].startMin > nowMin) return { lesson: arr[i], idx: i };
+      }
+      return null;
+    }
+
     function updateCafaTracker(now){
+      const main = $("cafaMain");
+      const sub = $("cafaSub");
+
       const dayKey = dayKeyFromDate(now);
       const days = getTeacherDays();
       const src = state.teacherSource;
       const nowMin = now.getHours()*60 + now.getMinutes();
 
-      if (now.getHours() >= 16 || !dayKey){
-        $("cafaMain").textContent = "Cáfa se skrývá ve stínech 😎";
-        $("cafaSub").textContent = `${!dayKey ? "Víkend" : formatDateCZ(now)} • ${src}`;
+      const OUT_OF_SCHOOL_TOLERANCE = 15;
+
+      if (!dayKey){
+        main.textContent = "Cáfa se skrývá ve stínech 😎";
+        sub.textContent = `Víkend • mimo školu • ${src}`;
+        scheduleSixSevenScan();
         return;
       }
 
       const arr = days[dayKey] || Array(7).fill(null);
+      const { firstIdx, lastIdx } = getTeacherDayBounds(arr);
 
-      if (nowMin >= LUNCH_START && nowMin < LUNCH_END){
-        let lastIdx = null;
-        for (let i=0;i<7;i++) if (TIMES_MIN[i].endMin <= nowMin) lastIdx = i;
-        const last = (lastIdx !== null) ? arr[lastIdx] : null;
-        $("cafaMain").textContent = "Obědová pauza 🍽️";
-        $("cafaSub").textContent = last
-          ? `Naposledy: ${shortSubj(last.subj, last.class||"")} • ${last.room||"—"} • ${last.class||"—"} • ${src}`
-          : `${dayLabelCz(dayKey)} • ${src}`;
+      if (firstIdx === null || lastIdx === null){
+        main.textContent = "Cáfa se skrývá ve stínech 😎";
+        sub.textContent = `${dayLabelCz(dayKey)} • bez výuky • ${src}`;
+        scheduleSixSevenScan();
         return;
       }
 
-      let curIdx = null;
+      const firstStart = TIMES_MIN[firstIdx].startMin;
+      const lastEnd = TIMES_MIN[lastIdx].endMin;
+
+      if (nowMin < firstStart){
+        main.textContent = "Cáfa se skrývá ve stínech 😎";
+        sub.textContent = `${dayLabelCz(dayKey)} • před výukou • ${src}`;
+        scheduleSixSevenScan();
+        return;
+      }
+
       for (let i=0;i<7;i++){
         const t = TIMES_MIN[i];
-        if (nowMin >= t.startMin && nowMin <= t.endMin){ curIdx = i; break; }
+        if (nowMin >= t.startMin && nowMin <= t.endMin){
+          const lesson = arr[i];
+
+          if (lesson && lesson.subj){
+            main.textContent = formatTrackerLesson(lesson);
+            sub.textContent = `${dayLabelCz(dayKey)} • hodina ${i+1}/7 • ${TIMES[i].start}–${TIMES[i].end} • ${src}`;
+          } else {
+            const next = getNextTeacherLessonAfter(arr, nowMin);
+            main.textContent = "KašpárnaSeek 👀";
+            sub.textContent = next
+              ? `Další: ${formatTrackerLesson(next.lesson)} • ${TIMES[next.idx].start} • ${src}`
+              : `${dayLabelCz(dayKey)} • ve škole, ale bez aktivní hodiny • ${src}`;
+          }
+
+          scheduleSixSevenScan();
+          return;
+        }
       }
 
-      if (curIdx === null || !arr[curIdx]){
-        $("cafaMain").textContent = "Cáfa se skrývá ve stínech 😎";
-        $("cafaSub").textContent = `${dayLabelCz(dayKey)} • ${curIdx===null ? "mimo hodiny" : `hodina ${curIdx+1}/7`} • ${src}`;
+      if (nowMin >= firstStart && nowMin <= (lastEnd + OUT_OF_SCHOOL_TOLERANCE)){
+        const lastSeen = getLastTeacherLessonBefore(arr, nowMin);
+        const next = getNextTeacherLessonAfter(arr, nowMin);
+
+        main.textContent = "KašpárnaSeek 👀";
+
+        if (nowMin >= LUNCH_START && nowMin < LUNCH_END){
+          sub.textContent = lastSeen
+            ? `Oběd • naposledy: ${formatTrackerLesson(lastSeen.lesson)} • ${src}`
+            : `Obědová pauza • ${src}`;
+          scheduleSixSevenScan();
+          return;
+        }
+
+        if (lastSeen){
+          sub.textContent = next
+            ? `Naposledy: ${formatTrackerLesson(lastSeen.lesson)} • Další ${TIMES[next.idx].start} • ${src}`
+            : `Naposledy: ${formatTrackerLesson(lastSeen.lesson)} • ${src}`;
+        } else if (next){
+          sub.textContent = `Další: ${formatTrackerLesson(next.lesson)} • ${TIMES[next.idx].start} • ${src}`;
+        } else {
+          sub.textContent = `${dayLabelCz(dayKey)} • ještě ve škole • ${src}`;
+        }
+
+        scheduleSixSevenScan();
         return;
       }
 
-      const l = arr[curIdx];
-      $("cafaMain").textContent = `${shortSubj(l.subj, l.class||"")} • ${l.room || "—"} • ${l.class || "—"}`;
-      $("cafaSub").textContent = `${dayLabelCz(dayKey)} • hodina ${curIdx+1}/7 • ${TIMES[curIdx].start}–${TIMES[curIdx].end} • ${src}`;
+      main.textContent = "Cáfa se skrývá ve stínech 😎";
+      sub.textContent = `${dayLabelCz(dayKey)} • dnes už mimo školu • ${src}`;
+      scheduleSixSevenScan();
     }
 
     function updateProgressBars(){
@@ -1618,9 +1742,6 @@
       setTimeout(() => els.forEach(el => el.classList.remove("hot")), 1200);
     }
 
-    /* =========================
-       SANITY v2
-       ========================= */
     function sanityDayKey(now){ return toISO(now); }
 
     function loadSanityLog(){
@@ -1685,10 +1806,6 @@
       return getTodaySanityEntries(now).find(x => x.type === "mood" && x.hourIdx === hourIdx) || null;
     }
 
-    function hasAnyMoodToday(now){
-      return getTodaySanityEntries(now).some(x => x.type === "mood");
-    }
-
     function getBoostsForDay(now){
       return getTodaySanityEntries(now).filter(x => x.type === "kakao").sort((a,b) => a.ts - b.ts);
     }
@@ -1705,6 +1822,33 @@
       canvas.height = Math.max(160, Math.floor(rect.height * dpr));
       const ctx = canvas.getContext("2d");
       ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    function getHourIndexFromTimestamp(d){
+      const nowMin = d.getHours()*60 + d.getMinutes();
+      for (let i=0;i<7;i++){
+        const t = TIMES_MIN[i];
+        if (nowMin >= t.startMin && nowMin <= t.endMin) return i;
+      }
+      return null;
+    }
+
+    function calculateHourFullEnd(startSanity, rate, boostsThisHour, hourStart, hourEnd){
+      let s = startSanity;
+      let cursorTs = hourStart;
+      const arr = [...boostsThisHour].sort((a,b)=>a.ts-b.ts);
+      for (const ev of arr){
+        if (ev.ts > hourEnd) break;
+        if (ev.ts > cursorTs){
+          s = Math.max(0, s - rate * ((ev.ts - cursorTs)/60000));
+          cursorTs = ev.ts;
+        }
+        s = Math.min(100, s + (ev.boost || SANITY_PILL_BOOST));
+      }
+      if (hourEnd > cursorTs){
+        s = Math.max(0, s - rate * ((hourEnd - cursorTs)/60000));
+      }
+      return s;
     }
 
     function computeSanityDayModel(now){
@@ -1804,34 +1948,7 @@
         }
       }
 
-      return { hourData, dayPoints, hasAnyMood: moods.length > 0, currentSanity: current };
-    }
-
-    function calculateHourFullEnd(startSanity, rate, boostsThisHour, hourStart, hourEnd){
-      let s = startSanity;
-      let cursorTs = hourStart;
-      const arr = [...boostsThisHour].sort((a,b)=>a.ts-b.ts);
-      for (const ev of arr){
-        if (ev.ts > hourEnd) break;
-        if (ev.ts > cursorTs){
-          s = Math.max(0, s - rate * ((ev.ts - cursorTs)/60000));
-          cursorTs = ev.ts;
-        }
-        s = Math.min(100, s + (ev.boost || SANITY_PILL_BOOST));
-      }
-      if (hourEnd > cursorTs){
-        s = Math.max(0, s - rate * ((hourEnd - cursorTs)/60000));
-      }
-      return s;
-    }
-
-    function getHourIndexFromTimestamp(d){
-      const nowMin = d.getHours()*60 + d.getMinutes();
-      for (let i=0;i<7;i++){
-        const t = TIMES_MIN[i];
-        if (nowMin >= t.startMin && nowMin <= t.endMin) return i;
-      }
-      return null;
+      return { hourData, dayPoints, hasAnyMood: moods.length > 0 };
     }
 
     function currentHourLocked(now){
@@ -1911,9 +2028,7 @@
       placeholder.classList.toggle("hidden", showGraph);
 
       if (!showGraph){
-        $("sanityValue").textContent = typeof curIdx === "number"
-          ? "Čeká na zápis této hodiny"
-          : "Mimo výuku";
+        $("sanityValue").textContent = typeof curIdx === "number" ? "Čeká na zápis této hodiny" : "Mimo výuku";
         $("kakaoWarn").style.display = "none";
         $("kakaoBtn").classList.remove("show");
         return;
@@ -2083,30 +2198,84 @@
 
     async function loadLeaderboard(){
       const box = $("lbList");
+      if (!box) return;
+
       try{
         const res = await fetch("./LeaderboardAb.txt?ts=" + Date.now(), { cache:"no-store" });
-        if (!res.ok) throw new Error();
+
+        if (!res.ok){
+          throw new Error(`HTTP ${res.status}`);
+        }
+
         const txt = await res.text();
-        const lines = txt.split(/\r?\n/).map(x => x.trim()).filter(Boolean).filter(x => !x.startsWith("#"));
+        const cleaned = txt.replace(/^\uFEFF/, "").trim();
+
+        if (!cleaned){
+          box.innerHTML = `<div class="stackItem muted">LeaderboardAb.txt je prázdný</div>`;
+          return;
+        }
+
+        const lines = cleaned
+          .split(/\r?\n/)
+          .map(x => x.trim())
+          .filter(Boolean)
+          .filter(x => !x.startsWith("#"));
+
         if (!lines.length){
           box.innerHTML = `<div class="stackItem muted">Leaderboard prázdný</div>`;
           return;
         }
-        box.innerHTML = "";
-        for (const line of lines){
-          let name="", val="";
-          if (line.includes(" - ")) [name,val] = line.split(" - ");
-          else if (line.includes(":")) [name,val] = line.split(":");
-          else if (line.includes(",")) [name,val] = line.split(",");
-          else name = line;
 
+        const rows = [];
+
+        for (const line of lines){
+          let name = "";
+          let val = "";
+
+          if (line.includes(" - ")){
+            [name, val] = line.split(" - ");
+          } else if (line.includes(":")){
+            [name, val] = line.split(":");
+          } else if (line.includes(",")){
+            [name, val] = line.split(",");
+          } else {
+            name = line;
+            val = "";
+          }
+
+          rows.push({
+            name: String(name || "").trim(),
+            val: String(val || "").trim()
+          });
+        }
+
+        box.innerHTML = "";
+
+        for (const r of rows){
           const div = document.createElement("div");
           div.className = "lbRow";
-          div.innerHTML = `<div class="lbName">${escapeHtml(name.trim())}</div><div class="lbVal">${escapeHtml((val||"").trim())}</div>`;
+          div.innerHTML = `
+            <div class="lbName">${escapeHtml(r.name)}</div>
+            <div class="lbVal">${escapeHtml(r.val)}</div>
+          `;
           box.appendChild(div);
         }
-      }catch{
-        box.innerHTML = `<div class="stackItem muted">Nepovedlo se načíst LeaderboardAb.txt</div>`;
+
+      }catch(err){
+        const isFileProtocol = location.protocol === "file:";
+
+        box.innerHTML = `
+          <div class="stackItem muted">
+            Nepovedlo se načíst LeaderboardAb.txt
+            <div class="eventDesc" style="margin-top:8px;">
+              ${isFileProtocol
+                ? "Stránka běží přes file:// — fetch textového souboru tak často nefunguje. Otevři projekt přes localhost / Live Server."
+                : escapeHtml(String(err?.message || err))}
+            </div>
+          </div>
+        `;
+
+        console.error("Leaderboard load failed:", err);
       }
     }
 
